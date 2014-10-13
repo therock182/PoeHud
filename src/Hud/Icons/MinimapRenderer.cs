@@ -7,6 +7,7 @@ using PoeHUD.Framework;
 using PoeHUD.Game;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
+using System.IO;
 
 namespace PoeHUD.Hud.Icons
 {
@@ -15,6 +16,49 @@ namespace PoeHUD.Hud.Icons
 		private const double InvSq2 = 0.7071067811;
 		private List<MinimapIcon>[] icons;
 		private Vec2 playerPos;
+        Dictionary<string, string> minimpIcons;
+        private HashSet<string> Mod = new HashSet<string>();
+
+        public MinimapRenderer()
+        {
+            minimpIcons = new Dictionary<string, string>();
+            minimpIcons.Add("ally", "monster_ally.png");
+            minimpIcons.Add("white", "monster_enemy.png");
+            minimpIcons.Add("magic", "monster_enemy_blue.png");
+            minimpIcons.Add("rare", "monster_enemy_yellow.png");
+            minimpIcons.Add("unique", "monster_enemy_orange.png");
+            if (File.Exists("config/minimap_icons.txt"))
+            {
+                string[] lines = File.ReadAllLines("config/minimap_icons.txt");
+                foreach (string line in lines.Select(a => a.Trim()))
+                {
+                    if (!line.StartsWith(";"))
+                    {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
+                        var cols = line.Split(new[] { ',', ';' }, 2);
+                        if (cols.Count() < 2)
+                            continue;
+                        if (string.IsNullOrWhiteSpace(cols[1]))
+                            continue;
+                        if (File.Exists("textures/" + cols[1].Trim()))
+                            if (minimpIcons.ContainsKey(cols[0].Trim()))
+                                minimpIcons[cols[0].Trim()] = cols[1].Trim();
+                            else
+                                minimpIcons.Add(cols[0].Trim(), cols[1].Trim());
+                    }
+                }
+            }
+            if (File.Exists("config/MonsterMods.txt"))
+            {
+                string[] lines = File.ReadAllLines("config/MonsterMods.txt");
+                foreach (string line in lines.Select(a => a.Trim()))
+                {
+                    Mod.Add(line);
+                }
+            }
+        }
+
 		public override void OnEnable()
 		{
 			this.icons = new List<MinimapIcon>[Enum.GetValues(typeof(MinimapRenderPriority)).Length];
@@ -27,6 +71,9 @@ namespace PoeHUD.Hud.Icons
 			{
 				this.EntityList_OnEntityAdded(current);
 			}
+
+
+
 		}
 		public override void OnDisable()
 		{
@@ -91,24 +138,46 @@ namespace PoeHUD.Hud.Icons
 			};
 			if (e.HasComponent<Poe.EntityComponents.NPC>() && masters.Contains(e.Path))
 			{
-				return new MasterMinimapIcon(e, "monster_ally.png", 10, MinimapRenderPriority.Strongbox);
+				return new MasterMinimapIcon(e, minimpIcons["ally"], 10, MinimapRenderPriority.Strongbox);
 			}
 			if (e.HasComponent<Poe.EntityComponents.Monster>())
 			{
 				if (!e.IsHostile)
 				{
-					return new MinionMinimapIcon(e, "monster_ally.png", 6, MinimapRenderPriority.BlueMonster);
+                    return new MinionMinimapIcon(e, minimpIcons["ally"], 6, MinimapRenderPriority.BlueMonster);
 				}
 				switch (e.GetComponent<ObjectMagicProperties>().Rarity)
 				{
 				case MonsterRarity.White:
-					return new MonsterMinimapIcon(e, "monster_enemy.png", 6, MinimapRenderPriority.Monster);
+                        return new MonsterMinimapIcon(e, minimpIcons["white"], 6, MinimapRenderPriority.Monster);
 				case MonsterRarity.Magic:
-					return new MonsterMinimapIcon(e, "monster_enemy_blue.png", 8, MinimapRenderPriority.BlueMonster);
+                        return new MonsterMinimapIcon(e, minimpIcons["magic"], 8, MinimapRenderPriority.BlueMonster);
 				case MonsterRarity.Rare:
-					return new MonsterMinimapIcon(e, "monster_enemy_yellow.png", 10, MinimapRenderPriority.RareMonster);
+                        
+                    if (e.HasComponent<ObjectMagicProperties>())
+                    {
+                        ObjectMagicProperties p = e.GetComponent<ObjectMagicProperties>();
+#if DEBUG
+                        foreach (string t in p.Mods)
+                        {
+
+                            //To fill an external file with all monster-mods. Learning while playing ....
+                            if (!Mod.Contains(t))
+                            {
+                                File.WriteAllLines("config/MonsterMods.txt", Mod);
+                                Mod.Add(t);
+                            }
+                        }
+#endif
+                        foreach (string t in p.Mods)
+                            foreach (KeyValuePair<string, string> kv in minimpIcons)
+                                if (kv.Key == t)
+                                    return new MonsterMinimapIcon(e, kv.Value, 10, MinimapRenderPriority.RareMonster);
+                    }
+                    return new MonsterMinimapIcon(e, minimpIcons["rare"], 10, MinimapRenderPriority.RareMonster);
+
 				case MonsterRarity.Unique:
-					return new MonsterMinimapIcon(e, "monster_enemy_orange.png", 10, MinimapRenderPriority.RareMonster);
+                    return new MonsterMinimapIcon(e, minimpIcons["unique"], 10, MinimapRenderPriority.RareMonster);
 				}
 			}
 			if (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened)
