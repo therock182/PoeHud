@@ -4,7 +4,19 @@
 ; Lines Without ; are ignored too;
 ; none existing Textures are ignored too
 ;-------------------------------------------------------------------
-;Default Values 
+;Default Values for crafting, gems ... 
+default;minimap_default_icon.png
+currency;dot_orange.png
+crafting;minimap_default_icon.png
+gem;minimap_default_icon.png
+fragment;minimap_default_icon.png
+;default;minimap_default_icon.png
+;currency;dot_orange.png
+;crafting;dot_yellow.png
+;gem;dot_blue.png
+;fragment;dot_green.png
+-------------------------------------------------------------------
+;Default Values for Enemys
 ally; monster_ally.png
 white; monster_enemy.png
 magic;monster_enemy_blue.png

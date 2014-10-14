@@ -20,6 +20,42 @@ namespace PoeHUD.Hud.Loot
 		private Dictionary<ExileBot.Entity, AlertDrawStyle> currentAlerts;
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
+
+        private Dictionary<string, string> minimapIcons;
+
+        public ItemAlerter()
+        {
+            // default values
+            // the dame routine as the default icons in minimaprenderer, so it should be
+            // soon extracted into its own Class
+            minimapIcons = new Dictionary<string, string>();
+            minimapIcons.Add("default", "minimap_default_icon.png");
+            minimapIcons.Add("currency", "dot_orange.png");
+            minimapIcons.Add("crafting", "dot_yellow.png");
+            minimapIcons.Add("gem", "dot_blue.png");
+            minimapIcons.Add("fragment", "dot_green.png");
+            {
+                string[] lines = File.ReadAllLines("config/minimap_icons.txt"); // Filename with Icon assignments
+                foreach (string line in lines.Select(a => a.Trim())) 
+                {
+                    if (!line.StartsWith(";")) // comment ?
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) // empty ? 
+                            continue;
+                        var cols = line.Split(new[] { ',', ';' }, 2); 
+                        if (cols.Count() < 2) // less than 2 columns ?
+                            continue;
+                        if (string.IsNullOrWhiteSpace(cols[0]) || string.IsNullOrWhiteSpace(cols[1])) //one column is empty?
+                            continue;
+                        if (File.Exists("textures/" + cols[1].Trim())) // does the Icon file exist ?
+                            if (minimapIcons.ContainsKey(cols[0].Trim())) // value exist ?
+                                minimapIcons[cols[0].Trim()] = cols[1].Trim(); // overwrite the default 
+                    }
+                }
+            }
+        }
+
+
 		public override void OnEnable()
 		{
 			this.playedSoundsCache = new HashSet<long>();
@@ -95,7 +131,16 @@ namespace PoeHUD.Hud.Loot
 		{
 			AlertDrawStyle drawStyle = ip.GetDrawStyle();
 			this.currentAlerts.Add(entity, drawStyle);
-			this.overlay.MinimapRenderer.AddIcon(new ItemMinimapIcon(entity, "minimap_default_icon.png", drawStyle.color, 8));
+            string minimapIcn = minimapIcons["default"]; ; //default value
+            if (ip.IsCraftingBase)
+                minimapIcn = minimapIcons["crafting"];
+            else if (ip.IsCurrency)
+                minimapIcn = minimapIcons["currency"];
+            else if (ip.IsSkillGem)
+                minimapIcn = minimapIcons["gem"];
+            else if (ip.IsVaalFragment)
+                minimapIcn = minimapIcons["fragment"];
+            this.overlay.MinimapRenderer.AddIcon(new ItemMinimapIcon(entity, minimapIcn, drawStyle.color, 8));
 			if (Settings.GetBool("ItemAlert.PlaySound") && !this.playedSoundsCache.Contains(entity.LongId))
 			{
 				this.playedSoundsCache.Add(entity.LongId);
