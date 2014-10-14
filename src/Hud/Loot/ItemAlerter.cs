@@ -33,6 +33,8 @@ namespace PoeHUD.Hud.Loot
             minimapIcons.Add("currency", "dot_orange.png");
             minimapIcons.Add("crafting", "dot_yellow.png");
             minimapIcons.Add("gem", "dot_blue.png");
+            minimapIcons.Add("rgb", "dot_rgb.png");
+            minimapIcons.Add("map", "dot_yellow.png");
             minimapIcons.Add("fragment", "dot_green.png");
             {
                 string[] lines = File.ReadAllLines("config/minimap_icons.txt"); // Filename with Icon assignments
@@ -138,6 +140,10 @@ namespace PoeHUD.Hud.Loot
                 minimapIcn = minimapIcons["currency"];
             else if (ip.IsSkillGem)
                 minimapIcn = minimapIcons["gem"];
+            else if (ip.MapLevel>0)
+                minimapIcn = minimapIcons["map"];
+            else if (ip.WorthChrome)
+                minimapIcn = minimapIcons["rgb"];
             else if (ip.IsVaalFragment)
                 minimapIcn = minimapIcons["fragment"];
             this.overlay.MinimapRenderer.AddIcon(new ItemMinimapIcon(entity, minimapIcn, drawStyle.color, 8));
