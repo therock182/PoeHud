@@ -31,11 +31,11 @@ namespace PoeHUD.Poe
 			}
 		}
 
-        public int Timer
+        public float Timer
         {
             get
             {
-                return this.m.ReadInt(this.address + 12);
+                return this.m.ReadFloat(this.address + 12);
             }
         }
 	}
