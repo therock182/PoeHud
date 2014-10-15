@@ -30,5 +30,13 @@ namespace PoeHUD.Poe
 				return this.m.ReadInt(this.address + 36);
 			}
 		}
+
+        public int Timer
+        {
+            get
+            {
+                return this.m.ReadInt(this.address + 12);
+            }
+        }
 	}
 }
