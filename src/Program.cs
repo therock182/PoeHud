@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using PoeHUD.ExileBot;
 using PoeHUD.Framework;
 using PoeHUD.Poe;
+using PoeHUD.Hud;
+using PoeHUD.Hud.KeyboardEvents;
 
 namespace PoeHUD.Hud
 {
@@ -70,7 +72,11 @@ namespace PoeHUD.Hud
 				};
 				try
 				{
-					Console.WriteLine("Starting overlay");
+                    keyboard kb = new keyboard(pathOfExile);
+                    //kb.AddKeyEvent((Keys)((int)Keys.M + (int)Keys.Control + (int)Keys.Alt), new KbEvent(KeyBoardEvents.SwitchMinimap));
+                    kb.AddKeyEvent(Keys.F11, new KbEvent(KeyBoardEvents.SwitchDebug));
+                    kb.AddKeyEvent(Keys.F12, new KbEvent(KeyBoardEvents.SwitchMenu));
+                    Console.WriteLine("Starting overlay");
 					TransparentDXOverlay transparentDXOverlay = new TransparentDXOverlay(pathOfExile.Window, () => memory.IsInvalid());
 					transparentDXOverlay.InitD3D();
 					overlay = new OverlayRenderer(pathOfExile, transparentDXOverlay.RC);

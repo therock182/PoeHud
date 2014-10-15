@@ -8,6 +8,7 @@ using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.XpRate;
+using PoeHUD.Hud.debugwin;
 
 namespace PoeHUD.Hud
 {
@@ -37,14 +38,18 @@ namespace PoeHUD.Hud
 				this.XphRenderer,
 				new ClientHacks(),
 				// new ShowUiHierarchy(),
+	#if DEBUG
+                new debugWindowRenderer(),
+	#endif
+
 				this.PreloadAlert
 			};
 			if (Settings.GetBool("Window.ShowIngameMenu"))
 			{
-	#if !DEBUG
+    #if !DEBUG
 				this.hudRenderers.Add(new Menu.Menu());
-	#endif
-			}
+    #endif
+            }
 			rc.OnRender += this.rc_OnRender;
 
 			this.hudRenderers.ForEach(x => x.Init(poe, this));

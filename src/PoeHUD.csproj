@@ -46,10 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExileBot\AreaInstance.cs" />
-    <Compile Include="Hud\Debug\ShowUiHierarchy.cs" />
+    <Compile Include="Hud\debugwin\debugWindowRenderer.cs" />
     <Compile Include="Hud\Health\Healthbar.cs" />
     <Compile Include="Hud\Health\RenderPrio.cs" />
-	<Compile Include="Hud\Icons\MasterMinimapIcon.cs" />
+    <Compile Include="Hud\Icons\MasterMinimapIcon.cs" />
+    <Compile Include="Hud\keyboard.cs" />
+    <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
     <Compile Include="Hud\Loot\AlertDrawStyle.cs" />
     <Compile Include="Hud\Loot\CraftingBase.cs" />
     <Compile Include="Hud\Loot\ItemUsefulProperties.cs" />
@@ -63,6 +65,14 @@
     <Compile Include="Framework\Vec2.cs" />
     <Compile Include="Framework\Vec3.cs" />
     <Compile Include="Hud\MaxRolls\MaxRolls_Mod.cs" />
+    <Compile Include="KeyboardAndMouse\GlobalEventProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="KeyboardAndMouse\Callbacks.cs" />
+    <Compile Include="KeyboardAndMouse\HookManager.cs" />
+    <Compile Include="KeyboardAndMouse\Structures.cs" />
+    <Compile Include="KeyboardAndMouse\Windows.cs" />
+    <Compile Include="KeyboardAndMouse\MouseEventExtArgs.cs" />
     <Compile Include="Poe\EntityComponents\Actor.cs" />
     <Compile Include="ExileBot\AreaController.cs" />
     <Compile Include="Poe\EntityComponents\AreaTransition.cs" />
@@ -86,7 +96,7 @@
     <Compile Include="Poe\EntityComponents\Mods.cs" />
     <Compile Include="Poe\EntityComponents\Monster.cs" />
     <Compile Include="Game\MonsterRarity.cs" />
-	<Compile Include="Poe\EntityComponents\NPC.cs" />
+    <Compile Include="Poe\EntityComponents\NPC.cs" />
     <Compile Include="Poe\EntityComponents\ObjectMagicProperties.cs" />
     <Compile Include="Poe\Offsets.cs" />
     <Compile Include="ExileBot\PathOfExile.cs" />
@@ -168,6 +178,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Hud\SettingsForm.resources" />
     <EmbeddedResource Include="Hud\TransparentDXOverlay.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Hud\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
