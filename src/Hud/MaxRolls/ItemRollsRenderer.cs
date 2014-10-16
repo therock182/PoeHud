@@ -41,6 +41,8 @@ namespace PoeHUD.Hud.MaxRolls
             if (childAtIndex2 == null)
                 return;
             Rect clientRect = childAtIndex2.GetClientRect();
+            if (childAtIndex1.GetChildAtIndex(0) == null) // happens sometimes (Fast remove via Ctrl-Click)that it Leads to a Nullreference Exception if not catched
+                return; 
             Rect headerRect = childAtIndex1.GetChildAtIndex(0).GetClientRect();
             if (this.poeEntity == null || this.poeEntity.ID != poeEntity.ID) {
                 this.mods = new List<MaxRolls_Current>();
