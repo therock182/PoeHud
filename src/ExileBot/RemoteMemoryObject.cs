@@ -23,6 +23,12 @@ namespace PoeHUD.ExileBot
 			t.game = this.game;
 			return t;
 		}
+
+		public virtual T ReadObjectAt<T> (int offet) where T : RemoteMemoryObject, new()
+		{
+			return ReadObject<T>(address + offet);
+		}
+
 		public T ReadObject<T>(int address) where T : RemoteMemoryObject, new()
 		{
 			T t = Activator.CreateInstance<T>();
