@@ -9,6 +9,7 @@ using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.XpRate;
+using PoeHUD.Hud.debugwin;
 
 namespace PoeHUD.Hud
 {
@@ -40,9 +41,7 @@ namespace PoeHUD.Hud
 	#if DEBUG
 				new ShowUiHierarchy(),
 	#endif
-	#if DEBUG
-                new debugWindowRenderer(),
-	#endif
+                new debugWindowRenderer(), // Always show. Turned on and Off via F11 or settings.txt bool debug_window=True
 
 				this.PreloadAlert
 			};

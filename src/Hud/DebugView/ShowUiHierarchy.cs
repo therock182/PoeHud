@@ -40,7 +40,8 @@ namespace PoeHUD.Hud.DebugView
 			{
 				return;
 			}
-			Rect rC = new Rect(parent.X + (int)(root.X * 0.75), parent.Y + (int)(root.Y * 0.75), (int)(root.Width * 0.75), (int)(root.Height * 0.75));
+            //Rect rC = new Rect(parent.X + (int)(root.X * 0.75), parent.Y + (int)(root.Y * 0.75), (int)(root.Width * 0.75), (int)(root.Height * 0.75));
+            Rect rC = new Rect(parent.X + (int)(root.X * 0.75), parent.Y + (int)(root.Y * 0.75), (int)(root.Width * 0.75), (int)(root.Height * 0.75));
 
 			if (rC.W < 20)
 				return;
