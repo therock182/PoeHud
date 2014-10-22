@@ -61,5 +61,7 @@ namespace PoeHUD.Poe
 		public Element GemLvlUpPanel { get { return ReadObjectAt<Element>(0x1F8); } }
 
 		public Element OnGroundTooltipPanel { get { return ReadObjectAt<Element>(0x208); } }
+
+        public Element MouseOverEnemy { get { return ReadObjectAt<Element>(0x184); } }
 	}
 }
