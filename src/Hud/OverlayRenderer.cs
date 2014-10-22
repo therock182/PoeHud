@@ -39,7 +39,7 @@ namespace PoeHUD.Hud
 				this.XphRenderer,
 				new ClientHacks(),
 	#if DEBUG
-				new ShowUiHierarchy(),
+				//new ShowUiHierarchy(),
 	#endif
                 new debugWindowRenderer(), // Always show. Turned on and Off via F11 or settings.txt bool debug_window=True
 
