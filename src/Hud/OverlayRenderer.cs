@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using PoeHUD.ExileBot;
 //using PoeHUD.Hud.Debug;
+using PoeHUD.Hud.DebugView;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Loot;
@@ -8,13 +9,12 @@ using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.XpRate;
-using PoeHUD.Hud.debugwin;
 
 namespace PoeHUD.Hud
 {
 	public class OverlayRenderer
 	{
-		private List<HUDPlugin> hudRenderers;
+		private readonly List<HUDPlugin> hudRenderers;
 		private PathOfExile poe;
 		public XPHRenderer XphRenderer;
 		public PreloadAlert PreloadAlert;
@@ -37,7 +37,9 @@ namespace PoeHUD.Hud
 				new DangerAlert(),
 				this.XphRenderer,
 				new ClientHacks(),
-				// new ShowUiHierarchy(),
+	#if DEBUG
+				new ShowUiHierarchy(),
+	#endif
 	#if DEBUG
                 new debugWindowRenderer(),
 	#endif
@@ -65,7 +67,8 @@ namespace PoeHUD.Hud
 					this.poe.Update();
 					this.modelUpdatePeriod = 0;
 				}
-				if (!this.poe.InGame || this.poe.Player == null)
+				bool ingame = this.poe.InGame;
+				if ( !ingame || this.poe.Player == null)
 				{
 					return;
 				}

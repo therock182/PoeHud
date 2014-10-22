@@ -1,8 +1,7 @@
 using System;
 using PoeHUD.Framework;
-using PoeHUD.Poe;
 
-namespace PoeHUD.ExileBot
+namespace PoeHUD.Poe
 {
 	public abstract class RemoteMemoryObject
 	{
@@ -24,11 +23,10 @@ namespace PoeHUD.ExileBot
 			return t;
 		}
 
-		public virtual T ReadObjectAt<T> (int offet) where T : RemoteMemoryObject, new()
+		public virtual T ReadObjectAt<T>(int offet) where T : RemoteMemoryObject, new()
 		{
 			return ReadObject<T>(address + offet);
 		}
-
 		public T ReadObject<T>(int address) where T : RemoteMemoryObject, new()
 		{
 			T t = Activator.CreateInstance<T>();
