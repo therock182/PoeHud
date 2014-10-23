@@ -10,6 +10,7 @@ using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.XpRate;
 using PoeHUD.Hud.debugwin;
+using PoeHUD.Hud.Gemleveling;
 
 namespace PoeHUD.Hud
 {
@@ -42,6 +43,7 @@ namespace PoeHUD.Hud
 				//new ShowUiHierarchy(),
 	#endif
                 new debugWindowRenderer(), // Always show. Turned on and Off via F11 or settings.txt bool debug_window=True
+                new GemLeveling(),
 
 				this.PreloadAlert
 			};

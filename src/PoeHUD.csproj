@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ExileBot\AreaInstance.cs" />
     <Compile Include="Hud\debugwin\debugWindowRenderer.cs" />
+    <Compile Include="Hud\Gemleveling\GemLeveling.cs" />
     <Compile Include="Hud\Health\Healthbar.cs" />
     <Compile Include="Hud\Health\RenderPrio.cs" />
     <Compile Include="Hud\Icons\MasterMinimapIcon.cs" />
