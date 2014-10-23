@@ -15,65 +15,55 @@ namespace PoeHUD.Poe
 
 		public Element MenuButton { get { return ReadObjectAt<Element>(0x54); } }
 
-		public Element ShopButton { get { return ReadObjectAt<Element>(0x7C); } }
+		public Element ShopButton { get { return ReadObjectAt<Element>(4+0x7C); } }
 
-        public Element HideoutEditButton { get { return ReadObjectAt<Element>(0x80); } }
+		public Element ActionButtons { get { return ReadObjectAt<Element>(4+0xA0); } }
 
-        public Element HideoutStashButton { get { return ReadObjectAt<Element>(0x84); } }
+		public Element Chat { get { return ReadObjectAt<Element>(4+0xD8); } }
 
-        public Element Mouseposition { get { return ReadObjectAt<Element>(0x9C); } }
+		public Element QuestTracker { get { return ReadObjectAt<Element>(4+0xE8); } }
 
-		public Element ActionButtons { get { return ReadObjectAt<Element>(0xA0); } }
+		public Element MtxInventory { get { return ReadObjectAt<Element>(4+0xEC); } }
 
-		public Element Chat { get { return ReadObjectAt<Element>(0xD8); } }
+		public Element MtxShop { get { return ReadObjectAt<Element>(4+0xF0); } }
 
-		public Element QuestTracker { get { return ReadObjectAt<Element>(0xE8); } }
+		public Element InventoryPanel { get { return ReadObjectAt<Element>(4+0xF4); } }
 
-		public Element MtxInventory { get { return ReadObjectAt<Element>(0xEC); } }
+		public Element StashPanel { get { return ReadObjectAt<Element>(4+0xF8); } }
 
-		public Element MtxShop { get { return ReadObjectAt<Element>(0xF0); } }
+		public Element SocialPanel { get { return ReadObjectAt<Element>(4+0x104); } }
 
-		public Element InventoryPanel { get { return ReadObjectAt<Element>(0xF4); } }
+		public Element TreePanel { get { return ReadObjectAt<Element>(4+0x108); } }
 
-		public Element StashPanel { get { return ReadObjectAt<Element>(0xF8); } }
+		public Element CharacterPanel { get { return ReadObjectAt<Element>(4+0x10C); } }
 
-		public Element SocialPanel { get { return ReadObjectAt<Element>(0x104); } }
+		public Element OptionsPanel { get { return ReadObjectAt<Element>(4+0x110); } }
 
-		public Element TreePanel { get { return ReadObjectAt<Element>(0x108); } }
+		public Element AchievementsPanel { get { return ReadObjectAt<Element>(4+0x114); } }
 
-		public Element CharacterPanel { get { return ReadObjectAt<Element>(0x10C); } }
+		public Element WorldPanel { get { return ReadObjectAt<Element>(4+0x118); } }
 
-		public Element OptionsPanel { get { return ReadObjectAt<Element>(0x110); } }
+		public BigMinimap Minimap { get { return ReadObjectAt<BigMinimap>(4+0x11C); } }
 
-		public Element AchievementsPanel { get { return ReadObjectAt<Element>(0x114); } }
+		public Element ItemsOnGroundLabels { get { return ReadObjectAt<Element>(4+0x120); } }
 
-		public Element WorldPanel { get { return ReadObjectAt<Element>(0x118); } }
+		public Element MonsterHpLabels { get { return ReadObjectAt<Element>(4+0x124); } }
 
-		public BigMinimap Minimap { get { return ReadObjectAt<BigMinimap>(0x11C); } }
+		public Element Buffs { get { return ReadObjectAt<Element>(4+0x130); } }
+		public Element Buffs2 { get { return ReadObjectAt<Element>(4+0x18c); } }
 
-		public Element ItemsOnGroundLabels { get { return ReadObjectAt<Element>(0x120); } }
+		public Element OpenLeftPanel { get { return ReadObjectAt<Element>(4+0x154); } }
+		public Element OpenRightPanel { get { return ReadObjectAt<Element>(4+0x158); } }
 
-		public Element MonsterHpLabels { get { return ReadObjectAt<Element>(0x124); } }
+		public Element OpenNpcDialogPanel { get { return ReadObjectAt<Element>(4+0x160); } }
 
-		public Element Buffs { get { return ReadObjectAt<Element>(0x130); } }
-		public Element Buffs2 { get { return ReadObjectAt<Element>(0x18c); } }
+		public Element CreatureInfoPanel { get { return ReadObjectAt<Element>(4+0x184); } } // above, it shows name and hp
 
-		public Element OpenLeftPanel { get { return ReadObjectAt<Element>(0x154); } }
-		public Element OpenRightPanel { get { return ReadObjectAt<Element>(0x158); } }
+		public Element InstanceManagerPanel { get { return ReadObjectAt<Element>(4+0x198); } }
+		public Element InstanceManagerPanel2 { get { return ReadObjectAt<Element>(4+0x19C); } }
 
-		public Element OpenNpcDialogPanel { get { return ReadObjectAt<Element>(0x160); } }
+		public Element GemLvlUpPanel { get { return ReadObjectAt<Element>(4+0x1F8); } }
 
-		public Element CreatureInfoPanel { get { return ReadObjectAt<Element>(0x184); } } // above, it shows name and hp
-
-		public Element InstanceManagerPanel { get { return ReadObjectAt<Element>(0x198); } }
-		public Element InstanceManagerPanel2 { get { return ReadObjectAt<Element>(0x19C); } }
-
-        public Element SwitchingZoneInfo { get { return ReadObjectAt<Element>(0x1C4); } }
-
-		public Element GemLvlUpPanel { get { return ReadObjectAt<Element>(0x1F8); } }
-
-		public Element ItemOnGroundTooltip { get { return ReadObjectAt<Element>(0x208); } }
-
-        public Element MouseOverEnemy { get { return ReadObjectAt<Element>(0x184); } }
+		public Element ItemOnGroundTooltip { get { return ReadObjectAt<Element>(4+0x208); } }
 	}
 }
