@@ -38,18 +38,23 @@ namespace PoeHUD.Hud.debugwin
             {
                 lines = 0;
 
-                var mm = this.poe.Internal.game.IngameState.IngameUi.Minimap.SmallMinimap;
-                var qt = this.poe.Internal.game.IngameState.IngameUi.QuestTracker;
-                var gl = this.poe.Internal.game.IngameState.IngameUi.GemLvlUpPanel;
+                Element mm = this.poe.Internal.game.IngameState.IngameUi.Minimap.SmallMinimap;
+                Element qt = this.poe.Internal.game.IngameState.IngameUi.QuestTracker;
+                Element gl = this.poe.Internal.game.IngameState.IngameUi.GemLvlUpPanel;
                 Rect miniMapRect = mm.GetClientRect();
                 Rect qtRect = qt.GetClientRect();
                 Rect glRect = gl.GetClientRect();
-                Rect clientRect;
-                if (qt.IsVisible && qtRect.X + qt.Width < miniMapRect.X + miniMapRect.X + 50)
+
+                Rect clientRect = miniMapRect;
+
+
+                if (qt.IsVisible && qtRect.Y>0)
                     clientRect = qtRect;
-                else
-                    clientRect = miniMapRect;
-                destWin = new Rect(clientRect.X, clientRect.Y + clientRect.H + 5, clientRect.W, clientRect.H);
+                if (gl.IsVisible && glRect.Y>0)
+                    clientRect = glRect;
+
+
+                destWin = new Rect(miniMapRect.X, clientRect.Y + clientRect.H + 20, miniMapRect.W, clientRect.H);
                 rc.AddBox(destWin, Color.FromArgb(180, 0, 0, 0));
                 rc.AddFrame(destWin, Color.Gray, 2);
 
@@ -57,14 +62,40 @@ namespace PoeHUD.Hud.debugwin
                 AddPlayerinfo(rc);
                 //ShowOpenUiWindows(rc);
 //                DrawOpenWindows(rc);
-                showInGameUI(rc);
+                //showInGameUI(rc);
                 //ShowAllUiWindows(rc);
+                showElementChilds(rc, poe.Internal.IngameState.IngameUi.GemLvlUpPanel);
             }
         }
 
+
+        private void ShowElement(RenderingContext rc,Element ele,Color col, int width,string txt)
+        {
+            Rect Re = ele.GetClientRect();
+            rc.AddFrame(Re, col, width);
+            rc.AddTextWithHeight(new Vec2(Re.X, Re.Y), txt, col, 6, DrawTextFormat.Left);
+        }
+
+
+        private void showElementChilds(RenderingContext rc, Element Base)
+        {
+            showElementChilds(rc, Base, 0,3);
+        }
+        private void showElementChilds(RenderingContext rc, Element Base,int current,int max)
+        {
+            Color[] cols = new Color[5] { Color.Red, Color.Green, Color.Gold, Color.Blue, Color.Cyan };
+            ShowElement(rc, Base, cols[current], max - current , current.ToString());
+            foreach (Element e in Base.Children)
+            {
+                if (current < 2)
+                    showElementChilds(rc, e,current+1,max);
+            }
+        }
+
+
         private void showInGameUI(RenderingContext rc)
         {
-            for (int i = 0; i <= 220; i++)
+            for (int i = 0; i <= 220; i++) //Just a guess .. can be a lot more
             {
                 int offs = i * 4;
                 Element el = this.poe.Internal.IngameState.IngameUi.ReadObjectAt<Element>(offs);
@@ -83,22 +114,11 @@ namespace PoeHUD.Hud.debugwin
                         }
                     }
                 }
-
-
-                //if (el.IsVisible)
-                //{
-                    Rect Re = el.GetClientRect();
-                    Color c = Color.Gold;
-                    int w = 1;
-                    if (known)
-                    {
-                        c = Color.Red;
-                        w = 2;
-                    }
-                    rc.AddFrame(Re, c,w);
-                    rc.AddTextWithHeight(new Vec2(Re.X, Re.Y), offs.ToString("X3"), c, 6, DrawTextFormat.Left);
-
-                //}
+                
+                if (known)
+                    ShowElement(rc, el, Color.Red, 2, offs.ToString("X3"));
+                else
+                    ShowElement(rc, el, Color.Gold, 1, offs.ToString("X3"));
             }
         }
 
