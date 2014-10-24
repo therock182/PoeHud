@@ -16,7 +16,9 @@ namespace PoeHUD.Hud.debugwin
     class debugWindowRenderer : HUDPlugin
     {
         private int lines;
-        private Rect destWin;
+        //private Rect destWin;
+        private int textX;
+        private int textY;
 
         public override void OnEnable()
         {
@@ -28,7 +30,7 @@ namespace PoeHUD.Hud.debugwin
 
         private void addLine(RenderingContext rc,string t)
         {
-            rc.AddTextWithHeight(new Vec2(destWin.X , destWin.Y + (lines * 16)), t, Color.White, 8, DrawTextFormat.Left);
+            rc.AddTextWithHeight(new Vec2(textX , textY + (lines * 12)), t, Color.White, 8, DrawTextFormat.Left);
             lines++;
         }
 
@@ -36,8 +38,6 @@ namespace PoeHUD.Hud.debugwin
         {
             if (Settings.GetBool("debug"))
             {
-                lines = 0;
-
                 Element mm = this.poe.Internal.game.IngameState.IngameUi.Minimap.SmallMinimap;
                 Element qt = this.poe.Internal.game.IngameState.IngameUi.QuestTracker;
                 Element gl = this.poe.Internal.game.IngameState.IngameUi.GemLvlUpPanel;
@@ -53,18 +53,22 @@ namespace PoeHUD.Hud.debugwin
                 if (gl.IsVisible && glRect.Y>0)
                     clientRect = glRect;
 
+                lines = 0;
+                textX = miniMapRect.X;
+                textY = clientRect.Y + clientRect.H + 20;
+                lines += ShowAdresses(rc);
+                lines += AddPlayerinfo(rc);
 
-                destWin = new Rect(miniMapRect.X, clientRect.Y + clientRect.H + 20, miniMapRect.W, clientRect.H);
+                //ShowOpenUiWindows(rc);
+//                DrawOpenWindows(rc);
+                showInGameUI(rc);
+                //ShowAllUiWindows(rc);
+
+                Rect destWin = new Rect(miniMapRect.X, clientRect.Y + clientRect.H + 20, miniMapRect.W, clientRect.H + 12 * lines);
                 rc.AddBox(destWin, Color.FromArgb(180, 0, 0, 0));
                 rc.AddFrame(destWin, Color.Gray, 2);
 
-                ShowAdresses(rc);
-                AddPlayerinfo(rc);
-                //ShowOpenUiWindows(rc);
-//                DrawOpenWindows(rc);
-                //showInGameUI(rc);
-                //ShowAllUiWindows(rc);
-                showElementChilds(rc, poe.Internal.IngameState.IngameUi.GemLvlUpPanel);
+                //showElementChilds(rc, poe.Internal.IngameState.IngameUi.GemLvlUpPanel);
             }
         }
 
@@ -84,11 +88,14 @@ namespace PoeHUD.Hud.debugwin
         private void showElementChilds(RenderingContext rc, Element Base,int current,int max)
         {
             Color[] cols = new Color[5] { Color.Red, Color.Green, Color.Gold, Color.Blue, Color.Cyan };
-            ShowElement(rc, Base, cols[current], max - current , current.ToString());
-            foreach (Element e in Base.Children)
+            if (Base.IsVisible && Base.Height > 0)
             {
-                if (current < 2)
-                    showElementChilds(rc, e,current+1,max);
+                ShowElement(rc, Base, cols[current], max - current, current.ToString());
+                foreach (Element e in Base.Children)
+                {
+                    if (current < 2)
+                        showElementChilds(rc, e, current + 1, max);
+                }
             }
         }
 
@@ -182,14 +189,15 @@ namespace PoeHUD.Hud.debugwin
         }
 
 
-        private void ShowAdresses(RenderingContext rc)
+        private int ShowAdresses(RenderingContext rc)
         {
             addLine(rc, "inggameUI :" + this.poe.Internal.game.IngameState.IngameUi.address.ToString("X8"));
             addLine(rc, "ServerData:" + this.poe.Internal.IngameState.ServerData.address.ToString("X8"));
             addLine(rc, "Playerinv:" + this.poe.Internal.IngameState.ServerData.PlayerInventories.address.ToString("X8"));
+            return 3;
         }
 
-        private void AddPlayerinfo(RenderingContext rc)
+        private int AddPlayerinfo(RenderingContext rc)
         {
             Life l = this.poe.Player.GetComponent<Life>();
             addLine(rc, "Health =" + l.CurHP + "/" + l.MaxHP);
@@ -198,6 +206,7 @@ namespace PoeHUD.Hud.debugwin
                 addLine(rc, b.Name + " (" + b.Timer.ToString() + ")");
             }
             addLine(rc, "----------------------------------");
+            return 2 + l.Buffs.Count();
         }
 
         private void ShowOpenUiWindows(RenderingContext rc)
