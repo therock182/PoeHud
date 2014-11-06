@@ -203,6 +203,7 @@ namespace PoeHUD.Hud
 			bools.Add("ClientHacks.Maphack", false);
 			bools.Add("ClientHacks.Zoomhack", false);
 			bools.Add("ClientHacks.Fullbright", false);
+			bools.Add("ClientHacks.Particles", false);
 			bools.Add("PreloadAlert", true);
 			bools.Add("Healthbars", true);
 			bools.Add("Healthbars.ShowES", false);
@@ -221,15 +222,16 @@ namespace PoeHUD.Hud
 			bools.Add("ItemAlert.Maps", true);
 			bools.Add("ItemAlert.Currency", true);
 			bools.Add("ItemAlert.SkillGems", true);
+			bools.Add("ItemAlert.QualitySkillGems", true);
 			bools.Add("ItemAlert.RGB", false);
 			bools.Add("ItemAlert.PlaySound", true);
 			bools.Add("ItemAlert.ShowText", true);
 			bools.Add("ItemAlert.Crafting", true);
 			bools.Add("Tooltip", true);
 			bools.Add("Tooltip.ShowItemLevel", true);
-			bools.Add("DangerAlert", true);
-			bools.Add("DangerAlert.ShowText", true);
-			bools.Add("DangerAlert.PlaySound", true);
+			bools.Add("MonsterTracker", true);
+			bools.Add("MonsterTracker.ShowText", true);
+			bools.Add("MonsterTracker.PlaySound", true);
 			bools.Add("Healthbars.Players", true);
 			bools.Add("Healthbars.Minions", true);
 			bools.Add("Healthbars.Enemies", true);
@@ -239,6 +241,7 @@ namespace PoeHUD.Hud
 			bools.Add("Healthbars.Enemies.Unique", true);
 			bools.Add("XphDisplay", true);
 			bools.Add("ExitWithGame", true);
+			bools.Add("DpsDisplay", true);
 			ints.Add("PreloadAlert.FontSize", 12);
 			ints.Add("PreloadAlert.BgAlpha", 180);
 			ints.Add("XphDisplay.FontSize", 12);
@@ -248,8 +251,8 @@ namespace PoeHUD.Hud
 			ints.Add("ItemAlert.ShowText.FontSize", 16);
 			ints.Add("ItemAlert.PositionHeight", 200);
 			ints.Add("ItemAlert.PositionWidth", 0);
-			ints.Add("DangerAlert.ShowText.FontSize", 16);
-			ints.Add("DangerAlert.ShowText.BgAlpha", 128);
+			ints.Add("MonsterTracker.ShowText.FontSize", 16);
+			ints.Add("MonsterTracker.ShowText.BgAlpha", 128);
 			ints.Add("Healthbars.Players.Width", 105);
 			ints.Add("Healthbars.Players.Height", 25);
 			ints.Add("Healthbars.Minions.Width", 105);

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using PoeHUD.ExileBot;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Poe;
-using PoeHUD.Hud;
-using PoeHUD.Hud.KeyboardEvents;
 
 namespace PoeHUD.Hud
 {
@@ -55,31 +53,30 @@ namespace PoeHUD.Hud
 			{
 				return;
 			}
+
+			OverlayRenderer overlay = null;
+			AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs exceptionArgs)
+			{
+				if (overlay != null)
+				{
+					overlay.Detach();
+				}
+				MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject.ToString());
+				Environment.Exit(1);
+			};
+
+
 			using (Memory memory = new Memory(offs, pid))
 			{
 				offs.DoPatternScans(memory);
-				PathOfExile pathOfExile = new PathOfExile(memory);
-				pathOfExile.Update();
-				OverlayRenderer overlay = null;
-				AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs exceptionArgs)
-				{
-					if (overlay != null)
-					{
-						overlay.Detach();
-					}
-					MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject.ToString());
-					Environment.Exit(1);
-				};
+				GameController gameController = new GameController(memory);
+				gameController.RefreshState();
 				try
 				{
-                    keyboard kb = new keyboard(pathOfExile);
-                    //kb.AddKeyEvent((Keys)((int)Keys.M + (int)Keys.Control + (int)Keys.Alt), new KbEvent(KeyBoardEvents.SwitchMinimap));
-                    kb.AddKeyEvent(Keys.F11, new KbEvent(KeyBoardEvents.SwitchDebug));
-                    kb.AddKeyEvent(Keys.F12, new KbEvent(KeyBoardEvents.SwitchMenu));
-                    Console.WriteLine("Starting overlay");
-					TransparentDXOverlay transparentDXOverlay = new TransparentDXOverlay(pathOfExile.Window, () => memory.IsInvalid());
+					Console.WriteLine("Starting overlay");
+					TransparentDXOverlay transparentDXOverlay = new TransparentDXOverlay(gameController.Window, () => memory.IsInvalid());
 					transparentDXOverlay.InitD3D();
-					overlay = new OverlayRenderer(pathOfExile, transparentDXOverlay.RC);
+					overlay = new OverlayRenderer(gameController, transparentDXOverlay.RC);
 					Application.Run(transparentDXOverlay);
 				}
 				finally

@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using PoeHUD.ExileBot;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Game;
 using PoeHUD.Poe.EntityComponents;
@@ -8,7 +9,7 @@ using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-	public class XPHRenderer : HUDPlugin
+	public class XPHRenderer : HUDPluginBase
 	{
 		private long startXp;
 		private DateTime startTime;
@@ -34,26 +35,26 @@ namespace PoeHUD.Hud.XpRate
 		}
 		public override void OnEnable()
 		{
-			this.poe.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
+			this.model.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 		}
 		public override void OnDisable()
 		{
 		}
 		private void CurrentArea_OnAreaChange(AreaController area)
 		{
-			this.startXp = this.poe.Player.GetComponent<Player>().XP;
+			this.startXp = this.model.Player.GetComponent<Player>().XP;
 			this.startTime = DateTime.Now;
 			this.curTimeLeftString = "--h --m --s until level up";
 		}
-		public override void Render(RenderingContext rc)
+		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
-			if (!Settings.GetBool("XphDisplay") || (this.poe.Player != null && this.poe.Player.GetComponent<Player>().Level >= 100))
+			if (!Settings.GetBool("XphDisplay") || (this.model.Player != null && this.model.Player.GetComponent<Player>().Level >= 100))
 			{
 				return;
 			}
 			if (!this.hasStarted)
 			{
-				this.startXp = this.poe.Player.GetComponent<Player>().XP;
+				this.startXp = this.model.Player.GetComponent<Player>().XP;
 				this.startTime = DateTime.Now;
 				this.lastCalcTime = DateTime.Now;
 				this.hasStarted = true;
@@ -62,9 +63,8 @@ namespace PoeHUD.Hud.XpRate
 			DateTime dtNow = DateTime.Now;
 			TimeSpan delta = dtNow - this.lastCalcTime;
 			
-			if (delta.TotalSeconds > 1.0)
+			if (delta.TotalSeconds > 1)
 			{
-				this.poe.Area.CurrentArea.AddTimeSpent(delta);
 				calculateRemainingExp(dtNow);
 				this.lastCalcTime = dtNow;
 			}
@@ -72,22 +72,23 @@ namespace PoeHUD.Hud.XpRate
 			int fontSize = Settings.GetInt("XphDisplay.FontSize");
 			int bgAlpha = Settings.GetInt("XphDisplay.BgAlpha");
 
-			Rect clientRect = this.poe.Internal.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
-			Vec2 mapWithOffset = new Vec2(clientRect.X - 10, clientRect.Y + 5);
+			Vec2 mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
+
 			int yCursor = 0;
 			Vec2 rateTextSize = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, mapWithOffset.Y), this.curDisplayString, Color.White, fontSize, DrawTextFormat.Right);
 			yCursor += rateTextSize.Y;
 			Vec2 remainingTextSize = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, mapWithOffset.Y + yCursor), this.curTimeLeftString, Color.White, fontSize, DrawTextFormat.Right);
 			yCursor += remainingTextSize.Y;
 			int thirdLine = mapWithOffset.Y + yCursor;
-			Vec2 areaLevelNote = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, thirdLine), this.poe.Area.CurrentArea.DisplayName, Color.White, fontSize, DrawTextFormat.Right);
-			string strTimer = this.poe.Area.CurrentArea.TimeString;
+			Vec2 areaLevelNote = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, thirdLine), this.model.Area.CurrentArea.DisplayName, Color.White, fontSize, DrawTextFormat.Right);
+
+			string strTimer = AreaInstance.GetTimeString(dtNow - this.model.Area.CurrentArea.TimeEntered);
 			Vec2 timerSize = rc.MeasureString(strTimer, fontSize, DrawTextFormat.Left);
 			yCursor += areaLevelNote.Y;
 
-
+			Rect clientRect = model.Internal.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
 			int textWidth = Math.Max( Math.Max(rateTextSize.X, remainingTextSize.X), areaLevelNote.X + timerSize.X + 20 ) + 10;
-			int width = Math.Max(textWidth, Math.Max(clientRect.W, this.overlay.PreloadAlert.Bounds.W));
+			int width = Math.Max(textWidth, Math.Max(clientRect.W, 0/*this.overlay.PreloadAlert.Bounds.W*/));
 			Rect rect = new Rect(mapWithOffset.X - width + 5, mapWithOffset.Y - 5, width, yCursor + 10);
 			this.Bounds = rect;
 			
@@ -95,22 +96,24 @@ namespace PoeHUD.Hud.XpRate
 			rc.AddTextWithHeight(new Vec2(rect.X + 5, thirdLine), strTimer, Color.White, fontSize, DrawTextFormat.Left);
 			
 			rc.AddBox(rect, Color.FromArgb(bgAlpha, 1, 1, 1));
+
+			mountPoints[UiMountPoint.LeftOfMinimap] = new Vec2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.H);
 		}
 
 		private void calculateRemainingExp(DateTime dtNow)
 		{
-			long currentExp = poe.Player.GetComponent<Player>().XP - this.startXp;
+			long currentExp = model.Player.GetComponent<Player>().XP - this.startXp;
 			float expRate = (float) (currentExp/(dtNow - this.startTime).TotalHours);
 			this.curDisplayString = (double) expRate > 1000000.0
 				? (expRate/1000000.0).ToString("0.00") + "M XP/h"
 				: ((double) expRate > 1000.0 ? (expRate/1000.0).ToString("0.00") + "K XP/h"
 					: expRate.ToString("0.00") + " XP/h");
-			int level = this.poe.Player.GetComponent<Player>().Level;
+			int level = this.model.Player.GetComponent<Player>().Level;
 			if (level < 0 || level + 1 >= Constants.PlayerXpLevels.Length)
 			{
 				return;
 			}
-			ulong expRemaining = Constants.PlayerXpLevels[level + 1] - (ulong) this.poe.Player.GetComponent<Player>().XP;
+			ulong expRemaining = Constants.PlayerXpLevels[level + 1] - (ulong) this.model.Player.GetComponent<Player>().XP;
 			if (expRate > 1f)
 			{
 				int num4 = (int) (expRemaining/expRate*3600f);

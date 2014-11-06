@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using System.Drawing;
 using PoeHUD.Framework;
-using PoeHUD.Poe;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
 using SlimDX.Direct3D9;
+using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud
 {
-	public class ItemLevelRenderer : HUDPlugin
+	public class ItemLevelRenderer : HUDPluginBase
 	{
 		public override void OnEnable()
 		{
@@ -15,13 +16,13 @@ namespace PoeHUD.Hud
 		public override void OnDisable()
 		{
 		}
-		public override void Render(RenderingContext rc)
+		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemLevel"))
 			{
 				return;
 			}
-			Element uIHover = this.poe.Internal.IngameState.UIHover;
+			Element uIHover = this.model.Internal.IngameState.UIHover;
 			Entity item = uIHover.AsObject<InventoryItemIcon>().Item;
 			if (item.address != 0 && item.IsValid)
 			{

@@ -54,6 +54,19 @@
     <Compile Include="Hud\keyboard.cs" />
     <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
     <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
+    <Compile Include="Controllers\AreaInstance.cs" />
+    <Compile Include="Controllers\FileInMemory.cs" />
+    <Compile Include="Poe\FileSystem\StatsDat.cs" />
+    <Compile Include="Poe\FileSystem\ModsDat.cs" />
+    <Compile Include="Framework\ColorUtils.cs" />
+    <Compile Include="Framework\IntRange.cs" />
+    <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
+    <Compile Include="Hud\DPS\DpsMeter.cs" />
+    <Compile Include="Hud\Health\Healthbar.cs" />
+    <Compile Include="Hud\Health\RenderPrio.cs" />
+    <Compile Include="Hud\HudSkin.cs" />
+    <Compile Include="Hud\HudTexture.cs" />
+    <Compile Include="Hud\Icons\MinimapRenderer.cs" />
     <Compile Include="Hud\Loot\AlertDrawStyle.cs" />
     <Compile Include="Hud\Loot\CraftingBase.cs" />
     <Compile Include="Hud\Loot\ItemUsefulProperties.cs" />
@@ -75,22 +88,22 @@
     <Compile Include="KeyboardAndMouse\Structures.cs" />
     <Compile Include="KeyboardAndMouse\Windows.cs" />
     <Compile Include="KeyboardAndMouse\MouseEventExtArgs.cs" />
+    <Compile Include="Hud\Monster\PoiTracker.cs" />
     <Compile Include="Poe\EntityComponents\Actor.cs" />
-    <Compile Include="ExileBot\AreaController.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Poe\EntityComponents\AreaTransition.cs" />
     <Compile Include="Poe\EntityComponents\Armour.cs" />
-    <Compile Include="ExileBot\BaseItemTypes.cs" />
-    <Compile Include="ExileBot\Buff.cs" />
+    <Compile Include="Poe\FileSystem\BaseItemTypes.cs" />
     <Compile Include="Poe\EntityComponents\Chest.cs" />
     <Compile Include="Poe\EntityComponents\Component.cs" />
-    <Compile Include="ExileBot\Entity.cs" />
-    <Compile Include="ExileBot\EntityList.cs" />
-    <Compile Include="ExileBot\FileIndex.cs" />
-    <Compile Include="ExileBot\Inventory.cs" />
-    <Compile Include="ExileBot\InventoryIndex.cs" />
+    <Compile Include="Controllers\EntityWrapper.cs" />
+    <Compile Include="Controllers\EntityListWrapper.cs" />
+    <Compile Include="Poe\FileSystem\FsController.cs" />
+    <Compile Include="Controllers\Inventory.cs" />
+    <Compile Include="Controllers\InventoryIndex.cs" />
     <Compile Include="Game\ItemRarity.cs" />
     <Compile Include="Game\ItemStat.cs" />
-    <Compile Include="ExileBot\ItemStats.cs" />
+    <Compile Include="Controllers\ItemStats.cs" />
     <Compile Include="Game\ItemType.cs" />
     <Compile Include="Poe\EntityComponents\Life.cs" />
     <Compile Include="Game\Link.cs" />
@@ -100,8 +113,9 @@
     <Compile Include="Game\MonsterRarity.cs" />
     <Compile Include="Poe\EntityComponents\NPC.cs" />
     <Compile Include="Poe\EntityComponents\ObjectMagicProperties.cs" />
+    <Compile Include="Poe\FileSystem\TagsDat.cs" />
     <Compile Include="Poe\Offsets.cs" />
-    <Compile Include="ExileBot\PathOfExile.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Poe\EntityComponents\Player.cs" />
     <Compile Include="Poe\AreaTemplate.cs" />
     <Compile Include="Poe\Buff.cs" />
@@ -138,23 +152,18 @@
     <Compile Include="Poe\EntityComponents\Weapon.cs" />
     <Compile Include="Poe\EntityComponents\WorldItem.cs" />
     <Compile Include="Hud\Menu\BooleanButton.cs" />
-    <Compile Include="Hud\Icons\ChestMinimapIcon.cs" />
     <Compile Include="Hud\ClientHacks.cs" />
     <Compile Include="Game\Constants.cs" />
-    <Compile Include="Hud\Monster\DangerAlert.cs" />
+    <Compile Include="Hud\Monster\MonsterTracker.cs" />
     <Compile Include="Hud\Health\HealthBarRenderer.cs" />
     <Compile Include="Hud\HUDPlugin.cs" />
     <Compile Include="Hud\Menu\IntPicker.cs" />
     <Compile Include="Hud\Loot\ItemAlerter.cs" />
-    <Compile Include="Hud\ItemLevelRenderer.cs" />
-    <Compile Include="Hud\Icons\ItemMinimapIcon.cs" />
+    <Compile Include="Hud\Loot\ItemLevelRenderer.cs" />
     <Compile Include="Hud\Menu\Menu.cs" />
     <Compile Include="Hud\Menu\MenuItem.cs" />
-    <Compile Include="Hud\Icons\MinimapIcon.cs" />
-    <Compile Include="Hud\Icons\MinimapRenderer.cs" />
-    <Compile Include="Hud\Icons\MinimapRenderPriority.cs" />
-    <Compile Include="Hud\Icons\MinionMinimapIcon.cs" />
-    <Compile Include="Hud\Icons\MonsterMinimapIcon.cs" />
+    <Compile Include="Hud\MapIcon.cs" />
+    <Compile Include="Hud\Icons\LargeMapRenderer.cs" />
     <Compile Include="Hud\MouseEventID.cs" />
     <Compile Include="Hud\MouseHook.cs" />
     <Compile Include="Hud\OverlayRenderer.cs" />
@@ -168,7 +177,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Hud\Sounds.cs" />
-    <Compile Include="Hud\Icons\StrongboxMinimapIcon.cs" />
     <Compile Include="Hud\TextureRenderer.cs" />
     <Compile Include="Hud\TransparentDXOverlay.cs">
       <SubType>Form</SubType>
@@ -184,6 +192,7 @@
   <ItemGroup>
     <Folder Include="Hud\Debug\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if "$(ConfigurationName)"=="Release" (

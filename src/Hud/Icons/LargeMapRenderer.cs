@@ -6,12 +6,11 @@ using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Hud.Icons
 {
-	public class MinimapRenderer : HUDPluginBase
+	public class LargeMapRenderer : HUDPluginBase
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
-		private Vec2 playerPos;
 
-		public MinimapRenderer(Func<IEnumerable<MapIcon>> gatherMapIcons)
+		public LargeMapRenderer(Func<IEnumerable<MapIcon>> gatherMapIcons)
 		{
 			getIcons = gatherMapIcons;
 		}
@@ -29,28 +28,31 @@ namespace PoeHUD.Hud.Icons
 			{
 				return;
 			}
-			Element smallMinimap = model.Internal.IngameState.IngameUi.Minimap.SmallMinimap;
-			if( !smallMinimap.IsVisible )
+			bool largeMapVisible = model.Internal.IngameState.IngameUi.Minimap.OrangeWords.IsVisible;
+			if (!largeMapVisible)
 				return;
 
+			var camera = model.Internal.game.IngameState.Camera;
+			BigMinimap mapWindow = model.Internal.game.IngameState.IngameUi.Minimap;
+			Rect rcMap = mapWindow.GetClientRect();
 
 			Vec2 playerPos = model.Player.GetComponent<Positioned>().GridPos;
 			float pPosZ = model.Player.GetComponent<Render>().Z;
-			
-			const float scale = 240f;
-			Rect clientRect = smallMinimap.GetClientRect();
-			Vec2 minimapCenter = new Vec2(clientRect.X + clientRect.W / 2, clientRect.Y + clientRect.H / 2);
-			double diag = Math.Sqrt(clientRect.W * clientRect.W + clientRect.H * clientRect.H) / 2.0;
+			Vec2 screenCenter = new Vec2(rcMap.W / 2, rcMap.H / 2) + new Vec2(rcMap.X, rcMap.Y);
+			float diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
+
+			const float scale = 1280f;
+
 			foreach(MapIcon icon in getIcons())
 			{
 				if (icon.ShouldSkip())
 					continue;
 
 				float iZ = icon.Entity.GetComponent<Render>().Z;
-				Vec2 point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ) / 20));
+				Vec2 point = screenCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ)/ 10));
 
-				var texture = icon.MinimapIcon;
-				int size = icon.Size;
+				var texture = icon.LargeMapIcon ?? icon.MinimapIcon;
+				int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
 				Rect rect = new Rect(point.X - size / 2, point.Y - size / 2, size, size);
 				texture.DrawAt(rc, point, rect);
 			}

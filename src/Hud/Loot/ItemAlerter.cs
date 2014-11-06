@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using PoeHUD.ExileBot;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Game;
 using PoeHUD.Hud.Icons;
@@ -14,90 +14,64 @@ using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : HUDPlugin
+	public class ItemAlerter : HUDPluginBase, EntityListObserver, HUDPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
-		private Dictionary<ExileBot.Entity, AlertDrawStyle> currentAlerts;
+		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
+		private Dictionary<EntityWrapper, MapIcon> currentIcons;
+
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
 
-        private Dictionary<string, string> minimapIcons;
-
-        public ItemAlerter()
-        {
-            // default values
-            // the dame routine as the default icons in minimaprenderer, so it should be
-            // soon extracted into its own Class
-            minimapIcons = new Dictionary<string, string>();
-            minimapIcons.Add("default", "minimap_default_icon.png");
-            minimapIcons.Add("currency", "dot_orange.png");
-            minimapIcons.Add("crafting", "dot_yellow.png");
-            minimapIcons.Add("gem", "dot_blue.png");
-            minimapIcons.Add("rgb", "dot_rgb.png");
-            minimapIcons.Add("map", "dot_yellow.png");
-            minimapIcons.Add("fragment", "dot_green.png");
-            {
-                string[] lines = File.ReadAllLines("config/minimap_icons.txt"); // Filename with Icon assignments
-                foreach (string line in lines.Select(a => a.Trim())) 
-                {
-                    if (!line.StartsWith(";")) // comment ?
-                    {
-                        if (string.IsNullOrWhiteSpace(line)) // empty ? 
-                            continue;
-                        var cols = line.Split(new[] { ',', ';' }, 2); 
-                        if (cols.Count() < 2) // less than 2 columns ?
-                            continue;
-                        if (string.IsNullOrWhiteSpace(cols[0]) || string.IsNullOrWhiteSpace(cols[1])) //one column is empty?
-                            continue;
-                        if (File.Exists("textures/" + cols[1].Trim())) // does the Icon file exist ?
-                            if (minimapIcons.ContainsKey(cols[0].Trim())) // value exist ?
-                                minimapIcons[cols[0].Trim()] = cols[1].Trim(); // overwrite the default 
-                    }
-                }
-            }
-        }
-
-
 		public override void OnEnable()
 		{
-			this.playedSoundsCache = new HashSet<long>();
-			this.currentAlerts = new Dictionary<ExileBot.Entity, AlertDrawStyle>();
-			this.currencyNames = this.LoadCurrency();
-			this.craftingBases = this.LoadCraftingBases();
-			this.poe.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
-			this.poe.EntityList.OnEntityAdded += this.EntityList_OnEntityAdded;
-			this.poe.EntityList.OnEntityRemoved += this.EntityList_OnEntityRemoved;
+			playedSoundsCache = new HashSet<long>();
+			currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
+			currentIcons = new Dictionary<EntityWrapper, MapIcon>();
+			currencyNames = LoadCurrency();
+			craftingBases = LoadCraftingBases();
+
+			model.Area.OnAreaChange += CurrentArea_OnAreaChange;
 		}
 		public override void OnDisable()
 		{
+			model.Area.OnAreaChange -= CurrentArea_OnAreaChange;
 		}
-		private void EntityList_OnEntityRemoved(ExileBot.Entity entity)
+
+		public void EntityRemoved(EntityWrapper entity)
 		{
-			if (this.currentAlerts.ContainsKey(entity))
-			{
-				this.currentAlerts.Remove(entity);
-			}
+			currentAlerts.Remove(entity);
+			currentIcons.Remove(entity);
 		}
-		private void EntityList_OnEntityAdded(ExileBot.Entity entity)
+
+		public void EntityAdded(EntityWrapper entity)
 		{
-			if (!Settings.GetBool("ItemAlert") || this.currentAlerts.ContainsKey(entity))
+			if (!Settings.GetBool("ItemAlert") || currentAlerts.ContainsKey(entity))
 			{
 				return;
 			}
 			if (entity.HasComponent<WorldItem>())
 			{
-				ExileBot.Entity item = new ExileBot.Entity(this.poe, entity.GetComponent<WorldItem>().ItemEntity);
-				ItemUsefulProperties props = this.EvaluateItem(item);
+				EntityWrapper item = new EntityWrapper(model, entity.GetComponent<WorldItem>().ItemEntity);
+				ItemUsefulProperties props = EvaluateItem(item);
 
 				if (props.IsWorthAlertingPlayer(currencyNames))
 				{
-					this.DoAlert(entity, props);
+					AlertDrawStyle drawStyle = props.GetDrawStyle();
+					currentAlerts.Add(entity, drawStyle);
+					currentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), 8);
+
+					if (Settings.GetBool("ItemAlert.PlaySound") && !playedSoundsCache.Contains(entity.LongId))
+					{
+						playedSoundsCache.Add(entity.LongId);
+						Sounds.AlertSound.Play();
+					}
 				}
 			}
 		}
 
 
-		private ItemUsefulProperties EvaluateItem(ExileBot.Entity item)
+		private ItemUsefulProperties EvaluateItem(EntityWrapper item)
 		{
 			ItemUsefulProperties ip = new ItemUsefulProperties();
 
@@ -107,7 +81,7 @@ namespace PoeHUD.Hud.Loot
 			SkillGem sk = item.HasComponent<SkillGem>() ? item.GetComponent<SkillGem>() : null;
 			Quality q = item.HasComponent<Quality>() ? item.GetComponent<Quality>() : null;
 
-			ip.Name = this.poe.Files.BaseItemTypes.Translate(item.Path);
+			ip.Name = model.Files.BaseItemTypes.Translate(item.Path);
 			ip.ItemLevel = mods.ItemLevel;
 			ip.NumLinks = socks.LargestLinkSize;
 			ip.NumSockets = socks.NumberOfSockets;
@@ -129,60 +103,28 @@ namespace PoeHUD.Hud.Loot
 			return ip;
 		}
 
-		private void DoAlert(ExileBot.Entity entity, ItemUsefulProperties ip)
-		{
-			AlertDrawStyle drawStyle = ip.GetDrawStyle();
-			this.currentAlerts.Add(entity, drawStyle);
-            string minimapIcn = minimapIcons["default"]; ; //default value
-            if (ip.IsCraftingBase)
-                minimapIcn = minimapIcons["crafting"];
-            else if (ip.IsCurrency)
-                minimapIcn = minimapIcons["currency"];
-            else if (ip.IsSkillGem)
-                minimapIcn = minimapIcons["gem"];
-            else if (ip.MapLevel>0)
-                minimapIcn = minimapIcons["map"];
-            else if (ip.WorthChrome)
-                minimapIcn = minimapIcons["rgb"];
-            else if (ip.IsVaalFragment)
-                minimapIcn = minimapIcons["fragment"];
-            this.overlay.MinimapRenderer.AddIcon(new ItemMinimapIcon(entity, minimapIcn, drawStyle.color, 8));
-			if (Settings.GetBool("ItemAlert.PlaySound") && !this.playedSoundsCache.Contains(entity.LongId))
-			{
-				this.playedSoundsCache.Add(entity.LongId);
-				Sounds.AlertSound.Play();
-			}
-		}
 		private void CurrentArea_OnAreaChange(AreaController area)
 		{
-			this.playedSoundsCache.Clear();
+			playedSoundsCache.Clear();
+			currentIcons.Clear();
 		}
-		public override void Render(RenderingContext rc)
+		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			if (!Settings.GetBool("ItemAlert") || !Settings.GetBool("ItemAlert.ShowText"))
 			{
 				return;
 			}
-			var mm = this.poe.Internal.game.IngameState.IngameUi.Minimap.SmallMinimap;
-			var qt = this.poe.Internal.game.IngameState.IngameUi.QuestTracker;
-			Rect miniMapRect = mm.GetClientRect();
-			Rect qtRect = qt.GetClientRect();
 
-			Rect clientRect;
-			if (qt.IsVisible && qtRect.X + qt.Width < miniMapRect.X + miniMapRect.X + 50)
-				clientRect = qtRect;
-			else
-				clientRect = miniMapRect;
 
-			var playerPos = this.poe.Player.GetComponent<Positioned>().GridPos;
+			var playerPos = model.Player.GetComponent<Positioned>().GridPos;
 
-			Vec2 rightTopAnchor = new Vec2(miniMapRect.X + miniMapRect.W, clientRect.Y + clientRect.H + 5);
-			
+
+			Vec2 rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
 			int y = rightTopAnchor.Y;
 			int fontSize = Settings.GetInt("ItemAlert.ShowText.FontSize");
 			
 			const int vMargin = 2;
-			foreach (KeyValuePair<ExileBot.Entity, AlertDrawStyle> kv in this.currentAlerts)
+			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
 			{
 				if (!kv.Key.IsValid) continue;
 
@@ -197,6 +139,22 @@ namespace PoeHUD.Hud.Loot
 				y += itemDrawnSize.Y + vMargin;
 			}
 			
+		}
+
+		public IEnumerable<MapIcon> GetIcons()
+		{
+			List<EntityWrapper> toRemove = new List<EntityWrapper>();
+			foreach (KeyValuePair<EntityWrapper, MapIcon> kv in currentIcons)
+			{
+				if (kv.Value.IsEntityStillValid())
+					yield return kv.Value;
+				else
+					toRemove.Add(kv.Key);
+			}
+			foreach (EntityWrapper wrapper in toRemove)
+			{
+				currentIcons.Remove(wrapper);
+			}
 		}
 
 		private static Vec2 drawItem(RenderingContext rc, AlertDrawStyle drawStyle, Vec2 delta, int x, int y, Vec2 vPadding, string text,
@@ -221,7 +179,7 @@ namespace PoeHUD.Hud.Loot
 
 			int fullHeight = vTextSize.Y + 2 * vPadding.Y + 2 * drawStyle.FrameWidth;
 			int fullWidth = vTextSize.X + 2 * vPadding.X + iconSize + 2 * drawStyle.FrameWidth + compassOffset;
-			rc.AddBox(new Rect(x - fullWidth, y, fullWidth, fullHeight), Color.FromArgb(180, 0, 0, 0));
+			rc.AddBox(new Rect(x - fullWidth, y, fullWidth - compassOffset, fullHeight), Color.FromArgb(180, 0, 0, 0));
 
 			var rectUV = GetDirectionsUv(phi, distance);
 			rc.AddSprite("directions.png", new Rect(x - vPadding.X - compassOffset + 6, y + vPadding.Y, vTextSize.Y, vTextSize.Y), rectUV);
@@ -242,10 +200,10 @@ namespace PoeHUD.Hud.Loot
 			return new Vec2(fullWidth, fullHeight);
 		}
 
-		private string GetItemName(KeyValuePair<ExileBot.Entity, AlertDrawStyle> kv)
+		private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)
 		{
 			string text;
-			EntityLabel labelFromEntity = this.poe.GetLabelFromEntity(kv.Key);
+			EntityLabel labelFromEntity = model.GetLabelForEntity(kv.Key);
 
 			if (labelFromEntity == null)
 			{

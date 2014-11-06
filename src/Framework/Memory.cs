@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using PoeHUD.ExileBot;
 using PoeHUD.Poe;
 
 namespace PoeHUD.Framework
@@ -103,7 +102,10 @@ namespace PoeHUD.Framework
 			{
 				return string.Empty;
 			}
-			string @string = Encoding.Unicode.GetString(this.ReadMem(addr, length));
+			byte[] mem = this.ReadMem(addr, length);
+			if (mem[0] == 0 && mem[1] == 0)
+				return string.Empty;
+			string @string = Encoding.Unicode.GetString(mem);
 			if (replaceNull)
 			{
 				int num = @string.IndexOf('\0');
@@ -209,7 +211,7 @@ namespace PoeHUD.Framework
 				{
 					if (this.CompareData(pattern, exeImage, offset)) {
 						address[iPattern] = offset;
-						Console.WriteLine("Pattern " + iPattern + " is found");
+						Console.WriteLine("Pattern " + iPattern + " is found at " + (this.BaseAddress + offset).ToString("X"));
 						break;
 					}
 				}
