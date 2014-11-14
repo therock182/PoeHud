@@ -6,7 +6,7 @@ namespace PoeHUD.Poe
 		{
 			get
 			{
-				return this.m.ReadInt(this.address + 10872) == 3;
+                return this.m.ReadInt(this.address + 11000) == 3;
 			}
 		}
 		public InventorySet PlayerInventories

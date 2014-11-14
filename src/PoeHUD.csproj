@@ -45,13 +45,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExileBot\AreaInstance.cs" />
-    <Compile Include="Hud\debugwin\debugWindowRenderer.cs" />
-    <Compile Include="Hud\Gemleveling\GemLeveling.cs" />
     <Compile Include="Hud\Health\Healthbar.cs" />
+    <Compile Include="Hud\Health\HealthBarRenderer.cs" />
     <Compile Include="Hud\Health\RenderPrio.cs" />
-    <Compile Include="Hud\Icons\MasterMinimapIcon.cs" />
-    <Compile Include="Hud\keyboard.cs" />
     <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
     <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
     <Compile Include="Controllers\AreaInstance.cs" />
@@ -60,10 +56,7 @@
     <Compile Include="Poe\FileSystem\ModsDat.cs" />
     <Compile Include="Framework\ColorUtils.cs" />
     <Compile Include="Framework\IntRange.cs" />
-    <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
     <Compile Include="Hud\DPS\DpsMeter.cs" />
-    <Compile Include="Hud\Health\Healthbar.cs" />
-    <Compile Include="Hud\Health\RenderPrio.cs" />
     <Compile Include="Hud\HudSkin.cs" />
     <Compile Include="Hud\HudTexture.cs" />
     <Compile Include="Hud\Icons\MinimapRenderer.cs" />
@@ -79,7 +72,6 @@
     <Compile Include="Framework\RectUV.cs" />
     <Compile Include="Framework\Vec2.cs" />
     <Compile Include="Framework\Vec3.cs" />
-    <Compile Include="Hud\MaxRolls\MaxRolls_Mod.cs" />
     <Compile Include="KeyboardAndMouse\GlobalEventProvider.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -155,7 +147,6 @@
     <Compile Include="Hud\ClientHacks.cs" />
     <Compile Include="Game\Constants.cs" />
     <Compile Include="Hud\Monster\MonsterTracker.cs" />
-    <Compile Include="Hud\Health\HealthBarRenderer.cs" />
     <Compile Include="Hud\HUDPlugin.cs" />
     <Compile Include="Hud\Menu\IntPicker.cs" />
     <Compile Include="Hud\Loot\ItemAlerter.cs" />

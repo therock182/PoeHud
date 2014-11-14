@@ -229,3 +229,6 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 *.psd
+/src/bin/Debug/config
+/src/bin/Debug/sounds
+/src/bin/Debug/textures
