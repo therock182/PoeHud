@@ -6,6 +6,7 @@ using PoeHUD.Framework;
 using PoeHUD.Hud.DPS;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Monster;
@@ -17,7 +18,7 @@ namespace PoeHUD.Hud
 
 	public class OverlayRenderer
 	{
-		private readonly List<HUDPlugin> plugins;
+		private readonly List<IHudPlugin> plugins;
 		private readonly GameController gameController;
 		private int _modelUpdatePeriod;
 		public OverlayRenderer(GameController gameController, RenderingContext rc)
@@ -25,7 +26,7 @@ namespace PoeHUD.Hud
 			this.gameController = gameController;
 			gameController.Area.OnAreaChange += area => _modelUpdatePeriod = 6;
 
-			this.plugins = new List<HUDPlugin>{
+			this.plugins = new List<IHudPlugin>{
 				new HealthBarRenderer(),
 				new ItemAlerter(),
 				new MinimapRenderer(gatherMapIcons),
@@ -63,9 +64,9 @@ namespace PoeHUD.Hud
 
 		private IEnumerable<MapIcon> gatherMapIcons()
 		{
-			foreach (HUDPlugin plugin in plugins)
+			foreach (IHudPlugin plugin in plugins)
 			{
-				HUDPluginWithMapIcons iconSource = plugin as HUDPluginWithMapIcons;
+				IHudPluginWithMapIcons iconSource = plugin as IHudPluginWithMapIcons;
 				if (iconSource != null)
 				{
 					// kvPair.Value.RemoveAll(x => !x.IsEntityStillValid());
@@ -95,7 +96,7 @@ namespace PoeHUD.Hud
 			mountPoints[UiMountPoint.UnderMinimap] = GetRightTopUnderMinimap();
 			mountPoints[UiMountPoint.LeftOfMinimap] = GetRightTopLeftOfMinimap();
 
-			foreach (HUDPlugin current in this.plugins)
+			foreach (IHudPlugin current in this.plugins)
 			{
 				current.Render(rc, mountPoints);
 			}
@@ -103,14 +104,14 @@ namespace PoeHUD.Hud
 
 		private Vec2 GetRightTopLeftOfMinimap()
 		{
-			Rect clientRect = gameController.Internal.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
+			Rect clientRect = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
 			return new Vec2(clientRect.X - 10, clientRect.Y + 5);
 		}
 
 		private Vec2 GetRightTopUnderMinimap()
 		{
-			var mm = gameController.Internal.game.IngameState.IngameUi.Minimap.SmallMinimap;
-			var gl = gameController.Internal.game.IngameState.IngameUi.GemLvlUpPanel;
+			var mm = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
+			var gl = gameController.Game.IngameState.IngameUi.GemLvlUpPanel;
 			Rect mmRect = mm.GetClientRect();
 			Rect glRect = gl.GetClientRect();
 
@@ -123,7 +124,7 @@ namespace PoeHUD.Hud
 		}
 
 		public bool Detach() {
-			foreach (HUDPlugin current in this.plugins)
+			foreach (IHudPlugin current in this.plugins)
 				current.OnDisable();
 			return false;
 		}

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-	public class Menu : HUDPluginBase
+	public class Menu : HudPluginBase
 	{
 		private const int ButtonWidth = 210;
 		private const int ButtonHeight = 40;
@@ -37,11 +38,11 @@ namespace PoeHUD.Hud.Menu
 
 		private bool OnMouseEvent(MouseEventID id, int x, int y)
 		{
-			if (Settings.GetBool("Window.RequireForeground") && !this.model.Window.IsForeground())
+			if (Settings.GetBool("Window.RequireForeground") && !this.GameController.Window.IsForeground())
 			{
 				return false;
 			}
-			Vec2 vec = this.model.Window.ScreenToClient(new Vec2(x, y));
+			Vec2 vec = this.GameController.Window.ScreenToClient(new Vec2(x, y));
 			if (id == MouseEventID.MouseMove)
 			{
 				if (this.currentHover != null && this.currentHover.TestHit(vec))
@@ -157,7 +158,7 @@ namespace PoeHUD.Hud.Menu
 			booleanButton10.AddChild(new IntPicker("Font size", 6, 30, "PreloadAlert.FontSize"));
 			booleanButton10.AddChild(new IntPicker("Background alpha", 0, 200, "PreloadAlert.BgAlpha"));
 			BooleanButton dps = this.CreateRootMenu("Show DPS", r++, "DpsDisplay");
-			// BooleanButton closeWithGame = this.CreateRootMenu("Exit when game is closed", 8, "ExitWithGame");
+			// BooleanButton closeWithGame = this.CreateRootMenu("Exit when Game is closed", 8, "ExitWithGame");
 		}
 		private BooleanButton AddButton(BooleanButton parent, string text, string setting)
 		{

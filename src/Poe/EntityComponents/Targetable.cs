@@ -1,6 +1,6 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class Targetable : Component
-	{
-	}
+    public class Targetable : Component
+    {
+    }
 }

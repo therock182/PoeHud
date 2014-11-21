@@ -1,6 +1,6 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class Armour : Component
-	{
-	}
+    public class Armour : Component
+    {
+    }
 }

@@ -1,9 +1,11 @@
+using System;
 using System.Windows.Forms;
 using PoeHUD.Framework;
 
 namespace PoeHUD.Hud
 {
-	public class SettingsEditor
+    [Obsolete]
+	public class LegacySettingsEditor
 	{
 		private SettingsForm form;
 		public SettingsEditorStatus Status
@@ -21,6 +23,7 @@ namespace PoeHUD.Hud
 				return SettingsEditorStatus.Minimized;
 			}
 		}
+
 		public void Show()
 		{
 			switch (this.Status)

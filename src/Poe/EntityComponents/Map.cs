@@ -1,6 +1,6 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class Map : Component
-	{
-	}
+    public class Map : Component
+    {
+    }
 }

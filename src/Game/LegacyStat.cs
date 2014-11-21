@@ -1,6 +1,9 @@
+using System;
+
 namespace PoeHUD.Game
 {
-	public static class Stat
+    [Obsolete]
+	public static class LegacyStat
 	{
 		public const int CurrentEnduranceCharges = 5;
 		public const int MaxLife = 248;

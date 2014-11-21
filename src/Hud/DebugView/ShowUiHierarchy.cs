@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.UI;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.DebugView
 {
-	class ShowUiHierarchy : HUDPluginBase
+	class ShowUiHierarchy : HudPluginBase
 	{
 		public override void OnEnable()
 		{
@@ -18,13 +19,13 @@ namespace PoeHUD.Hud.DebugView
 		}
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
-			Element root = this.model.Internal.IngameState.UIRoot;
+			Element root = this.GameController.Game.IngameState.UIRoot;
 
 
 			int yPos = 80;
 			int x = 320;
 			int[] path = new int[12];
-			//var tt = this.model.Internal.IngameState.IngameUi;
+			//var tt = this.GameController.Game.IngameState.IngameUi;
 			//for (path[0] = 0x0; path[0] <= 0x0 ; path[0] += 4 )
 			//{
 
@@ -41,7 +42,7 @@ namespace PoeHUD.Hud.DebugView
 				//if (path[0] == 0x120 || path[0] == 0xd8 || path[0] == 0xa0 || path[0] == 0x154 || path[0] == 0x158)
 				//	continue;
 
-				Element starting_it = this.model.Internal.IngameState.IngameUi.ReadObjectAt<Element>(path[0]);
+				Element starting_it = this.GameController.Game.IngameState.IngameUi.ReadObjectAt<Element>(path[0]);
 				var v2 = starting_it.GetParentPos();
 				drawElt(rc, starting_it, new Vec2((int)(v2.X * .75), (int)(v2.Y * .75)), ref x, ref yPos, path, 1);
 			}
@@ -62,7 +63,7 @@ namespace PoeHUD.Hud.DebugView
 			int ix = depth > 0 ? path[depth - 1] : 0;
 			var c = Color.FromArgb(255, 255 - 25 * (ix % 10), 255 - 25 * ((ix % 100) / 10), 255);
 
-			string msg = string.Format("[{2}] {1:X8} : {0}", rC, root.address, sPath);
+			string msg = string.Format("[{2}] {1:X8} : {0}", rC, root.Address, sPath);
 
 			var v = rc.AddTextWithHeight(new Vec2(x, yPos), msg, c, 9, DrawTextFormat.Left);
 			rc.AddTextWithHeight(new Vec2(rC.X, rC.Y + depth * 10 - 10), sPath, c, 8, DrawTextFormat.Left);

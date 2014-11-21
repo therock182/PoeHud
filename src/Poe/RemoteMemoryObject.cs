@@ -1,56 +1,52 @@
-using System;
 using PoeHUD.Framework;
 
 namespace PoeHUD.Poe
 {
-	public abstract class RemoteMemoryObject
-	{
-		public Memory m;
-		public int address;
-		public TheGame game;
-		public RemoteMemoryObject()
-		{
-		}
+    public abstract class RemoteMemoryObject
+    {
+        public int Address { get; protected set; }
+        public TheGame Game { get; protected set; }
+        public Memory M { get; protected set; }
 
-		protected Offsets Offsets { get { return this.m.offsets; } }
 
-		public T GetObject<T>(int address) where T : RemoteMemoryObject, new()
-		{
-			T t = Activator.CreateInstance<T>();
-			t.m = this.m;
-			t.address = address;
-			t.game = this.game;
-			return t;
-		}
+        protected Offsets Offsets
+        {
+            get { return M.offsets; }
+        }
 
-		public virtual T ReadObjectAt<T>(int offet) where T : RemoteMemoryObject, new()
-		{
-			return ReadObject<T>(address + offet);
-		}
-		public T ReadObject<T>(int address) where T : RemoteMemoryObject, new()
-		{
-			T t = Activator.CreateInstance<T>();
-			t.m = this.m;
-			t.address = this.m.ReadInt(address);
-			t.game = this.game;
-			return t;
-		}
-		public T AsObject<T>() where T : RemoteMemoryObject, new()
-		{
-			T t = Activator.CreateInstance<T>();
-			t.m = this.m;
-			t.address = this.address;
-			t.game = this.game;
-			return t;
-		}
-		public override bool Equals(object obj)
-		{
-			RemoteMemoryObject remoteMemoryObject = obj as RemoteMemoryObject;
-			return remoteMemoryObject != null && remoteMemoryObject.address == this.address;
-		}
-		public override int GetHashCode()
-		{
-			return this.address + base.GetType().Name.GetHashCode();
-		}
-	}
+
+        public T ReadObjectAt<T>(int offset) where T : RemoteMemoryObject, new()
+        {
+            return ReadObject<T>(Address + offset);
+        }
+
+        public T ReadObject<T>(int addressPointer) where T : RemoteMemoryObject, new()
+        {
+            var t = new T {M = M, Address = M.ReadInt(addressPointer), Game = Game};
+            return t;
+        }
+
+        public T GetObject<T>(int address) where T : RemoteMemoryObject, new()
+        {
+            var t = new T {M = M, Address = address, Game = Game};
+            return t;
+        }
+
+        public T AsObject<T>() where T : RemoteMemoryObject, new()
+        {
+            var t = new T {M = M, Address = Address, Game = Game};
+            return t;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var remoteMemoryObject = obj as RemoteMemoryObject;
+            return remoteMemoryObject != null && remoteMemoryObject.Address == Address;
+        }
+
+        public override int GetHashCode()
+        {
+            return Address + base.GetType().Name.GetHashCode();
+        }
+    }
 }

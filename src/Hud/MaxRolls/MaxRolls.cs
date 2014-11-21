@@ -6,6 +6,7 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Files;
+using PoeHUD.Poe.FileSystem;
 
 namespace PoeHUD.Hud.MaxRolls
 {

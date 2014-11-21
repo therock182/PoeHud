@@ -5,21 +5,24 @@ namespace PoeHUD.Controllers
 {
 	public class FileInMemory
 	{
-		protected readonly Memory m;
-		protected readonly int address;
+        public Memory M { get; private set; }
+		public  int Address { get; private set; }
 
 		public FileInMemory(Memory m, int address)
 		{
-			this.m = m;
-			this.address = address;
+			M = m;
+			Address = address;
 		}
 
-		public int NumberOfRecords { get { return this.m.ReadInt(this.address + 0x44); } }
+	    private int NumberOfRecords
+	    {
+	        get { return M.ReadInt(this.Address + 0x44); }
+	    }
 
-		public IEnumerable<int> RecordAdresses()
+	    protected IEnumerable<int> RecordAddresses()
 		{
-			int firstRec = this.m.ReadInt(this.address + 0x30);
-			int lastRec = this.m.ReadInt(this.address + 0x34);
+			int firstRec = M.ReadInt(this.Address + 0x30);
+			int lastRec = M.ReadInt(this.Address + 0x34);
 			int cnt = NumberOfRecords;
 
 			int recLen = ( lastRec - firstRec ) / cnt;

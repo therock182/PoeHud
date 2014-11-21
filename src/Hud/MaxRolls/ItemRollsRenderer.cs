@@ -2,15 +2,17 @@
 using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.Files;
+using PoeHUD.Poe.FileSystem;
 using PoeHUD.Poe.UI;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.MaxRolls
 {
-	public class ItemRollsRenderer : HUDPluginBase
+	public class ItemRollsRenderer : HudPluginBase
 	{
 		private Entity poeEntity;
 		private List<RollValue> mods;
@@ -28,7 +30,7 @@ namespace PoeHUD.Hud.MaxRolls
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemMods"))
 				return;
-			Element uiHover = this.model.Internal.IngameState.UIHover;
+			Element uiHover = this.GameController.Game.IngameState.UIHover;
 
 			Tooltip tooltip = uiHover.AsObject<InventoryItemIcon>().Tooltip;
 			if (tooltip == null)
@@ -42,15 +44,15 @@ namespace PoeHUD.Hud.MaxRolls
 			Rect clientRect = childAtIndex2.GetClientRect();
 
 			Entity poeEntity = uiHover.AsObject<InventoryItemIcon>().Item;
-			if (poeEntity.address == 0 || !poeEntity.IsValid)
+			if (poeEntity.Address == 0 || !poeEntity.IsValid)
 				return;
-			if (this.poeEntity == null || this.poeEntity.ID != poeEntity.ID) {
+			if (this.poeEntity == null || this.poeEntity.Id != poeEntity.Id) {
 				this.mods = new List<RollValue>();
 				//List<Poe_ItemMod> impMods = poeEntity.GetComponent<Mods>().ImplicitMods;
 				List<ItemMod> expMods = poeEntity.GetComponent<Mods>().ItemMods;
 				int ilvl = poeEntity.GetComponent<Mods>().ItemLevel;
 				foreach (ItemMod item in expMods)
-					this.mods.Add(new RollValue(item, model.Files, ilvl));
+					this.mods.Add(new RollValue(item, GameController.Files, ilvl));
 				this.poeEntity = poeEntity;
 			}
 			int yPosTooltil = clientRect.Y + clientRect.H + 5;
@@ -65,7 +67,7 @@ namespace PoeHUD.Hud.MaxRolls
 			
 			foreach (RollValue item in this.mods)
 			{
-				i = drawStatLine(rc, item, clientRect, i);
+				i = DrawStatLine(rc, item, clientRect, i);
 
 				i += 4;
 				//if (item.curr2 != null && item.max2 != null)
@@ -82,7 +84,7 @@ namespace PoeHUD.Hud.MaxRolls
 			}
 		}
 
-		private static int drawStatLine(RenderingContext rc, RollValue item, Rect clientRect, int yPos)
+		private static int DrawStatLine(RenderingContext rc, RollValue item, Rect clientRect, int yPos)
 		{
 			const int leftRuler = 50;
 

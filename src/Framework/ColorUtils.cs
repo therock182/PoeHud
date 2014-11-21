@@ -5,6 +5,7 @@ namespace PoeHUD.Framework
 {
 	public static class ColorUtils
 	{
+        [Obsolete]
 		public static void ColorToHsv(Color color, out double hue, out double saturation, out double value)
 		{
 			int max = Math.Max(color.R, Math.Max(color.G, color.B));

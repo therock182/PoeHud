@@ -1,6 +1,6 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class SkillGem : Component
-	{
-	}
+    public class SkillGem : Component
+    {
+    }
 }

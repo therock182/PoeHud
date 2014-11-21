@@ -16,7 +16,7 @@ namespace PoeHUD.Hud
 			base.MaximizeBox = false;
 			base.MinimizeBox = false;
 			base.Name = "SettingsForm";
-			this.Text = "SettingsEditor";
+			this.Text = "LegacySettingsEditor";
 			base.ResumeLayout(false);
 		}
 		public SettingsForm()

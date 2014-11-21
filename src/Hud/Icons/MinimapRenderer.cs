@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Hud.Icons
 {
-	public class MinimapRenderer : HUDPluginBase
+	public class MinimapRenderer : HudPluginBase
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
-		private Vec2 playerPos;
+		
 
 		public MinimapRenderer(Func<IEnumerable<MapIcon>> gatherMapIcons)
 		{
@@ -25,17 +26,17 @@ namespace PoeHUD.Hud.Icons
 
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
-			if (!model.InGame || !Settings.GetBool("MinimapIcons"))
+			if (!GameController.InGame || !Settings.GetBool("MinimapIcons"))
 			{
 				return;
 			}
-			Element smallMinimap = model.Internal.IngameState.IngameUi.Minimap.SmallMinimap;
+			Element smallMinimap = GameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
 			if( !smallMinimap.IsVisible )
 				return;
 
 
-			Vec2 playerPos = model.Player.GetComponent<Positioned>().GridPos;
-			float pPosZ = model.Player.GetComponent<Render>().Z;
+			Vec2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+			float pPosZ = GameController.Player.GetComponent<Render>().Z;
 			
 			const float scale = 240f;
 			Rect clientRect = smallMinimap.GetClientRect();

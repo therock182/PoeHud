@@ -1,5 +1,8 @@
-namespace PoeHUD.Game
+using System;
+
+namespace PoeHUD.Game.Enums
 {
+    [Obsolete]
 	public enum ItemType
 	{
 		All,

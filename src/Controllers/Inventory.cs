@@ -32,12 +32,12 @@ namespace PoeHUD.Controllers
 				return list;
 			}
 		}
-		public Inventory(GameController Poe, Poe.Inventory InternalInventory)
+		public Inventory(GameController poe, Poe.Inventory internalInventory)
 		{
-			this.Poe = Poe;
-			this.InternalInventory = InternalInventory;
+			Poe = poe;
+			InternalInventory = internalInventory;
 		}
-		public Inventory(GameController Poe, int address) : this(Poe, Poe.Internal.GetObject<Poe.Inventory>(address))
+		public Inventory(GameController poe, int address) : this(poe, poe.Game.GetObject<Poe.Inventory>(address))
 		{
 		}
 	}

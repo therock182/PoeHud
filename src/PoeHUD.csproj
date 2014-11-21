@@ -45,13 +45,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Hud\Health\Healthbar.cs" />
     <Compile Include="Hud\Health\HealthBarRenderer.cs" />
     <Compile Include="Hud\Health\RenderPrio.cs" />
+    <Compile Include="Hud\HudPluginBase.cs" />
+    <Compile Include="Hud\Interfaces\IHudPluginWithMapIcons.cs" />
     <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
     <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
     <Compile Include="Controllers\AreaInstance.cs" />
     <Compile Include="Controllers\FileInMemory.cs" />
+    <Compile Include="Poe\EntityComponents\Stack.cs" />
     <Compile Include="Poe\FileSystem\StatsDat.cs" />
     <Compile Include="Poe\FileSystem\ModsDat.cs" />
     <Compile Include="Framework\ColorUtils.cs" />
@@ -72,14 +76,14 @@
     <Compile Include="Framework\RectUV.cs" />
     <Compile Include="Framework\Vec2.cs" />
     <Compile Include="Framework\Vec3.cs" />
-    <Compile Include="KeyboardAndMouse\GlobalEventProvider.cs">
+    <Compile Include="Framework\KeyboardAndMouse\GlobalEventProvider.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="KeyboardAndMouse\Callbacks.cs" />
-    <Compile Include="KeyboardAndMouse\HookManager.cs" />
-    <Compile Include="KeyboardAndMouse\Structures.cs" />
-    <Compile Include="KeyboardAndMouse\Windows.cs" />
-    <Compile Include="KeyboardAndMouse\MouseEventExtArgs.cs" />
+    <Compile Include="Framework\KeyboardAndMouse\Callbacks.cs" />
+    <Compile Include="Framework\KeyboardAndMouse\HookManager.cs" />
+    <Compile Include="Framework\KeyboardAndMouse\Structures.cs" />
+    <Compile Include="Framework\KeyboardAndMouse\Windows.cs" />
+    <Compile Include="Framework\KeyboardAndMouse\MouseEventExtArgs.cs" />
     <Compile Include="Hud\Monster\PoiTracker.cs" />
     <Compile Include="Poe\EntityComponents\Actor.cs" />
     <Compile Include="Controllers\AreaController.cs" />
@@ -93,16 +97,16 @@
     <Compile Include="Poe\FileSystem\FsController.cs" />
     <Compile Include="Controllers\Inventory.cs" />
     <Compile Include="Controllers\InventoryIndex.cs" />
-    <Compile Include="Game\ItemRarity.cs" />
-    <Compile Include="Game\ItemStat.cs" />
+    <Compile Include="Game\Enums\ItemRarity.cs" />
+    <Compile Include="Game\Enums\ItemStat.cs" />
     <Compile Include="Controllers\ItemStats.cs" />
-    <Compile Include="Game\ItemType.cs" />
+    <Compile Include="Game\Enums\ItemType.cs" />
     <Compile Include="Poe\EntityComponents\Life.cs" />
-    <Compile Include="Game\Link.cs" />
+    <Compile Include="Game\LegacyLink.cs" />
     <Compile Include="Poe\EntityComponents\Map.cs" />
     <Compile Include="Poe\EntityComponents\Mods.cs" />
     <Compile Include="Poe\EntityComponents\Monster.cs" />
-    <Compile Include="Game\MonsterRarity.cs" />
+    <Compile Include="Game\Enums\MonsterRarity.cs" />
     <Compile Include="Poe\EntityComponents\NPC.cs" />
     <Compile Include="Poe\EntityComponents\ObjectMagicProperties.cs" />
     <Compile Include="Poe\FileSystem\TagsDat.cs" />
@@ -133,11 +137,11 @@
     <Compile Include="Poe\EntityComponents\Quality.cs" />
     <Compile Include="Poe\RemoteMemoryObject.cs" />
     <Compile Include="Poe\EntityComponents\Render.cs" />
-    <Compile Include="Game\SelectionState.cs" />
+    <Compile Include="Game\LegacySelectionState.cs" />
     <Compile Include="Poe\EntityComponents\SkillGem.cs" />
-    <Compile Include="Game\Socket.cs" />
+    <Compile Include="Game\Enums\LegacySocket.cs" />
     <Compile Include="Poe\EntityComponents\Sockets.cs" />
-    <Compile Include="Game\Stat.cs" />
+    <Compile Include="Game\LegacyStat.cs" />
     <Compile Include="Poe\Stats.cs" />
     <Compile Include="Poe\EntityComponents\Targetable.cs" />
     <Compile Include="Framework\Vec2f.cs" />
@@ -147,7 +151,7 @@
     <Compile Include="Hud\ClientHacks.cs" />
     <Compile Include="Game\Constants.cs" />
     <Compile Include="Hud\Monster\MonsterTracker.cs" />
-    <Compile Include="Hud\HUDPlugin.cs" />
+    <Compile Include="Hud\Interfaces\IHUDPlugin.cs" />
     <Compile Include="Hud\Menu\IntPicker.cs" />
     <Compile Include="Hud\Loot\ItemAlerter.cs" />
     <Compile Include="Hud\Loot\ItemLevelRenderer.cs" />
@@ -162,7 +166,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Hud\RenderingContext.cs" />
     <Compile Include="Hud\Settings.cs" />
-    <Compile Include="Hud\SettingsEditor.cs" />
+    <Compile Include="Hud\LegacySettingsEditor.cs" />
     <Compile Include="Hud\SettingsEditorStatus.cs" />
     <Compile Include="Hud\SettingsForm.cs">
       <SubType>Form</SubType>
@@ -179,9 +183,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Hud\SettingsForm.resources" />
     <EmbeddedResource Include="Hud\TransparentDXOverlay.resources" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hud\Debug\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

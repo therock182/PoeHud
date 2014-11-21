@@ -21,22 +21,24 @@ namespace PoeHUD.Hud
 			{
 				offs = clients[ixChosen].Item2;
 				return clients[ixChosen].Item1.Id;
-			} else {
-				offs = null;
-				return 0;
 			}
+		    offs = null;
+		    return 0;
 		}
 
-		private static int chooseSingleProcess(List<Tuple<Process, Offsets>> clients)
-		{
-			String o1 = String.Format("Yes - process #{0}, started at {1}", clients[0].Item1.Id, clients[0].Item1.StartTime.ToLongTimeString());
-			String o2 = String.Format("No - process #{0}, started at {1}", clients[1].Item1.Id, clients[1].Item1.StartTime.ToLongTimeString());
-			const string o3 = "Cancel - quit this application";
-			var answer = MessageBox.Show(null, String.Join(Environment.NewLine, o1, o2, o3), "Choose a PoE instance to attach to", MessageBoxButtons.YesNoCancel);
-			return answer == DialogResult.Cancel ? -1 : answer == DialogResult.Yes ? 0 : 1;
-		}
+	    private static int chooseSingleProcess(List<Tuple<Process, Offsets>> clients)
+	    {
+	        String o1 = String.Format("Yes - process #{0}, started at {1}", clients[0].Item1.Id,
+	            clients[0].Item1.StartTime.ToLongTimeString());
+	        String o2 = String.Format("No - process #{0}, started at {1}", clients[1].Item1.Id,
+	            clients[1].Item1.StartTime.ToLongTimeString());
+	        const string o3 = "Cancel - quit this application";
+	        var answer = MessageBox.Show(null, String.Join(Environment.NewLine, o1, o2, o3),
+	            "Choose a PoE instance to attach to", MessageBoxButtons.YesNoCancel);
+	        return answer == DialogResult.Cancel ? -1 : answer == DialogResult.Yes ? 0 : 1;
+	    }
 
-		[STAThread]
+	    [STAThread]
 		public static void Main(string[] args)
 		{
 			Offsets offs;

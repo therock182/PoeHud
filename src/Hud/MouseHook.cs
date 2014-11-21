@@ -63,9 +63,6 @@ namespace PoeHUD.Hud
 		private static extern bool UnhookWindowsHookEx(int idHook);
 		[DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
 		private static extern int CallNextHookEx(int idHook, int nCode, IntPtr wParam, IntPtr lParam);
-		[DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
-		private static extern IntPtr LoadLibrary(string fileName);
-		[DllImport("user32.dll")]
-		private static extern int GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
-	}
+        
+    }
 }

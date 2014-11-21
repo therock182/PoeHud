@@ -6,7 +6,9 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Game;
+using PoeHUD.Game.Enums;
 using PoeHUD.Hud.Icons;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
 using SlimDX.Direct3D9;
@@ -14,7 +16,7 @@ using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : HUDPluginBase, EntityListObserver, HUDPluginWithMapIcons
+	public class ItemAlerter : HudPluginBase, EntityListObserver, IHudPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -31,11 +33,11 @@ namespace PoeHUD.Hud.Loot
 			currencyNames = LoadCurrency();
 			craftingBases = LoadCraftingBases();
 
-			model.Area.OnAreaChange += CurrentArea_OnAreaChange;
+			GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
 		}
 		public override void OnDisable()
 		{
-			model.Area.OnAreaChange -= CurrentArea_OnAreaChange;
+			GameController.Area.OnAreaChange -= CurrentArea_OnAreaChange;
 		}
 
 		public void EntityRemoved(EntityWrapper entity)
@@ -52,7 +54,7 @@ namespace PoeHUD.Hud.Loot
 			}
 			if (entity.HasComponent<WorldItem>())
 			{
-				EntityWrapper item = new EntityWrapper(model, entity.GetComponent<WorldItem>().ItemEntity);
+				EntityWrapper item = new EntityWrapper(GameController, entity.GetComponent<WorldItem>().ItemEntity);
 				ItemUsefulProperties props = EvaluateItem(item);
 
 				if (props.IsWorthAlertingPlayer(currencyNames))
@@ -81,7 +83,7 @@ namespace PoeHUD.Hud.Loot
 			SkillGem sk = item.HasComponent<SkillGem>() ? item.GetComponent<SkillGem>() : null;
 			Quality q = item.HasComponent<Quality>() ? item.GetComponent<Quality>() : null;
 
-			ip.Name = model.Files.BaseItemTypes.Translate(item.Path);
+			ip.Name = GameController.Files.BaseItemTypes.Translate(item.Path);
 			ip.ItemLevel = mods.ItemLevel;
 			ip.NumLinks = socks.LargestLinkSize;
 			ip.NumSockets = socks.NumberOfSockets;
@@ -116,7 +118,7 @@ namespace PoeHUD.Hud.Loot
 			}
 
 
-			var playerPos = model.Player.GetComponent<Positioned>().GridPos;
+			var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
 
 
 			Vec2 rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
@@ -203,7 +205,7 @@ namespace PoeHUD.Hud.Loot
 		private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)
 		{
 			string text;
-			EntityLabel labelFromEntity = model.GetLabelForEntity(kv.Key);
+			EntityLabel labelFromEntity = GameController.GetLabelForEntity(kv.Key);
 
 			if (labelFromEntity == null)
 			{

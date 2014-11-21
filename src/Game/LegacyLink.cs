@@ -1,11 +1,13 @@
 using System;
+using PoeHUD.Game.Enums;
 
 namespace PoeHUD.Game
 {
-	public class Link
+	[Obsolete]
+    public class LegacyLink
 	{
-		public static readonly Link EmptyLink = new Link(new Socket[0]);
-		private Socket[] link;
+		public static readonly LegacyLink EmptyLegacyLink = new LegacyLink(new LegacySocket[0]);
+		private LegacySocket[] link;
 		public int Length
 		{
 			get
@@ -28,14 +30,14 @@ namespace PoeHUD.Game
 			get;
 			private set;
 		}
-		public Link(Socket[] sockets)
+		public LegacyLink(LegacySocket[] legacySockets)
 		{
-			this.link = sockets;
+			this.link = legacySockets;
 			this.CountColors();
 		}
-		public Link(string sockets)
+		public LegacyLink(string sockets)
 		{
-			this.link = new Socket[sockets.Length];
+			this.link = new LegacySocket[sockets.Length];
 			for (int i = 0; i < sockets.Length; i++)
 			{
 				this.link[i] = this.CharToSocket(sockets.ToCharArray()[i]);
@@ -44,41 +46,41 @@ namespace PoeHUD.Game
 		}
 		private void CountColors()
 		{
-			Socket[] array = this.link;
+			LegacySocket[] array = this.link;
 			for (int i = 0; i < array.Length; i++)
 			{
 				switch (array[i])
 				{
-				case Socket.Red:
+				case LegacySocket.Red:
 					this.NumberOfRed++;
 					break;
-				case Socket.Green:
+				case LegacySocket.Green:
 					this.NumberOfGreen++;
 					break;
-				case Socket.Blue:
+				case LegacySocket.Blue:
 					this.NumberOfBlue++;
 					break;
 				}
 			}
 		}
-		private Socket CharToSocket(char s)
+		private LegacySocket CharToSocket(char s)
 		{
 			char c = char.ToUpper(s);
 			if (c == 'B')
 			{
-				return Socket.Blue;
+				return LegacySocket.Blue;
 			}
 			if (c == 'G')
 			{
-				return Socket.Green;
+				return LegacySocket.Green;
 			}
 			if (c == 'R')
 			{
-				return Socket.Red;
+				return LegacySocket.Red;
 			}
 			throw new Exception("Invalid socket char: " + s);
 		}
-		public bool Contains(Link other)
+		public bool Contains(LegacyLink other)
 		{
 			return other.NumberOfRed <= this.NumberOfRed && other.NumberOfGreen <= this.NumberOfGreen && other.NumberOfBlue <= this.NumberOfBlue;
 		}

@@ -1,4 +1,4 @@
-namespace PoeHUD.Game
+namespace PoeHUD.Game.Enums
 {
 	public enum ItemRarity
 	{

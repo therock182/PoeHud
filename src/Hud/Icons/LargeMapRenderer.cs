@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Hud.Icons
 {
-	public class LargeMapRenderer : HUDPluginBase
+	public class LargeMapRenderer : HudPluginBase
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
 
@@ -24,20 +25,20 @@ namespace PoeHUD.Hud.Icons
 
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
-			if (!model.InGame || !Settings.GetBool("MinimapIcons"))
+			if (!GameController.InGame || !Settings.GetBool("MinimapIcons"))
 			{
 				return;
 			}
-			bool largeMapVisible = model.Internal.IngameState.IngameUi.Minimap.OrangeWords.IsVisible;
+			bool largeMapVisible = GameController.Game.IngameState.IngameUi.Minimap.OrangeWords.IsVisible;
 			if (!largeMapVisible)
 				return;
 
-			var camera = model.Internal.game.IngameState.Camera;
-			BigMinimap mapWindow = model.Internal.game.IngameState.IngameUi.Minimap;
+			var camera = GameController.Game.IngameState.Camera;
+			BigMinimap mapWindow = GameController.Game.IngameState.IngameUi.Minimap;
 			Rect rcMap = mapWindow.GetClientRect();
 
-			Vec2 playerPos = model.Player.GetComponent<Positioned>().GridPos;
-			float pPosZ = model.Player.GetComponent<Render>().Z;
+			Vec2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+			float pPosZ = GameController.Player.GetComponent<Render>().Z;
 			Vec2 screenCenter = new Vec2(rcMap.W / 2, rcMap.H / 2) + new Vec2(rcMap.X, rcMap.Y);
 			float diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
 

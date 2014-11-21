@@ -1,15 +1,18 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using PoeHUD.Framework.Enums;
 
 namespace PoeHUD.Framework
 {
 	public class Imports
 	{
-		[DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        /*
+		[DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true,BestFitMapping = false)]
 		public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+         */
 		[DllImport("kernel32.dll")]
-		public static extern IntPtr OpenProcess(uint access, bool inheritHandle, int processId);
+        public static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool inheritHandle, int processId);
 		[DllImport("kernel32.dll", SetLastError = true)]
 		public static extern int CloseHandle(IntPtr hObject);
 		[DllImport("kernel32.dll")]

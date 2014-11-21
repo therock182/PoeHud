@@ -6,17 +6,13 @@ namespace PoeHUD.Poe.EntityComponents
         {
             get
             {
-                if (this.address == 0)
+                if (Address == 0)
                 {
                     return 0;
                 }
-                int res = this.m.ReadInt(this.address + 12);
+                int res = M.ReadInt(Address + 12);
                 return res;
             }
-        }
-
-        public Stack()
-        {
         }
     }
 }

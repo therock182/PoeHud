@@ -5,28 +5,28 @@ using System.Linq;
 using System.Text;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.DPS
 {
-	public class DpsMeter : HUDPluginBase
+	public class DpsMeter : HudPluginBase
 	{
 		private bool hasStarted;
 		private DateTime lastCalcTime;
 		private Dictionary<int, int> lastEntities;
-		private DateTime startTime;
-
+	    
 		
 		private const float dps_period = 0.2f;
 		private readonly float[] damageMemory = new float[10];
 		private int ixDamageMemory;
-		private int maxDps = 0;
+		private int maxDps;
 
 		public override void OnEnable()
 		{
 			lastEntities = new Dictionary<int, int>();
-			model.Area.OnAreaChange += CurrentArea_OnAreaChange;
+			GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
 		}
 
 		private void CurrentArea_OnAreaChange(AreaController area)
@@ -81,11 +81,10 @@ namespace PoeHUD.Hud.DPS
 
 		private float CalculateDps(TimeSpan dt)
 		{
-			Dictionary<int, int> currentEntities = new Dictionary<int, int>();
+			var currentEntities = new Dictionary<int, int>();
+            int damageDoneThisCycle = 0;
 
-			int damageDoneThisCycle = 0;
-
-			foreach (var entity in model.Entities.Where(x => x.HasComponent<Poe.EntityComponents.Monster>() && x.IsHostile))
+			foreach (var entity in GameController.Entities.Where(x => x.HasComponent<Poe.EntityComponents.Monster>() && x.IsHostile))
 			{
 				int entityEHP = entity.IsAlive ? entity.GetComponent<Life>().CurHP + entity.GetComponent<Life>().CurES : 0;
 				if (entityEHP > 10000000 || entityEHP < -1000000) //discard those - read form invalid addresses

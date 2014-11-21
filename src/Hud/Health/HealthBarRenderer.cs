@@ -5,13 +5,15 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Game;
+using PoeHUD.Game.Enums;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using SlimDX.Direct3D9;
 
 
 namespace PoeHUD.Hud.Health
 {
-	public class HealthBarRenderer : HUDPluginBase, EntityListObserver
+	public class HealthBarRenderer : HudPluginBase, EntityListObserver
 	{
 		private List<Healthbar>[] healthBars;
 		public override void OnEnable()
@@ -22,7 +24,7 @@ namespace PoeHUD.Hud.Health
 				this.healthBars[i] = new List<Healthbar>();
 			}
 
-			foreach (EntityWrapper current in this.model.Entities)
+			foreach (EntityWrapper current in this.GameController.Entities)
 			{
 				this.EntityAdded(current);
 			}
@@ -48,16 +50,16 @@ namespace PoeHUD.Hud.Health
 
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
-			if (!this.model.InGame || !Settings.GetBool("Healthbars"))
+			if (!this.GameController.InGame || !Settings.GetBool("Healthbars"))
 			{
 				return;
 			}
-			if (!Settings.GetBool("Healthbars.ShowInTown") && this.model.Area.CurrentArea.IsTown)
+			if (!Settings.GetBool("Healthbars.ShowInTown") && this.GameController.Area.CurrentArea.IsTown)
 			{
 				return;
 			}
-			float clientWidth = (float)this.model.Window.ClientRect().W / 2560f;
-			float clientHeight = (float)this.model.Window.ClientRect().H / 1600f;
+			float clientWidth = (float)this.GameController.Window.ClientRect().W / 2560f;
+			float clientHeight = (float)this.GameController.Window.ClientRect().H / 1600f;
 			List<Healthbar>[] array = this.healthBars;
 			for (int i = 0; i < array.Length; i++)
 			{
@@ -65,7 +67,7 @@ namespace PoeHUD.Hud.Health
 				foreach (Healthbar current in array[i].Where(x => x.entity.IsAlive && Settings.GetBool(x.settings)))
 				{
 					Vec3 worldCoords = current.entity.Pos;
-					Vec2 mobScreenCoords = this.model.Internal.IngameState.Camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f));
+					Vec2 mobScreenCoords = this.GameController.Game.IngameState.Camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f));
 					// System.Diagnostics.Debug.WriteLine("{0} is at {1} => {2} on screen", current.entity.Path, worldCoords, mobScreenCoords);
 					if (mobScreenCoords != Vec2.Empty)
 					{

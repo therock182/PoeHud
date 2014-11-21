@@ -1,12 +1,8 @@
 namespace PoeHUD.Game
 {
-	public class Constants
-	{
-		public static uint[] PlayerXpLevels;
-		static Constants()
-		{
-			Constants.PlayerXpLevels = new uint[]
-			{
+    public static class Constants
+    {
+        public static readonly uint[] PlayerXpLevels = {
 				0u,
 				0u,
 				525u,
@@ -109,6 +105,5 @@ namespace PoeHUD.Game
 				3932818530u,
 				4250334444u
 			};
-		}
-	}
+    }
 }

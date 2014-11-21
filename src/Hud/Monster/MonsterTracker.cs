@@ -5,13 +5,15 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Game;
+using PoeHUD.Game.Enums;
 using PoeHUD.Hud.Icons;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class MonsterTracker : HUDPluginBase, EntityListObserver, HUDPluginWithMapIcons
+	public class MonsterTracker : HudPluginBase, EntityListObserver, IHudPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;
@@ -25,10 +27,10 @@ namespace PoeHUD.Hud.Monster
 			this.alreadyAlertedOf = new HashSet<int>();
 			this.alertTexts = new Dictionary<EntityWrapper, string>();
 			this.InitAlertStrings();
-			this.model.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
+			this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
 			currentIcons.Clear();
-			foreach (EntityWrapper current in this.model.Entities)
+			foreach (EntityWrapper current in this.GameController.Entities)
 			{
 				this.EntityAdded(current);
 			}
@@ -97,11 +99,11 @@ namespace PoeHUD.Hud.Monster
 			{
 				return;
 			}
-			Rect rect = this.model.Window.ClientRect();
+			Rect rect = this.GameController.Window.ClientRect();
 			int xScreenCenter = rect.W / 2 + rect.X;
 			int yPos = rect.H / 5 + rect.Y;
 
-			var playerPos = this.model.Player.GetComponent<Positioned>().GridPos;
+			var playerPos = this.GameController.Player.GetComponent<Positioned>().GridPos;
 			int fontSize = Settings.GetInt("MonsterTracker.ShowText.FontSize");
 			bool first = true;
 			Rect rectBackground = new Rect();

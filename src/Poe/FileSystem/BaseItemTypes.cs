@@ -5,36 +5,39 @@ using PoeHUD.Framework;
 
 namespace PoeHUD.Poe.Files
 {
-	public class BaseItemTypes : FileInMemory
-	{
-		private Dictionary<string, string> contents = new Dictionary<string, string>();
+    public class BaseItemTypes : FileInMemory
+    {
+        private readonly Dictionary<string, string> contents = new Dictionary<string, string>();
 
-		public BaseItemTypes(Memory m, int address) : base(m, address) {}
-		public string Translate(string metadata)
-		{
-			if (!this.contents.ContainsKey(metadata))
-			{
-				loadItemTypes();
-			}
-			if (!this.contents.ContainsKey(metadata))
-			{
-				Console.WriteLine("Key not found in BaseItemTypes: " + metadata);
-				return metadata;
-			}
-			return this.contents[metadata];
-		}
+        public BaseItemTypes(Memory m, int address) : base(m, address)
+        {
+        }
 
-		private void loadItemTypes()
-		{
-			foreach (int i in RecordAdresses())
-			{
-				string key = this.m.ReadStringU(this.m.ReadInt(i), 256, true);
-				string value = this.m.ReadStringU(this.m.ReadInt(i + 16), 256, true);
-				if (!this.contents.ContainsKey(key))
-				{
-					this.contents.Add(key, value);
-				}
-			}
-		}
-	}
+        public string Translate(string metadata)
+        {
+            if (!contents.ContainsKey(metadata))
+            {
+                loadItemTypes();
+            }
+            if (!contents.ContainsKey(metadata))
+            {
+                Console.WriteLine("Key not found in BaseItemTypes: " + metadata);
+                return metadata;
+            }
+            return contents[metadata];
+        }
+
+        private void loadItemTypes()
+        {
+            foreach (int i in RecordAddresses())
+            {
+                string key = M.ReadStringU(M.ReadInt(i));
+                string value = M.ReadStringU(M.ReadInt(i + 16));
+                if (!contents.ContainsKey(key))
+                {
+                    contents.Add(key, value);
+                }
+            }
+        }
+    }
 }

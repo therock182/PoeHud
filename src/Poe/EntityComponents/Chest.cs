@@ -1,20 +1,15 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class Chest : Component
-	{
-		public bool IsOpened
-		{
-			get
-			{
-				return this.address != 0 && this.m.ReadByte(this.address + 36) == 1;
-			}
-		}
-		public bool IsStrongbox
-		{
-			get
-			{
-				return this.address != 0 && this.m.ReadInt(this.address + 52) != 0;
-			}
-		}
-	}
+    public class Chest : Component
+    {
+        public bool IsOpened
+        {
+            get { return Address != 0 && M.ReadByte(Address + 36) == 1; }
+        }
+
+        public bool IsStrongbox
+        {
+            get { return Address != 0 && M.ReadInt(Address + 52) != 0; }
+        }
+    }
 }

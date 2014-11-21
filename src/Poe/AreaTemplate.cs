@@ -1,51 +1,37 @@
 namespace PoeHUD.Poe
 {
-	public class AreaTemplate : RemoteMemoryObject
-	{
-		public string RawName
-		{
-			get
-			{
-				return this.m.ReadStringU(this.m.ReadInt(this.address), 256, true);
-			}
-		}
-		public string Name
-		{
-			get
-			{
-				return this.m.ReadStringU(this.m.ReadInt(this.address + 4), 256, true);
-			}
-		}
-		public int Act
-		{
-			get
-			{
-				return this.m.ReadInt(this.address + 8);
-			}
-		}
-		public bool IsTown
-		{
-			get
-			{
-				return (this.m.ReadInt(this.address + 12) & 1) == 1;
-			}
-		}
-		public bool HasWaypoint
-		{
-			get
-			{
-				return (this.m.ReadInt(this.address + 13) & 1) == 1;
-			}
-		}
+    public class AreaTemplate : RemoteMemoryObject
+    {
+        public string RawName
+        {
+            get { return M.ReadStringU(M.ReadInt(Address)); }
+        }
 
-		public int NominalLevel
-		{
-			get
-			{
-				return (this.m.ReadInt(this.address + 0x16));
-			}
-		}
-	}
+        public string Name
+        {
+            get { return M.ReadStringU(M.ReadInt(Address + 4)); }
+        }
+
+        public int Act
+        {
+            get { return M.ReadInt(Address + 8); }
+        }
+
+        public bool IsTown
+        {
+            get { return (M.ReadInt(Address + 12) & 1) == 1; }
+        }
+
+        public bool HasWaypoint
+        {
+            get { return (M.ReadInt(Address + 13) & 1) == 1; }
+        }
+
+        public int NominalLevel
+        {
+            get { return (M.ReadInt(Address + 0x16)); }
+        }
+    }
 
 
 /*
@@ -115,5 +101,4 @@ namespace PoeHUD.Poe
 000000E9 field_E9 dw ?
 000000EB POE_Area ends
 	 * */
-
 }

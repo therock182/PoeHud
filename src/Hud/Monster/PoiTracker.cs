@@ -3,20 +3,21 @@ using System.IO;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class PoiTracker : HUDPluginBase, EntityListObserver, HUDPluginWithMapIcons
+	public class PoiTracker : HudPluginBase, EntityListObserver, IHudPluginWithMapIcons
 	{
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
 		public override void OnEnable()
 		{
-			this.model.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
+			this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
 			currentIcons.Clear();
-			foreach (EntityWrapper current in this.model.Entities)
+			foreach (EntityWrapper current in this.GameController.Entities)
 			{
 				this.EntityAdded(current);
 			}

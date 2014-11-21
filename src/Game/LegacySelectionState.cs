@@ -1,6 +1,9 @@
+using System;
+
 namespace PoeHUD.Game
 {
-	public enum SelectionState
+    [Obsolete]
+	public enum LegacySelectionState
 	{
 		None,
 		HoldingItem,

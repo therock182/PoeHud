@@ -1,4 +1,5 @@
 using PoeHUD.Game;
+using PoeHUD.Game.Enums;
 
 namespace PoeHUD.Hud.Loot
 {

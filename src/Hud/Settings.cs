@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PoeHUD.Hud
 {
-	public class Settings
+	public static class Settings
 	{
 		private static Dictionary<string, bool> bools;
 		private static Dictionary<string, int> ints;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
 using PoeHUD.Poe.UI;
 using SlimDX.Direct3D9;
@@ -8,7 +9,7 @@ using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud
 {
-	public class ItemLevelRenderer : HUDPluginBase
+	public class ItemLevelRenderer : HudPluginBase
 	{
 		public override void OnEnable()
 		{
@@ -22,9 +23,9 @@ namespace PoeHUD.Hud
 			{
 				return;
 			}
-			Element uIHover = this.model.Internal.IngameState.UIHover;
+			Element uIHover = this.GameController.Game.IngameState.UIHover;
 			Entity item = uIHover.AsObject<InventoryItemIcon>().Item;
-			if (item.address != 0 && item.IsValid)
+			if (item.Address != 0 && item.IsValid)
 			{
 				Tooltip tooltip = uIHover.AsObject<InventoryItemIcon>().Tooltip;
 				if (tooltip == null)

@@ -1,6 +1,6 @@
 namespace PoeHUD.Poe.EntityComponents
 {
-	public class Monster : Component
-	{
-	}
+    public class Monster : Component
+    {
+    }
 }
