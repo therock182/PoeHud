@@ -5,8 +5,8 @@ namespace PoeHUD.Poe
     public abstract class RemoteMemoryObject
     {
         public int Address { get; protected set; }
-        public TheGame Game { get; protected set; }
-        public Memory M { get; protected set; }
+        protected TheGame Game { get;  set; }
+        protected Memory M { get;  set; }
 
 
         protected Offsets Offsets
