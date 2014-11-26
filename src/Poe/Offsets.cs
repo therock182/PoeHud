@@ -4,8 +4,8 @@ namespace PoeHUD.Poe
 {
     public class Offsets
     {
-        public static Offsets Regular = new Offsets {IgsOffset = 0, IgsDelta = 0, ExeName = "PathOfExile"};
-        public static Offsets Steam = new Offsets {IgsOffset = 24, IgsDelta = 0, ExeName = "PathOfExileSteam"};
+        public static Offsets Regular = new Offsets { IgsOffset = 0, IgsDelta = 0, ExeName = "PathOfExile" };
+        public static Offsets Steam = new Offsets { IgsOffset = 24, IgsDelta = 0, ExeName = "PathOfExileSteam" };
         /* offsets from some older steam version: 
 		 	Base = 8841968;
 			FileRoot = 8820476;
@@ -86,17 +86,31 @@ namespace PoeHUD.Poe
             0x00, 0x8B, 0, 0, 0x80, 0xB8, 0, 0, 0, 0, 0x00, 0x75, 0x12
         }, "xx??xx????xxx");
 
-        public int AreaChangeCount;
-        public int Base;
-        public string ExeName = "PathOfExile";
-        public int FileRoot;
-        public int Fullbright1;
-        public int Fullbright2;
-        public int IgsDelta;
-        public int IgsOffset;
-        public int MaphackFunc;
-        public int ParticlesCode;
-        public int ZoomHackFunc;
+
+        private static readonly Pattern FpsPattern = new Pattern(new byte[]
+        {
+            0,0,0x46,0,0,0,0xFA,0,0,0,0x96,0x000000FF,0xFF,0xFF,0xFF,0,0,0,0,0,0,0,0,0
+        }, "xxxxxxxxxxxxxxxxxxxxxxxx");
+
+
+
+        public int AreaChangeCount { get; private set; }
+        public int Base { get; private set; }
+        public string ExeName { get; private set; }
+        public int FileRoot { get; private set; }
+        public int Fullbright1 { get; private set; }
+        public int Fullbright2 { get; private set; }
+        public int IgsDelta { get; private set; }
+        public int IgsOffset { get; private set; }
+        public int MaphackFunc { get; private set; }
+        public int ParticlesCode { get; private set; }
+        public int ZoomHackFunc { get; private set; }
+
+        public int IgsOffsetDelta 
+        {
+            get { return IgsOffset - IgsDelta; }
+        }
+
 
 
         public void DoPatternScans(Memory m)

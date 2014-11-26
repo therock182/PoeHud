@@ -45,7 +45,7 @@ namespace PoeHUD.Controllers
 
         public FsController Files { get; private set; }
 
-        public EntityListObserver EntityListObserver
+        public IEntityListObserver EntityListObserver
         {
             get { return entityListWrapper.Observer; }
             set { entityListWrapper.Observer = value; }

@@ -57,7 +57,7 @@ namespace PoeHUD.Hud
 			}
 
 			OverlayRenderer overlay = null;
-			AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs exceptionArgs)
+			AppDomain.CurrentDomain.UnhandledException += ( sender,  exceptionArgs)=>
 			{
 				if (overlay != null)
 				{

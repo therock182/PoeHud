@@ -16,7 +16,7 @@ using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : HudPluginBase, EntityListObserver, IHudPluginWithMapIcons
+	public class ItemAlerter : HudPluginBase, IEntityListObserver, IHudPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;

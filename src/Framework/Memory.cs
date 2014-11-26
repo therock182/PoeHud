@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using PoeHUD.Framework.Enums;
@@ -59,7 +60,7 @@ namespace PoeHUD.Framework
             return BitConverter.ToInt32(ReadMem(addr, 4), 0);
         }
 
-        public int ReadInt(int addr,  params int[] offsets)
+        public int ReadInt(int addr, params int[] offsets)
         {
             int num = ReadInt(addr);
             for (int i = 0; i < offsets.Length; i++)
@@ -97,7 +98,7 @@ namespace PoeHUD.Framework
         /// <param name="length"></param>
         /// <param name="replaceNull"></param>
         /// <returns></returns>
-        public string ReadString(int addr, int length=256, bool replaceNull = true)
+        public string ReadString(int addr, int length = 256, bool replaceNull = true)
         {
             if (addr <= 65536 && addr >= -1)
             {
@@ -195,14 +196,14 @@ namespace PoeHUD.Framework
         private byte[] ReadMem(int addr, int size)
         {
             var array = new byte[size];
-            Imports.ReadProcessMemory(procHandle, (IntPtr) addr, array, size, 0);
+            Imports.ReadProcessMemory(procHandle, (IntPtr)addr, array, size, 0);
             return array;
         }
 
         private void WriteMem(int addr, byte[] data)
         {
             int num = 0;
-            if (!Imports.WriteProcessMemory(procHandle, new IntPtr(addr), data, (uint) data.Length, out num))
+            if (!Imports.WriteProcessMemory(procHandle, new IntPtr(addr), data, (uint)data.Length, out num))
             {
                 Console.WriteLine(string.Concat(new object[]
                 {
@@ -252,6 +253,7 @@ namespace PoeHUD.Framework
             return address;
         }
 
+   
         private bool CompareData(Pattern pattern, byte[] data, int offset)
         {
             for (int i = 0; i < pattern.Bytes.Length; i++)

@@ -13,7 +13,7 @@ using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class MonsterTracker : HudPluginBase, EntityListObserver, IHudPluginWithMapIcons
+	public class MonsterTracker : HudPluginBase, IEntityListObserver, IHudPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;

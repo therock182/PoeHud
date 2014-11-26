@@ -7,7 +7,7 @@
         {
             get
             {
-                return m.ReadInt(this.address + 0x860) == 1;
+                return M.ReadInt(this.Address + 0x860) == 1;
             }
         }
     }

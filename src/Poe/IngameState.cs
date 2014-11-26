@@ -6,13 +6,13 @@ namespace PoeHUD.Poe
     {
         public Camera Camera
         {
-            get { return base.GetObject<Camera>(Address + 0x15B4 + Offsets.IgsOffset - Offsets.IgsDelta); }
+            get { return base.GetObject<Camera>(Address + 0x15B4 + Offsets.IgsOffsetDelta); }
         }
 
         public float CurrentZoomLevel
         {
-            get { return M.ReadFloat(Address + 0x1694 + Offsets.IgsOffset - Offsets.IgsDelta); }
-            set { M.WriteFloat(Address + 0x1694 + Offsets.IgsOffset - Offsets.IgsDelta, value); }
+            get { return M.ReadFloat(Address + 0x1694 + Offsets.IgsOffsetDelta); }
+            set { M.WriteFloat(Address + 0x1694 + Offsets.IgsOffsetDelta, value); }
         }
 
         public IngameData Data

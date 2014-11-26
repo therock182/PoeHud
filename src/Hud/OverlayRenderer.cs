@@ -58,7 +58,7 @@ namespace PoeHUD.Hud
 		private void UpdateObserverLists()
 		{
 			EntityListObserverComposite observer = new EntityListObserverComposite();
-			observer.Observers.AddRange(plugins.OfType<EntityListObserver>());
+			observer.Observers.AddRange(plugins.OfType<IEntityListObserver>());
 			gameController.EntityListObserver = observer;
 		}
 

@@ -1,126 +1,121 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using PoeHUD.Poe;
 
 namespace PoeHUD.Controllers
 {
-	public interface EntityListObserver {
-		void EntityAdded(EntityWrapper entity);
-		void EntityRemoved(EntityWrapper entity);
-	}
+    public class EntityListWrapper
+    {
+        private readonly GameController gameController;
+        private readonly HashSet<string> ignoredEntities;
 
+        public IEntityListObserver Observer = new EntityListBlankObserver();
+        private Dictionary<int, EntityWrapper> entityCache;
+        private Stopwatch stopwatch = new Stopwatch();
 
-	public class EntityListObserverComposite : EntityListObserver
-	{
-		public readonly List<EntityListObserver> Observers = new List<EntityListObserver>();
-		public void EntityRemoved(EntityWrapper entity)
-		{
-			foreach (var observer in Observers)
-				observer.EntityRemoved(entity);
-		}
+        public EntityListWrapper(GameController gameController)
+        {
+            this.gameController = gameController;
+            entityCache = new Dictionary<int, EntityWrapper>();
+            ignoredEntities = new HashSet<string>();
+            gameController.Area.OnAreaChange += AreaChanged;
+        }
 
-		public void EntityAdded(EntityWrapper entity)
-		{
-			foreach (var observer in Observers)
-				observer.EntityAdded(entity);
-		}
-	}
+        public ICollection<EntityWrapper> Entities
+        {
+            get { return entityCache.Values; }
+        }
 
+        public EntityWrapper Player { get; private set; }
 
-	public class EntityListWrapper
-	{
-		private class EntityListBlankObserver : EntityListObserver
-		{
-			public void EntityAdded(EntityWrapper entity) { }
-			public void EntityRemoved(EntityWrapper entity) { }
-		}
+        public IDictionary<int, EntityWrapper> EntitiesCache
+        {
+            get { return entityCache; }
+        }
 
-		private readonly GameController Root;
-		private Dictionary<int, EntityWrapper> entityCache;
-		private readonly HashSet<string> ignoredEntities;
-		private Stopwatch stopwatch = new Stopwatch();
+        private void AreaChanged(AreaController area)
+        {
+            ignoredEntities.Clear();
+            foreach (EntityWrapper current in entityCache.Values)
+            {
+                current.IsInList = false;
+                Observer.EntityRemoved(current);
+            }
+            entityCache.Clear();
+            int address = gameController.Game.IngameState.Data.LocalPlayer.Address;
+            if (Player == null || Player.Address != address)
+            {
+                Player = new EntityWrapper(gameController, address);
+            }
+        }
 
-		public EntityListObserver Observer = new EntityListBlankObserver();
+        public void RefreshState()
+        {
+            int address = gameController.Game.IngameState.Data.LocalPlayer.Address;
+            if ((Player == null) || (Player.Address != address))
+            {
+                Player = new EntityWrapper(gameController, address);
+            }
 
-		public ICollection<EntityWrapper> Entities { get { return this.entityCache.Values; } }
+            Dictionary<int, Entity> currentEntities =
+                gameController.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
+            var newCache = new Dictionary<int, EntityWrapper>();
+            foreach (var kv in currentEntities)
+            {
+                int key = kv.Key;
+                string item = kv.Value.Path + key;
+                if (ignoredEntities.Contains(item))
+                    continue;
 
-		public EntityWrapper Player { get; private set; }
+                if (entityCache.ContainsKey(key) && entityCache[key].IsValid)
+                {
+                    newCache.Add(key, entityCache[key]);
+                    entityCache[key].IsInList = true;
+                    entityCache.Remove(key);
+                    continue;
+                }
 
-		public IDictionary<int, EntityWrapper> EntitiesCache { get { return this.entityCache; } }
+                if (entityCache.ContainsKey(key))
+                    entityCache.Remove(key);
 
-		public EntityListWrapper(GameController root)
-		{
-			this.Root = root;
-			this.entityCache = new Dictionary<int, EntityWrapper>();
-			this.ignoredEntities = new HashSet<string>();
-			Root.Area.OnAreaChange += this.AreaChanged;
-		}
-		private void AreaChanged(AreaController area)
-		{
-			this.ignoredEntities.Clear();
-			foreach (EntityWrapper current in this.entityCache.Values)
-			{
-				current.IsInList = false;
-				this.Observer.EntityRemoved(current);
-			}
-			this.entityCache.Clear();
-			int address = this.Root.Game.IngameState.Data.LocalPlayer.Address;
-			if (this.Player == null || this.Player.Address != address) {
-				this.Player = new EntityWrapper(this.Root, address);
-			}
-		}
-		public void RefreshState()
-		{
-			int address = this.Root.Game.IngameState.Data.LocalPlayer.Address;
-			if ((this.Player == null) || (this.Player.Address != address))
-			{
-				this.Player = new EntityWrapper(this.Root, address);
-			}
+                var entity = new EntityWrapper(gameController, kv.Value);
+                if ((entity.Path.StartsWith("Metadata/Effects") || ((kv.Key & 0x80000000L) != 0L)) ||
+                    entity.Path.StartsWith("Metadata/Monsters/Daemon"))
+                {
+                    ignoredEntities.Add(item);
+                    continue;
+                }
 
-			Dictionary<int, Poe.Entity> currentEntities = this.Root.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
-			Dictionary<int, EntityWrapper> newCache = new Dictionary<int, EntityWrapper>();
-			foreach (KeyValuePair<int, Poe.Entity> kv in currentEntities)
-			{
-				int key = kv.Key;
-				string item = kv.Value.Path + key;
-				if (this.ignoredEntities.Contains(item)) 
-					continue;
+                if (!entity.IsValid)
+                    continue;
 
-				if (this.entityCache.ContainsKey(key) && this.entityCache[key].IsValid)
-				{
-					newCache.Add(key, this.entityCache[key]);
-					this.entityCache[key].IsInList = true;
-					this.entityCache.Remove(key);
-					continue;
-				}
+                Observer.EntityAdded(entity);
+                newCache.Add(key, entity);
+            }
 
-				if (this.entityCache.ContainsKey(key))
-					this.entityCache.Remove(key);
+            foreach (EntityWrapper entity2 in entityCache.Values)
+            {
+                Observer.EntityRemoved(entity2);
+                entity2.IsInList = false;
+            }
+            entityCache = newCache;
+        }
 
-				EntityWrapper entity = new EntityWrapper(this.Root, kv.Value);
-				if ((entity.Path.StartsWith("Metadata/Effects") || ((((long) kv.Key) & 0x80000000L) != 0L)) || entity.Path.StartsWith("Metadata/Monsters/Daemon")) {
-					this.ignoredEntities.Add(item);
-					continue;
-				}
+        public EntityWrapper GetByID(int id)
+        {
+            EntityWrapper result;
+            return entityCache.TryGetValue(id, out result) ? result : null;
+        }
 
-				if (!entity.IsValid)
-					continue;
+        private class EntityListBlankObserver : IEntityListObserver
+        {
+            public void EntityAdded(EntityWrapper entity)
+            {
+            }
 
-				Observer.EntityAdded(entity);
-				newCache.Add(key, entity);
-			}
-
-			foreach (EntityWrapper entity2 in this.entityCache.Values)
-			{
-				Observer.EntityRemoved(entity2);
-				entity2.IsInList = false;
-			}
-			this.entityCache = newCache;
-		}
-
-		public EntityWrapper GetByID(int id)
-		{
-			EntityWrapper result;
-			return entityCache.TryGetValue(id, out result) ? result : null;
-		}
-	}
+            public void EntityRemoved(EntityWrapper entity)
+            {
+            }
+        }
+    }
 }

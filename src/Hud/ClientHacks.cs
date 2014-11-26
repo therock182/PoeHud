@@ -127,18 +127,13 @@ namespace PoeHUD.Hud
 
         private void EnableZoomhack()
         {
-            m.WriteBytes(m.AddressOfProcess + m.offsets.ZoomHackFunc, new byte[]
-            {
-                16
-            });
+            m.WriteBytes(m.AddressOfProcess + m.offsets.ZoomHackFunc, 16);
+
         }
 
         private void DisableZoomhack()
         {
-            m.WriteBytes(m.AddressOfProcess + m.offsets.ZoomHackFunc, new byte[]
-            {
-                20
-            });
+            m.WriteBytes(m.AddressOfProcess + m.offsets.ZoomHackFunc, 20);
         }
 
         private void EnableMaphack()

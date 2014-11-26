@@ -9,7 +9,7 @@ namespace PoeHUD.Controllers
     public class EntityWrapper
     {
         private readonly Poe.Entity internalEntity;
-        private readonly GameController root;
+        private readonly GameController gameController;
         private readonly Dictionary<string, int> components;
         private readonly int cachedId;
         public bool IsInList = true;
@@ -33,12 +33,12 @@ namespace PoeHUD.Controllers
         {
             get
             {
-                return this.GetComponent<Actor>().Minions.Select(current => root.GetEntityById(current)).Where(byId => byId != null).ToList();
+                return this.GetComponent<Actor>().Minions.Select(current => gameController.GetEntityById(current)).Where(byId => byId != null).ToList();
             }
         }
         public EntityWrapper(GameController Poe, Poe.Entity entity)
         {
-            this.root = Poe;
+            this.gameController = Poe;
             this.internalEntity = entity;
             this.components = this.internalEntity.GetComponents();
             this.Path = this.internalEntity.Path;
@@ -52,7 +52,7 @@ namespace PoeHUD.Controllers
         public T GetComponent<T>() where T : Component, new()
         {
             string name = typeof(T).Name;
-            return this.root.Game.GetObject<T>(this.components.ContainsKey(name) ? this.components[name] : 0);
+            return this.gameController.Game.GetObject<T>(this.components.ContainsKey(name) ? this.components[name] : 0);
         }
         public bool HasComponent<T>() where T : Component, new()
         {

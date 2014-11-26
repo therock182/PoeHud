@@ -282,6 +282,7 @@ namespace PoeHUD.Hud.Preload
             alertStrings.Add("Metadata/NPC/Missions/Wild/StrDex", "Area contains Vagan, Weaponmaster");
             alertStrings.Add("Metadata/NPC/Missions/Wild/StrDexInt", "Area contains Zana, Master Cartographer");
             alertStrings.Add("Metadata/NPC/Missions/Wild/StrInt", "Area contains Elreon, Loremaster");
+            alertStrings.Add("Metadata/NPC/Missions/Wild/Fish", "Area contains Krillson, Master Fisherman");
         }
     }
 }
