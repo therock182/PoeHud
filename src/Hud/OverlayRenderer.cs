@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 //using PoeHUD.Hud.Debug;
 using System.Linq;
@@ -16,123 +17,121 @@ using PoeHUD.Hud.XpRate;
 namespace PoeHUD.Hud
 {
 
-	public class OverlayRenderer
-	{
-		private readonly List<IHudPlugin> plugins;
-		private readonly GameController gameController;
-		private int _modelUpdatePeriod;
-		public OverlayRenderer(GameController gameController, RenderingContext rc)
-		{
-			this.gameController = gameController;
-			gameController.Area.OnAreaChange += area => _modelUpdatePeriod = 6;
+    public class OverlayRenderer
+    {
+        private readonly List<HudPluginBase> plugins;
+        private readonly GameController gameController;
+        private int _modelUpdatePeriod;
+        public OverlayRenderer(GameController gameController, RenderingContext rc)
+        {
+            this.gameController = gameController;
+            gameController.Area.OnAreaChange += area => _modelUpdatePeriod = 6;
 
-			this.plugins = new List<IHudPlugin>{
-				new HealthBarRenderer(),
-				new ItemAlerter(),
-				new MinimapRenderer(gatherMapIcons),
-				new LargeMapRenderer(gatherMapIcons),
-				new ItemLevelRenderer(),
-				new ItemRollsRenderer(),
-				new MonsterTracker(),
-				new PoiTracker(),
-				new XPHRenderer(),
-				new ClientHacks(),
-	#if DEBUG
+            this.plugins = new List<HudPluginBase>{
+				new HealthBarRenderer(gameController),
+				new ItemAlerter(gameController),
+				new MinimapRenderer(gameController,gatherMapIcons),
+				new LargeMapRenderer(gameController,gatherMapIcons),
+				new ItemLevelRenderer(gameController),
+				new ItemRollsRenderer(gameController),
+				new MonsterTracker(gameController),
+				new PoiTracker(gameController),
+				new XPHRenderer(gameController),
+				new ClientHacks(gameController),
+	//#if DEBUG
 			//	new ShowUiHierarchy(),
-	#endif
-				new PreloadAlert(),
-				new DpsMeter(),
+	//#endif
+				new PreloadAlert(gameController),
+				new DpsMeter(gameController),
 			};
-			if (Settings.GetBool("Window.ShowIngameMenu"))
-			{
-	#if !DEBUG
-				this.plugins.Add(new Menu.Menu());
-	#endif
-			}
-			UpdateObserverLists();
-			rc.OnRender += this.rc_OnRender;
+            if (Settings.GetBool("Window.ShowIngameMenu"))
+            {
+                //#if !DEBUG
+                this.plugins.Add(new Menu.Menu(gameController));
+                //	#endif
+            }
+            UpdateObserverLists();
+            rc.OnRender += this.rc_OnRender;
 
-			this.plugins.ForEach(x => x.Init(gameController));
-		}
 
-		private void UpdateObserverLists()
-		{
-			EntityListObserverComposite observer = new EntityListObserverComposite();
-			observer.Observers.AddRange(plugins.OfType<IEntityListObserver>());
-			gameController.EntityListObserver = observer;
-		}
+        }
 
-		private IEnumerable<MapIcon> gatherMapIcons()
-		{
-			foreach (IHudPlugin plugin in plugins)
-			{
-				IHudPluginWithMapIcons iconSource = plugin as IHudPluginWithMapIcons;
-				if (iconSource != null)
-				{
-					// kvPair.Value.RemoveAll(x => !x.IsEntityStillValid());
-					foreach (MapIcon icon in iconSource.GetIcons())
-						yield return icon;
-				}
-			}
-		}
+        private void UpdateObserverLists()
+        {
+            EntityListObserverComposite observer = new EntityListObserverComposite();
+            observer.Observers.AddRange(plugins.OfType<IEntityListObserver>());
+            gameController.EntityListObserver = observer;
+        }
 
-		private void rc_OnRender(RenderingContext rc)
-		{
-			if (Settings.GetBool("Window.RequireForeground") && !this.gameController.Window.IsForeground()) return;
+        private IEnumerable<MapIcon> gatherMapIcons()
+        {
+            var pluginsWithIcons = plugins.OfType<IHudPluginWithMapIcons>();
+            foreach (var iconSource in pluginsWithIcons)
+            {
+                // kvPair.Value.RemoveAll(x => !x.IsEntityStillValid());
+                foreach (MapIcon icon in iconSource.GetIcons())
+                    yield return icon;
+            }
+        }
 
-			this._modelUpdatePeriod++;
-			if (this._modelUpdatePeriod > 6)
-			{
-				this.gameController.RefreshState();
-				this._modelUpdatePeriod = 0;
-			}
-			bool ingame = this.gameController.InGame;
-			if ( !ingame || this.gameController.Player == null)
-			{
-				return;
-			}
+        private void rc_OnRender(RenderingContext rc)
+        {
+            if (Settings.GetBool("Window.RequireForeground") && !this.gameController.Window.IsForeground()) return;
 
-			Dictionary<UiMountPoint, Vec2> mountPoints = new Dictionary<UiMountPoint, Vec2>();
-			mountPoints[UiMountPoint.UnderMinimap] = GetRightTopUnderMinimap();
-			mountPoints[UiMountPoint.LeftOfMinimap] = GetRightTopLeftOfMinimap();
+            this._modelUpdatePeriod++;
+            if (this._modelUpdatePeriod > 6)
+            {
+                this.gameController.RefreshState();
+                this._modelUpdatePeriod = 0;
+            }
+            bool ingame = this.gameController.InGame;
+            if (!ingame || this.gameController.Player == null)
+            {
+                return;
+            }
 
-			foreach (IHudPlugin current in this.plugins)
-			{
-				current.Render(rc, mountPoints);
-			}
-		}
+            Dictionary<UiMountPoint, Vec2> mountPoints = new Dictionary<UiMountPoint, Vec2>();
+            mountPoints[UiMountPoint.UnderMinimap] = GetRightTopUnderMinimap();
+            mountPoints[UiMountPoint.LeftOfMinimap] = GetRightTopLeftOfMinimap();
 
-		private Vec2 GetRightTopLeftOfMinimap()
-		{
-			Rect clientRect = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
-			return new Vec2(clientRect.X - 10, clientRect.Y + 5);
-		}
+            foreach (HudPluginBase current in plugins)
+            {
+                current.Render(rc, mountPoints);
+            }
+        }
 
-		private Vec2 GetRightTopUnderMinimap()
-		{
-			var mm = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
-			var gl = gameController.Game.IngameState.IngameUi.GemLvlUpPanel;
-			Rect mmRect = mm.GetClientRect();
-			Rect glRect = gl.GetClientRect();
+        private Vec2 GetRightTopLeftOfMinimap()
+        {
+            Rect clientRect = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
+            return new Vec2(clientRect.X - 10, clientRect.Y + 5);
+        }
 
-			Rect clientRect;
-			if (gl.IsVisible && glRect.X + gl.Width < mmRect.X + mmRect.X + 50) // also this +50 value doesn't seems to have any impact
-				clientRect = glRect;
-			else
-				clientRect = mmRect;
-			return new Vec2(mmRect.X + mmRect.W, clientRect.Y + clientRect.H + 10);
-		}
+        private Vec2 GetRightTopUnderMinimap()
+        {
+            var mm = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
+            var gl = gameController.Game.IngameState.IngameUi.GemLvlUpPanel;
+            Rect mmRect = mm.GetClientRect();
+            Rect glRect = gl.GetClientRect();
 
-		public bool Detach() {
-			foreach (IHudPlugin current in this.plugins)
-				current.OnDisable();
-			return false;
-		}
-	}
+            Rect clientRect;
+            if (gl.IsVisible && glRect.X + gl.Width < mmRect.X + mmRect.X + 50) // also this +50 value doesn't seems to have any impact
+                clientRect = glRect;
+            else
+                clientRect = mmRect;
+            return new Vec2(mmRect.X + mmRect.W, clientRect.Y + clientRect.H + 10);
+        }
 
-	public enum UiMountPoint
-	{
-		UnderMinimap,
-		LeftOfMinimap
-	}
+        public bool Detach()
+        {
+            foreach (IDisposable current in this.plugins)
+                current.Dispose();
+            return false;
+        }
+    }
+
+    public enum UiMountPoint
+    {
+        UnderMinimap,
+        LeftOfMinimap
+    }
 }

@@ -16,23 +16,24 @@ namespace PoeHUD.Hud.Health
 	public class HealthBarRenderer : HudPluginBase, IEntityListObserver
 	{
 		private List<Healthbar>[] healthBars;
-		public override void OnEnable()
-		{
-			this.healthBars = new List<Healthbar>[Enum.GetValues(typeof(RenderPrio)).Length];
-			for (int i = 0; i < this.healthBars.Length; i++)
-			{
-                this.healthBars[i] = new List<Healthbar>();
-			}
 
-			foreach (EntityWrapper current in this.GameController.Entities)
-			{
-				this.EntityAdded(current);
-			}
-		}
-		public override void OnDisable()
-		{
-		}
+	    public HealthBarRenderer(GameController gameController) : base(gameController)
+	    {
+            this.healthBars = new List<Healthbar>[Enum.GetValues(typeof(RenderPrio)).Length];
+            for (int i = 0; i < this.healthBars.Length; i++)
+            {
+                healthBars[i] = new List<Healthbar>();
+            }
 
+            foreach (EntityWrapper current in this.GameController.Entities)
+            {
+
+                EntityAdded(current);
+            }
+	    }
+
+	 
+	
 		public void EntityAdded(EntityWrapper entity)
 		{
 			Healthbar healthbarSettings = this.GetHealthbarSettings(entity);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
@@ -11,17 +12,11 @@ namespace PoeHUD.Hud.Icons
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
 
-		public LargeMapRenderer(Func<IEnumerable<MapIcon>> gatherMapIcons)
+	   public LargeMapRenderer(GameController gameController,Func<IEnumerable<MapIcon>> gatherMapIcons): base(gameController)
 		{
 			getIcons = gatherMapIcons;
 		}
-
-		public override void OnEnable()
-		{
-		}
-		public override void OnDisable()
-		{
-		}
+        
 
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{

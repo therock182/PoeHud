@@ -11,7 +11,7 @@ namespace PoeHUD.Controllers
 
         public IEntityListObserver Observer = new EntityListBlankObserver();
         private Dictionary<int, EntityWrapper> entityCache;
-        private Stopwatch stopwatch = new Stopwatch();
+
 
         public EntityListWrapper(GameController gameController)
         {
@@ -28,10 +28,6 @@ namespace PoeHUD.Controllers
 
         public EntityWrapper Player { get; private set; }
 
-        public IDictionary<int, EntityWrapper> EntitiesCache
-        {
-            get { return entityCache; }
-        }
 
         private void AreaChanged(AreaController area)
         {

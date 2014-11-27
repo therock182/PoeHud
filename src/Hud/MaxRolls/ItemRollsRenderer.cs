@@ -15,18 +15,12 @@ namespace PoeHUD.Hud.MaxRolls
 	public class ItemRollsRenderer : HudPluginBase
 	{
 		private Entity poeEntity;
-		private List<RollValue> mods;
-		public override void OnEnable()
-		{
-			this.mods = new List<RollValue>();
-			this.poeEntity = null;
-		}
-
-		public override void OnDisable()
-		{
-		}
-
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+        private List<RollValue> mods = new List<RollValue>();
+        public ItemRollsRenderer(GameController gameController) : base(gameController)
+	    {
+	    }
+        
+	    public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemMods"))
 				return;

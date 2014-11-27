@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.EntityComponents;
@@ -11,13 +12,11 @@ namespace PoeHUD.Hud
 {
 	public class ItemLevelRenderer : HudPluginBase
 	{
-		public override void OnEnable()
-		{
-		}
-		public override void OnDisable()
-		{
-		}
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+	    public ItemLevelRenderer(GameController gameController) : base(gameController)
+	    {
+	    }
+
+	    public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemLevel"))
 			{

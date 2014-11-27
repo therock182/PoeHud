@@ -32,13 +32,10 @@ namespace PoeHUD.Hud.XpRate
             private set { bounds = value; }
         }
 
-        public override void OnEnable()
+
+        public XPHRenderer(GameController gameController) : base(gameController)
         {
             GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-        }
-
-        public override void OnDisable()
-        {
         }
 
         private void CurrentArea_OnAreaChange(AreaController area)

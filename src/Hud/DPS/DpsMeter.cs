@@ -13,6 +13,8 @@ namespace PoeHUD.Hud.DPS
 {
 	public class DpsMeter : HudPluginBase
 	{
+
+        
 		private bool hasStarted;
 		private DateTime lastCalcTime;
 		private Dictionary<int, int> lastEntities;
@@ -23,12 +25,14 @@ namespace PoeHUD.Hud.DPS
 		private int ixDamageMemory;
 		private int maxDps;
 
-		public override void OnEnable()
-		{
-			lastEntities = new Dictionary<int, int>();
-			GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-		}
 
+	    public DpsMeter(GameController gameController) : base(gameController)
+	    {
+            lastEntities = new Dictionary<int, int>();
+            GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
+	    }
+
+	
 		private void CurrentArea_OnAreaChange(AreaController area)
 		{
 			lastEntities = new Dictionary<int, int>();
@@ -103,8 +107,5 @@ namespace PoeHUD.Hud.DPS
 			return (float)(damageDoneThisCycle / dt.TotalSeconds);
 		}
 
-		public override void OnDisable()
-		{
-		}
 	}
 }

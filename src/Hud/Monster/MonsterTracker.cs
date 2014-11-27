@@ -22,22 +22,23 @@ namespace PoeHUD.Hud.Monster
 		private Dictionary<string, string> typeAlerts;
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
-		public override void OnEnable()
-		{
-			this.alreadyAlertedOf = new HashSet<int>();
-			this.alertTexts = new Dictionary<EntityWrapper, string>();
-			this.InitAlertStrings();
-			this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
-			currentIcons.Clear();
-			foreach (EntityWrapper current in this.GameController.Entities)
-			{
-				this.EntityAdded(current);
-			}
-		}
-		public override void OnDisable()
-		{
-		}
+	    public MonsterTracker(GameController gameController) : base(gameController)
+	    {
+
+            this.alreadyAlertedOf = new HashSet<int>();
+            this.alertTexts = new Dictionary<EntityWrapper, string>();
+            this.InitAlertStrings();
+            this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
+
+            currentIcons.Clear();
+            foreach (EntityWrapper current in this.GameController.Entities)
+            {
+                this.EntityAdded(current);
+            }
+	    }
+
+	
 		public void EntityRemoved(EntityWrapper entity)
 		{
 			alertTexts.Remove(entity);

@@ -33,7 +33,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Optimize>false</Optimize>
     <Prefer32Bit>true</Prefer32Bit>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -164,7 +164,6 @@
     <Compile Include="Hud\ClientHacks.cs" />
     <Compile Include="Game\Constants.cs" />
     <Compile Include="Hud\Monster\MonsterTracker.cs" />
-    <Compile Include="Hud\Interfaces\IHUDPlugin.cs" />
     <Compile Include="Hud\Menu\IntPicker.cs" />
     <Compile Include="Hud\Loot\ItemAlerter.cs" />
     <Compile Include="Hud\Loot\ItemLevelRenderer.cs" />

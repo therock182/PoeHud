@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe.UI;
@@ -11,13 +12,11 @@ namespace PoeHUD.Hud.DebugView
 {
 	class ShowUiHierarchy : HudPluginBase
 	{
-		public override void OnEnable()
-		{
-		}
-		public override void OnDisable()
-		{
-		}
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+	    public ShowUiHierarchy(GameController gameController) : base(gameController)
+	    {
+	    }
+
+	    public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			Element root = this.GameController.Game.IngameState.UIRoot;
 

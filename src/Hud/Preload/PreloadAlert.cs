@@ -14,7 +14,7 @@ namespace PoeHUD.Hud.Preload
         private HashSet<string> disp;
         private int lastCount;
 
-        public override void OnEnable()
+        public PreloadAlert(GameController gameController) : base(gameController)
         {
             disp = new HashSet<string>();
             InitAlertStrings();
@@ -22,9 +22,9 @@ namespace PoeHUD.Hud.Preload
             CurrentArea_OnAreaChange(GameController.Area);
         }
 
-        public override void OnDisable()
-        {
-        }
+      
+
+ 
 
         private void CurrentArea_OnAreaChange(AreaController area)
         {

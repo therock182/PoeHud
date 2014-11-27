@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using SlimDX.XAudio2;
 
 namespace PoeHUD.Hud
 {
@@ -14,8 +16,11 @@ namespace PoeHUD.Hud
         private bool particlesEnabled;
         private bool zoomhackEnabled;
 
-        public override void OnEnable()
+
+
+        public ClientHacks(GameController gameController):base(gameController)
         {
+
             m = GameController.Memory;
             if (Settings.GetBool("ClientHacks"))
             {
@@ -36,7 +41,7 @@ namespace PoeHUD.Hud
                 }
             }
         }
-
+      
         public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
         {
             bool flag = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Maphack");
@@ -85,7 +90,7 @@ namespace PoeHUD.Hud
             }
         }
 
-        public override void OnDisable()
+        public override void Dispose()
         {
             if (!m.IsInvalid())
             {
@@ -95,7 +100,8 @@ namespace PoeHUD.Hud
                 DisableParticles();
             }
         }
-
+        
+    
         private void EnableFullbright()
         {
             if (!hasSetWriteAccess)
@@ -171,5 +177,7 @@ namespace PoeHUD.Hud
                 Console.WriteLine("Maphack removed");
             }
         }
+
+      
     }
 }

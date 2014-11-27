@@ -6,16 +6,14 @@ using PoeHUD.Hud.Interfaces;
 
 namespace PoeHUD.Hud
 {
-    public abstract class HudPluginBase : IHudPlugin
+    public abstract class HudPluginBase : IDisposable
     {
-        protected GameController GameController;
-        public void Init(GameController poe)
+        protected readonly GameController GameController;
+
+        protected HudPluginBase( GameController gameController)
         {
-            this.GameController = poe;
-            this.OnEnable();
+            GameController = gameController;
         }
-        public abstract void OnEnable();
-        public abstract void OnDisable();
 
         public abstract void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints);
 
@@ -30,6 +28,11 @@ namespace PoeHUD.Hud
             float ySprite = distance > 60 ? distance > 120 ? 2 : 1 : 0;
             var rectUV = new RectUV(xSprite / 8, ySprite / 3, (xSprite + 1) / 8, (ySprite + 1) / 3);
             return rectUV;
+        }
+
+        public virtual void Dispose()
+        {
+            
         }
     }
 }

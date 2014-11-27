@@ -25,21 +25,23 @@ namespace PoeHUD.Hud.Loot
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
 
-		public override void OnEnable()
-		{
-			playedSoundsCache = new HashSet<long>();
-			currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
-			currentIcons = new Dictionary<EntityWrapper, MapIcon>();
-			currencyNames = LoadCurrency();
-			craftingBases = LoadCraftingBases();
+	    public ItemAlerter(GameController gameController) : base(gameController)
+	    {
+            playedSoundsCache = new HashSet<long>();
+            currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
+            currentIcons = new Dictionary<EntityWrapper, MapIcon>();
+            currencyNames = LoadCurrency();
+            craftingBases = LoadCraftingBases();
 
-			GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-		}
-		public override void OnDisable()
-		{
-			GameController.Area.OnAreaChange -= CurrentArea_OnAreaChange;
-		}
+            GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
+	    }
 
+	    public override void Dispose()
+	    {
+            GameController.Area.OnAreaChange -= CurrentArea_OnAreaChange;
+	    }
+
+	    
 		public void EntityRemoved(EntityWrapper entity)
 		{
 			currentAlerts.Remove(entity);
