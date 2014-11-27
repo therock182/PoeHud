@@ -16,7 +16,7 @@ using Entity = PoeHUD.Poe.Entity;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : HudPluginBase, IEntityListObserver, IHudPluginWithMapIcons
+	public class ItemAlerter : HudPluginBase, IHudPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -42,13 +42,13 @@ namespace PoeHUD.Hud.Loot
 	    }
 
 	    
-		public void EntityRemoved(EntityWrapper entity)
+		public override void EntityRemoved(EntityWrapper entity)
 		{
 			currentAlerts.Remove(entity);
 			currentIcons.Remove(entity);
 		}
 
-		public void EntityAdded(EntityWrapper entity)
+        public override void EntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("ItemAlert") || currentAlerts.ContainsKey(entity))
 			{

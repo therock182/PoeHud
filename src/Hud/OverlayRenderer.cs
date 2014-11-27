@@ -50,17 +50,10 @@ namespace PoeHUD.Hud
                 this.plugins.Add(new Menu.Menu(gameController));
                 //	#endif
             }
-            UpdateObserverLists();
+
             rc.OnRender += this.rc_OnRender;
 
 
-        }
-
-        private void UpdateObserverLists()
-        {
-            EntityListObserverComposite observer = new EntityListObserverComposite();
-            observer.Observers.AddRange(plugins.OfType<IEntityListObserver>());
-            gameController.EntityListObserver = observer;
         }
 
         private IEnumerable<MapIcon> gatherMapIcons()

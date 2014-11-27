@@ -10,32 +10,32 @@ namespace PoeHUD.Controllers
 {
     public class GameController
     {
-        private readonly EntityListWrapper entityListWrapper;
+       
 
         public GameController(Memory memory)
         {
             Memory = memory;
             Area = new AreaController(this);
-            entityListWrapper = new EntityListWrapper(this);
+            EntityListWrapper = new EntityListWrapper(this);
             Window = new GameWindow(memory.Process);
             Game = new TheGame(memory);
             Files = new FsController(memory);
         }
-
-        public GameWindow Window { private set; get; }
-        public TheGame Game { private set; get; }
-        public AreaController Area { private set; get; }
+        public EntityListWrapper EntityListWrapper { get; private set; }
+        public GameWindow Window { get; private set; }
+        public TheGame Game { get; private set; }
+        public AreaController Area { get; private set; }
 
         public Memory Memory { get; private set; }
 
         public IEnumerable<EntityWrapper> Entities
         {
-            get { return entityListWrapper.Entities; }
+            get { return EntityListWrapper.Entities; }
         }
 
         public EntityWrapper Player
         {
-            get { return entityListWrapper.Player; }
+            get { return EntityListWrapper.Player; }
         }
 
         public bool InGame
@@ -45,17 +45,11 @@ namespace PoeHUD.Controllers
 
         public FsController Files { get; private set; }
 
-        public IEntityListObserver EntityListObserver
-        {
-            get { return entityListWrapper.Observer; }
-            set { entityListWrapper.Observer = value; }
-        }
-
         public void RefreshState()
         {
             if (InGame)
             {
-                entityListWrapper.RefreshState();
+                EntityListWrapper.RefreshState();
                 Area.RefreshState();
             }
         }
@@ -88,7 +82,7 @@ namespace PoeHUD.Controllers
 
         internal EntityWrapper GetEntityById(int id)
         {
-            return entityListWrapper.GetByID(id);
+            return EntityListWrapper.GetByID(id);
         }
     }
 }

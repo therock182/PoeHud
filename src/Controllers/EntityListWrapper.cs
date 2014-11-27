@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using PoeHUD.Poe;
 
 namespace PoeHUD.Controllers
@@ -9,7 +9,8 @@ namespace PoeHUD.Controllers
         private readonly GameController gameController;
         private readonly HashSet<string> ignoredEntities;
 
-        public IEntityListObserver Observer = new EntityListBlankObserver();
+
+        //public IEntityListObserver Observer = new EntityListBlankObserver();
         private Dictionary<int, EntityWrapper> entityCache;
 
 
@@ -27,6 +28,9 @@ namespace PoeHUD.Controllers
         }
 
         public EntityWrapper Player { get; private set; }
+        public event Action<EntityWrapper> EntityAdded;
+
+        public event Action<EntityWrapper> EntityRemoved;
 
 
         private void AreaChanged(AreaController area)
@@ -35,7 +39,10 @@ namespace PoeHUD.Controllers
             foreach (EntityWrapper current in entityCache.Values)
             {
                 current.IsInList = false;
-                Observer.EntityRemoved(current);
+                if (EntityRemoved != null)
+                {
+                    EntityRemoved(current);
+                }
             }
             entityCache.Clear();
             int address = gameController.Game.IngameState.Data.LocalPlayer.Address;
@@ -85,13 +92,19 @@ namespace PoeHUD.Controllers
                 if (!entity.IsValid)
                     continue;
 
-                Observer.EntityAdded(entity);
+                if (EntityAdded != null)
+                {
+                    EntityAdded(entity);
+                }
                 newCache.Add(key, entity);
             }
 
             foreach (EntityWrapper entity2 in entityCache.Values)
             {
-                Observer.EntityRemoved(entity2);
+                if (EntityRemoved != null)
+                {
+                    EntityRemoved(entity2);
+                }
                 entity2.IsInList = false;
             }
             entityCache = newCache;
@@ -101,17 +114,6 @@ namespace PoeHUD.Controllers
         {
             EntityWrapper result;
             return entityCache.TryGetValue(id, out result) ? result : null;
-        }
-
-        private class EntityListBlankObserver : IEntityListObserver
-        {
-            public void EntityAdded(EntityWrapper entity)
-            {
-            }
-
-            public void EntityRemoved(EntityWrapper entity)
-            {
-            }
         }
     }
 }

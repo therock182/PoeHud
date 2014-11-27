@@ -13,6 +13,18 @@ namespace PoeHUD.Hud
         protected HudPluginBase( GameController gameController)
         {
             GameController = gameController;
+            gameController.EntityListWrapper.EntityAdded += EntityAdded;
+            gameController.EntityListWrapper.EntityRemoved += EntityRemoved;
+        }
+        
+        public virtual void EntityAdded(EntityWrapper entity)
+        {
+
+        }
+
+        public virtual void EntityRemoved(EntityWrapper entity)
+        {
+
         }
 
         public abstract void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints);

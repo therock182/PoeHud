@@ -13,7 +13,7 @@ using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class MonsterTracker : HudPluginBase, IEntityListObserver, IHudPluginWithMapIcons
+	public class MonsterTracker : HudPluginBase, IHudPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;
@@ -39,13 +39,13 @@ namespace PoeHUD.Hud.Monster
 	    }
 
 	
-		public void EntityRemoved(EntityWrapper entity)
+		public override void EntityRemoved(EntityWrapper entity)
 		{
 			alertTexts.Remove(entity);
 			currentIcons.Remove(entity);
 		}
 
-		public void EntityAdded(EntityWrapper entity)
+		public  override void EntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("MonsterTracker") || this.alertTexts.ContainsKey(entity))
 			{

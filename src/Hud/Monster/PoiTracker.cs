@@ -8,7 +8,7 @@ using PoeHUD.Poe.EntityComponents;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class PoiTracker : HudPluginBase, IEntityListObserver, IHudPluginWithMapIcons
+	public class PoiTracker : HudPluginBase, IHudPluginWithMapIcons
 	{
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
@@ -25,12 +25,12 @@ namespace PoeHUD.Hud.Monster
 	    }
 
 	
-		public void EntityRemoved(EntityWrapper entity)
+		public override void EntityRemoved(EntityWrapper entity)
 		{
 			currentIcons.Remove(entity);
 		}
 
-		public void EntityAdded(EntityWrapper entity)
+        public override void EntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("MonsterTracker"))
 			{

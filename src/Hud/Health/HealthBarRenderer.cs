@@ -13,7 +13,7 @@ using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Health
 {
-	public class HealthBarRenderer : HudPluginBase, IEntityListObserver
+	public class HealthBarRenderer : HudPluginBase
 	{
 		private List<Healthbar>[] healthBars;
 
@@ -34,7 +34,7 @@ namespace PoeHUD.Hud.Health
 
 	 
 	
-		public void EntityAdded(EntityWrapper entity)
+		public override void EntityAdded(EntityWrapper entity)
 		{
 			Healthbar healthbarSettings = this.GetHealthbarSettings(entity);
 			if (healthbarSettings != null)
@@ -43,12 +43,7 @@ namespace PoeHUD.Hud.Health
 			}
 		}
 
-		public void EntityRemoved(EntityWrapper entity)
-		{
-			
-		}
-
-
+	
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
 			if (!this.GameController.InGame || !Settings.GetBool("Healthbars"))
