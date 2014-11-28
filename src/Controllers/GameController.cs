@@ -10,7 +10,7 @@ namespace PoeHUD.Controllers
 {
     public class GameController
     {
-       
+
 
         public GameController(Memory memory)
         {
@@ -59,30 +59,5 @@ namespace PoeHUD.Controllers
             return Entities.Where(x => x.HasComponent<Player>()).SelectMany(c => c.Minions).ToList();
         }
 
-        public EntityLabel GetLabelForEntity(EntityWrapper entity)
-        {
-            var hashSet = new HashSet<int>();
-            int entityLabelMap = Game.IngameState.EntityLabelMap;
-            int num = entityLabelMap;
-            while (true)
-            {
-                hashSet.Add(num);
-                if (Memory.ReadInt(num + 8) == entity.Address)
-                {
-                    break;
-                }
-                num = Memory.ReadInt(num);
-                if (hashSet.Contains(num) || num == 0 || num == -1)
-                {
-                    return null;
-                }
-            }
-            return Game.ReadObject<EntityLabel>(num + 12);
-        }
-
-        internal EntityWrapper GetEntityById(int id)
-        {
-            return EntityListWrapper.GetByID(id);
-        }
     }
 }

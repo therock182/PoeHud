@@ -207,7 +207,7 @@ namespace PoeHUD.Hud.Loot
 		private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)
 		{
 			string text;
-			EntityLabel labelFromEntity = GameController.GetLabelForEntity(kv.Key);
+			EntityLabel labelFromEntity = GameController.EntityListWrapper.GetLabelForEntity(kv.Key);
 
 			if (labelFromEntity == null)
 			{

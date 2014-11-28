@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PoeHUD.Poe;
+using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Controllers
 {
@@ -9,10 +10,7 @@ namespace PoeHUD.Controllers
         private readonly GameController gameController;
         private readonly HashSet<string> ignoredEntities;
 
-
-        //public IEntityListObserver Observer = new EntityListBlankObserver();
         private Dictionary<int, EntityWrapper> entityCache;
-
 
         public EntityListWrapper(GameController gameController)
         {
@@ -110,10 +108,31 @@ namespace PoeHUD.Controllers
             entityCache = newCache;
         }
 
-        public EntityWrapper GetByID(int id)
+        public EntityWrapper GetEntityById(int id)
         {
             EntityWrapper result;
             return entityCache.TryGetValue(id, out result) ? result : null;
+        }
+        
+        public EntityLabel GetLabelForEntity(EntityWrapper entity)
+        {
+            var hashSet = new HashSet<int>();
+            int entityLabelMap = gameController.Game.IngameState.EntityLabelMap;
+            int num = entityLabelMap;
+            while (true)
+            {
+                hashSet.Add(num);
+                if (gameController.Memory.ReadInt(num + 8) == entity.Address)
+                {
+                    break;
+                }
+                num = gameController.Memory.ReadInt(num);
+                if (hashSet.Contains(num) || num == 0 || num == -1)
+                {
+                    return null;
+                }
+            }
+            return gameController.Game.ReadObject<EntityLabel>(num + 12);
         }
     }
 }

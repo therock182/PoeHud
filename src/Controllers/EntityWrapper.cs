@@ -33,9 +33,11 @@ namespace PoeHUD.Controllers
         {
             get
             {
-                return this.GetComponent<Actor>().Minions.Select(current => gameController.GetEntityById(current)).Where(byId => byId != null).ToList();
+                return this.GetComponent<Actor>().Minions.Select(current => gameController.EntityListWrapper.GetById(current)).Where(byId => byId != null).ToList();
             }
         }
+
+
         public EntityWrapper(GameController Poe, Poe.Entity entity)
         {
             this.gameController = Poe;
@@ -45,8 +47,7 @@ namespace PoeHUD.Controllers
             this.cachedId = this.internalEntity.Id;
             this.LongId = this.internalEntity.LongId;
         }
-        public EntityWrapper(GameController Poe, int address)
-            : this(Poe, Poe.Game.GetObject<Poe.Entity>(address))
+        public EntityWrapper(GameController Poe, int address): this(Poe, Poe.Game.GetObject<Poe.Entity>(address))
         {
         }
         public T GetComponent<T>() where T : Component, new()
