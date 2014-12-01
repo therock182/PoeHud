@@ -33,7 +33,7 @@ namespace PoeHUD.Controllers
         {
             get
             {
-                return this.GetComponent<Actor>().Minions.Select(current => gameController.EntityListWrapper.GetById(current)).Where(byId => byId != null).ToList();
+                return this.GetComponent<Actor>().Minions.Select(current => gameController.EntityListWrapper.GetEntityById(current)).Where(byId => byId != null).ToList();
             }
         }
 

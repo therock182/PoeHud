@@ -1,3 +1,4 @@
+using System;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe
@@ -49,5 +50,36 @@ namespace PoeHUD.Poe
         {
             get { return M.ReadInt(Address + 68, 2528); }
         }
+
+        /// <summary>
+        /// Latency in ms
+        /// </summary>
+        public float CurLatency
+        {
+            get { return M.ReadFloat(Address + 0xc8c); }
+        }
+
+        /// <summary>
+        /// Frame time in ms
+        /// </summary>
+        public float CurFrameTime
+        {
+            get { return M.ReadFloat(Address + 0x10f4); }
+        }
+
+
+        public float CurFps
+        {
+            get { return M.ReadFloat(Address + 0x1370); }
+        }
+
+        /// <summary>
+        /// How much time client is running
+        /// </summary>
+        public TimeSpan TimeInGame
+        {
+            get { return TimeSpan.FromMilliseconds(M.ReadInt(Address + 0xc7c)); }
+        }
+
     }
 }
