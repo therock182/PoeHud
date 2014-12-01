@@ -27,3 +27,4 @@ Quicksilver Flask,1,5
 Portal Scroll
 Iron Ring
 ```
+Also the mods used for mobs and items are listed in Content.ggpk\Data\Mods.dat.
