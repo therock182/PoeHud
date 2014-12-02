@@ -1,4 +1,5 @@
 using PoeHUD.Controllers;
+using PoeHUD.Models;
 
 namespace PoeHUD.Hud.Health
 {

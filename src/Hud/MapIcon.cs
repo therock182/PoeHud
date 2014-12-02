@@ -1,7 +1,8 @@
 using System;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Models;
+using PoeHUD.Poe.Components;
 
 namespace PoeHUD.Hud
 {

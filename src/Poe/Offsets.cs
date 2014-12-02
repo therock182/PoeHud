@@ -1,4 +1,5 @@
 using PoeHUD.Framework;
+using PoeHUD.Models;
 
 namespace PoeHUD.Poe
 {
@@ -87,13 +88,7 @@ namespace PoeHUD.Poe
         }, "xx??xx????xxx");
 
 
-        private static readonly Pattern FpsPattern = new Pattern(new byte[]
-        {
-            0,0,0x46,0,0,0,0xFA,0,0,0,0x96,0x000000FF,0xFF,0xFF,0xFF,0,0,0,0,0,0,0,0,0
-        }, "xxxxxxxxxxxxxxxxxxxxxxxx");
-
-
-
+   
         public int AreaChangeCount { get; private set; }
         public int Base { get; private set; }
         public string ExeName { get; private set; }

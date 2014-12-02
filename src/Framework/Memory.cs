@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using PoeHUD.Framework.Enums;
+using PoeHUD.Models;
 using PoeHUD.Poe;
 
 namespace PoeHUD.Framework

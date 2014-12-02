@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Hud.Icons
@@ -25,7 +25,7 @@ namespace PoeHUD.Hud.Icons
 			{
 				return;
 			}
-			Element smallMinimap = GameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
+			Element smallMinimap = GameController.Game.IngameState.IngameUi.Map.SmallMinimap;
 			if( !smallMinimap.IsVisible )
 				return;
 

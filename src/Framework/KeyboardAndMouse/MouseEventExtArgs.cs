@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace KeyboardAndMouse
+namespace PoeHUD.Framework.KeyboardAndMouse
 {
     /// <summary>
     /// Provides data for the MouseClickExt and MouseMoveExt events. It also provides a property Handled.

@@ -6,7 +6,7 @@ using System.Text;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Poe.Components;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.DPS
@@ -88,7 +88,7 @@ namespace PoeHUD.Hud.DPS
 			var currentEntities = new Dictionary<int, int>();
             int damageDoneThisCycle = 0;
 
-			foreach (var entity in GameController.Entities.Where(x => x.HasComponent<Poe.EntityComponents.Monster>() && x.IsHostile))
+			foreach (var entity in GameController.Entities.Where(x => x.HasComponent<Poe.Components.Monster>() && x.IsHostile))
 			{
 				int entityEHP = entity.IsAlive ? entity.GetComponent<Life>().CurHP + entity.GetComponent<Life>().CurES : 0;
 				if (entityEHP > 10000000 || entityEHP < -1000000) //discard those - read form invalid addresses

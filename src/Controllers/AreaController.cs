@@ -1,12 +1,13 @@
 using System;
+using PoeHUD.Models;
 using PoeHUD.Poe;
+using PoeHUD.Poe.RemoteMemoryObjects;
 
 namespace PoeHUD.Controllers
 {
 	public class AreaController
 	{
-		public int Level { get; private set; }
-		public int Hash { get; private set; }
+
 		private readonly GameController Root;
 
 		public AreaController(GameController gameController)

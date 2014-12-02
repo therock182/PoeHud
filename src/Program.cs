@@ -5,9 +5,10 @@ using System.Linq;
 using System.Windows.Forms;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud;
 using PoeHUD.Poe;
 
-namespace PoeHUD.Hud
+namespace PoeHUD
 {
 	public class Program
 	{

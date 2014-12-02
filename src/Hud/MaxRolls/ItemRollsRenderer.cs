@@ -4,10 +4,11 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe;
-using PoeHUD.Poe.EntityComponents;
-using PoeHUD.Poe.Files;
-using PoeHUD.Poe.FileSystem;
+using PoeHUD.Poe.Components;
+using PoeHUD.Poe.FilesInMemory;
+using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
+using PoeHUD.Poe.UI.Elements;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.MaxRolls

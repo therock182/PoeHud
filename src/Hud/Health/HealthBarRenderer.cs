@@ -4,10 +4,10 @@ using System.Drawing;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Game;
-using PoeHUD.Game.Enums;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Models;
+using PoeHUD.Models.Enums;
+using PoeHUD.Poe.Components;
 using SlimDX.Direct3D9;
 
 
@@ -167,7 +167,7 @@ namespace PoeHUD.Hud.Health
 			{
 				return new Healthbar(e, "Healthbars.Players", RenderPrio.Player);
 			}
-			if (e.HasComponent<Poe.EntityComponents.Monster>())
+			if (e.HasComponent<Poe.Components.Monster>())
 			{
 				if (e.IsHostile)
 				{

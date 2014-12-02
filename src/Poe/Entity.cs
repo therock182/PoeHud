@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using PoeHUD.Poe.EntityComponents;
 
 namespace PoeHUD.Poe
 {
-    public class Entity : RemoteMemoryObject
+    public sealed class Entity : RemoteMemoryObject
     {
         private int ComponentLookup
         {
@@ -30,9 +29,13 @@ namespace PoeHUD.Poe
             get { return Id | Path.GetHashCode(); }
         }
 
+
+        /// <summary>
+        /// 0x65004D = "Me"(4 bytes) from word Metadata
+        /// </summary>
         public bool IsValid
         {
-            get { return M.ReadInt(Address, 8, 0) == 6619213; }
+            get { return M.ReadInt(Address, 8, 0) == 0x65004D; }
         }
 
         public bool IsHostile

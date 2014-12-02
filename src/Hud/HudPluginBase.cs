@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Models;
 
 namespace PoeHUD.Hud
 {

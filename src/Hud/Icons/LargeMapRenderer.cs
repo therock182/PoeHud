@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
+using PoeHUD.Poe.UI.Elements;
+using Map = PoeHUD.Poe.UI.Elements.Map;
 
 namespace PoeHUD.Hud.Icons
 {
@@ -24,12 +26,12 @@ namespace PoeHUD.Hud.Icons
 			{
 				return;
 			}
-			bool largeMapVisible = GameController.Game.IngameState.IngameUi.Minimap.OrangeWords.IsVisible;
+			bool largeMapVisible = GameController.Game.IngameState.IngameUi.Map.OrangeWords.IsVisible;
 			if (!largeMapVisible)
 				return;
 
 			var camera = GameController.Game.IngameState.Camera;
-			BigMinimap mapWindow = GameController.Game.IngameState.IngameUi.Minimap;
+			Map mapWindow = GameController.Game.IngameState.IngameUi.Map;
 			Rect rcMap = mapWindow.GetClientRect();
 
 			Vec2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;

@@ -4,7 +4,7 @@ using PoeHUD.Framework;
 
 namespace PoeHUD.Poe.UI
 {
-    public class Element : RemoteMemoryObject
+    public  class Element : RemoteMemoryObject
     {
         public const int OffsetBuffers = 0x808;
         // dd id

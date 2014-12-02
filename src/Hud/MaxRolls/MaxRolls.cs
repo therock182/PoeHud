@@ -5,8 +5,8 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Poe;
-using PoeHUD.Poe.Files;
-using PoeHUD.Poe.FileSystem;
+using PoeHUD.Poe.FilesInMemory;
+using PoeHUD.Poe.RemoteMemoryObjects;
 
 namespace PoeHUD.Hud.MaxRolls
 {

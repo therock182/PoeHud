@@ -4,7 +4,8 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Models;
+using PoeHUD.Poe.Components;
 
 namespace PoeHUD.Hud.Monster
 {

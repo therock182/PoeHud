@@ -95,13 +95,13 @@ namespace PoeHUD.Hud
 
         private Vec2 GetRightTopLeftOfMinimap()
         {
-            Rect clientRect = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
+            Rect clientRect = gameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
             return new Vec2(clientRect.X - 10, clientRect.Y + 5);
         }
 
         private Vec2 GetRightTopUnderMinimap()
         {
-            var mm = gameController.Game.IngameState.IngameUi.Minimap.SmallMinimap;
+            var mm = gameController.Game.IngameState.IngameUi.Map.SmallMinimap;
             var gl = gameController.Game.IngameState.IngameUi.GemLvlUpPanel;
             Rect mmRect = mm.GetClientRect();
             Rect glRect = gl.GetClientRect();

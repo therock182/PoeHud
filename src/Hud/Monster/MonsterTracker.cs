@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Game;
-using PoeHUD.Game.Enums;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Models;
+using PoeHUD.Models.Enums;
+using PoeHUD.Poe.Components;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
@@ -51,7 +51,7 @@ namespace PoeHUD.Hud.Monster
 			{
 				return;
 			}
-			if (entity.IsAlive && entity.HasComponent<Poe.EntityComponents.Monster>())
+			if (entity.IsAlive && entity.HasComponent<Poe.Components.Monster>())
 			{
 				currentIcons[entity] = GetMapIconForMonster(entity);
 				string text = entity.Path;

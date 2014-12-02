@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace KeyboardAndMouse
+namespace PoeHUD.Framework.KeyboardAndMouse
 {
     public static partial class HookManager
     {

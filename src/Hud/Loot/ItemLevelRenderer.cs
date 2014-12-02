@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Hud.Interfaces;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Poe;
+using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
+using PoeHUD.Poe.UI.Elements;
 using SlimDX.Direct3D9;
-using Entity = PoeHUD.Poe.Entity;
 
-namespace PoeHUD.Hud
+namespace PoeHUD.Hud.Loot
 {
 	public class ItemLevelRenderer : HudPluginBase
 	{

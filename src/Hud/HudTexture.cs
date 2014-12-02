@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
 using PoeHUD.Framework;
-using PoeHUD.Game;
-using PoeHUD.Game.Enums;
 using PoeHUD.Hud.Loot;
+using PoeHUD.Models.Enums;
 
 namespace PoeHUD.Hud
 {

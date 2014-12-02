@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Game;
-using PoeHUD.Poe.EntityComponents;
+using PoeHUD.Models;
+using PoeHUD.Poe;
+using PoeHUD.Poe.Components;
 using SlimDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
@@ -89,7 +90,7 @@ namespace PoeHUD.Hud.XpRate
             Vec2 timerSize = rc.MeasureString(strTimer, fontSize, DrawTextFormat.Left);
             yCursor += areaLevelNote.Y;
 
-            Rect clientRect = GameController.Game.IngameState.IngameUi.Minimap.SmallMinimap.GetClientRect();
+            Rect clientRect = GameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
             int textWidth =
                 Math.Max(Math.Max(rateTextSize.X, remainingTextSize.X), areaLevelNote.X + timerSize.X + 20) + 10;
             int width = Math.Max(textWidth, Math.Max(clientRect.W, 0 /*this.overlay.PreloadAlert.Bounds.W*/));

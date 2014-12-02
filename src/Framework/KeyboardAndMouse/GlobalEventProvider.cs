@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace KeyboardAndMouse
+namespace PoeHUD.Framework.KeyboardAndMouse
 {
     /// <summary>
     /// This component monitors all mouse activities globally (also outside of the application) 
