@@ -42,7 +42,7 @@ namespace PoeHUD.Hud.Icons
 				if (icon.ShouldSkip())
 					continue;
 
-				float iZ = icon.Entity.GetComponent<Render>().Z;
+				float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
 				Vec2 point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ) / 20));
 
 				var texture = icon.MinimapIcon;

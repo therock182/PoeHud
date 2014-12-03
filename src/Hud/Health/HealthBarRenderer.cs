@@ -28,13 +28,13 @@ namespace PoeHUD.Hud.Health
             foreach (EntityWrapper current in this.GameController.Entities)
             {
 
-                EntityAdded(current);
+                OnEntityAdded(current);
             }
 	    }
 
 	 
 	
-		public override void EntityAdded(EntityWrapper entity)
+		public override void OnEntityAdded(EntityWrapper entity)
 		{
 			Healthbar healthbarSettings = this.GetHealthbarSettings(entity);
 			if (healthbarSettings != null)

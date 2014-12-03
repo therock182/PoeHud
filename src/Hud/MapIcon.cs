@@ -8,20 +8,20 @@ namespace PoeHUD.Hud
 {
 	public class MapIconCreature : MapIcon
 	{
-		public MapIconCreature(EntityWrapper entity) : base(entity) { }
-		public MapIconCreature(EntityWrapper entity, HudTexture hudTexture, int iconSize) : base(entity, hudTexture, iconSize) { }
+		public MapIconCreature(EntityWrapper entityWrapper) : base(entityWrapper) { }
+		public MapIconCreature(EntityWrapper entityWrapper, HudTexture hudTexture, int iconSize) : base(entityWrapper, hudTexture, iconSize) { }
 
-		public override bool ShouldSkip() { return !Entity.IsAlive; }
+		public override bool ShouldSkip() { return !EntityWrapper.IsAlive; }
 	}
 
 	public class MapIconChest : MapIcon
 	{
-		public MapIconChest(EntityWrapper entity) : base(entity) { }
-		public MapIconChest(EntityWrapper entity, HudTexture hudTexture, int iconSize) : base(entity, hudTexture, iconSize) { }
+		public MapIconChest(EntityWrapper entityWrapper) : base(entityWrapper) { }
+		public MapIconChest(EntityWrapper entityWrapper, HudTexture hudTexture, int iconSize) : base(entityWrapper, hudTexture, iconSize) { }
 
 		public override bool IsEntityStillValid()
 		{
-			return Entity.IsValid && !Entity.GetComponent<Chest>().IsOpened;
+		    return EntityWrapper.IsValid && !EntityWrapper.GetComponent<Chest>().IsOpened;
 		}
 	}
 
@@ -35,19 +35,19 @@ namespace PoeHUD.Hud
 
 	public class MapIcon
 	{
-		public readonly EntityWrapper Entity;
+		public readonly EntityWrapper EntityWrapper;
 		public HudTexture MinimapIcon;
 		public HudTexture LargeMapIcon;
 		public int Size;
 		public int? SizeOfLargeIcon;
 
-		public Vec2 WorldPosition { get { return Entity.GetComponent<Positioned>().GridPos; } }
+		public Vec2 WorldPosition { get { return EntityWrapper.GetComponent<Positioned>().GridPos; } }
 
-		public MapIcon(EntityWrapper entity) {
-			Entity = entity;
+		public MapIcon(EntityWrapper entityWrapper) {
+			EntityWrapper = entityWrapper;
 		}
 
-		public MapIcon(EntityWrapper entity, HudTexture hudTexture, int iconSize = 10) : this(entity)
+		public MapIcon(EntityWrapper entityWrapper, HudTexture hudTexture, int iconSize = 10) : this(entityWrapper)
 		{
 			MinimapIcon = hudTexture;
 			Size = iconSize;
@@ -66,7 +66,7 @@ namespace PoeHUD.Hud
 			return new Vec2((int)(cosX - cosY), -(int)((sinX + sinY)) + deltaZ);
 		}
 
-		public virtual bool IsEntityStillValid() { return Entity.IsValid; }
+		public virtual bool IsEntityStillValid() { return EntityWrapper.IsValid; }
 		public virtual bool ShouldSkip() { return false; }
 	}
 }

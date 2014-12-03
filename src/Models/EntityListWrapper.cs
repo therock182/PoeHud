@@ -18,7 +18,7 @@ namespace PoeHUD.Models
             this.gameController = gameController;
             entityCache = new Dictionary<int, EntityWrapper>();
             ignoredEntities = new HashSet<string>();
-            gameController.Area.OnAreaChange += AreaChanged;
+            gameController.Area.OnAreaChange += OnAreaChanged;
         }
 
         public ICollection<EntityWrapper> Entities
@@ -27,20 +27,20 @@ namespace PoeHUD.Models
         }
 
         public EntityWrapper Player { get; private set; }
-        public event Action<EntityWrapper> EntityAdded;
+        public event Action<EntityWrapper> OnEntityAdded;
 
-        public event Action<EntityWrapper> EntityRemoved;
+        public event Action<EntityWrapper> OnEntityRemoved;
 
 
-        private void AreaChanged(AreaController area)
+        private void OnAreaChanged(AreaController area)
         {
             ignoredEntities.Clear();
             foreach (EntityWrapper current in entityCache.Values)
             {
                 current.IsInList = false;
-                if (EntityRemoved != null)
+                if (OnEntityRemoved != null)
                 {
-                    EntityRemoved(current);
+                    OnEntityRemoved(current);
                 }
             }
             entityCache.Clear();
@@ -58,15 +58,13 @@ namespace PoeHUD.Models
             {
                 Player = new EntityWrapper(gameController, address);
             }
-
-            Dictionary<int, Entity> currentEntities =
-                gameController.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
+            Dictionary<int, Entity> newEntities = gameController.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
             var newCache = new Dictionary<int, EntityWrapper>();
-            foreach (var kv in currentEntities)
+            foreach (var keyEntity in newEntities)
             {
-                int key = kv.Key;
-                string item = kv.Value.Path + key;
-                if (ignoredEntities.Contains(item))
+                int key = keyEntity.Key;
+                string uniqueEntityName = keyEntity.Value.Path + key;
+                if (ignoredEntities.Contains(uniqueEntityName))
                     continue;
 
                 if (entityCache.ContainsKey(key) && entityCache[key].IsValid)
@@ -80,29 +78,28 @@ namespace PoeHUD.Models
                 if (entityCache.ContainsKey(key))
                     entityCache.Remove(key);
 
-                var entity = new EntityWrapper(gameController, kv.Value);
-                if ((entity.Path.StartsWith("Metadata/Effects") || ((kv.Key & 0x80000000L) != 0L)) ||
-                    entity.Path.StartsWith("Metadata/Monsters/Daemon"))
+                var entity = new EntityWrapper(gameController, keyEntity.Value);
+                if ((entity.Path.StartsWith("Metadata/Effects") || ((keyEntity.Key & 0x80000000L) != 0L)) || entity.Path.StartsWith("Metadata/Monsters/Daemon"))
                 {
-                    ignoredEntities.Add(item);
+                    ignoredEntities.Add(uniqueEntityName);
                     continue;
                 }
 
                 if (!entity.IsValid)
                     continue;
 
-                if (EntityAdded != null)
+                if (OnEntityAdded != null)
                 {
-                    EntityAdded(entity);
+                    OnEntityAdded(entity);
                 }
                 newCache.Add(key, entity);
             }
 
             foreach (EntityWrapper entity2 in entityCache.Values)
             {
-                if (EntityRemoved != null)
+                if (OnEntityRemoved != null)
                 {
-                    EntityRemoved(entity2);
+                    OnEntityRemoved(entity2);
                 }
                 entity2.IsInList = false;
             }
@@ -114,7 +111,8 @@ namespace PoeHUD.Models
             EntityWrapper result;
             return entityCache.TryGetValue(id, out result) ? result : null;
         }
-        
+
+
         public EntityLabel GetLabelForEntity(EntityWrapper entity)
         {
             var hashSet = new HashSet<int>();

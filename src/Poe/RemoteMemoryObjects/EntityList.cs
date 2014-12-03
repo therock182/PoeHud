@@ -43,8 +43,8 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
                     if (!list.ContainsKey(key))
                     {
                         int address = M.ReadInt(nextAddr + 16);
-                        var @object = base.GetObject<Entity>(address);
-                        list.Add(key, @object);
+                        var entity = base.GetObject<Entity>(address);
+                        list.Add(key, entity);
                     }
                     queue.Enqueue(M.ReadInt(nextAddr));
                     queue.Enqueue(M.ReadInt(nextAddr + 8));

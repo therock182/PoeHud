@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 
 namespace PoeHUD.Models
 {
-    public class EntityWrapper
+    public class EntityWrapper:IEntity
     {
         private readonly int cachedId;
         private readonly Dictionary<string, int> components;
@@ -68,7 +69,7 @@ namespace PoeHUD.Models
             }
         }
 
-        public IEnumerable<EntityWrapper> Minions
+        public List<EntityWrapper> Minions
         {
             get
             {
@@ -76,7 +77,7 @@ namespace PoeHUD.Models
             }
         }
 
-
+       
         public T GetComponent<T>() where T : Component, new()
         {
             string name = typeof (T).Name;

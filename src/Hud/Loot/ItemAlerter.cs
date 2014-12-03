@@ -9,6 +9,7 @@ using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
+using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
@@ -44,13 +45,13 @@ namespace PoeHUD.Hud.Loot
 	    }
 
 	    
-		public override void EntityRemoved(EntityWrapper entity)
+		public override void OnEntityRemoved(EntityWrapper entity)
 		{
 			currentAlerts.Remove(entity);
 			currentIcons.Remove(entity);
 		}
 
-        public override void EntityAdded(EntityWrapper entity)
+        public override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("ItemAlert") || currentAlerts.ContainsKey(entity))
 			{
@@ -58,7 +59,7 @@ namespace PoeHUD.Hud.Loot
 			}
 			if (entity.HasComponent<WorldItem>())
 			{
-				EntityWrapper item = new EntityWrapper(GameController, entity.GetComponent<WorldItem>().ItemEntity);
+			    IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
 				ItemUsefulProperties props = EvaluateItem(item);
 
 				if (props.IsWorthAlertingPlayer(currencyNames))
@@ -77,7 +78,7 @@ namespace PoeHUD.Hud.Loot
 		}
 
 
-		private ItemUsefulProperties EvaluateItem(EntityWrapper item)
+		private ItemUsefulProperties EvaluateItem(IEntity item)
 		{
 			ItemUsefulProperties ip = new ItemUsefulProperties();
 

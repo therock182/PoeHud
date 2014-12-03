@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using PoeHUD.Models.Interfaces;
 
 namespace PoeHUD.Poe
 {
-    public sealed class Entity : RemoteMemoryObject
+    public sealed class Entity : RemoteMemoryObject, IEntity
     {
         private int ComponentLookup
         {
@@ -54,12 +55,12 @@ namespace PoeHUD.Poe
             string name = typeof (T).Name;
             int componentLookup = ComponentLookup;
             addr = componentLookup;
-            int num = 0;
+            int i = 0;
             while (!M.ReadString(M.ReadInt(addr + 8)).Equals(name))
             {
                 addr = M.ReadInt(addr);
-                ++num;
-                if (addr == componentLookup || addr == 0 || (addr == -1 || num >= 200))
+                ++i;
+                if (addr == componentLookup || addr == 0 || (addr == -1 || i >= 200))
                     return false;
             }
             return true;
@@ -70,7 +71,7 @@ namespace PoeHUD.Poe
         {
             int addr;
             if (HasComponent<T>(out addr))
-                return ReadObject<T>(ComponentList + M.ReadInt(addr + 12)*4);
+                return ReadObject<T>(ComponentList + M.ReadInt(addr + 12) * 4);
             return GetObject<T>(0);
         }
 
@@ -81,10 +82,10 @@ namespace PoeHUD.Poe
             int addr = componentLookup;
             do
             {
-                string key = M.ReadString(M.ReadInt(addr + 8));
-                int num = M.ReadInt(ComponentList + M.ReadInt(addr + 12)*4);
-                if (!dictionary.ContainsKey(key) && !string.IsNullOrWhiteSpace(key))
-                    dictionary.Add(key, num);
+                string name = M.ReadString(M.ReadInt(addr + 8));
+                int componentAddress = M.ReadInt(ComponentList + M.ReadInt(addr + 12)*4);
+                if (!dictionary.ContainsKey(name) && !string.IsNullOrWhiteSpace(name))
+                    dictionary.Add(name, componentAddress);
                 addr = M.ReadInt(addr);
             } while (addr != componentLookup && addr != 0 && addr != -1);
             return dictionary;

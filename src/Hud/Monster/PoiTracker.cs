@@ -21,17 +21,17 @@ namespace PoeHUD.Hud.Monster
             currentIcons.Clear();
             foreach (EntityWrapper current in this.GameController.Entities)
             {
-                this.EntityAdded(current);
+                this.OnEntityAdded(current);
             }
 	    }
 
 	
-		public override void EntityRemoved(EntityWrapper entity)
+		public override void OnEntityRemoved(EntityWrapper entity)
 		{
 			currentIcons.Remove(entity);
 		}
 
-        public override void EntityAdded(EntityWrapper entity)
+        public override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("MonsterTracker"))
 			{

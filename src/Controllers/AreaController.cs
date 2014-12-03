@@ -18,10 +18,7 @@ namespace PoeHUD.Controllers
 		public event Action<AreaController> OnAreaChange;
 
 		public AreaInstance CurrentArea { get; private set; }
-
-		// dict is wrong 'cause hash is wrong
-		// public Dictionary<int, AreaInstance> AreasVisited = new Dictionary<int, AreaInstance>();
-
+        
 		public void RefreshState()
 		{
 			var igsd = this.Root.Game.IngameState.Data;
@@ -31,14 +28,7 @@ namespace PoeHUD.Controllers
 			if (CurrentArea != null && curAreaHash == CurrentArea.Hash)
 				return;
 
-			// try to find the new area in our dictionary
-			AreaInstance //area;
-			//if (!AreasVisited.TryGetValue(curAreaHash, out area)) {
-				area = new AreaInstance(clientsArea, curAreaHash, igsd.CurrentAreaLevel);
-			// }
-
-			CurrentArea = area;
-
+            CurrentArea = new AreaInstance(clientsArea, curAreaHash, igsd.CurrentAreaLevel);
 			this.OnAreaChange(this);
 		}
 	}

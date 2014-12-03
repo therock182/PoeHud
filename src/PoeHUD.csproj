@@ -66,6 +66,7 @@
     <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
     <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
     <Compile Include="Models\AreaInstance.cs" />
+    <Compile Include="Poe\Components\Inventories.cs" />
     <Compile Include="Poe\Components\Stack.cs" />
     <Compile Include="Poe\FileInMemory.cs" />
     <Compile Include="Poe\FilesInMemory\StatsDat.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Poe\Components\NPC.cs" />
     <Compile Include="Poe\Components\ObjectMagicProperties.cs" />
     <Compile Include="Poe\FilesInMemory\TagsDat.cs" />
+    <Compile Include="Models\Interfaces\IEntity.cs" />
     <Compile Include="Poe\Offsets.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Poe\Components\Player.cs" />
@@ -136,12 +138,12 @@
     <Compile Include="Poe\RemoteMemoryObjects\InventoryList.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\ItemMod.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\ServerData.cs" />
-    <Compile Include="Poe\UI\Element.cs" />
-    <Compile Include="Poe\UI\Elements\Inventory.cs" />
-    <Compile Include="Poe\UI\Elements\Map.cs" />
-    <Compile Include="Poe\UI\Elements\InventoryItemIcon.cs" />
-    <Compile Include="Poe\UI\Elements\Tooltip.cs" />
-    <Compile Include="Poe\UI\Elements\WindowState.cs" />
+    <Compile Include="Poe\Element.cs" />
+    <Compile Include="Poe\Elements\Inventory.cs" />
+    <Compile Include="Poe\Elements\Map.cs" />
+    <Compile Include="Poe\Elements\InventoryItemIcon.cs" />
+    <Compile Include="Poe\Elements\Tooltip.cs" />
+    <Compile Include="Poe\Elements\WindowState.cs" />
     <Compile Include="Poe\Components\Positioned.cs" />
     <Compile Include="Poe\Components\Quality.cs" />
     <Compile Include="Poe\RemoteMemoryObject.cs" />
@@ -171,7 +173,7 @@
     <Compile Include="Hud\MouseHook.cs" />
     <Compile Include="Hud\OverlayRenderer.cs" />
     <Compile Include="Hud\Preload\PreloadAlert.cs" />
-    <Compile Include="Poe\UI\Elements\EntityLabel.cs" />
+    <Compile Include="Poe\Elements\EntityLabel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Hud\RenderingContext.cs" />
     <Compile Include="Hud\Settings.cs" />
