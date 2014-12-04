@@ -6,8 +6,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 {
     public  class EntityList : RemoteMemoryObject
     {
-        private Stopwatch stopwatch = new Stopwatch();
-
+        
         public List<Entity> Entities
         {
             get { return EntitiesAsDictionary.Values.ToList(); }

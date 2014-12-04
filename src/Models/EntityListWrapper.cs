@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PoeHUD.Controllers;
 using PoeHUD.Poe;
 using PoeHUD.Poe.UI.Elements;
 
 namespace PoeHUD.Models
 {
-    public class EntityListWrapper
+    public sealed class EntityListWrapper
     {
         private readonly GameController gameController;
         private readonly HashSet<string> ignoredEntities;
@@ -35,20 +37,26 @@ namespace PoeHUD.Models
         private void OnAreaChanged(AreaController area)
         {
             ignoredEntities.Clear();
-            foreach (EntityWrapper current in entityCache.Values)
+            RemoveOldEntitiesFromCache();
+
+            //int address = gameController.Game.IngameState.Data.LocalPlayer.Address;
+            //if (Player == null || Player.Address != address)
+            //{
+            //    Player = new EntityWrapper(gameController, address);
+            //}
+        }
+
+        private void RemoveOldEntitiesFromCache()
+        {
+            foreach (var current in Entities)
             {
-                current.IsInList = false;
                 if (OnEntityRemoved != null)
                 {
                     OnEntityRemoved(current);
                 }
+                current.IsInList = false;
             }
             entityCache.Clear();
-            int address = gameController.Game.IngameState.Data.LocalPlayer.Address;
-            if (Player == null || Player.Address != address)
-            {
-                Player = new EntityWrapper(gameController, address);
-            }
         }
 
         public void RefreshState()
@@ -58,51 +66,43 @@ namespace PoeHUD.Models
             {
                 Player = new EntityWrapper(gameController, address);
             }
+
             Dictionary<int, Entity> newEntities = gameController.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
             var newCache = new Dictionary<int, EntityWrapper>();
             foreach (var keyEntity in newEntities)
             {
-                int key = keyEntity.Key;
-                string uniqueEntityName = keyEntity.Value.Path + key;
+                if (!keyEntity.Value.IsValid)
+                    continue;
+
+                int entityAddress = keyEntity.Key;
+                string uniqueEntityName = keyEntity.Value.Path + entityAddress;
+
                 if (ignoredEntities.Contains(uniqueEntityName))
                     continue;
 
-                if (entityCache.ContainsKey(key) && entityCache[key].IsValid)
+                if (entityCache.ContainsKey(entityAddress) && entityCache[entityAddress].IsValid)
                 {
-                    newCache.Add(key, entityCache[key]);
-                    entityCache[key].IsInList = true;
-                    entityCache.Remove(key);
+                    newCache.Add(entityAddress, entityCache[entityAddress]);
+                    entityCache[entityAddress].IsInList = true;
+                    entityCache.Remove(entityAddress);
                     continue;
                 }
 
-                if (entityCache.ContainsKey(key))
-                    entityCache.Remove(key);
-
                 var entity = new EntityWrapper(gameController, keyEntity.Value);
-                if ((entity.Path.StartsWith("Metadata/Effects") || ((keyEntity.Key & 0x80000000L) != 0L)) || entity.Path.StartsWith("Metadata/Monsters/Daemon"))
+                if ((entity.Path.StartsWith("Metadata/Effects") || ((entityAddress & 0x80000000L) != 0L)) ||
+                    entity.Path.StartsWith("Metadata/Monsters/Daemon"))
                 {
                     ignoredEntities.Add(uniqueEntityName);
                     continue;
                 }
 
-                if (!entity.IsValid)
-                    continue;
-
                 if (OnEntityAdded != null)
                 {
                     OnEntityAdded(entity);
                 }
-                newCache.Add(key, entity);
+                newCache.Add(entityAddress, entity);
             }
-
-            foreach (EntityWrapper entity2 in entityCache.Values)
-            {
-                if (OnEntityRemoved != null)
-                {
-                    OnEntityRemoved(entity2);
-                }
-                entity2.IsInList = false;
-            }
+            RemoveOldEntitiesFromCache();
             entityCache = newCache;
         }
 

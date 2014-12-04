@@ -25,11 +25,7 @@ namespace PoeHUD.Hud.Health
                 healthBars[i] = new List<Healthbar>();
             }
 
-            foreach (EntityWrapper current in this.GameController.Entities)
-            {
-
-                OnEntityAdded(current);
-            }
+       
 	    }
 
 	 
