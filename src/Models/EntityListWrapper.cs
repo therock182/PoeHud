@@ -29,9 +29,9 @@ namespace PoeHUD.Models
         }
 
         public EntityWrapper Player { get; private set; }
-        public event Action<EntityWrapper> OnEntityAdded;
+        public event Action<EntityWrapper> EntityAdded;
 
-        public event Action<EntityWrapper> OnEntityRemoved;
+        public event Action<EntityWrapper> EntityRemoved;
 
 
         private void OnAreaChanged(AreaController area)
@@ -50,9 +50,9 @@ namespace PoeHUD.Models
         {
             foreach (var current in Entities)
             {
-                if (OnEntityRemoved != null)
+                if (EntityRemoved != null)
                 {
-                    OnEntityRemoved(current);
+                    EntityRemoved(current);
                 }
                 current.IsInList = false;
             }
@@ -96,9 +96,9 @@ namespace PoeHUD.Models
                     continue;
                 }
 
-                if (OnEntityAdded != null)
+                if (EntityAdded != null)
                 {
-                    OnEntityAdded(entity);
+                    EntityAdded(entity);
                 }
                 newCache.Add(entityAddress, entity);
             }

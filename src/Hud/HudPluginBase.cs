@@ -14,8 +14,8 @@ namespace PoeHUD.Hud
         protected HudPluginBase( GameController gameController)
         {
             GameController = gameController;
-            gameController.EntityListWrapper.OnEntityAdded += OnEntityAdded;
-            gameController.EntityListWrapper.OnEntityRemoved += OnEntityRemoved;
+            gameController.EntityListWrapper.EntityAdded += OnEntityAdded;
+            gameController.EntityListWrapper.EntityRemoved += OnEntityRemoved;
         }
         
         public virtual void OnEntityAdded(EntityWrapper entity)
