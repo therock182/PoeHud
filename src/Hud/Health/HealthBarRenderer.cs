@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
@@ -53,52 +55,55 @@ namespace PoeHUD.Hud.Health
 			float clientWidth = (float)this.GameController.Window.ClientRect().W / 2560f;
 			float clientHeight = (float)this.GameController.Window.ClientRect().H / 1600f;
 			List<Healthbar>[] array = this.healthBars;
-			for (int i = 0; i < array.Length; i++)
+
+		    Parallel.ForEach(array, healthbars => healthbars.RemoveAll((x) => !(x.entity.IsValid && x.entity.IsAlive && Settings.GetBool(x.settings))));
+
+		    foreach (List<Healthbar> healthbars in array)
 			{
-				array[i].RemoveAll((Healthbar x) => !x.entity.IsValid);
-				foreach (Healthbar current in array[i].Where(x => x.entity.IsAlive && Settings.GetBool(x.settings)))
-				{
-					Vec3 worldCoords = current.entity.Pos;
-					Vec2 mobScreenCoords = this.GameController.Game.IngameState.Camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f));
-					// System.Diagnostics.Debug.WriteLine("{0} is at {1} => {2} on screen", current.entity.Path, worldCoords, mobScreenCoords);
-					if (mobScreenCoords != Vec2.Empty)
-					{
-						int scaledWidth = (int) (Settings.GetInt(current.settings + ".Width")*clientWidth);
-						int scaledHeight = (int) (Settings.GetInt(current.settings + ".Height")*clientHeight);
-						Color color = Settings.GetColor(current.settings + ".Color");
-						Color color2 = Settings.GetColor(current.settings + ".Outline");
-						Color percentsTextColor = Settings.GetColor(current.settings + ".PercentTextColor");
-						float hpPercent = current.entity.GetComponent<Life>().HPPercentage;
-						float esPercent = current.entity.GetComponent<Life>().ESPercentage;
-						float hpWidth = hpPercent*scaledWidth;
-						float esWidth = esPercent*scaledWidth;
-						Rect bg = new Rect(mobScreenCoords.X - scaledWidth/2, mobScreenCoords.Y - scaledHeight/2, scaledWidth,
-							scaledHeight);
-						if (current.entity.IsHostile && hpPercent <= 0.1) // Set healthbar color to configured in settings.txt for hostiles when hp is <=10%
-						{
-							color = Settings.GetColor(current.settings + ".Under10Percent");
-						}
-						// Draw healthbar
-						this.DrawEntityHealthbar(color, color2, bg, hpWidth, esWidth, rc);
+			    foreach (Healthbar current in healthbars)
+			    {
+			        Vec3 worldCoords = current.entity.Pos;
+			        Vec2 mobScreenCoords = this.GameController.Game.IngameState.Camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f),current.entity);
+			        // System.Diagnostics.Debug.WriteLine("{0} is at {1} => {2} on screen", current.entity.Path, worldCoords, mobScreenCoords);
+			        if (mobScreenCoords != Vec2.Empty)
+			        {
+			            int scaledWidth = (int) (Settings.GetInt(current.settings + ".Width")*clientWidth);
+			            int scaledHeight = (int) (Settings.GetInt(current.settings + ".Height")*clientHeight);
+			            Color color = Settings.GetColor(current.settings + ".Color");
+			            Color color2 = Settings.GetColor(current.settings + ".Outline");
+			            Color percentsTextColor = Settings.GetColor(current.settings + ".PercentTextColor");
+			            Life lifeComponent = current.entity.GetComponent<Life>();
+			            float hpPercent = lifeComponent.HPPercentage;
+			            float esPercent = lifeComponent.ESPercentage;
+			            float hpWidth = hpPercent*scaledWidth;
+			            float esWidth = esPercent*scaledWidth;
+			            Rect bg = new Rect(mobScreenCoords.X - scaledWidth/2, mobScreenCoords.Y - scaledHeight/2, scaledWidth,
+			                scaledHeight);
+			            if (current.entity.IsHostile && hpPercent <= 0.1) // Set healthbar color to configured in settings.txt for hostiles when hp is <=10%
+			            {
+			                color = Settings.GetColor(current.settings + ".Under10Percent");
+			            }
+			            // Draw healthbar
+			            this.DrawEntityHealthbar(color, color2, bg, hpWidth, esWidth, rc);
 
-						// Draw percents or health text for hostiles. Configurable in settings.txt
-						if (current.entity.IsHostile)
-						{
-							int curHp = current.entity.GetComponent<Life>().CurHP;
-							int maxHp = current.entity.GetComponent<Life>().MaxHP;
-							string monsterHpCorrectString = this.GetCorrectMonsterHealthString(curHp, maxHp);
-							string hppercentAsString = ((int)(hpPercent * 100)).ToString();
-							Color monsterHpTextColor = (hpPercent <= 0.1) ?
-								Settings.GetColor(current.settings + ".HealthTextColorUnder10Percent") :
-								Settings.GetColor(current.settings + ".HealthTextColor");
+			            // Draw percents or health text for hostiles. Configurable in settings.txt
+			            if (current.entity.IsHostile)
+			            {
+			                int curHp = lifeComponent.CurHP;
+			                int maxHp = lifeComponent.MaxHP;
+			                string monsterHpCorrectString = this.GetCorrectMonsterHealthString(curHp, maxHp);
+			                string hppercentAsString = ((int)(hpPercent * 100)).ToString();
+			                Color monsterHpTextColor = (hpPercent <= 0.1) ?
+			                    Settings.GetColor(current.settings + ".HealthTextColorUnder10Percent") :
+			                    Settings.GetColor(current.settings + ".HealthTextColor");
 
-							if (Settings.GetBool(current.settings + ".PrintPercents")) 
-								this.DrawEntityHealthPercents(percentsTextColor, hppercentAsString, bg, rc);
-							if (Settings.GetBool(current.settings + ".PrintHealthText")) 
-								this.DrawEntityHealthbarText(monsterHpTextColor, monsterHpCorrectString, bg, rc);
-						}
-					}
-				}
+			                if (Settings.GetBool(current.settings + ".PrintPercents")) 
+			                    this.DrawEntityHealthPercents(percentsTextColor, hppercentAsString, bg, rc);
+			                if (Settings.GetBool(current.settings + ".PrintHealthText")) 
+			                    this.DrawEntityHealthbarText(monsterHpTextColor, monsterHpCorrectString, bg, rc);
+			            }
+			        }
+			    }
 			}
 		}
 		private void DrawEntityHealthbar(Color color, Color outline, Rect bg, float hpWidth, float esWidth, RenderingContext rc)
