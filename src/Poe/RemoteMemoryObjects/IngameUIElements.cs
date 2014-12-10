@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
 
@@ -125,9 +127,12 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             get { return ReadObjectAt<Element>(4 + 0x120); }
         }
 
-        public Element MonsterHpLabels
+        public List<HPbarElement> MonsterHpLabels
         {
-            get { return ReadObjectAt<Element>(4 + 0x124); }
+            get
+            {   var monsterHpLabelsRoot = ReadObjectAt<HPbarElement>(4 + 0x124);
+                return monsterHpLabelsRoot.Children;
+            }
         }
 
         public Element Buffs

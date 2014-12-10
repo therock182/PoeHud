@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Framework;
@@ -64,21 +65,24 @@ namespace PoeHUD.Poe.UI
 
         public List<Element> Children
         {
-            get
+            get { return GetChildren<Element>(); }
+        }
+        
+
+        protected List<T> GetChildren<T> () where T: Element,new()
+        {
+            const int listOffset = 0x10 + OffsetBuffers;
+            var list = new List<T>();
+            if (M.ReadInt(Address + listOffset + 4) == 0 || M.ReadInt(Address + listOffset) == 0 ||
+                ChildCount > 1000)
             {
-                const int listOffset = 0x10 + OffsetBuffers;
-                var list = new List<Element>();
-                if (M.ReadInt(Address + listOffset + 4) == 0 || M.ReadInt(Address + listOffset) == 0 ||
-                    ChildCount > 1000)
-                {
-                    return list;
-                }
-                for (int i = 0; i < ChildCount; i++)
-                {
-                    list.Add(base.GetObject<Element>(M.ReadInt(Address + listOffset, i*4)));
-                }
                 return list;
             }
+            for (int i = 0; i < ChildCount; i++)
+            {
+                list.Add(base.GetObject<T>(M.ReadInt(Address + listOffset, i * 4)));
+            }
+            return list;
         }
 
         private IEnumerable<Element> GetParentChain()
@@ -145,5 +149,6 @@ namespace PoeHUD.Poe.UI
             }
             return base.GetObject<Element>(M.ReadInt(Address + 2072, index*4));
         }
+
     }
 }
