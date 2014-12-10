@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
@@ -18,7 +19,7 @@ namespace PoeHUD.Hud.Icons
 		{
 			getIcons = gatherMapIcons;
 		}
-        
+     
 
 		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
 		{
@@ -38,16 +39,16 @@ namespace PoeHUD.Hud.Icons
 			float pPosZ = GameController.Player.GetComponent<Render>().Z;
 			Vec2 screenCenter = new Vec2(rcMap.W / 2, rcMap.H / 2) + new Vec2(rcMap.X, rcMap.Y);
 			float diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
-
-			const float scale = 1280f;
-
+		    var k = camera.Width < 1024 ? 1120 : 1024;
+            float scale = (float)k/camera.Height*camera.Width*3/4;
+            
 			foreach(MapIcon icon in getIcons())
 			{
 				if (icon.ShouldSkip())
 					continue;
 
 				float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
-				Vec2 point = screenCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ)/ 10));
+				Vec2 point = screenCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ)/ 20));
 
 				var texture = icon.LargeMapIcon ?? icon.MinimapIcon;
 				int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);

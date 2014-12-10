@@ -96,8 +96,8 @@ namespace PoeHUD.Hud.XpRate
             int width = Math.Max(textWidth, Math.Max(clientRect.W, 0 /*this.overlay.PreloadAlert.Bounds.W*/));
             var rect = new Rect(mapWithOffset.X - width + 5, mapWithOffset.Y - 5, width, yCursor + 10);
             Bounds = rect;
-
-            rc.AddTextWithHeight(new Vec2(rect.X + 5, mapWithOffset.Y), dtNow.ToShortTimeString(), Color.White, fontSize,
+            var fps = GameController.Game.IngameState.CurFps;
+            rc.AddTextWithHeight(new Vec2(rect.X + 5, mapWithOffset.Y), dtNow.ToShortTimeString()+ " ("+fps+")", Color.White, fontSize,
                 DrawTextFormat.Left);
             rc.AddTextWithHeight(new Vec2(rect.X + 5, thirdLine), strTimer, Color.White, fontSize, DrawTextFormat.Left);
 
