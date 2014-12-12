@@ -2,6 +2,23 @@ namespace PoeHUD.Poe.UI.Elements
 {
     public class Map : Element
     {
+
+        public float ShiftX
+        {
+            get
+            {
+                return M.ReadFloat(M.ReadInt(Address+0x160 + OffsetBuffers) + 0x96C);
+            }
+        }
+
+        public float ShiftY
+        {
+            get
+            {
+                return M.ReadFloat(M.ReadInt(Address+0x160 + OffsetBuffers) + 0x970);
+            }
+        }
+
         public Element SmallMinimap
         {
             get { return base.ReadObjectAt<Element>(0x164 + OffsetBuffers); }
