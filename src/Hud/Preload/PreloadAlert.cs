@@ -10,8 +10,8 @@ namespace PoeHUD.Hud.Preload
 {
     public class PreloadAlert : HudPluginBase
     {
+        private readonly HashSet<string> disp;
         private Dictionary<string, string> alertStrings;
-        private HashSet<string> disp;
         private int lastCount;
 
         public PreloadAlert(GameController gameController) : base(gameController)
@@ -22,9 +22,6 @@ namespace PoeHUD.Hud.Preload
             CurrentArea_OnAreaChange(GameController.Area);
         }
 
-      
-
- 
 
         private void CurrentArea_OnAreaChange(AreaController area)
         {
@@ -283,6 +280,28 @@ namespace PoeHUD.Hud.Preload
             alertStrings.Add("Metadata/NPC/Missions/Wild/StrDexInt", "Area contains Zana, Master Cartographer");
             alertStrings.Add("Metadata/NPC/Missions/Wild/StrInt", "Area contains Elreon, Loremaster");
             alertStrings.Add("Metadata/NPC/Missions/Wild/Fish", "Area contains Krillson, Master Fisherman");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedArsonist", "Area contains Tormented Arsonist");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedFreezer", "Area contains Tormented Aurora Cultist");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedBlasphemer", "Area contains Tormented Blasphemer");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedCannibal", "Area contains Tormented Cannibal");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedCharlatan", "Area contains Tormented Charlatan");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedCutthroat", "Area contains Tormented Cutthroat");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedEmbezzler", "Area contains Tormented Embezzler");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedCounterfeiter", "Area contains Tormented Forger");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedMartyr", "Area contains Tormented Martyr");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedMutilator", "Area contains Tormented Mutilator");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedNecromancer", "Area contains Tormented Necromancer");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedPoisoner", "Area contains Tormented Poisoner");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedRogue", "Area contains Tormented Rogue");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedLibrarian", "Area contains Tormented Seditionist");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedSmuggler", "Area contains Tormented Smuggler");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedSpy", "Area contains Tormented Spy");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedExperimenter", "Area contains Tormented Storm Cultist");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedThief", "Area contains Tormented Thief");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedThug", "Area contains Tormented Thug");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedCorrupter", "Area contains Tormented Vaal Cultist");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedWarlord", "Area contains Tormented Warlord");
+            alertStrings.Add("Metadata/Monsters/Spirit/TormentedFisherman", "Area contains Tormented Illegal Fisherman");
         }
     }
 }

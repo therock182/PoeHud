@@ -24,7 +24,10 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public EntityList EntityList
         {
-            get { return base.GetObject<EntityList>(Address + 1472); }
+            get
+            {
+                return base.GetObject<EntityList>(Address + 1476);
+            }
         }
     }
 }

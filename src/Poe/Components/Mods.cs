@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
@@ -14,7 +16,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return (ItemRarity) M.ReadInt(Address + 48);
+                    return (ItemRarity) M.ReadInt(Address + 0x4c);
                 }
                 return ItemRarity.White;
             }
@@ -26,7 +28,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 212);
+                    return M.ReadInt(Address + 0xF0);
                 }
                 return 1;
             }
@@ -38,7 +40,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadStringU(M.ReadInt(Address + 12, new[] {4, 4}));
+                    return M.ReadStringU(M.ReadInt(Address + 12, new[] { 4, 4 }));
                 }
                 return "";
             }
@@ -53,42 +55,29 @@ namespace PoeHUD.Poe.Components
         {
             get
             {
-                var list = new List<ItemMod>();
-                if (Address == 0)
-                    return list;
-
-                int i = M.ReadInt(Address + 68);
-                int end = M.ReadInt(Address + 72);
-                int num2 = (end - i)/24;
-                if (num2 > 12)
-                    return list;
-
-                for (; i < end; i += 24)
-                    list.Add(base.GetObject<ItemMod>(i));
-
-                return list;
+                var implicitMods = GetMods(0x50, 0x54);
+                var explicitMods = GetMods(0x60, 0x64);
+                return implicitMods.Concat(explicitMods).ToList();
             }
         }
 
-        public List<ItemMod> ImplicitMods
+        private List<ItemMod> GetMods(int startOffset, int endOffset)
         {
-            get
-            {
-                var list = new List<ItemMod>();
-                if (Address == 0)
-                    return list;
-
-                int i = M.ReadInt(Address + 52);
-                int end = M.ReadInt(Address + 56);
-                int num2 = (end - i)/24;
-                if (num2 > 100 || num2 <= 0)
-                    return list;
-
-                for (; i < end; i += 24)
-                    list.Add(base.GetObject<ItemMod>(i));
-
+            var list = new List<ItemMod>();
+            if (Address == 0)
                 return list;
-            }
+
+            int begin = M.ReadInt(Address + startOffset);
+            int end = M.ReadInt(Address + endOffset);
+            int count = (end - begin) / 24;
+            if (count > 12)
+                return list;
+
+            for (int i = begin; i < end; i += 24)
+                list.Add(base.GetObject<ItemMod>(i));
+
+            return list;
         }
+
     }
 }

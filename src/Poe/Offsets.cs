@@ -1,3 +1,4 @@
+using System.Linq;
 using PoeHUD.Framework;
 using PoeHUD.Models;
 
@@ -18,6 +19,30 @@ namespace PoeHUD.Poe
 		*/
 
 
+        /* maphack function
+        FF D0                 - call eax
+        8B 46 48              - mov eax,[esi+48]
+        3B 46 4C              - cmp eax,[esi+4C]
+        74 3A                 - je PathOfExile.exe+4D2FFC
+        BA 04000000           - mov edx,00000004
+        D9 00                 - fld dword ptr [eax]          //1 replace to  fld1  ( D9E8 )
+        8B 0C 24              - mov ecx,[esp]
+        D9 19                 - fstp dword ptr [ecx]
+        8B 0C 24              - mov ecx,[esp]
+        03 CA                 - add ecx,edx
+        89 0C 24              - mov [esp],ecx
+        D9 00                 - fld dword ptr [eax]          //2 (prev+0xC) replace to  fld1  ( D9E8 )
+        D9 19                 - fstp dword ptr [ecx]
+        8B 0C 24              - mov ecx,[esp]
+        03 CA                 - add ecx,edx
+        89 0C 24              - mov [esp],ecx
+        D9 00                 - fld dword ptr [eax]          //3 (prev+0xC) replace to  fld1  ( D9E8 )
+        D9 19                 - fstp dword ptr [ecx]
+        8B 0C 24              - mov ecx,[esp]
+        03 CA                 - add ecx,edx
+        89 0C 24              - mov [esp],ecx
+        D9 00                 - fld dword ptr [eax]         //4 (prev+0xC) replace to  fld1  ( D9E8 )
+        */
         private static readonly Pattern maphackPattern = new Pattern(new byte[]
         {
             81, 139, 70, 104, 139, 8, 104, 0, 32, 0, 0, 141, 84, 36, 4, 82,
@@ -29,6 +54,34 @@ namespace PoeHUD.Poe
             85, 139, 236, 131, 228, 248, 139, 69, 12, 131, 236, 44, 128, 56, 0, 83,
             86, 87, 139, 217, 15, 133, 233, 0, 0, 0, 131, 187
         }, "xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+
+        /* fullbright base (function begin here)
+        55                    - push ebp
+        8B EC                 - mov ebp,esp
+        83 E4 F8              - and esp,-08
+        6A FF                 - push -01
+        68 8661EC00           - push PathOfExile.std::_Mutex::_Mutex+72D2C
+        64 A1 00000000        - mov eax,fs:[00000000]
+        50                    - push eax
+        64 89 25 00000000     - mov fs:[00000000],esp
+        81 EC A0000000        - sub esp,000000A0
+        53                    - push ebx
+        8B 5D 10              - mov ebx,[ebp+10]
+        C7 44 24 44 00000000  - mov [esp+44],00000000
+         * 
+         * ......
+       F3 0F59 44 24 20      - mulss xmm0,[esp+20]
+       F3 0F59 25 E027FB00   - mulss xmm4,[PathOfExile.std::_Mutex::_Mutex+15F386]  -//fullbright1 <- const 1300
+       83 EC 0C              - sub esp,0C
+        ....
+         * 
+       F3 0F10 4C 24 54      - movss xmm1,[esp+54]
+       F3 0F5C 0D D8680401   - subss xmm1,[PathOfExile.std::_Mutex::_Mutex+1F347E]  -//fullbright2 <- const 300
+       F3 0F58 8C 24 AC000000  - addss xmm1,[esp+000000AC]
+       F3 0F11 54 24 64      - movss [esp+64],xmm2
+        
+        */
 
         private static readonly Pattern fullbrightPattern = new Pattern(new byte[]
         {
@@ -122,8 +175,8 @@ namespace PoeHUD.Poe
             });
             MaphackFunc = array[0];
             ZoomHackFunc = array[1] + 247;
-            Fullbright1 = m.ReadInt(m.AddressOfProcess + array[2] + 1487) - m.AddressOfProcess;
-            Fullbright2 = m.ReadInt(m.AddressOfProcess + array[2] + 1573) - m.AddressOfProcess;
+            Fullbright1 = m.ReadInt(m.AddressOfProcess + array[2] + 0x600) - m.AddressOfProcess;
+            Fullbright2 = m.ReadInt(m.AddressOfProcess + array[2] + 0x656) - m.AddressOfProcess;
             Base = m.ReadInt(m.AddressOfProcess + array[3] + 22) - m.AddressOfProcess;
             FileRoot = m.ReadInt(m.AddressOfProcess + array[4] + 40) - m.AddressOfProcess;
             AreaChangeCount = m.ReadInt(m.AddressOfProcess + array[5] + 13) - m.AddressOfProcess;

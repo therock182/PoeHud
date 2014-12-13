@@ -145,16 +145,16 @@ namespace PoeHUD.Hud
         private void EnableMaphack()
         {
             int addr = m.AddressOfProcess + m.offsets.MaphackFunc;
-            if (m.ReadByte(addr) != 81)
+            if (m.ReadByte(addr) != 0x51)
             {
                 Console.WriteLine("Something is wrong with maphackfunc");
             }
             else
             {
-                for (; (int) m.ReadByte(addr) != 195; ++addr)
+                for (; (int) m.ReadByte(addr) != 0xC3; ++addr)
                 {
-                    if (m.ReadByte(addr) == 217 && m.ReadByte(addr + 1) == 0)
-                        m.WriteBytes(addr + 1, 232);
+                    if (m.ReadByte(addr) == 0xD9 && m.ReadByte(addr + 1) == 0x00)
+                        m.WriteBytes(addr + 1, 0xE8);
                 }
                 Console.WriteLine("Maphack applied");
             }
@@ -163,16 +163,16 @@ namespace PoeHUD.Hud
         private void DisableMaphack()
         {
             int addr = m.AddressOfProcess + m.offsets.MaphackFunc;
-            if (m.ReadByte(addr) != 81)
+            if (m.ReadByte(addr) != 0x51)
             {
                 Console.WriteLine("Something is wrong with maphackfunc");
             }
             else
             {
-                for (; (int) m.ReadByte(addr) != 195; ++addr)
+                for (; (int)m.ReadByte(addr) != 0xC3; ++addr)
                 {
-                    if (m.ReadByte(addr) == 217 && m.ReadByte(addr + 1) == 232)
-                        m.WriteBytes(addr + 1, 1);
+                    if (m.ReadByte(addr) == 0xD9 && m.ReadByte(addr + 1) == 0xE8)
+                        m.WriteBytes(addr + 1, 0x00);
                 }
                 Console.WriteLine("Maphack removed");
             }

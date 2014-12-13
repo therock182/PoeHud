@@ -3,8 +3,8 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
     public class ServerData : RemoteMemoryObject
     {
         public bool IsInGame
-        {
-            get { return M.ReadInt(Address + 11000) == 3; //closer to league name
+        {  
+            get { return M.ReadInt(Address + 0x2d80) == 3; 
             }
         }
 

@@ -109,3 +109,26 @@ Metadata/Monsters/BeyondDemons/BeyondDemon3-3, Haast, Unrelenting Frost
 Metadata/Monsters/BeyondDemons/BeyondDemon3-4, Bameth, Shifting Darkness
 Metadata/Monsters/BeyondDemons/BeyondDemon3-5, Na'em, Bending Stone
 Metadata/Monsters/BeyondDemons/BeyondDemon3-6, Abaxoth, The End of All That Is
+
+Metadata/Monsters/Spirit/TormentedArsonist, Tormented Arsonist
+Metadata/Monsters/Spirit/TormentedFreezer, Tormented Aurora Cultist
+Metadata/Monsters/Spirit/TormentedBlasphemer, Tormented Blasphemer
+Metadata/Monsters/Spirit/TormentedCannibal, Tormented Cannibal
+Metadata/Monsters/Spirit/TormentedCharlatan, Tormented Charlatan
+Metadata/Monsters/Spirit/TormentedCutthroat, Tormented Cutthroat
+Metadata/Monsters/Spirit/TormentedEmbezzler, Tormented Embezzler
+Metadata/Monsters/Spirit/TormentedCounterfeiter, Tormented Forger
+Metadata/Monsters/Spirit/TormentedMartyr, Tormented Martyr
+Metadata/Monsters/Spirit/TormentedMutilator, Tormented Mutilator
+Metadata/Monsters/Spirit/TormentedNecromancer, Tormented Necromancer
+Metadata/Monsters/Spirit/TormentedPoisoner, Tormented Poisoner
+Metadata/Monsters/Spirit/TormentedRogue, Tormented Rogue
+Metadata/Monsters/Spirit/TormentedLibrarian, Tormented Seditionist
+Metadata/Monsters/Spirit/TormentedSmuggler, Tormented Smuggler
+Metadata/Monsters/Spirit/TormentedSpy, Tormented Spy
+Metadata/Monsters/Spirit/TormentedExperimenter, Tormented Storm Cultist
+Metadata/Monsters/Spirit/TormentedThief, Tormented Thief
+Metadata/Monsters/Spirit/TormentedThug, Tormented Thug
+Metadata/Monsters/Spirit/TormentedCorrupter, Tormented Vaal Cultist
+Metadata/Monsters/Spirit/TormentedWarlord, Tormented Warlord
+Metadata/Monsters/Spirit/TormentedFisherman, Tormented Illegal Fisherman
