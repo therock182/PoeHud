@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -102,40 +103,47 @@ namespace PoeHUD.Hud.Monster
 			}
 			Rect rect = this.GameController.Window.ClientRect();
 			int xScreenCenter = rect.W / 2 + rect.X;
-			int yPos = rect.H / 5 + rect.Y;
+			int yPos = rect.H / 10 + rect.Y;
 
 			var playerPos = this.GameController.Player.GetComponent<Positioned>().GridPos;
 			int fontSize = Settings.GetInt("MonsterTracker.ShowText.FontSize");
 			bool first = true;
 			Rect rectBackground = new Rect();
-			foreach (var alert in this.alertTexts)
-			{
-				if( !alert.Key.IsAlive )
-					continue;
 
-				Vec2 delta = alert.Key.GetComponent<Positioned>().GridPos - playerPos;
-				double phi;
-				var distance = delta.GetPolarCoordinates(out phi);
-				RectUV uv = GetDirectionsUv(phi, distance);
+		    var groupedAlerts = alertTexts.Where(y => y.Key.IsAlive).Select(y =>
+		    {
+		        Vec2 delta = y.Key.GetComponent<Positioned>().GridPos - playerPos;
+		        double phi;
+		        var distance = delta.GetPolarCoordinates(out phi);
+		        return new {Dic = y, Phi = phi, Distance = distance};
+		    })
+		        .OrderBy(y => y.Distance)
+		        .GroupBy(y => y.Dic.Value)
+		        .Select(y => new {Text = y.Key, Monster = y.First(), Count=y.Count()}).ToList();
 
-				Vec2 textSize = rc.AddTextWithHeight(new Vec2(xScreenCenter, yPos), alert.Value, Color.Red, fontSize, DrawTextFormat.Center);
+            foreach (var group in groupedAlerts)
+            {
+                RectUV uv = GetDirectionsUv(group.Monster.Phi, group.Monster.Distance);
+                string text = String.Format("{0} {1}", group.Text, group.Count > 1 ? "(" + group.Count + ")" : string.Empty);
+                Vec2 textSize = rc.AddTextWithHeight(new Vec2(xScreenCenter, yPos), text, Color.Red, fontSize, DrawTextFormat.Center);
 
-				rectBackground = new Rect(xScreenCenter - textSize.X / 2 - 6, yPos, textSize.X + 12, textSize.Y);
-				rectBackground.X -= textSize.Y + 3;
-				rectBackground.W += textSize.Y;
+                rectBackground = new Rect(xScreenCenter - textSize.X / 2 - 6, yPos, textSize.X + 12, textSize.Y);
+                rectBackground.X -= textSize.Y + 3;
+                rectBackground.W += textSize.Y;
 
-				Rect rectDirection = new Rect(rectBackground.X + 3, rectBackground.Y, rectBackground.H, rectBackground.H);
+                Rect rectDirection = new Rect(rectBackground.X + 3, rectBackground.Y, rectBackground.H, rectBackground.H);
 
-				if (first) // vertical padding above
-				{
-					rectBackground.Y -= 5;
-					rectBackground.H += 5;
-					first = false;
-				}
-				rc.AddBox(rectBackground, Color.FromArgb(Settings.GetInt("MonsterTracker.ShowText.BgAlpha"), 1, 1, 1));
-				rc.AddSprite("directions.png", rectDirection, uv, Color.Red);
-				yPos += textSize.Y;
-			}
+                if (first) // vertical padding above
+                {
+                    rectBackground.Y -= 5;
+                    rectBackground.H += 5;
+                    first = false;
+                }
+                rc.AddBox(rectBackground, Color.FromArgb(Settings.GetInt("MonsterTracker.ShowText.BgAlpha"), 1, 1, 1));
+                rc.AddSprite("directions.png", rectDirection, uv, Color.Red);
+                yPos += textSize.Y;
+                
+            }
 			if (!first)  // vertical padding below
 			{
 				rectBackground.Y = rectBackground.Y + rectBackground.H;
