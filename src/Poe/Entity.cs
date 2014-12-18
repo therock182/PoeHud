@@ -27,7 +27,7 @@ namespace PoeHUD.Poe
 
         public long LongId
         {
-            get { return Id | Path.GetHashCode(); }
+            get { return Id ^ Path.GetHashCode(); }
         }
 
 
