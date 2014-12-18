@@ -119,7 +119,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Map Map
         {
-            get { return ReadObjectAt<Map>(12 + 0x11C); }
+            get { return ReadObjectAt<Map>(16 + 0x11C); }
         }
 
         public Element ItemsOnGroundLabels
@@ -183,7 +183,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element GemLvlUpPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x1F8); }
+            get { return ReadObjectAt<Element>(20 + 0x1F8); }
         }
 
         public Element ItemOnGroundTooltip
