@@ -5,6 +5,7 @@ using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.FilesInMemory;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
@@ -27,7 +28,7 @@ namespace PoeHUD.Hud.MaxRolls
 				return;
 			Element uiHover = this.GameController.Game.IngameState.UIHover;
 
-			Tooltip tooltip = uiHover.AsObject<InventoryItemIcon>().Tooltip;
+			Element tooltip = uiHover.AsObject<InventoryItemIcon>().Tooltip;
 			if (tooltip == null)
 				return;
 			Element childAtIndex1 = tooltip.GetChildAtIndex(0);

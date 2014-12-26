@@ -4,6 +4,7 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
 using SlimDX.Direct3D9;
@@ -26,7 +27,7 @@ namespace PoeHUD.Hud.Loot
 			Entity item = uIHover.AsObject<InventoryItemIcon>().Item;
 			if (item.Address != 0 && item.IsValid)
 			{
-				Tooltip tooltip = uIHover.AsObject<InventoryItemIcon>().Tooltip;
+				Element tooltip = uIHover.AsObject<InventoryItemIcon>().Tooltip;
 				if (tooltip == null)
 				{
 					return;

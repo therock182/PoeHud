@@ -70,6 +70,7 @@
     <Compile Include="Poe\Components\Inventories.cs" />
     <Compile Include="Poe\Components\Stack.cs" />
     <Compile Include="Poe\Elements\HPbarElement.cs" />
+    <Compile Include="Poe\Elements\ItemOnGroundTooltip.cs" />
     <Compile Include="Poe\FileInMemory.cs" />
     <Compile Include="Poe\FilesInMemory\StatsDat.cs" />
     <Compile Include="Poe\FilesInMemory\ModsDat.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="Poe\Elements\Inventory.cs" />
     <Compile Include="Poe\Elements\Map.cs" />
     <Compile Include="Poe\Elements\InventoryItemIcon.cs" />
-    <Compile Include="Poe\Elements\Tooltip.cs" />
     <Compile Include="Poe\Elements\WindowState.cs" />
     <Compile Include="Poe\Components\Positioned.cs" />
     <Compile Include="Poe\Components\Quality.cs" />

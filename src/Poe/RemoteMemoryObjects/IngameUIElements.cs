@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.UI;
@@ -186,9 +187,9 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             get { return ReadObjectAt<Element>(20 + 0x1F8); }
         }
 
-        public Element ItemOnGroundTooltip
+        public ItemOnGroundTooltip ItemOnGroundTooltip
         {
-            get { return ReadObjectAt<Element>(4 + 0x208); }
+            get { return ReadObjectAt<ItemOnGroundTooltip>(20 + 0x208); }
         }
     }
 }
