@@ -147,7 +147,7 @@ namespace PoeHUD.Poe.UI
             {
                 return null;
             }
-            return base.GetObject<Element>(M.ReadInt(Address + 2072, index*4));
+            return base.GetObject<Element>(M.ReadInt(Address + 0x10 + OffsetBuffers, index * 4));
         }
 
     }
