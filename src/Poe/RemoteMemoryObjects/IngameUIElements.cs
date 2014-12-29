@@ -59,7 +59,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element Chat
         {
-            get { return ReadObjectAt<Element>(4 + 0xD8); }
+            get { return ReadObjectAt<Element>(12 + 0xD8); }
         }
 
         public Element QuestTracker
