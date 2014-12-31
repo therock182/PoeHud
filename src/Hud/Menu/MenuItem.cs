@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using PoeHUD.Framework;
+using PoeHUD.Hud.UI;
+
+using SharpDX;
 
 namespace PoeHUD.Hud.Menu
 {
@@ -8,7 +11,7 @@ namespace PoeHUD.Hud.Menu
 		protected List<MenuItem> children;
 		protected MenuItem currentHover;
 		protected bool isVisible;
-		public Rect Bounds
+		public RectangleF Bounds
 		{
 			get;
 			set;
@@ -25,13 +28,13 @@ namespace PoeHUD.Hud.Menu
 		{
 			this.children = new List<MenuItem>();
 		}
-		public abstract void Render(RenderingContext rc);
-		protected abstract void HandleEvent(MouseEventID id, Vec2 pos);
-		protected virtual bool TestBounds(Vec2 pos)
+		public abstract void Render(Graphics graphics);
+		protected abstract void HandleEvent(MouseEventID id, Vector2 pos);
+		protected virtual bool TestBounds(Vector2 pos)
 		{
-			return this.Bounds.HasPoint(pos);
+			return this.Bounds.Contains(pos);
 		}
-		public bool TestHit(Vec2 pos)
+		public bool TestHit(Vector2 pos)
 		{
 			if (!this.isVisible)
 			{
@@ -68,7 +71,7 @@ namespace PoeHUD.Hud.Menu
 				current.SetVisible(hover);
 			}
 		}
-		public void OnEvent(MouseEventID id, Vec2 pos)
+		public void OnEvent(MouseEventID id, Vector2 pos)
 		{
 			if (id == MouseEventID.MouseMove)
 			{
@@ -115,7 +118,7 @@ namespace PoeHUD.Hud.Menu
 				return;
 			}
 		}
-		private MenuItem GetChildAt(Vec2 pos)
+		private MenuItem GetChildAt(Vector2 pos)
 		{
 			foreach (MenuItem current in this.children)
 			{
@@ -128,13 +131,13 @@ namespace PoeHUD.Hud.Menu
 		}
 		public void AddChild(MenuItem item)
 		{
-			int num = this.Bounds.Y;
-			int x = this.Bounds.X + this.Bounds.W;
+			float num = this.Bounds.Y;
+			float x = this.Bounds.X + this.Bounds.Width;
 			foreach (MenuItem current in this.children)
 			{
-				num += current.Bounds.H;
+				num += current.Bounds.Height;
 			}
-			item.Bounds = new Rect(x, num, item.DesiredWidth, item.DesiredHeight);
+			item.Bounds = new RectangleF(x, num, item.DesiredWidth, item.DesiredHeight);
 			this.children.Add(item);
 		}
 	}

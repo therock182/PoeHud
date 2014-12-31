@@ -1,23 +1,25 @@
 using System.Collections.Generic;
-using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.UI;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemLevelRenderer : HudPluginBase
+	public class ItemLevelRenderer : Plugin
 	{
-	    public ItemLevelRenderer(GameController gameController) : base(gameController)
+	    public ItemLevelRenderer(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
 	    }
 
-	    public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+	    public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemLevel"))
 			{
@@ -42,8 +44,8 @@ namespace PoeHUD.Hud.Loot
 				{
 					return;
 				}
-				Rect clientRect = childAtIndex2.GetClientRect();
-				rc.AddTextWithHeight(new Vec2(clientRect.X + 2, clientRect.Y + 2), item.GetComponent<Mods>().ItemLevel.ToString(), Color.White, 16, DrawTextFormat.Left);
+				var clientRect = childAtIndex2.GetClientRect();
+                Graphics.DrawText(item.GetComponent<Mods>().ItemLevel.ToString(), 16, new Vector2(clientRect.X + 2, clientRect.Y + 2), Color.White);
 			}
 		}
 	}

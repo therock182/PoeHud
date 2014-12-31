@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Drawing;
+
+using SharpDX;
 
 namespace PoeHUD.Framework
 {
@@ -22,25 +23,25 @@ namespace PoeHUD.Framework
 			double f = hue / 60 - Math.Floor(hue / 60);
 
 			value = value * 255;
-			int v = Convert.ToInt32(value);
-			int p = Convert.ToInt32(value * (1 - saturation));
-			int q = Convert.ToInt32(value * (1 - f * saturation));
-			int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+            byte v = Convert.ToByte(value);
+			byte p = Convert.ToByte(value * (1 - saturation));
+            byte q = Convert.ToByte(value * (1 - f * saturation));
+            byte t = Convert.ToByte(value * (1 - (1 - f) * saturation));
 
 			switch (hi)
 			{
 				case 0:
-					return Color.FromArgb(255, v, t, p);
+                    return new ColorBGRA(v, t, p, 255);
 				case 1:
-					return Color.FromArgb(255, q, v, p);
+                    return new ColorBGRA(q, v, p, 255);
 				case 2:
-					return Color.FromArgb(255, p, v, t);
+                    return new ColorBGRA(p, v, t, 255);
 				case 3:
-					return Color.FromArgb(255, p, q, v);
+                    return new ColorBGRA(p, q, v, 255);
 				case 4:
-					return Color.FromArgb(255, t, p, v);
+                    return new ColorBGRA(t, p, v, 255);
 				default:
-					return Color.FromArgb(255, v, p, q);
+                    return new ColorBGRA(v, p, q, 255);
 			}
 		}
 	}

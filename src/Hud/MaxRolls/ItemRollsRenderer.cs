@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.Elements;
@@ -10,19 +10,21 @@ using PoeHUD.Poe.FilesInMemory;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.MaxRolls
 {
-	public class ItemRollsRenderer : HudPluginBase
+	public class ItemRollsRenderer : Plugin
 	{
 		private Entity poeEntity;
         private List<RollValue> mods = new List<RollValue>();
-        public ItemRollsRenderer(GameController gameController) : base(gameController)
+        public ItemRollsRenderer(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
 	    }
         
-	    public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+	    public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemMods"))
 				return;
@@ -37,7 +39,7 @@ namespace PoeHUD.Hud.MaxRolls
 			Element childAtIndex2 = childAtIndex1.GetChildAtIndex(1);
 			if (childAtIndex2 == null)
 				return;
-			Rect clientRect = childAtIndex2.GetClientRect();
+			var clientRect = childAtIndex2.GetClientRect();
 
 			Entity poeEntity = uiHover.AsObject<InventoryItemIcon>().Item;
 			if (poeEntity.Address == 0 || !poeEntity.IsValid)
@@ -51,8 +53,8 @@ namespace PoeHUD.Hud.MaxRolls
 					this.mods.Add(new RollValue(item, GameController.Files, ilvl));
 				this.poeEntity = poeEntity;
 			}
-			int yPosTooltil = clientRect.Y + clientRect.H + 5;
-			int i = yPosTooltil+4;
+			float yPosTooltil = clientRect.Y + clientRect.Height + 5;
+			float i = yPosTooltil+4;
 			// Implicit mods
 			//foreach (Poe_ItemMod item in impMods)
 			//{
@@ -63,7 +65,7 @@ namespace PoeHUD.Hud.MaxRolls
 			
 			foreach (RollValue item in this.mods)
 			{
-				i = DrawStatLine(rc, item, clientRect, i);
+				i = DrawStatLine(item, clientRect, i);
 
 				i += 4;
 				//if (item.curr2 != null && item.max2 != null)
@@ -75,12 +77,14 @@ namespace PoeHUD.Hud.MaxRolls
 			}
 			if (i > yPosTooltil + 4)
 			{
-				Rect helpRect = new Rect(clientRect.X + 1, yPosTooltil, clientRect.W, i - yPosTooltil);
-				rc.AddBox(helpRect, Color.FromArgb(220, Color.Black));
+				var helpRect = new RectangleF(clientRect.X + 1, yPosTooltil, clientRect.Width, i - yPosTooltil);
+                Color backgroundColor = Color.Black;
+			    backgroundColor.A = 220;
+                Graphics.DrawBox(helpRect, backgroundColor);
 			}
 		}
 
-		private static int DrawStatLine(RenderingContext rc, RollValue item, Rect clientRect, int yPos)
+		private float DrawStatLine(RollValue item, RectangleF clientRect, float yPos)
 		{
 			const int leftRuler = 50;
 
@@ -93,10 +97,9 @@ namespace PoeHUD.Hud.MaxRolls
 				if( item.CouldHaveTiers())
 					prefix += " T" + item.Tier + " ";
 
-				rc.AddTextWithHeight(new Vec2(clientRect.X + 5, yPos), prefix, Color.White, 8, DrawTextFormat.Left);
-				var textSize = rc.AddTextWithHeight(new Vec2(clientRect.X + leftRuler, yPos), item.AffixText, item.TextColor, 8,
-					DrawTextFormat.Left);
-				yPos += textSize.Y;
+                Graphics.DrawText(prefix, 8, new Vector2(clientRect.X + 5, yPos), Color.White);
+                var textSize = Graphics.DrawText(item.AffixText, 8, new Vector2(clientRect.X + leftRuler, yPos), item.TextColor);
+				yPos += textSize.Height;
 			}
 
 			for (int iStat = 0; iStat < 4; iStat++)
@@ -118,12 +121,10 @@ namespace PoeHUD.Hud.MaxRolls
 
 				string line2 = string.Format(noSpread ? "{0}" : "{0} [{1}]", theStat, range);
 
-				rc.AddTextWithHeight(new Vec2(clientRect.X + leftRuler, yPos), line2, Color.White, 8, DrawTextFormat.Left);
+                Graphics.DrawText(line2, 8, new Vector2(clientRect.X + leftRuler, yPos), Color.White);
 
 				string sValue = theStat.ValueToString(val);
-				var txSize = rc.AddTextWithHeight(new Vec2(clientRect.X + leftRuler - 5, yPos), sValue,
-					col, 8,
-					DrawTextFormat.Right);
+                var txSize = Graphics.DrawText(sValue, 8, new Vector2(clientRect.X + leftRuler - 5, yPos), col, FontDrawFlags.Right);
 				
 
 
@@ -131,7 +132,7 @@ namespace PoeHUD.Hud.MaxRolls
 				//	rc.AddTextWithHeight(new Vec2(clientRect.X + clientRect.W - 5, yPos), item.AllTiersRange[iStat].ToString(),
 				//		Color.White, 8,
 				//		DrawTextFormat.Right);
-				yPos += txSize.Y;
+				yPos += txSize.Height;
 			}
 			return yPos;
 		}

@@ -1,25 +1,27 @@
 using System.Collections.Generic;
-using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using SlimDX.Direct3D9;
+using PoeHUD.Hud.UI;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-    public class Menu : HudPluginBase
+    public class Menu : Plugin
     {
         private const int ButtonWidth = 210;
         private const int ButtonHeight = 40;
         private readonly MouseHook hook;
-        private Rect bounds;
+        private RectangleF bounds;
         private List<BooleanButton> buttons;
         private BooleanButton currentHover;
         private bool menuVisible;
 
 
-        public Menu(GameController gameController) : base(gameController)
+        public Menu(GameController gameController, Graphics graphics) : base(gameController, graphics)
         {
-            bounds = new Rect(Settings.GetInt("Menu.PositionWidth"), Settings.GetInt("Menu.PositionHeight"),
+            bounds = new RectangleF(Settings.GetInt("Menu.PositionWidth"), Settings.GetInt("Menu.PositionHeight"),
                 Settings.GetInt("Menu.Length"), Settings.GetInt("Menu.Size"));
             CreateButtons();
             hook = new MouseHook(OnMouseEvent);
@@ -30,16 +32,18 @@ namespace PoeHUD.Hud.Menu
             hook.Dispose();
         }
 
-        public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
             int alpha = menuVisible ? 255 : 100;
-            rc.AddBox(bounds, Color.FromArgb(alpha, Color.Gray));
-            rc.AddTextWithHeight(
-                new Vec2(Settings.GetInt("Menu.PositionWidth") + 25, Settings.GetInt("Menu.PositionHeight") + 12),
-                "Menu", Color.Gray, 10, DrawTextFormat.VerticalCenter | DrawTextFormat.Center);
+            Color backgroundColor = Color.Gray;
+            backgroundColor.A = (byte)alpha;
+            Graphics.DrawBox(bounds, backgroundColor);
+            Graphics.DrawText("Menu", 10,
+                new Vector2(Settings.GetInt("Menu.PositionWidth") + 25, Settings.GetInt("Menu.PositionHeight") + 12),
+                Color.Gray, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             foreach (BooleanButton current in buttons)
             {
-                current.Render(rc);
+                current.Render(Graphics);
             }
         }
 
@@ -50,7 +54,8 @@ namespace PoeHUD.Hud.Menu
             {
                 return false;
             }
-            Vec2 vec = GameController.Window.ScreenToClient(new Vec2(x, y));
+            Vec2 v = GameController.Window.ScreenToClient(new Vec2(x, y));
+            Vector2 vec = new Vector2(v.X, v.Y);
             if (id == MouseEventID.MouseMove)
             {
                 if (currentHover != null && currentHover.TestHit(vec))
@@ -77,7 +82,7 @@ namespace PoeHUD.Hud.Menu
                     return false;
                 }
             }
-            if (bounds.HasPoint(vec) && id == MouseEventID.LeftButtonDown)
+            if (bounds.Contains(vec) && id == MouseEventID.LeftButtonDown)
             {
                 menuVisible = !menuVisible;
                 foreach (BooleanButton current2 in buttons)
@@ -180,7 +185,7 @@ namespace PoeHUD.Hud.Menu
         private BooleanButton CreateRootMenu(string text, int yIndex, string setting)
         {
             var booleanButton = new BooleanButton(text, setting);
-            booleanButton.Bounds = new Rect(Settings.GetInt("Menu.PositionWidth"),
+            booleanButton.Bounds = new RectangleF(Settings.GetInt("Menu.PositionWidth"),
                 Settings.GetInt("Menu.PositionHeight") + Settings.GetInt("Menu.Size") +
                 yIndex*booleanButton.DesiredHeight, booleanButton.DesiredWidth, booleanButton.DesiredHeight);
             buttons.Add(booleanButton);

@@ -4,17 +4,20 @@ using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 
+using SharpDX;
+
 namespace PoeHUD.Hud.Monster
 {
-	public class PoiTracker : HudPluginBase, IHudPluginWithMapIcons
+	public class PoiTracker : Plugin, IHudPluginWithMapIcons
 	{
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
 
-	    public PoiTracker(GameController gameController) : base(gameController)
+	    public PoiTracker(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
             this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
@@ -26,12 +29,12 @@ namespace PoeHUD.Hud.Monster
 	    }
 
 	
-		public override void OnEntityRemoved(EntityWrapper entity)
+		protected override void OnEntityRemoved(EntityWrapper entity)
 		{
 			currentIcons.Remove(entity);
 		}
 
-        public override void OnEntityAdded(EntityWrapper entity)
+        protected override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("MonsterTracker"))
 			{
@@ -46,7 +49,7 @@ namespace PoeHUD.Hud.Monster
 		{
 			currentIcons.Clear();
 		}
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("MonsterTracker.ShowText"))
 			{

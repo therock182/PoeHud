@@ -6,6 +6,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
+using Color2 = SharpDX.Color;
+
 namespace PoeHUD.Hud
 {
 	public static class Settings
@@ -51,6 +53,11 @@ namespace PoeHUD.Hud
 			}
 			return Color.White;
 		}
+        public static Color2 GetColor2(string setting)
+        {
+            var color = GetColor(setting);
+            return Color2.FromRgba(color.R | (color.G << 8) | (color.B << 16) | (color.A << 24));
+        }
 		public static void SetBool(string setting, bool value)
 		{
 			if (bools.ContainsKey(setting))

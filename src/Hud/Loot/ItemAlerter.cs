@@ -1,25 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
+
 using Entity = PoeHUD.Poe.Entity;
 using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : HudPluginBase, IHudPluginWithMapIcons
+	public class ItemAlerter : Plugin, IHudPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -28,7 +31,7 @@ namespace PoeHUD.Hud.Loot
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
 
-	    public ItemAlerter(GameController gameController) : base(gameController)
+	    public ItemAlerter(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
             playedSoundsCache = new HashSet<long>();
             currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
@@ -45,13 +48,13 @@ namespace PoeHUD.Hud.Loot
 	    }
 
 	    
-		public override void OnEntityRemoved(EntityWrapper entity)
+		protected override void OnEntityRemoved(EntityWrapper entity)
 		{
 			currentAlerts.Remove(entity);
 			currentIcons.Remove(entity);
 		}
 
-        public override void OnEntityAdded(EntityWrapper entity)
+        protected override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("ItemAlert") || currentAlerts.ContainsKey(entity))
 			{
@@ -115,7 +118,7 @@ namespace PoeHUD.Hud.Loot
 			playedSoundsCache.Clear();
 			currentIcons.Clear();
 		}
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("ItemAlert") || !Settings.GetBool("ItemAlert.ShowText"))
 			{
@@ -126,8 +129,8 @@ namespace PoeHUD.Hud.Loot
 			var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
 
 
-			Vec2 rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
-			int y = rightTopAnchor.Y;
+			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
+			float y = rightTopAnchor.Y;
 			int fontSize = Settings.GetInt("ItemAlert.ShowText.FontSize");
 			
 			const int vMargin = 2;
@@ -141,8 +144,8 @@ namespace PoeHUD.Hud.Loot
 				Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
 				var delta = itemPos - playerPos;
 
-				Vec2 vPadding = new Vec2(5, 2);
-				Vec2 itemDrawnSize = drawItem(rc, kv.Value, delta, rightTopAnchor.X, y, vPadding, text, fontSize);
+				var vPadding = new Vector2(5, 2);
+				var itemDrawnSize = drawItem(kv.Value, delta, rightTopAnchor.X, y, vPadding, text, fontSize);
 				y += itemDrawnSize.Y + vMargin;
 			}
 			
@@ -164,7 +167,7 @@ namespace PoeHUD.Hud.Loot
 			}
 		}
 
-		private static Vec2 drawItem(RenderingContext rc, AlertDrawStyle drawStyle, Vec2 delta, int x, int y, Vec2 vPadding, string text,
+		private Vector2 drawItem(AlertDrawStyle drawStyle, Vec2 delta, float x, float y, Vector2 vPadding, string text,
 			int fontSize)
 		{
 			// collapse padding when there's a frame
@@ -179,32 +182,33 @@ namespace PoeHUD.Hud.Loot
 			//text = text + " @ " + (int)distance + " : " + (int)(phi / Math.PI * 180)  + " : " + xSprite;
 
 			int compassOffset = fontSize + 8;
-			Vec2 textPos = new Vec2(x - vPadding.X - compassOffset, y + vPadding.Y);
-			Vec2 vTextSize = rc.AddTextWithHeight(textPos, text, drawStyle.color, fontSize, DrawTextFormat.Right);
+			var textPos = new Vector2(x - vPadding.X - compassOffset, y + vPadding.Y);
+            var vTextSize = Graphics.DrawText(text, fontSize, textPos, drawStyle.color, FontDrawFlags.Right);
 
-			int iconSize =  drawStyle.IconIndex >= 0 ? vTextSize.Y : 0;
+			int iconSize =  drawStyle.IconIndex >= 0 ? vTextSize.Height : 0;
 
-			int fullHeight = vTextSize.Y + 2 * vPadding.Y + 2 * drawStyle.FrameWidth;
-			int fullWidth = vTextSize.X + 2 * vPadding.X + iconSize + 2 * drawStyle.FrameWidth + compassOffset;
-			rc.AddBox(new Rect(x - fullWidth, y, fullWidth - compassOffset, fullHeight), Color.FromArgb(180, 0, 0, 0));
+			float fullHeight = vTextSize.Height + 2 * vPadding.Y + 2 * drawStyle.FrameWidth;
+			float fullWidth = vTextSize.Width + 2 * vPadding.X + iconSize + 2 * drawStyle.FrameWidth + compassOffset;
+            Graphics.DrawBox(new RectangleF(x - fullWidth, y, fullWidth - compassOffset, fullHeight), new ColorBGRA(0, 0, 0, 180));
 
-			var rectUV = GetDirectionsUv(phi, distance);
-			rc.AddSprite("directions.png", new Rect(x - vPadding.X - compassOffset + 6, y + vPadding.Y, vTextSize.Y, vTextSize.Y), rectUV);
+			var rectUV = GetDirectionsUV(phi, distance);
+            Graphics.DrawImage("directions.png", new RectangleF(x - vPadding.X - compassOffset + 6, y + vPadding.Y, vTextSize.Height, vTextSize.Height), rectUV);
 
 			if (iconSize > 0)
 			{
-				const float iconsInSprite = 4;
+                const float ICONS_IN_SPRITE = 4;
 
-				Rect iconPos = new Rect(textPos.X - iconSize - vTextSize.X, textPos.Y, iconSize, iconSize);
-				RectUV uv = new RectUV(drawStyle.IconIndex/iconsInSprite, 0, (drawStyle.IconIndex + 1)/iconsInSprite, 1);
-				rc.AddSprite("item_icons.png", iconPos, uv);
+                var iconPos = new RectangleF(textPos.X - iconSize - vTextSize.Width, textPos.Y, iconSize, iconSize);
+                var iconX = drawStyle.IconIndex / ICONS_IN_SPRITE;
+                var uv = new RectangleF(iconX, 0, (drawStyle.IconIndex + 1) / ICONS_IN_SPRITE - iconX, 1);
+                Graphics.DrawImage("item_icons.png", iconPos, uv);
 			}
 			if (drawStyle.FrameWidth > 0)
 			{
-				Rect frame = new Rect(x - fullWidth, y, fullWidth - compassOffset , fullHeight);
-				rc.AddFrame(frame, drawStyle.color, drawStyle.FrameWidth);
+				var frame = new RectangleF(x - fullWidth, y, fullWidth - compassOffset , fullHeight);
+                Graphics.DrawHollowBox(frame, drawStyle.FrameWidth, drawStyle.color);
 			}
-			return new Vec2(fullWidth, fullHeight);
+			return new Vector2(fullWidth, fullHeight);
 		}
 
 		private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)

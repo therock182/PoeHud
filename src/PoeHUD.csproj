@@ -10,6 +10,7 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <WarningLevel>4</WarningLevel>
+    <NuGetPackageImportStamp>1fe28053</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -47,25 +48,40 @@
     <RootNamespace>PoeHUD</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="SlimDX" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FsController.cs" />
     <Compile Include="Framework\Aero.cs" />
+    <Compile Include="Framework\Helpers\ActionHelper.cs" />
+    <Compile Include="Framework\Helpers\LinqHelper.cs" />
+    <Compile Include="Framework\WinApi.cs" />
+    <Compile Include="Hud\ExternalOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Hud\Plugin.cs" />
+    <Compile Include="Hud\UiMountPoint.cs" />
+    <Compile Include="Hud\UI\Graphics.cs" />
+    <Compile Include="Hud\UI\Renderers\FontRenderer.cs" />
+    <Compile Include="Hud\UI\Renderers\TextureRenderer.cs" />
+    <Compile Include="Hud\UI\Vertexes\ColoredVertex.cs" />
+    <Compile Include="Hud\UI\Vertexes\TexturedVertex.cs" />
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
     <Compile Include="Hud\Health\Healthbar.cs" />
     <Compile Include="Hud\Health\HealthBarRenderer.cs" />
     <Compile Include="Hud\Health\RenderPrio.cs" />
-    <Compile Include="Hud\HudPluginBase.cs" />
     <Compile Include="Hud\Interfaces\IHudPluginWithMapIcons.cs" />
-    <Compile Include="Hud\KeyboardEvents\KeyBoardEvents.cs" />
-    <Compile Include="Hud\DebugView\ShowUiHierarchy.cs" />
     <Compile Include="Models\AreaInstance.cs" />
     <Compile Include="Poe\Components\Inventories.cs" />
     <Compile Include="Poe\Components\Stack.cs" />
@@ -173,32 +189,18 @@
     <Compile Include="Hud\Icons\LargeMapRenderer.cs" />
     <Compile Include="Hud\MouseEventID.cs" />
     <Compile Include="Hud\MouseHook.cs" />
-    <Compile Include="Hud\OverlayRenderer.cs" />
     <Compile Include="Hud\Preload\PreloadAlert.cs" />
     <Compile Include="Poe\Elements\EntityLabel.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Hud\RenderingContext.cs" />
     <Compile Include="Hud\Settings.cs" />
-    <Compile Include="Hud\LegacySettingsEditor.cs" />
-    <Compile Include="Hud\SettingsEditorStatus.cs" />
-    <Compile Include="Hud\SettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Hud\Sounds.cs" />
-    <Compile Include="Hud\TextureRenderer.cs" />
-    <Compile Include="Hud\TransparentDXOverlay.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Hud\XpRate\XPHRenderer.cs" />
     <Compile Include="Models\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Hud\SettingsForm.resources" />
-    <EmbeddedResource Include="Hud\TransparentDXOverlay.resources" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -207,4 +209,11 @@
 copy $(TargetPath) $(ProjectDir)\..
 )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
+  </Target>
 </Project>
