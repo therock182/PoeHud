@@ -91,10 +91,11 @@ namespace PoeHUD.Hud
 
         private Vector2 GetUnderCornerMap()
         {
+            const int EPSILON = 1;
             Element gemPanel = gameController.Game.IngameState.IngameUi.GemLvlUpPanel;
             RectangleF gemPanelRect = gemPanel.GetClientRect();
             RectangleF mapRect = gameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
-            RectangleF clientRect = gemPanel.IsVisible && gemPanelRect.X + gemPanel.Width < mapRect.X + mapRect.X + 50
+            RectangleF clientRect = gemPanel.IsVisible && Math.Abs(gemPanelRect.Right - mapRect.Right) < EPSILON
                 ? gemPanel.GetClientRect()
                 : mapRect;
             return new Vector2(mapRect.X + mapRect.Width, clientRect.Y + clientRect.Height + 10);
