@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Framework;
 
+using SharpDX;
+
 namespace PoeHUD.Poe.UI
 {
     public  class Element : RemoteMemoryObject
@@ -100,7 +102,7 @@ namespace PoeHUD.Poe.UI
             return list;
         }
 
-        public Vec2f GetParentPos()
+        public Vector2 GetParentPos()
         {
             float num = 0;
             float num2 = 0;
@@ -109,12 +111,12 @@ namespace PoeHUD.Poe.UI
                 num += current.X;
                 num2 += current.Y;
             }
-            return new Vec2f(num, num2);
+            return new Vector2(num, num2);
         }
 
-        public Rect GetClientRect()
+        public RectangleF GetClientRect()
         {
-            Vec2f vPos = GetParentPos();
+            var vPos = GetParentPos();
             float width = Game.IngameState.Camera.Width;
             float height = Game.IngameState.Camera.Height;
             float ratioFixMult = width/height/1.6f;
@@ -123,7 +125,7 @@ namespace PoeHUD.Poe.UI
 
             float num = (vPos.X + X)*xScale;
             float num2 = (vPos.Y + Y)*yScale;
-            return new Rect((int) num, (int) num2, (int) (xScale*Width), (int) (yScale*Height));
+            return new RectangleF(num, num2, xScale*Width, yScale*Height);
         }
 
         public Element GetChildFromIndices(params int[] indices)

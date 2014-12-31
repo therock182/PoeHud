@@ -1,7 +1,9 @@
-﻿using System.Drawing;
-using PoeHUD.Framework;
+﻿using PoeHUD.Framework;
 using PoeHUD.Hud.Loot;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models.Enums;
+
+using SharpDX;
 
 namespace PoeHUD.Hud
 {
@@ -29,31 +31,9 @@ namespace PoeHUD.Hud
 		}
 
 
-		public void DrawAt(RenderingContext rc, Vec2 point, Rect rect)
+		public void DrawAt(Graphics graphics, RectangleF rect)
 		{
-			rc.AddTexture(this.TextureFile, rect, TintColor);
-		}
-	}
-
-	public class HudSprite : HudTexture
-	{
-		public Vec2 SpriteSize;
-		public Vec2 ChosenImage;
-
-		public HudSprite(string fileName, Vec2 chosenImage, Vec2 spriteSize) : this(fileName, Color.White, chosenImage, spriteSize) {}
-
-		public HudSprite(string fileName, Color tintColor, Vec2 chosenImage, Vec2 spriteSize) : base(fileName, tintColor)
-		{
-			ChosenImage = chosenImage;
-			SpriteSize = spriteSize;
-		}
-
-		public void DrawAt(RenderingContext rc, Vec2 point, Rect rect)
-		{
-			float xD = ((float)(SpriteSize.X)) / SpriteSize.X;
-			float yD = ((float)(SpriteSize.Y)) / SpriteSize.Y;
-			RectUV uvRect = new RectUV(xD * ChosenImage.X, yD * ChosenImage.Y, xD * (ChosenImage.X + 1), yD * (ChosenImage.Y + 1));
-			rc.AddSprite(this.TextureFile, rect, uvRect, TintColor);
+            graphics.DrawImage(this.TextureFile, rect, TintColor);
 		}
 	}
 }

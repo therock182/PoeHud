@@ -121,10 +121,4 @@ namespace PoeHUD.Hud
             return false;
         }
     }
-
-    public enum UiMountPoint
-    {
-        UnderMinimap,
-        LeftOfMinimap
-    }
 }

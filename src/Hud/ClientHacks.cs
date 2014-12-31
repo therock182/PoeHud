@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
-using SlimDX.XAudio2;
+using PoeHUD.Hud.UI;
+
+using SharpDX;
 
 namespace PoeHUD.Hud
 {
-    public class ClientHacks : HudPluginBase
+    public class ClientHacks : Plugin
     {
         private bool fullbrightEnabled;
         private bool hasSetWriteAccess;
@@ -18,7 +20,7 @@ namespace PoeHUD.Hud
 
 
 
-        public ClientHacks(GameController gameController):base(gameController)
+        public ClientHacks(GameController gameController, Graphics graphics):base(gameController, graphics)
         {
 
             m = GameController.Memory;
@@ -42,7 +44,7 @@ namespace PoeHUD.Hud
             }
         }
       
-        public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
             bool flag = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Maphack");
             if (flag != maphackEnabled)

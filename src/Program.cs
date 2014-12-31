@@ -57,13 +57,8 @@ namespace PoeHUD
 				return;
 			}
 
-			OverlayRenderer overlay = null;
 			AppDomain.CurrentDomain.UnhandledException += ( sender,  exceptionArgs)=>
 			{
-				if (overlay != null)
-				{
-					overlay.Detach();
-				}
 				MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject.ToString());
 				Environment.Exit(1);
 			};
@@ -74,21 +69,10 @@ namespace PoeHUD
 				offs.DoPatternScans(memory);
 				GameController gameController = new GameController(memory);
 				gameController.RefreshState();
-				try
-				{
-					Console.WriteLine("Starting overlay");
-					TransparentDXOverlay transparentDXOverlay = new TransparentDXOverlay(gameController.Window, () => memory.IsInvalid());
-					transparentDXOverlay.InitD3D();
-					overlay = new OverlayRenderer(gameController, transparentDXOverlay.RC);
-					Application.Run(transparentDXOverlay);
-				}
-				finally
-				{
-					if (overlay != null)
-					{
-						overlay.Detach();
-					}
-				}
+
+                Func<bool> gameEnded = () => memory.IsInvalid();
+                var overlay = new ExternalOverlay(gameController, gameEnded);
+                Application.Run(overlay);
 			}
 		}
 	}

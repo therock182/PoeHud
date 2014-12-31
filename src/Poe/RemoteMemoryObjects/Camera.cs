@@ -3,7 +3,8 @@ using System.Threading;
 using PoeHUD.Framework;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
-using SlimDX;
+
+using SharpDX;
 
 namespace PoeHUD.Poe.RemoteMemoryObjects
 {
@@ -31,8 +32,8 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         }
 
         static Vector4 oldtranslation;
-        static Vec2 oldplayerCord;
-        public unsafe Vec2 WorldToScreen(Vec3 vec3, EntityWrapper entityWrapper, int times = 0)
+        static Vector2 oldplayerCord;
+        public unsafe Vector2 WorldToScreen(Vec3 vec3, EntityWrapper entityWrapper, int times = 0)
         {
 
             var isplayer = Game.IngameState.Data.LocalPlayer.IsValid && Game.IngameState.Data.LocalPlayer.Address == entityWrapper.Address;
@@ -50,13 +51,13 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
                 x = ((cord.X + 1.0f) * 0.5f) * Width;
                 y = ((1.0f - cord.Y) * 0.5f) * Height;
 
-                if (times < 50000 && isMoving && isplayer && oldtranslation == translation)
+                if (times < 2500 && isMoving && isplayer && oldtranslation == translation)
                 {
                     return WorldToScreen(vec3, entityWrapper, times + 1);
                 }
                 oldtranslation = translation;
             }
-            var resultCord = new Vec2((int)Math.Round(x), (int)Math.Round(y));
+            var resultCord = new Vector2(x, y);
             if (isMoving && isplayer)
             {
                 if (Math.Abs(oldplayerCord.X - resultCord.X) < 40 || (Math.Abs(oldplayerCord.X - resultCord.Y) < 40))

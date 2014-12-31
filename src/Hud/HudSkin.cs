@@ -1,13 +1,17 @@
-using System.Drawing;
+using SharpDX;
 
 namespace PoeHUD.Hud
 {
-	public class HudSkin
+	public static class HudSkin
 	{
-		public static readonly Color MagicColor = Color.FromArgb(136, 136, 255);
-		public static readonly Color RareColor = Color.FromArgb(255, 255, 119);
-		public static readonly Color CurrencyColor = Color.FromArgb(170, 158, 130);
-		public static readonly Color UniqueColor = Color.FromArgb(175, 96, 37);
-		public static readonly Color SkillGemColor = Color.FromArgb(26, 162, 155);
+        public static readonly Color MagicColor = new ColorBGRA(136, 136, 255, 0xFF);
+
+        public static readonly Color RareColor = new ColorBGRA(255, 255, 119, 0xFF);
+
+        public static readonly Color CurrencyColor = new ColorBGRA(170, 158, 130, 0xFF);
+
+        public static readonly Color UniqueColor = new ColorBGRA(175, 96, 37, 0xFF);
+
+        public static readonly Color SkillGemColor = new ColorBGRA(26, 162, 155, 0xFF);
 	}
 }

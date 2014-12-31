@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using PoeHUD.Models.Enums;
+
+using SharpDX;
 
 namespace PoeHUD.Hud.Loot
 {
@@ -53,7 +54,7 @@ namespace PoeHUD.Hud.Loot
 
 		internal AlertDrawStyle GetDrawStyle()
 		{
-			System.Drawing.Color color = Color.White;
+			Color color = Color.White;
 			switch(this.Rarity) {
 				case ItemRarity.White : color = Color.White; break;
 				case ItemRarity.Magic: color = HudSkin.MagicColor; break;

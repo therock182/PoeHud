@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 
+using SharpDX;
+
 namespace PoeHUD.Hud.Icons
 {
-	public class MinimapRenderer : HudPluginBase
+	public class MinimapRenderer : Plugin
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
 
 
-        public MinimapRenderer(GameController gameController, Func<IEnumerable<MapIcon>> gatherMapIcons): base(gameController)
+        public MinimapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons): base(gameController, graphics)
 	    {
             getIcons = gatherMapIcons;
 	    }
 
 	
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!GameController.InGame || !Settings.GetBool("MinimapIcons"))
 			{
@@ -34,21 +37,21 @@ namespace PoeHUD.Hud.Icons
 			float pPosZ = GameController.Player.GetComponent<Render>().Z;
 			
 			const float scale = 240f;
-			Rect clientRect = smallMinimap.GetClientRect();
-			Vec2 minimapCenter = new Vec2(clientRect.X + clientRect.W / 2, clientRect.Y + clientRect.H / 2);
-			double diag = Math.Sqrt(clientRect.W * clientRect.W + clientRect.H * clientRect.H) / 2.0;
+			var clientRect = smallMinimap.GetClientRect();
+			var minimapCenter = new Vector2(clientRect.X + clientRect.Width / 2, clientRect.Y + clientRect.Height / 2);
+			double diag = Math.Sqrt(clientRect.Width * clientRect.Width + clientRect.Height * clientRect.Height) / 2.0;
 			foreach(MapIcon icon in getIcons())
 			{
 				if (icon.ShouldSkip())
 					continue;
 
 				float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
-				Vec2 point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (int)((iZ - pPosZ) / 20));
+				var point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iZ - pPosZ) / 20);
 
 				var texture = icon.MinimapIcon;
 				int size = icon.Size;
-				Rect rect = new Rect(point.X - size / 2, point.Y - size / 2, size, size);
-				texture.DrawAt(rc, point, rect);
+				var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
+				texture.DrawAt(Graphics, rect);
 			}
 		}
 	}

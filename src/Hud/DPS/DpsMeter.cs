@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Poe.Components;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.DPS
 {
-	public class DpsMeter : HudPluginBase
+	public class DpsMeter : Plugin
 	{
 
         
@@ -26,7 +28,7 @@ namespace PoeHUD.Hud.DPS
 		private int maxDps;
 
 
-	    public DpsMeter(GameController gameController) : base(gameController)
+	    public DpsMeter(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
             lastEntities = new Dictionary<int, int>();
             GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
@@ -40,7 +42,7 @@ namespace PoeHUD.Hud.DPS
 			maxDps = 0;
 		}
 
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("DpsDisplay"))
 			{
@@ -67,20 +69,22 @@ namespace PoeHUD.Hud.DPS
 			}
 
 			int fontSize = Settings.GetInt("XphDisplay.FontSize");
-			Vec2 mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
+			Vector2 mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
 			int dps = ((int)damageMemory.Average());
 			if (maxDps < dps)
 				maxDps = dps;
-			
-			var textSize = rc.AddTextWithHeight(mapWithOffset,  dps + " DPS", Color.White, fontSize * 3 / 2, DrawTextFormat.Right);
-			var tx2 = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, mapWithOffset.Y + textSize.Y), maxDps + " peak DPS", Color.White, fontSize * 2 / 3, DrawTextFormat.Right);
 
-			int width = Math.Max(tx2.X, textSize.X);
-			Rect rect = new Rect(mapWithOffset.X - 5 - width, mapWithOffset.Y - 5, width + 10, textSize.Y + tx2.Y + 10);
-			
-			rc.AddBox(rect, Color.FromArgb(160, Color.Black));
+            var textSize = Graphics.DrawText(dps + " DPS", fontSize * 3f / 2f, mapWithOffset, Color.White, FontDrawFlags.Right);
+            var tx2 = Graphics.DrawText(maxDps + " peak DPS", fontSize * 2f / 3f, new Vector2(mapWithOffset.X, mapWithOffset.Y + textSize.Height), Color.White, FontDrawFlags.Right);
 
-			mountPoints[UiMountPoint.LeftOfMinimap] = new Vec2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.H);
+			int width = Math.Max(tx2.Width, textSize.Width);
+			var rect = new RectangleF(mapWithOffset.X - 5 - width, mapWithOffset.Y - 5, width + 10, textSize.Height + tx2.Height + 10);
+
+		    Color backgroundColor = Color.Black;
+		    backgroundColor.A = 160;
+            Graphics.DrawBox(rect, backgroundColor);
+
+			mountPoints[UiMountPoint.LeftOfMinimap] = new Vector2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.Height);
 		}
 
 		private float CalculateDps(TimeSpan dt)

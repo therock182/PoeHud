@@ -1,18 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-    public class XPHRenderer : HudPluginBase
+    public class XPHRenderer : Plugin
     {
-        private Rect bounds = new Rect(0, 0, 0, 0);
+        private RectangleF bounds = new RectangleF(0, 0, 0, 0);
         private string curDisplayString = "0.00 XP/h";
         private string curTimeLeftString = "--h --m --s until level up";
         private bool hasStarted;
@@ -20,13 +22,13 @@ namespace PoeHUD.Hud.XpRate
         private DateTime startTime;
         private long startXp;
 
-        public Rect Bounds
+        public RectangleF Bounds
         {
             get
             {
                 if (!Settings.GetBool("XphDisplay"))
                 {
-                    return new Rect(0, 0, 0, 0);
+                    return new RectangleF(0, 0, 0, 0);
                 }
                 return bounds;
             }
@@ -34,7 +36,7 @@ namespace PoeHUD.Hud.XpRate
         }
 
 
-        public XPHRenderer(GameController gameController) : base(gameController)
+        public XPHRenderer(GameController gameController, Graphics graphics) : base(gameController, graphics)
         {
             GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
         }
@@ -46,7 +48,7 @@ namespace PoeHUD.Hud.XpRate
             curTimeLeftString = "--h --m --s until level up";
         }
 
-        public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
             if (!Settings.GetBool("XphDisplay") ||
                 (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100))
@@ -73,37 +75,36 @@ namespace PoeHUD.Hud.XpRate
             int fontSize = Settings.GetInt("XphDisplay.FontSize");
             int bgAlpha = Settings.GetInt("XphDisplay.BgAlpha");
 
-            Vec2 mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
+            var mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
 
-            int yCursor = 0;
-            Vec2 rateTextSize = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, mapWithOffset.Y), curDisplayString,
-                Color.White, fontSize, DrawTextFormat.Right);
-            yCursor += rateTextSize.Y;
-            Vec2 remainingTextSize = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, mapWithOffset.Y + yCursor),
-                curTimeLeftString, Color.White, fontSize, DrawTextFormat.Right);
-            yCursor += remainingTextSize.Y;
-            int thirdLine = mapWithOffset.Y + yCursor;
-            Vec2 areaLevelNote = rc.AddTextWithHeight(new Vec2(mapWithOffset.X, thirdLine),
-                GameController.Area.CurrentArea.DisplayName, Color.White, fontSize, DrawTextFormat.Right);
+            float yCursor = 0;
+            var rateTextSize = Graphics.DrawText(curDisplayString, fontSize, new Vector2(mapWithOffset.X, mapWithOffset.Y),
+                Color.White, FontDrawFlags.Right);
+            yCursor += rateTextSize.Height;
+            var remainingTextSize = Graphics.DrawText(curTimeLeftString, fontSize, new Vector2(mapWithOffset.X, mapWithOffset.Y + yCursor),
+                Color.White, FontDrawFlags.Right);
+            yCursor += remainingTextSize.Height;
+            float thirdLine = mapWithOffset.Y + yCursor;
+            var areaLevelNote = Graphics.DrawText(GameController.Area.CurrentArea.DisplayName, fontSize, new Vector2(mapWithOffset.X, thirdLine),
+                Color.White, FontDrawFlags.Right);
 
             string strTimer = AreaInstance.GetTimeString(dtNow - GameController.Area.CurrentArea.TimeEntered);
-            Vec2 timerSize = rc.MeasureString(strTimer, fontSize, DrawTextFormat.Left);
-            yCursor += areaLevelNote.Y;
+            var timerSize = Graphics.MeasureText(strTimer, fontSize);
+            yCursor += areaLevelNote.Height;
 
-            Rect clientRect = GameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
+            var clientRect = GameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
             int textWidth =
-                Math.Max(Math.Max(rateTextSize.X, remainingTextSize.X), areaLevelNote.X + timerSize.X + 20) + 10;
-            int width = Math.Max(textWidth, Math.Max(clientRect.W, 0 /*this.overlay.PreloadAlert.Bounds.W*/));
-            var rect = new Rect(mapWithOffset.X - width + 5, mapWithOffset.Y - 5, width, yCursor + 10);
+                Math.Max(Math.Max(rateTextSize.Width, remainingTextSize.Width), areaLevelNote.Width + timerSize.Width + 20) + 10;
+            float width = Math.Max(textWidth, Math.Max(clientRect.Width, 0 /*this.overlay.PreloadAlert.Bounds.W*/));
+            var rect = new RectangleF(mapWithOffset.X - width + 5, mapWithOffset.Y - 5, width, yCursor + 10);
             Bounds = rect;
             var fps = GameController.Game.IngameState.CurFps;
-            rc.AddTextWithHeight(new Vec2(rect.X + 5, mapWithOffset.Y), dtNow.ToShortTimeString()+ " ("+fps+")", Color.White, fontSize,
-                DrawTextFormat.Left);
-            rc.AddTextWithHeight(new Vec2(rect.X + 5, thirdLine), strTimer, Color.White, fontSize, DrawTextFormat.Left);
+            Graphics.DrawText(dtNow.ToShortTimeString() + " (" + fps + ")", fontSize, new Vector2(rect.X + 5, mapWithOffset.Y), Color.White);
+            Graphics.DrawText(strTimer, fontSize, new Vector2(rect.X + 5, thirdLine), Color.White);
 
-            rc.AddBox(rect, Color.FromArgb(bgAlpha, 1, 1, 1));
+            Graphics.DrawBox(rect, new ColorBGRA(1, 1, 1, (byte)bgAlpha));
 
-            mountPoints[UiMountPoint.LeftOfMinimap] = new Vec2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.H);
+            mountPoints[UiMountPoint.LeftOfMinimap] = new Vector2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.Height);
         }
 
         private void calculateRemainingExp(DateTime dtNow)

@@ -1,4 +1,4 @@
-using System.Drawing;
+using SharpDX;
 
 namespace PoeHUD.Hud.Loot
 {

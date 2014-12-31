@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Poe.Components;
-using SlimDX.Direct3D9;
+
+using SharpDX;
+using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class MonsterTracker : HudPluginBase, IHudPluginWithMapIcons
+	public class MonsterTracker : Plugin, IHudPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;
@@ -24,7 +26,7 @@ namespace PoeHUD.Hud.Monster
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
 
-	    public MonsterTracker(GameController gameController) : base(gameController)
+	    public MonsterTracker(GameController gameController, Graphics graphics) : base(gameController, graphics)
 	    {
 
             this.alreadyAlertedOf = new HashSet<int>();
@@ -40,13 +42,13 @@ namespace PoeHUD.Hud.Monster
 	    }
 
 	
-		public override void OnEntityRemoved(EntityWrapper entity)
+		protected override void OnEntityRemoved(EntityWrapper entity)
 		{
 			alertTexts.Remove(entity);
 			currentIcons.Remove(entity);
 		}
 
-		public  override void OnEntityAdded(EntityWrapper entity)
+        protected override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.GetBool("MonsterTracker") || this.alertTexts.ContainsKey(entity))
 			{
@@ -95,7 +97,7 @@ namespace PoeHUD.Hud.Monster
 			this.alertTexts.Clear();
 			currentIcons.Clear();
 		}
-		public override void Render(RenderingContext rc, Dictionary<UiMountPoint, Vec2> mountPoints)
+		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
 			if (!Settings.GetBool("MonsterTracker.ShowText"))
 			{
@@ -108,7 +110,7 @@ namespace PoeHUD.Hud.Monster
 			var playerPos = this.GameController.Player.GetComponent<Positioned>().GridPos;
 			int fontSize = Settings.GetInt("MonsterTracker.ShowText.FontSize");
 			bool first = true;
-			Rect rectBackground = new Rect();
+			var rectBackground = new RectangleF();
 
 		    var groupedAlerts = alertTexts.Where(y => y.Key.IsAlive).Select(y =>
 		    {
@@ -121,34 +123,35 @@ namespace PoeHUD.Hud.Monster
 		        .GroupBy(y => y.Dic.Value)
 		        .Select(y => new {Text = y.Key, Monster = y.First(), Count=y.Count()}).ToList();
 
+            Color backgroundColor = new ColorBGRA(1, 1, 1, (byte)Settings.GetInt("MonsterTracker.ShowText.BgAlpha"));
             foreach (var group in groupedAlerts)
             {
-                RectUV uv = GetDirectionsUv(group.Monster.Phi, group.Monster.Distance);
+                var uv = GetDirectionsUV(group.Monster.Phi, group.Monster.Distance);
                 string text = String.Format("{0} {1}", group.Text, group.Count > 1 ? "(" + group.Count + ")" : string.Empty);
-                Vec2 textSize = rc.AddTextWithHeight(new Vec2(xScreenCenter, yPos), text, Color.Red, fontSize, DrawTextFormat.Center);
+                var textSize = Graphics.DrawText(text, fontSize, new Vector2(xScreenCenter, yPos), Color.Red, FontDrawFlags.Center);
 
-                rectBackground = new Rect(xScreenCenter - textSize.X / 2 - 6, yPos, textSize.X + 12, textSize.Y);
-                rectBackground.X -= textSize.Y + 3;
-                rectBackground.W += textSize.Y;
+                rectBackground = new RectangleF(xScreenCenter - textSize.Width / 2 - 6, yPos, textSize.Width + 12, textSize.Height);
+                rectBackground.X -= textSize.Height + 3;
+                rectBackground.Width += textSize.Height;
 
-                Rect rectDirection = new Rect(rectBackground.X + 3, rectBackground.Y, rectBackground.H, rectBackground.H);
+                var rectDirection = new RectangleF(rectBackground.X + 3, rectBackground.Y, rectBackground.Height, rectBackground.Height);
 
                 if (first) // vertical padding above
                 {
                     rectBackground.Y -= 5;
-                    rectBackground.H += 5;
+                    rectBackground.Height += 5;
                     first = false;
                 }
-                rc.AddBox(rectBackground, Color.FromArgb(Settings.GetInt("MonsterTracker.ShowText.BgAlpha"), 1, 1, 1));
-                rc.AddSprite("directions.png", rectDirection, uv, Color.Red);
-                yPos += textSize.Y;
+                Graphics.DrawBox(rectBackground, backgroundColor);
+                Graphics.DrawImage("directions.png", rectDirection, uv, Color.Red);
+                yPos += textSize.Height;
                 
             }
 			if (!first)  // vertical padding below
 			{
-				rectBackground.Y = rectBackground.Y + rectBackground.H;
-				rectBackground.H = 5;
-				rc.AddBox(rectBackground, Color.FromArgb(Settings.GetInt("MonsterTracker.ShowText.BgAlpha"), 1, 1, 1));
+				rectBackground.Y = rectBackground.Y + rectBackground.Height;
+				rectBackground.Height = 5;
+                Graphics.DrawBox(rectBackground, backgroundColor);
 			}
 		}
 
