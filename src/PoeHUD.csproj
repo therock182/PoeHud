@@ -64,6 +64,7 @@
     <Compile Include="Framework\Aero.cs" />
     <Compile Include="Framework\Helpers\ActionHelper.cs" />
     <Compile Include="Framework\Helpers\LinqHelper.cs" />
+    <Compile Include="Framework\Helpers\MathHepler.cs" />
     <Compile Include="Framework\WinApi.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>

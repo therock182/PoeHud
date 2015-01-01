@@ -125,6 +125,11 @@ namespace PoeHUD.Hud.UI
             return fontRenderer.DrawText(text, "Verdana", (int)(size * fontFactor), position, color, align);
         }
 
+        public Size2 DrawText(string text, float size, Vector2 position, FontDrawFlags align = FontDrawFlags.Left)
+        {
+            return fontRenderer.DrawText(text, "Verdana", (int)(size * fontFactor), position, Color.White, align);
+        }
+
         public Size2 MeasureText(string text, float size, FontDrawFlags align = FontDrawFlags.Left)
         {
             return fontRenderer.MeasureText(text, "Verdana", (int)(size * fontFactor), align);

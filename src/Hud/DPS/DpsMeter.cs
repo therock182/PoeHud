@@ -1,115 +1,107 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
-using PoeHUD.Hud.Interfaces;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
+using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 
 using SharpDX;
 using SharpDX.Direct3D9;
 
+using PoeMonster = PoeHUD.Poe.Components.Monster; // TODO Need rename Monster directory
+
 namespace PoeHUD.Hud.DPS
 {
-	public class DpsMeter : Plugin
-	{
+    public class DpsMeter : Plugin
+    {
+        private const double DPS_PERIOD = 0.2;
 
-        
-		private bool hasStarted;
-		private DateTime lastCalcTime;
-		private Dictionary<int, int> lastEntities;
-	    
-		
-		private const float dps_period = 0.2f;
-		private readonly float[] damageMemory = new float[10];
-		private int ixDamageMemory;
-		private int maxDps;
+        private DateTime lastTime;
 
+        private Dictionary<int, int> lastMonsters = new Dictionary<int, int>();
 
-	    public DpsMeter(GameController gameController, Graphics graphics) : base(gameController, graphics)
-	    {
-            lastEntities = new Dictionary<int, int>();
-            GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-	    }
+        private double[] damageMemory = new double[10];
 
-	
-		private void CurrentArea_OnAreaChange(AreaController area)
-		{
-			lastEntities = new Dictionary<int, int>();
-			hasStarted = false;
-			maxDps = 0;
-		}
+        private int damageMemoryIndex;
 
-		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
-		{
-			if (!Settings.GetBool("DpsDisplay"))
-			{
-				return;
-			}
+        private int maxDps;
 
-			if (!hasStarted)
-			{
-				lastCalcTime = DateTime.Now;
-				hasStarted = true;
-				return;
-			}
+        public DpsMeter(GameController gameController, Graphics graphics) : base(gameController, graphics)
+        {
+            lastTime = DateTime.Now;
+            GameController.Area.OnAreaChange += area =>
+            {
+                lastTime = DateTime.Now;
+                maxDps = 0;
+                damageMemory = new double[10];
+                lastMonsters.Clear();
+            };
+        }
 
-			DateTime dtNow = DateTime.Now;
-			TimeSpan delta = dtNow - lastCalcTime;
+        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        {
+            if (!Settings.GetBool("DpsDisplay"))
+            {
+                return;
+            }
 
-			if (delta.TotalSeconds > dps_period)
-			{
-				ixDamageMemory++;
-				if (ixDamageMemory >= damageMemory.Length)
-					ixDamageMemory = 0;
-				damageMemory[ixDamageMemory] = CalculateDps(delta);
-				lastCalcTime = dtNow;
-			}
+            DateTime nowTime = DateTime.Now;
+            TimeSpan elapsedTime = nowTime - lastTime;
+            if (elapsedTime.TotalSeconds > DPS_PERIOD)
+            {
+                damageMemoryIndex++;
+                if (damageMemoryIndex >= damageMemory.Length)
+                {
+                    damageMemoryIndex = 0;
+                }
+                damageMemory[damageMemoryIndex] = CalculateDps(elapsedTime);
+                lastTime = nowTime;
+            }
 
-			int fontSize = Settings.GetInt("XphDisplay.FontSize");
-			Vector2 mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
-			int dps = ((int)damageMemory.Average());
-			if (maxDps < dps)
-				maxDps = dps;
+            Vector2 position = mountPoints[UiMountPoint.LeftOfMinimap];
+            var dps = (int)damageMemory.Average();
+            maxDps = Math.Max(dps, maxDps);
 
-            var textSize = Graphics.DrawText(dps + " DPS", fontSize * 3f / 2f, mapWithOffset, Color.White, FontDrawFlags.Right);
-            var tx2 = Graphics.DrawText(maxDps + " peak DPS", fontSize * 2f / 3f, new Vector2(mapWithOffset.X, mapWithOffset.Y + textSize.Height), Color.White, FontDrawFlags.Right);
+            float dpsFontSize = Settings.GetInt("XphDisplay.FontSize") * 3f / 2f; // TODO Move to settings
+            float peakFontSize = Settings.GetInt("XphDisplay.FontSize") * 2f / 3f; // TODO Move to settings
+            string dpsText = dps + " DPS";
+            string peakText = maxDps + " peak DPS";
+            Size2 dpsSize = Graphics.DrawText(dpsText, dpsFontSize, position, FontDrawFlags.Right);
+            Size2 peakSize = Graphics.DrawText(peakText, peakFontSize, position.Translate(0, dpsSize.Height), FontDrawFlags.Right);
 
-			int width = Math.Max(tx2.Width, textSize.Width);
-			var rect = new RectangleF(mapWithOffset.X - 5 - width, mapWithOffset.Y - 5, width + 10, textSize.Height + tx2.Height + 10);
+            int width = Math.Max(peakSize.Width, dpsSize.Width);
+            int height = dpsSize.Height + peakSize.Height;
+            var bounds = new RectangleF(position.X - 5 - width, position.Y - 5, width + 10, height + 10);
 
-		    Color backgroundColor = Color.Black;
-		    backgroundColor.A = 160;
-            Graphics.DrawBox(rect, backgroundColor);
+            Color backgroundColor = Color.Black; // TODO Move to settings
+            backgroundColor.A = 160;
+            Graphics.DrawBox(bounds, backgroundColor);
 
-			mountPoints[UiMountPoint.LeftOfMinimap] = new Vector2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.Height);
-		}
+            mountPoints[UiMountPoint.LeftOfMinimap] = position.Translate(0, bounds.Height + 5);
+        }
 
-		private float CalculateDps(TimeSpan dt)
-		{
-			var currentEntities = new Dictionary<int, int>();
-            int damageDoneThisCycle = 0;
-
-			foreach (var entity in GameController.Entities.Where(x => x.HasComponent<Poe.Components.Monster>() && x.IsHostile))
-			{
-				int entityEHP = entity.IsAlive ? entity.GetComponent<Life>().CurHP + entity.GetComponent<Life>().CurES : 0;
-				if (entityEHP > 10000000 || entityEHP < -1000000) //discard those - read form invalid addresses
-					continue;
-
-				if (lastEntities.ContainsKey(entity.Id))
-				{
-					if (lastEntities[entity.Id] > entityEHP) damageDoneThisCycle += lastEntities[entity.Id] - entityEHP;
-				}
-
-				currentEntities.Add(entity.Id, entityEHP);
-			}
-			// cache current life/es values for next check
-			lastEntities = currentEntities;
-
-			return (float)(damageDoneThisCycle / dt.TotalSeconds);
-		}
-
-	}
+        private double CalculateDps(TimeSpan elapsedTime)
+        {
+            int totalDamage = 0;
+            var monsters = new Dictionary<int, int>();
+            foreach (EntityWrapper monster in GameController.Entities.Where(x => x.HasComponent<PoeMonster>() && x.IsHostile))
+            {
+                int hp = monster.IsAlive ? monster.GetComponent<Life>().CurHP + monster.GetComponent<Life>().CurES : 0;
+                if (hp > -1000000 && hp < 10000000)
+                {
+                    int lastHP;
+                    if (lastMonsters.TryGetValue(monster.Id, out lastHP) && lastHP > hp)
+                    {
+                        totalDamage += lastHP - hp;
+                    }
+                    monsters.Add(monster.Id, hp);
+                }
+            }
+            lastMonsters = monsters;
+            return totalDamage / elapsedTime.TotalSeconds;
+        }
+    }
 }
