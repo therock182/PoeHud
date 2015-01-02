@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
@@ -10,16 +11,18 @@ namespace PoeHUD.Hud.Menu
 {
     public class Menu : Plugin
     {
-        private const int ButtonWidth = 210;
-        private const int ButtonHeight = 40;
         private readonly MouseHook hook;
+
         private RectangleF bounds;
+
         private List<BooleanButton> buttons;
+
         private BooleanButton currentHover;
+
         private bool menuVisible;
 
-
-        public Menu(GameController gameController, Graphics graphics) : base(gameController, graphics)
+        public Menu(GameController gameController, Graphics graphics)
+            : base(gameController, graphics)
         {
             bounds = new RectangleF(Settings.GetInt("Menu.PositionWidth"), Settings.GetInt("Menu.PositionHeight"),
                 Settings.GetInt("Menu.Length"), Settings.GetInt("Menu.Size"));
@@ -34,69 +37,19 @@ namespace PoeHUD.Hud.Menu
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            int alpha = menuVisible ? 255 : 100;
-            Color backgroundColor = Color.Gray;
-            backgroundColor.A = (byte)alpha;
-            Graphics.DrawBox(bounds, backgroundColor);
-            Graphics.DrawText("Menu", 10,
-                new Vector2(Settings.GetInt("Menu.PositionWidth") + 25, Settings.GetInt("Menu.PositionHeight") + 12),
-                Color.Gray, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
-            foreach (BooleanButton current in buttons)
-            {
-                current.Render(Graphics);
-            }
+            Color boxColor = Color.Gray;
+            boxColor.A = menuVisible ? (byte)255 : (byte)100;
+            Graphics.DrawBox(bounds, boxColor);
+            var position = new Vector2(Settings.GetInt("Menu.PositionWidth") + 25, Settings.GetInt("Menu.PositionHeight") + 12);
+            Graphics.DrawText("Menu", 10, position, Color.Gray, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            buttons.ForEach(x => x.Render(Graphics));
         }
 
-
-        private bool OnMouseEvent(MouseEventID id, int x, int y)
+        private static BooleanButton AddButton(MenuItem parent, string text, string setting)
         {
-            if (Settings.GetBool("Window.RequireForeground") && !GameController.Window.IsForeground())
-            {
-                return false;
-            }
-            Vec2 v = GameController.Window.ScreenToClient(new Vec2(x, y));
-            Vector2 vec = new Vector2(v.X, v.Y);
-            if (id == MouseEventID.MouseMove)
-            {
-                if (currentHover != null && currentHover.TestHit(vec))
-                {
-                    currentHover.OnEvent(id, vec);
-                    return false;
-                }
-                using (List<BooleanButton>.Enumerator enumerator = buttons.GetEnumerator())
-                {
-                    while (enumerator.MoveNext())
-                    {
-                        BooleanButton current = enumerator.Current;
-                        if (current.TestHit(vec))
-                        {
-                            if (currentHover != null)
-                            {
-                                currentHover.SetHovered(false);
-                            }
-                            currentHover = current;
-                            current.SetHovered(true);
-                            return false;
-                        }
-                    }
-                    return false;
-                }
-            }
-            if (bounds.Contains(vec) && id == MouseEventID.LeftButtonDown)
-            {
-                menuVisible = !menuVisible;
-                foreach (BooleanButton current2 in buttons)
-                {
-                    current2.SetVisible(menuVisible);
-                }
-                return true;
-            }
-            if (currentHover != null && currentHover.TestHit(vec))
-            {
-                currentHover.OnEvent(id, vec);
-                return true;
-            }
-            return false;
+            var booleanButton = new BooleanButton(text, setting);
+            parent.AddChild(booleanButton);
+            return booleanButton;
         }
 
         private void CreateButtons()
@@ -175,21 +128,50 @@ namespace PoeHUD.Hud.Menu
             // BooleanButton closeWithGame = this.CreateRootMenu("Exit when Game is closed", 8, "ExitWithGame");
         }
 
-        private BooleanButton AddButton(BooleanButton parent, string text, string setting)
-        {
-            var booleanButton = new BooleanButton(text, setting);
-            parent.AddChild(booleanButton);
-            return booleanButton;
-        }
-
         private BooleanButton CreateRootMenu(string text, int yIndex, string setting)
         {
             var booleanButton = new BooleanButton(text, setting);
             booleanButton.Bounds = new RectangleF(Settings.GetInt("Menu.PositionWidth"),
                 Settings.GetInt("Menu.PositionHeight") + Settings.GetInt("Menu.Size") +
-                yIndex*booleanButton.DesiredHeight, booleanButton.DesiredWidth, booleanButton.DesiredHeight);
+                    yIndex * booleanButton.DesiredHeight, booleanButton.DesiredWidth, booleanButton.DesiredHeight);
             buttons.Add(booleanButton);
             return booleanButton;
+        }
+
+        private bool OnMouseEvent(MouseEventID id, int x, int y)
+        {
+            if (Settings.GetBool("Window.RequireForeground") && !GameController.Window.IsForeground())
+            {
+                return false;
+            }
+
+            Vector2 mousePosition = GameController.Window.ScreenToClient(x, y);
+            if (currentHover != null && currentHover.TestHit(mousePosition))
+            {
+                currentHover.OnEvent(id, mousePosition);
+                return id != MouseEventID.MouseMove;
+            }
+            if (id == MouseEventID.MouseMove)
+            {
+                BooleanButton button = buttons.FirstOrDefault(b => b.TestHit(mousePosition));
+                if (button != null)
+                {
+                    if (currentHover != null)
+                    {
+                        currentHover.SetHovered(false);
+                    }
+                    currentHover = button;
+                    button.SetHovered(true);
+                }
+                return false;
+            }
+            if (bounds.Contains(mousePosition) && id == MouseEventID.LeftButtonDown)
+            {
+                menuVisible = !menuVisible;
+                buttons.ForEach(button => button.SetVisible(menuVisible));
+                return true;
+            }
+            return false;
         }
     }
 }
