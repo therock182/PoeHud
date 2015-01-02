@@ -58,7 +58,7 @@ namespace PoeHUD.Hud.Icons
                 var texture = icon.LargeMapIcon ?? icon.MinimapIcon;
                 int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
                 var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
-                texture.DrawAt(Graphics, rect);
+                texture.Draw(Graphics, rect);
             }
         }
     }

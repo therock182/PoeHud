@@ -1,39 +1,44 @@
-﻿using PoeHUD.Framework;
-using PoeHUD.Hud.Loot;
-using PoeHUD.Hud.UI;
+﻿using PoeHUD.Hud.UI;
 using PoeHUD.Models.Enums;
 
 using SharpDX;
 
 namespace PoeHUD.Hud
 {
-	public class HudTexture
-	{
-		public string TextureFile;
-		public Color TintColor;
+    public class HudTexture
+    {
+        private readonly string fileName;
 
-		public HudTexture(string fileName) : this(fileName, Color.White) { }
+        private readonly Color color;
 
-		public HudTexture(string fileName, MonsterRarity rarity) : this(fileName, Color.White)
-		{
-			switch (rarity)
-			{
-				case MonsterRarity.Magic: TintColor = HudSkin.MagicColor; break;
-				case MonsterRarity.Rare: TintColor = HudSkin.RareColor; break;
-				case MonsterRarity.Unique: TintColor = HudSkin.UniqueColor; break;
-			}
-		}
+        public HudTexture(string fileName) : this(fileName, Color.White) {}
 
-		public HudTexture(string fileName, Color tintColor) 
-		{
-			this.TextureFile = fileName;
-			TintColor = tintColor;
-		}
+        public HudTexture(string fileName, MonsterRarity rarity)
+            : this(fileName, Color.White)
+        {
+            switch (rarity)
+            {
+                case MonsterRarity.Magic:
+                    color = HudSkin.MagicColor;
+                    break;
+                case MonsterRarity.Rare:
+                    color = HudSkin.RareColor;
+                    break;
+                case MonsterRarity.Unique:
+                    color = HudSkin.UniqueColor;
+                    break;
+            }
+        }
 
+        public HudTexture(string fileName, Color color)
+        {
+            this.fileName = fileName;
+            this.color = color;
+        }
 
-		public void DrawAt(Graphics graphics, RectangleF rect)
-		{
-            graphics.DrawImage(this.TextureFile, rect, TintColor);
-		}
-	}
+        public void Draw(Graphics graphics, RectangleF rectangle)
+        {
+            graphics.DrawImage(fileName, rectangle, color);
+        }
+    }
 }

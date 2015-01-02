@@ -51,7 +51,7 @@ namespace PoeHUD.Hud.Icons
 				var texture = icon.MinimapIcon;
 				int size = icon.Size;
 				var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
-				texture.DrawAt(Graphics, rect);
+				texture.Draw(Graphics, rect);
 			}
 		}
 	}
