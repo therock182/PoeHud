@@ -133,7 +133,7 @@ namespace PoeHUD.Hud.Health
         {
             if (outline != Color.Black)
             {
-                Graphics.DrawHollowBox(bg, 2f, outline);
+                Graphics.DrawFrame(bg, 2f, outline);
             }
             string healthBar = Settings.GetBool("Healthbars.ShowIncrements") ? "healthbar_increment.png" : "healthbar.png";
             Graphics.DrawImage("healthbar_bg.png", bg, color);

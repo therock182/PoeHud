@@ -214,7 +214,7 @@ namespace PoeHUD.Hud.Loot
 			if (drawStyle.FrameWidth > 0)
 			{
 				var frame = new RectangleF(x - fullWidth, y, fullWidth - compassOffset , fullHeight);
-                Graphics.DrawHollowBox(frame, drawStyle.FrameWidth, drawStyle.color);
+                Graphics.DrawFrame(frame, drawStyle.FrameWidth, drawStyle.color);
 			}
 			return new Vector2(fullWidth, fullHeight);
 		}

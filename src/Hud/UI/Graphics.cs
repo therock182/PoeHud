@@ -63,17 +63,6 @@ namespace PoeHUD.Hud.UI
 
         public event Action Render;
 
-        public void Dispose()
-        {
-            if (!device.IsDisposed)
-            {
-                device.Dispose();
-                direct3D.Dispose();
-                fontRenderer.Dispose();
-                textureRenderer.Dispose();
-            }
-        }
-
         public void RenderLoop()
         {
             while (!device.IsDisposed)
@@ -99,6 +88,17 @@ namespace PoeHUD.Hud.UI
                     device.EndScene();
                     device.Present();
                 });
+            }
+        }
+
+        public void Dispose()
+        {
+            if (!device.IsDisposed)
+            {
+                device.Dispose();
+                direct3D.Dispose();
+                fontRenderer.Dispose();
+                textureRenderer.Dispose();
             }
         }
 
@@ -144,9 +144,9 @@ namespace PoeHUD.Hud.UI
             textureRenderer.DrawBox(rectangle, color);
         }
 
-        public void DrawHollowBox(RectangleF rectangle, float frameWidth, Color color)
+        public void DrawFrame(RectangleF rectangle, float borderWidth, Color color)
         {
-            textureRenderer.DrawHollowBox(rectangle, frameWidth, color);
+            textureRenderer.DrawFrame(rectangle, borderWidth, color);
         }
 
         public void DrawImage(string fileName, RectangleF rectangle, float repeatX = 1f)

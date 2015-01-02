@@ -23,12 +23,6 @@ namespace PoeHUD.Hud.UI.Renderers
             fonts = new Dictionary<Tuple<string, int>, Font>();
         }
 
-        public void Dispose()
-        {
-            sprite.Dispose();
-            Flush();
-        }
-
         public void Begin()
         {
             sprite.Begin(SpriteFlags.AlphaBlend | SpriteFlags.SortTexture);
@@ -59,6 +53,12 @@ namespace PoeHUD.Hud.UI.Renderers
             Font font = GetFont(fontName, height);
             Rectangle fontDimension = font.MeasureText(null, text, align);
             return new Size2(fontDimension.Width, fontDimension.Height);
+        }
+
+        public void Dispose()
+        {
+            sprite.Dispose();
+            Flush();
         }
 
         private Font GetFont(string name, int height)

@@ -24,12 +24,6 @@ namespace PoeHUD.Hud.UI.Renderers
             textures = new Dictionary<string, Texture>();
         }
 
-        public void Dispose()
-        {
-            sprite.Dispose();
-            Flush();
-        }
-
         public void Begin()
         {
             sprite.Begin();
@@ -48,9 +42,9 @@ namespace PoeHUD.Hud.UI.Renderers
             DrawColoredVertices(PrimitiveType.TriangleFan, 2, data);
         }
 
-        public void DrawHollowBox(RectangleF rect, float frameWidth, Color color)
+        public void DrawFrame(RectangleF rect, float borderWidth, Color color)
         {
-            float half = frameWidth / 2f;
+            float half = borderWidth / 2f;
 
             // Outer rectangle
             var p1 = new ColoredVertex(rect.Left - half, rect.Top - half, color);
@@ -105,6 +99,12 @@ namespace PoeHUD.Hud.UI.Renderers
         {
             textures.ForEach((key, texture) => texture.Dispose());
             textures.Clear();
+        }
+
+        public void Dispose()
+        {
+            sprite.Dispose();
+            Flush();
         }
 
         private void DrawColoredVertices(PrimitiveType type, int count, ColoredVertex[] data)
