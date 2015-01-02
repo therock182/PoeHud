@@ -146,7 +146,7 @@ namespace PoeHUD.Hud.Loot
                 if (element != null)
                 {
                     var rect = element.Label.GetClientRect();
-                    Graphics.DrawHollowBox(rect, 1, Color.Red);
+                    Graphics.DrawFrame(rect, 1, Color.Red);
                 }
 
 			    Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
