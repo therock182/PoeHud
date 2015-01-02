@@ -65,6 +65,7 @@
     <Compile Include="Framework\Helpers\ActionHelper.cs" />
     <Compile Include="Framework\Helpers\LinqHelper.cs" />
     <Compile Include="Framework\Helpers\MathHepler.cs" />
+    <Compile Include="Framework\Helpers\ConvertHelper.cs" />
     <Compile Include="Framework\WinApi.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>
@@ -77,6 +78,7 @@
     <Compile Include="Hud\UI\Vertexes\ColoredVertex.cs" />
     <Compile Include="Hud\UI\Vertexes\TexturedVertex.cs" />
     <Compile Include="Models\Enums\DamageType.cs" />
+    <Compile Include="Hud\XpRate\XPHRenderer.cs" />
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
@@ -197,7 +199,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Hud\Settings.cs" />
     <Compile Include="Hud\Sounds.cs" />
-    <Compile Include="Hud\XpRate\XPHRenderer.cs" />
     <Compile Include="Models\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
@@ -78,7 +79,7 @@ namespace PoeHUD.Hud.Health
                         {
                             int curHp = lifeComponent.CurHP;
                             int maxHp = lifeComponent.MaxHP;
-                            string monsterHp = string.Format("{0}/{1}", ConvertHpToString(curHp), ConvertHpToString(maxHp));
+                            string monsterHp = string.Format("{0}/{1}", ConvertHelper.ToShorten(curHp), ConvertHelper.ToShorten(maxHp));
                             string hppercentAsString = Convert.ToString((int)(hpPercent * 100));
                             Color monsterHpColor = (hpPercent <= 0.1)
                                 ? Settings.GetColor2(current.Settings + ".HealthTextColorUnder10Percent")
@@ -112,17 +113,7 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        private static string ConvertHpToString(int hp)
-        {
-            if (hp < 1000)
-            {
-                return Convert.ToString(hp);
-            }
 
-            return hp < 1000000 ? string.Concat(hp / 1000, "k") : string.Concat(hp / 1000000, "kk");
-        }
-
-        
         private void DrawEntityHealthPercents(Color color, string text, RectangleF bg)
         {
             // Draw percents

@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
-using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 
 using SharpDX;
@@ -14,38 +14,17 @@ namespace PoeHUD.Hud.XpRate
 {
     public class XPHRenderer : Plugin
     {
-        private RectangleF bounds = new RectangleF(0, 0, 0, 0);
-        private string curDisplayString = "0.00 XP/h";
-        private string curTimeLeftString = "--h --m --s until level up";
-        private bool hasStarted;
-        private DateTime lastCalcTime;
-        private DateTime startTime;
+        private string xpRate, timeLeft;
+
+        private DateTime startTime, lastTime;
+
         private long startXp;
 
-        public RectangleF Bounds
+        public XPHRenderer(GameController gameController, Graphics graphics)
+            : base(gameController, graphics)
         {
-            get
-            {
-                if (!Settings.GetBool("XphDisplay"))
-                {
-                    return new RectangleF(0, 0, 0, 0);
-                }
-                return bounds;
-            }
-            private set { bounds = value; }
-        }
-
-
-        public XPHRenderer(GameController gameController, Graphics graphics) : base(gameController, graphics)
-        {
-            GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-        }
-
-        private void CurrentArea_OnAreaChange(AreaController area)
-        {
-            startXp = GameController.Player.GetComponent<Player>().XP;
-            startTime = DateTime.Now;
-            curTimeLeftString = "--h --m --s until level up";
+            Reset();
+            GameController.Area.OnAreaChange += area => Reset();
         }
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
@@ -55,81 +34,62 @@ namespace PoeHUD.Hud.XpRate
             {
                 return;
             }
-            if (!hasStarted)
-            {
-                startXp = GameController.Player.GetComponent<Player>().XP;
-                startTime = DateTime.Now;
-                lastCalcTime = DateTime.Now;
-                hasStarted = true;
-                return;
-            }
-            DateTime dtNow = DateTime.Now;
-            TimeSpan delta = dtNow - lastCalcTime;
 
-            if (delta.TotalSeconds > 1)
+            DateTime nowTime = DateTime.Now;
+            TimeSpan elapsedTime = nowTime - lastTime;
+            if (elapsedTime.TotalSeconds > 1)
             {
-                calculateRemainingExp(dtNow);
-                lastCalcTime = dtNow;
+                CalculateXp(nowTime);
+                lastTime = nowTime;
             }
 
+            Vector2 position = mountPoints[UiMountPoint.LeftOfMinimap];
             int fontSize = Settings.GetInt("XphDisplay.FontSize");
-            int bgAlpha = Settings.GetInt("XphDisplay.BgAlpha");
 
-            var mapWithOffset = mountPoints[UiMountPoint.LeftOfMinimap];
+            Size2 xpRateSize = Graphics.DrawText(xpRate, fontSize, position, FontDrawFlags.Right);
+            Vector2 secondLine = position.Translate(0, xpRateSize.Height);
+            Size2 xpLeftSize = Graphics.DrawText(timeLeft, fontSize, secondLine, FontDrawFlags.Right);
+            Vector2 thirdLine = secondLine.Translate(0, xpLeftSize.Height);
+            string areaName = GameController.Area.CurrentArea.DisplayName;
+            Size2 areaNameSize = Graphics.DrawText(areaName, fontSize, thirdLine, FontDrawFlags.Right);
 
-            float yCursor = 0;
-            var rateTextSize = Graphics.DrawText(curDisplayString, fontSize, new Vector2(mapWithOffset.X, mapWithOffset.Y),
-                Color.White, FontDrawFlags.Right);
-            yCursor += rateTextSize.Height;
-            var remainingTextSize = Graphics.DrawText(curTimeLeftString, fontSize, new Vector2(mapWithOffset.X, mapWithOffset.Y + yCursor),
-                Color.White, FontDrawFlags.Right);
-            yCursor += remainingTextSize.Height;
-            float thirdLine = mapWithOffset.Y + yCursor;
-            var areaLevelNote = Graphics.DrawText(GameController.Area.CurrentArea.DisplayName, fontSize, new Vector2(mapWithOffset.X, thirdLine),
-                Color.White, FontDrawFlags.Right);
+            string timer = AreaInstance.GetTimeString(nowTime - GameController.Area.CurrentArea.TimeEntered);
+            Size2 timerSize = Graphics.MeasureText(timer, fontSize);
 
-            string strTimer = AreaInstance.GetTimeString(dtNow - GameController.Area.CurrentArea.TimeEntered);
-            var timerSize = Graphics.MeasureText(strTimer, fontSize);
-            yCursor += areaLevelNote.Height;
+            float boxWidth = MathHepler.Max(xpRateSize.Width, xpLeftSize.Width, areaNameSize.Width + timerSize.Width + 20) + 15;
+            float boxHeight = xpRateSize.Height + xpLeftSize.Height + areaNameSize.Height;
+            var bounds = new RectangleF(position.X - boxWidth + 5, position.Y - 5, boxWidth, boxHeight + 10);
 
-            var clientRect = GameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
-            int textWidth =
-                Math.Max(Math.Max(rateTextSize.Width, remainingTextSize.Width), areaLevelNote.Width + timerSize.Width + 20) + 10;
-            float width = Math.Max(textWidth, Math.Max(clientRect.Width, 0 /*this.overlay.PreloadAlert.Bounds.W*/));
-            var rect = new RectangleF(mapWithOffset.X - width + 5, mapWithOffset.Y - 5, width, yCursor + 10);
-            Bounds = rect;
-            var fps = GameController.Game.IngameState.CurFps;
-            Graphics.DrawText(dtNow.ToShortTimeString() + " (" + fps + ")", fontSize, new Vector2(rect.X + 5, mapWithOffset.Y), Color.White);
-            Graphics.DrawText(strTimer, fontSize, new Vector2(rect.X + 5, thirdLine), Color.White);
+            string systemTime = string.Format("{0} ({1})", nowTime.ToShortTimeString(), GameController.Game.IngameState.CurFps);
+            Graphics.DrawText(systemTime, fontSize, new Vector2(bounds.X + 5, position.Y), Color.White);
+            Graphics.DrawText(timer, fontSize, new Vector2(bounds.X + 5, thirdLine.Y), Color.White);
 
-            Graphics.DrawBox(rect, new ColorBGRA(1, 1, 1, (byte)bgAlpha));
+            var backgroundColor = new ColorBGRA(1, 1, 1, (byte)Settings.GetInt("XphDisplay.BgAlpha")); // TODO Move to settings
+            Graphics.DrawBox(bounds, backgroundColor);
 
-            mountPoints[UiMountPoint.LeftOfMinimap] = new Vector2(mapWithOffset.X, mapWithOffset.Y + 5 + rect.Height);
+            mountPoints[UiMountPoint.LeftOfMinimap] = position.Translate(0, bounds.Height + 5);
         }
 
-        private void calculateRemainingExp(DateTime dtNow)
+        private void CalculateXp(DateTime nowTime)
         {
-            long currentExp = GameController.Player.GetComponent<Player>().XP - startXp;
-            var expRate = (float) (currentExp/(dtNow - startTime).TotalHours);
-            curDisplayString = (double) expRate > 1000000.0
-                ? (expRate/1000000.0).ToString("0.00") + "M XP/h"
-                : ((double) expRate > 1000.0
-                    ? (expRate/1000.0).ToString("0.00") + "K XP/h"
-                    : expRate.ToString("0.00") + " XP/h");
+            long currentXp = GameController.Player.GetComponent<Player>().XP;
+            double rate = (currentXp - startXp) / (nowTime - startTime).TotalHours;
+            xpRate = string.Format("{0} XP/h", ConvertHelper.ToShorten(rate, "0.00"));
             int level = GameController.Player.GetComponent<Player>().Level;
-            if (level < 0 || level + 1 >= Constants.PlayerXpLevels.Length)
+            if (level >= 0 && level + 1 < Constants.PlayerXpLevels.Length && rate > 1)
             {
-                return;
+                long xpLeft = Constants.PlayerXpLevels[level + 1] - currentXp;
+                TimeSpan time = TimeSpan.FromHours(xpLeft / rate);
+                timeLeft = string.Format("{0}h {1}M {2}s until level up", time.Hours, time.Minutes, time.Seconds);
             }
-            ulong expRemaining = Constants.PlayerXpLevels[level + 1] -
-                                 (ulong) GameController.Player.GetComponent<Player>().XP;
-            if (expRate > 1f)
-            {
-                var num4 = (int) (expRemaining/expRate*3600f);
-                int num5 = num4/60;
-                int num6 = num5/60;
-                curTimeLeftString = string.Concat(num6, "h ", num5%60, "M ", num4%60, "s until level up");
-            }
+        }
+
+        private void Reset()
+        {
+            startXp = GameController.Player.GetComponent<Player>().XP;
+            startTime = lastTime = DateTime.Now;
+            xpRate = "0.00 XP/h";
+            timeLeft = "--h --m --s until level up";
         }
     }
 }
