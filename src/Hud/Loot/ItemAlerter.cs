@@ -126,13 +126,14 @@ namespace PoeHUD.Hud.Loot
 			}
 
 
-			var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+            var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
 
 
 			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
 			float y = rightTopAnchor.Y;
 			int fontSize = Settings.GetInt("ItemAlert.ShowText.FontSize");
-			
+
+		    var itemsOnGroundLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels;
 			const int vMargin = 2;
 			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
 			{
@@ -141,7 +142,14 @@ namespace PoeHUD.Hud.Loot
 				string text = GetItemName(kv);
 				if( null == text ) continue;
 
-				Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
+                var element = itemsOnGroundLabels.FirstOrDefault(z => z.ItemOnGround.Address == kv.Key.Address);
+                if (element != null)
+                {
+                    var rect = element.Label.GetClientRect();
+                    Graphics.DrawHollowBox(rect, 1, Color.Red);
+                }
+
+			    Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
 				var delta = itemPos - playerPos;
 
 				var vPadding = new Vector2(5, 2);

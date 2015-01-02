@@ -123,9 +123,13 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             get { return ReadObjectAt<Map>(16 + 0x11C); }
         }
 
-        public Element ItemsOnGroundLabels
+        public IEnumerable<ItemsOnGroundLabelElement> ItemsOnGroundLabels
         {
-            get { return ReadObjectAt<Element>(4 + 0x120); }
+            get
+            {
+                var itemsOnGroundLabelRoot = ReadObjectAt<ItemsOnGroundLabelElement>(16 + 0x120);
+                return itemsOnGroundLabelRoot.Children;
+            }
         }
 
         public List<HPbarElement> MonsterHpLabels

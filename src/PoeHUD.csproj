@@ -87,6 +87,7 @@
     <Compile Include="Poe\Components\Stack.cs" />
     <Compile Include="Poe\Elements\HPbarElement.cs" />
     <Compile Include="Poe\Elements\ItemOnGroundTooltip.cs" />
+    <Compile Include="Poe\Elements\ItemsOnGroundLabelElement.cs" />
     <Compile Include="Poe\FileInMemory.cs" />
     <Compile Include="Poe\FilesInMemory\StatsDat.cs" />
     <Compile Include="Poe\FilesInMemory\ModsDat.cs" />
