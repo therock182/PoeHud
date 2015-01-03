@@ -28,8 +28,6 @@ namespace PoeHUD.Hud.UI
 
         private bool resized;
 
-        private float fontFactor;
-
         public Graphics(RenderForm form, int width, int height)
         {
             reset = () => form.Invoke(new Action(() =>
@@ -37,7 +35,6 @@ namespace PoeHUD.Hud.UI
                 device.Reset(presentParameters);
                 fontRenderer.Flush();
                 textureRenderer.Flush();
-                ChangeFontFactor();
                 resized = false;
             }));
             form.UserResized += (sender, args) => Resize(form.ClientSize.Width, form.ClientSize.Height);
@@ -58,7 +55,6 @@ namespace PoeHUD.Hud.UI
             device = new DeviceEx(direct3D, 0, DeviceType.Hardware, form.Handle, CREATE_FLAGS, presentParameters);
             fontRenderer = new FontRenderer(device);
             textureRenderer = new TextureRenderer(device);
-            ChangeFontFactor();
         }
 
         public event Action Render;
@@ -102,12 +98,6 @@ namespace PoeHUD.Hud.UI
             }
         }
 
-        private void ChangeFontFactor()
-        {
-            // TODO * presentParameters.BackBufferHeight / 800f
-            fontFactor = 1.7f; // TODO 1.7f - size to height
-        }
-
         private void Resize(int width, int height)
         {
             if (width > 0 && height > 0)
@@ -120,19 +110,19 @@ namespace PoeHUD.Hud.UI
 
         #region FontRenderer Methods
 
-        public Size2 DrawText(string text, float size, Vector2 position, Color color, FontDrawFlags align = FontDrawFlags.Left)
+        public Size2 DrawText(string text, int height, Vector2 position, Color color, FontDrawFlags align = FontDrawFlags.Left)
         {
-            return fontRenderer.DrawText(text, "Verdana", (int)(size * fontFactor), position, color, align);
+            return fontRenderer.DrawText(text, "Verdana", height, position, color, align);
         }
 
-        public Size2 DrawText(string text, float size, Vector2 position, FontDrawFlags align = FontDrawFlags.Left)
+        public Size2 DrawText(string text, int height, Vector2 position, FontDrawFlags align = FontDrawFlags.Left)
         {
-            return fontRenderer.DrawText(text, "Verdana", (int)(size * fontFactor), position, Color.White, align);
+            return fontRenderer.DrawText(text, "Verdana", height, position, Color.White, align);
         }
 
-        public Size2 MeasureText(string text, float size, FontDrawFlags align = FontDrawFlags.Left)
+        public Size2 MeasureText(string text, int height, FontDrawFlags align = FontDrawFlags.Left)
         {
-            return fontRenderer.MeasureText(text, "Verdana", (int)(size * fontFactor), align);
+            return fontRenderer.MeasureText(text, "Verdana", height, align);
         }
 
         #endregion

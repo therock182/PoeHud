@@ -47,7 +47,7 @@ namespace PoeHUD.Hud.Loot
 					return;
 				}
 				var clientRect = childAtIndex2.GetClientRect();
-                Graphics.DrawText(item.GetComponent<Mods>().ItemLevel.ToString(), 16, new Vector2(clientRect.X + 2, clientRect.Y + 2), Color.White);
+                Graphics.DrawText(item.GetComponent<Mods>().ItemLevel.ToString(), Settings.TextSize, new Vector2(clientRect.X + 2, clientRect.Y + 2), Color.White);
 			}
 		}
 	}

@@ -9,11 +9,11 @@ namespace PoeHUD.Hud.Preload
         public PreloadAlertSettings()
         {
             Enable = true;
-            TextSize = new RangeNode<float>(12, 6, 30);
+            TextSize = new RangeNode<int>(20, 10, 50);
             BackgroundColor = new ColorBGRA(0, 0, 0, 180);
         }
 
-        public RangeNode<float> TextSize { get; set; }
+        public RangeNode<int> TextSize { get; set; }
 
         public Color BackgroundColor { get; set; }
     }

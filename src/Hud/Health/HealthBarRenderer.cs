@@ -87,12 +87,12 @@ namespace PoeHUD.Hud.Health
                         if (enemySettings.ShowHealthText)
                         {
                             bg.Y = (int)bg.Y;
-                            Size2 size = DrawEntityHealthbarText(monsterHp, bg, monsterHpColor);
+                            Size2 size = DrawEntityHealthbarText(monsterHp, enemySettings.TextSize, bg, monsterHpColor);
                             bg.Y += (size.Height - bg.Height) / 2f; // Correct text in a frame
                         }
                         if (enemySettings.ShowPercents)
                         {
-                            DrawEntityHealthPercents(percentsTextColor, hppercentAsString, bg);
+                            DrawEntityHealthPercents(percentsTextColor, enemySettings.TextSize, hppercentAsString, bg);
                         }
                     }
 
@@ -111,10 +111,10 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        private void DrawEntityHealthPercents(Color color, string text, RectangleF bg)
+        private void DrawEntityHealthPercents(Color color, int textSize, string text, RectangleF bg)
         {
             // Draw percents
-            Graphics.DrawText(text, 9, new Vector2(bg.X + bg.Width + 4, bg.Y), color);
+            Graphics.DrawText(text, textSize, new Vector2(bg.X + bg.Width + 4, bg.Y), color);
         }
 
         private void DrawEntityHealthbar(Color color, Color outline, RectangleF bg, float hpWidth, float esWidth)
@@ -134,10 +134,10 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        private Size2 DrawEntityHealthbarText(string health, RectangleF bg, Color color)
+        private Size2 DrawEntityHealthbarText(string health, int textSize, RectangleF bg, Color color)
         {
             // Draw monster health ex. "163 / 12k
-            return Graphics.DrawText(health, 9, new Vector2(bg.X + bg.Width / 2f, bg.Y), color, FontDrawFlags.Center);
+            return Graphics.DrawText(health, textSize, new Vector2(bg.X + bg.Width / 2f, bg.Y), color, FontDrawFlags.Center);
         }
     }
 }

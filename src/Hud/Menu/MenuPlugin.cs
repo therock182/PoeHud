@@ -44,7 +44,8 @@ namespace PoeHUD.Hud.Menu
             boxColor.A = menuVisible ? (byte)255 : (byte)100;
             Graphics.DrawBox(bounds, boxColor);
             var position = new Vector2(Settings.PositionWidth + 25, Settings.PositionHeight + 12);
-            Graphics.DrawText("Menu", 10, position, Color.Gray, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            // TODO textSize to Settings
+            Graphics.DrawText("Menu", 17, position, Color.Gray, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             buttons.ForEach(x => x.Render(Graphics));
         }
 
@@ -110,26 +111,26 @@ namespace PoeHUD.Hud.Menu
             AddButton(parent4, "Only quality gems", settingsHub.ItemAlertSettings.QualitySkillGems);
             AddButton(parent4, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             ToggleButton toggleButton7 = AddButton(parent4, "Show text", settingsHub.ItemAlertSettings.ShowText);
-            toggleButton7.AddChild(new FloatPicker("Font size", settingsHub.ItemAlertSettings.TextSize));
+            toggleButton7.AddChild(new IntPicker("Font size", settingsHub.ItemAlertSettings.TextSize));
             CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
             ToggleButton itemModsRoot = CreateRootMenu("Item mods", r++, settingsHub.ItemModsSettings.Enable);
             AddButton(itemModsRoot, "Weapon DPS", settingsHub.ItemModsSettings.ShowWeaponDps);
             ToggleButton parent5 = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);
             AddButton(parent5, "Sound warning", settingsHub.MonsterTrackerSettings.PlaySound);
             ToggleButton toggleButton8 = AddButton(parent5, "Text warning", settingsHub.MonsterTrackerSettings.ShowText);
-            toggleButton8.AddChild(new FloatPicker("Font size", settingsHub.MonsterTrackerSettings.TextSize));
+            toggleButton8.AddChild(new IntPicker("Font size", settingsHub.MonsterTrackerSettings.TextSize));
             ToggleButton toggleButton9 = CreateRootMenu("Xph Display", r++, settingsHub.XpRateSettings.Enable);
-            toggleButton9.AddChild(new FloatPicker("Font size", settingsHub.XpRateSettings.TextSize));
+            toggleButton9.AddChild(new IntPicker("Font size", settingsHub.XpRateSettings.TextSize));
             ToggleButton parent6 = CreateRootMenu("Client hacks", r++, settingsHub.MiscHacksSettings.Enable);
             AddButton(parent6, "Maphack", settingsHub.MiscHacksSettings.Maphack);
             AddButton(parent6, "Zoomhack", settingsHub.MiscHacksSettings.Zoomhack);
             AddButton(parent6, "Fullbright", settingsHub.MiscHacksSettings.Fullbright);
             AddButton(parent6, "Disable Particles", settingsHub.MiscHacksSettings.Particles);
             ToggleButton toggleButton10 = CreateRootMenu("Preload Alert", r++, settingsHub.PreloadAlertSettings.Enable);
-            toggleButton10.AddChild(new FloatPicker("Font size", settingsHub.PreloadAlertSettings.TextSize));
+            toggleButton10.AddChild(new IntPicker("Font size", settingsHub.PreloadAlertSettings.TextSize));
             ToggleButton dpsRoot = CreateRootMenu("Show DPS", r++, settingsHub.DpsMeterSettings.Enable);
-            dpsRoot.AddChild(new FloatPicker("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
-            dpsRoot.AddChild(new FloatPicker("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
+            dpsRoot.AddChild(new IntPicker("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
+            dpsRoot.AddChild(new IntPicker("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
         }
 
         private ToggleButton CreateRootMenu(string text, int yIndex, ToggleNode node)

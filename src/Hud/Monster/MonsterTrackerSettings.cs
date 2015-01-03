@@ -11,7 +11,7 @@ namespace PoeHUD.Hud.Monster
             Enable = true;
             PlaySound = true;
             ShowText = true;
-            TextSize = new RangeNode<float>(16, 6, 30);
+            TextSize = new RangeNode<int>(27, 10, 50);
             BackgroundColor = new ColorBGRA(0, 0, 0, 128);
         }
 
@@ -19,7 +19,7 @@ namespace PoeHUD.Hud.Monster
 
         public ToggleNode ShowText { get; set; }
 
-        public RangeNode<float> TextSize { get; set; }
+        public RangeNode<int> TextSize { get; set; }
 
         public Color BackgroundColor { get; set; }
     }

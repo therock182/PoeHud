@@ -41,7 +41,8 @@ namespace PoeHUD.Hud.Menu
             Color gray = Color.Gray;
             var textPosition = new Vector2(Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 3);
             string textValue = string.Format("{0}: {1}", name, node.Value);
-            graphics.DrawText(textValue, 11, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            // TODO textSize to Settings
+            graphics.DrawText(textValue, 18, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             graphics.DrawBox(Bounds, Color.Black);
             graphics.DrawBox(new RectangleF(Bounds.X + 1, Bounds.Y + 1, Bounds.Width - 2, Bounds.Height - 2), gray);
             graphics.DrawBox(new RectangleF(Bounds.X + 5, Bounds.Y + 3 * Bounds.Height / 4, Bounds.Width - 10, 5), Color.Black);

@@ -43,7 +43,7 @@ namespace PoeHUD.Hud.XpRate
             }
 
             Vector2 position = mountPoints[UiMountPoint.LeftOfMinimap];
-            float fontSize = Settings.TextSize;
+            int fontSize = Settings.TextSize;
 
             Size2 xpRateSize = Graphics.DrawText(xpRate, fontSize, position, FontDrawFlags.Right);
             Vector2 secondLine = position.Translate(0, xpRateSize.Height);

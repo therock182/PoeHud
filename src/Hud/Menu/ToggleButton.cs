@@ -36,7 +36,8 @@ namespace PoeHUD.Hud.Menu
             }
             Color color = node.Value ? Color.Gray : Color.Crimson;
             var textPosition = new Vector2(Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 2);
-            graphics.DrawText(name, 12, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            // TODO textSize to Settings
+            graphics.DrawText(name, 20, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             graphics.DrawBox(Bounds, Color.Black);
             graphics.DrawBox(new RectangleF(Bounds.X + 1, Bounds.Y + 1, Bounds.Width - 2, Bounds.Height - 2), color);
             if (Children.Count > 0)

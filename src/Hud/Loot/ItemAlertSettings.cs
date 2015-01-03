@@ -12,7 +12,7 @@ namespace PoeHUD.Hud.Loot
             Crafting = true;
             ShowText = true;
             PlaySound = true;
-            TextSize = new RangeNode<float>(15, 6, 30);
+            TextSize = new RangeNode<int>(25, 10, 50);
             Rares = true;
             Uniques = true;
             Maps = true;
@@ -31,7 +31,7 @@ namespace PoeHUD.Hud.Loot
 
         public ToggleNode PlaySound { get; set; }
 
-        public RangeNode<float> TextSize { get; set; }
+        public RangeNode<int> TextSize { get; set; }
 
         public ToggleNode Rares { get; set; }
 

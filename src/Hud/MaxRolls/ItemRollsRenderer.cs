@@ -178,19 +178,14 @@ namespace PoeHUD.Hud.MaxRolls
                     }
                 }
             }
-            //todo need to put in setting
-            const int OffsetInnerX = 2;
-            const int OffsetInnerY = 1;
-            const int DpsFontSize = 12;
-            const int DpSNameFontSize = 8;
 
             Size2 sz = new Size2();
             if (pDps > 0)
-                sz = Graphics.DrawText(pDps.ToString("#.#"), DpsFontSize, new Vector2(clientRect.X + clientRect.Width - OffsetInnerX, clientRect.Y + OffsetInnerY), Color.White, FontDrawFlags.Right);
+                sz = Graphics.DrawText(pDps.ToString("#.#"), Settings.DpsTextSize, new Vector2(clientRect.X + clientRect.Width - Settings.OffsetInnerX, clientRect.Y + Settings.OffsetInnerY), Color.White, FontDrawFlags.Right);
             Size2 sz2 = new Size2();
             if (eDps > 0)
-                sz2 = Graphics.DrawText(eDps.ToString("#.#"), DpsFontSize, new Vector2(clientRect.X + clientRect.Width - OffsetInnerX, clientRect.Y + OffsetInnerY + sz.Height), eDpsColor, FontDrawFlags.Right);
-            Graphics.DrawText("DPS", DpSNameFontSize, new Vector2(clientRect.X + clientRect.Width - OffsetInnerX, clientRect.Y + OffsetInnerY + sz.Height + sz2.Height), Color.White, FontDrawFlags.Right);
+                sz2 = Graphics.DrawText(eDps.ToString("#.#"), Settings.DpsTextSize, new Vector2(clientRect.X + clientRect.Width - Settings.OffsetInnerX, clientRect.Y + Settings.OffsetInnerY + sz.Height), eDpsColor, FontDrawFlags.Right);
+            Graphics.DrawText("DPS", Settings.DpsNameTextSize, new Vector2(clientRect.X + clientRect.Width - Settings.OffsetInnerX, clientRect.Y + Settings.OffsetInnerY + sz.Height + sz2.Height), Color.White, FontDrawFlags.Right);
         }
 
 		private float DrawStatLine(RollValue item, RectangleF clientRect, float yPos)
@@ -206,8 +201,8 @@ namespace PoeHUD.Hud.MaxRolls
 				if( item.CouldHaveTiers())
 					prefix += " T" + item.Tier + " ";
 
-                Graphics.DrawText(prefix, 8, new Vector2(clientRect.X + 5, yPos), Color.White);
-                var textSize = Graphics.DrawText(item.AffixText, 8, new Vector2(clientRect.X + leftRuler, yPos), item.TextColor);
+                Graphics.DrawText(prefix, Settings.ModTextSize, new Vector2(clientRect.X + 5, yPos), Color.White);
+                var textSize = Graphics.DrawText(item.AffixText, Settings.ModTextSize, new Vector2(clientRect.X + leftRuler, yPos), item.TextColor);
 				yPos += textSize.Height;
 			}
 
@@ -230,10 +225,10 @@ namespace PoeHUD.Hud.MaxRolls
 
 				string line2 = string.Format(noSpread ? "{0}" : "{0} [{1}]", theStat, range);
 
-                Graphics.DrawText(line2, 8, new Vector2(clientRect.X + leftRuler, yPos), Color.White);
+                Graphics.DrawText(line2, Settings.ModTextSize, new Vector2(clientRect.X + leftRuler, yPos), Color.White);
 
 				string sValue = theStat.ValueToString(val);
-                var txSize = Graphics.DrawText(sValue, 8, new Vector2(clientRect.X + leftRuler - 5, yPos), col, FontDrawFlags.Right);
+                var txSize = Graphics.DrawText(sValue, Settings.ModTextSize, new Vector2(clientRect.X + leftRuler - 5, yPos), col, FontDrawFlags.Right);
 				
 
 

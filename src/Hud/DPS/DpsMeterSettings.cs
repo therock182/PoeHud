@@ -9,14 +9,14 @@ namespace PoeHUD.Hud.DPS
         public DpsMeterSettings()
         {
             Enable = true;
-            DpsTextSize = new RangeNode<float>(18, 6, 30);
-            PeakDpsTextSize = new RangeNode<float>(8, 6, 30);
+            DpsTextSize = new RangeNode<int>(30, 10, 50);
+            PeakDpsTextSize = new RangeNode<int>(13, 10, 50);
             BackgroundColor = new ColorBGRA(0, 0, 0, 160);
         }
 
-        public RangeNode<float> DpsTextSize { get; set; }
+        public RangeNode<int> DpsTextSize { get; set; }
 
-        public RangeNode<float> PeakDpsTextSize { get; set; }
+        public RangeNode<int> PeakDpsTextSize { get; set; }
 
         public Color BackgroundColor { get; set; }
     }

@@ -17,6 +17,7 @@ namespace PoeHUD.Hud.Health
             HealthTextColorUnder10Percent = Color.FromAbgr(0xffff00ff);
             ShowPercents = showText;
             ShowHealthText = showText;
+            TextSize = new RangeNode<int>(15, 10, 50);
         }
 
         public Color Under10Percent { get; set; }
@@ -30,5 +31,7 @@ namespace PoeHUD.Hud.Health
         public ToggleNode ShowPercents { get; set; }
 
         public ToggleNode ShowHealthText { get; set; }
+
+        public RangeNode<int> TextSize { get; set; }
     }
 }
