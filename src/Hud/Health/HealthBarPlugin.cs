@@ -16,11 +16,11 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Health
 {
-    public class HealthBarRenderer : Plugin<HealthBarSettings>
+    public class HealthBarPlugin : Plugin<HealthBarSettings>
     {
         private readonly List<Healthbar>[] healthBars;
 
-        public HealthBarRenderer(GameController gameController, Graphics graphics, HealthBarSettings settings)
+        public HealthBarPlugin(GameController gameController, Graphics graphics, HealthBarSettings settings)
             : base(gameController, graphics, settings)
         {
             healthBars = new List<Healthbar>[Enum.GetValues(typeof(RenderPrio)).Length];

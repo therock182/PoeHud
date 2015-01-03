@@ -10,13 +10,13 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Preload
 {
-    public class PreloadAlert : Plugin<PreloadAlertSettings>
+    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>
     {
         private readonly HashSet<string> disp;
         private Dictionary<string, string> alertStrings;
         private int lastCount;
 
-        public PreloadAlert(GameController gameController, Graphics graphics, PreloadAlertSettings settings)
+        public PreloadAlertPlugin(GameController gameController, Graphics graphics, PreloadAlertSettings settings)
             : base(gameController, graphics, settings)
         {
             disp = new HashSet<string>();

@@ -2,7 +2,7 @@
 
 using SharpDX;
 
-namespace PoeHUD.Hud.DPS
+namespace PoeHUD.Hud.Dps
 {
     public sealed class DpsMeterSettings : SettingsBase
     {

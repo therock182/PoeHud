@@ -22,7 +22,7 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IHudPluginWithMapIcons
+	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;

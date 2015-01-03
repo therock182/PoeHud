@@ -11,11 +11,9 @@ using PoeHUD.Poe.Components;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-using PoeMonster = PoeHUD.Poe.Components.Monster; // TODO Need rename Monster directory
-
-namespace PoeHUD.Hud.DPS
+namespace PoeHUD.Hud.Dps
 {
-    public class DpsMeter : Plugin<DpsMeterSettings>
+    public class DpsMeterPlugin : Plugin<DpsMeterSettings>
     {
         private const double DPS_PERIOD = 0.2;
 
@@ -29,7 +27,7 @@ namespace PoeHUD.Hud.DPS
 
         private int maxDps;
 
-        public DpsMeter(GameController gameController, Graphics graphics, DpsMeterSettings settings)
+        public DpsMeterPlugin(GameController gameController, Graphics graphics, DpsMeterSettings settings)
             : base(gameController, graphics, settings)
         {
             lastTime = DateTime.Now;
@@ -84,7 +82,7 @@ namespace PoeHUD.Hud.DPS
         {
             int totalDamage = 0;
             var monsters = new Dictionary<int, int>();
-            foreach (EntityWrapper monster in GameController.Entities.Where(x => x.HasComponent<PoeMonster>() && x.IsHostile))
+            foreach (EntityWrapper monster in GameController.Entities.Where(x => x.HasComponent<Monster>() && x.IsHostile))
             {
                 int hp = monster.IsAlive ? monster.GetComponent<Life>().CurHP + monster.GetComponent<Life>().CurES : 0;
                 if (hp > -1000000 && hp < 10000000)

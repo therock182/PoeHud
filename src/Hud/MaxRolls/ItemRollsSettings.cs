@@ -2,9 +2,9 @@
 
 namespace PoeHUD.Hud.MaxRolls
 {
-    public sealed class ItemModsSettings : SettingsBase
+    public sealed class ItemRollsSettings : SettingsBase
     {
-        public ItemModsSettings()
+        public ItemRollsSettings()
         {
             Enable = true;
             ShowWeaponDps = true;

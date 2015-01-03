@@ -15,11 +15,11 @@ using Map = PoeHUD.Poe.UI.Elements.Map;
 
 namespace PoeHUD.Hud.Icons
 {
-    public class LargeMapRenderer : Plugin<LargeMapSettings>
+    public class LargeMapPlugin : Plugin<LargeMapSettings>
     {
         private readonly Func<IEnumerable<MapIcon>> getIcons;
 
-        public LargeMapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, LargeMapSettings settings)
+        public LargeMapPlugin(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, LargeMapSettings settings)
             : base(gameController, graphics, settings)
         {
             getIcons = gatherMapIcons;

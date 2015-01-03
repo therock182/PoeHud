@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace PoeHUD.Hud.Interfaces
 {
-    public interface IHudPluginWithMapIcons
+    public interface IPluginWithMapIcons
     {
         IEnumerable<MapIcon> GetIcons();
     }

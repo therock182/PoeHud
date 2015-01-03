@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using SharpDX;
 
-namespace PoeHUD.Hud
+namespace PoeHUD.Hud.Interfaces
 {
     public interface IPlugin : IDisposable
     {

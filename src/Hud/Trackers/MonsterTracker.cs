@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
@@ -14,9 +13,9 @@ using PoeHUD.Poe.Components;
 using SharpDX;
 using SharpDX.Direct3D9;
 
-namespace PoeHUD.Hud.Monster
+namespace PoeHUD.Hud.Trackers
 {
-	public class MonsterTracker : Plugin<MonsterTrackerSettings>, IHudPluginWithMapIcons
+	public class MonsterTracker : Plugin<MonsterTrackerSettings>, IPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;

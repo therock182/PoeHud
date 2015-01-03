@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 
 using PoeHUD.Controllers;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;

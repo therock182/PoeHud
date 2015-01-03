@@ -18,11 +18,11 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.MaxRolls
 {
-	public class ItemRollsRenderer : Plugin<ItemModsSettings>
+	public class ItemRollsPlugin : Plugin<ItemRollsSettings>
 	{
 		private Entity itemEntity;
         private List<RollValue> mods = new List<RollValue>();
-        public ItemRollsRenderer(GameController gameController, Graphics graphics, ItemModsSettings settings)
+        public ItemRollsPlugin(GameController gameController, Graphics graphics, ItemRollsSettings settings)
             : base(gameController, graphics, settings)
 	    {
 	    }

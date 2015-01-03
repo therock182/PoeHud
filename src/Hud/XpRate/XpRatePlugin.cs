@@ -12,7 +12,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-    public class XPHRenderer : Plugin<XpRateSettings>
+    public class XpRatePlugin : Plugin<XpRateSettings>
     {
         private string xpRate, timeLeft;
 
@@ -20,7 +20,7 @@ namespace PoeHUD.Hud.XpRate
 
         private long startXp;
 
-        public XPHRenderer(GameController gameController, Graphics graphics, XpRateSettings settings)
+        public XpRatePlugin(GameController gameController, Graphics graphics, XpRateSettings settings)
             : base(gameController, graphics, settings)
         {
             Reset();

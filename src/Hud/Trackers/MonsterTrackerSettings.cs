@@ -2,7 +2,7 @@
 
 using SharpDX;
 
-namespace PoeHUD.Hud.Monster
+namespace PoeHUD.Hud.Trackers
 {
     public sealed class MonsterTrackerSettings : SettingsBase
     {

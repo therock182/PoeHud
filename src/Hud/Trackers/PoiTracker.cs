@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
@@ -10,9 +8,9 @@ using PoeHUD.Poe.Components;
 
 using SharpDX;
 
-namespace PoeHUD.Hud.Monster
+namespace PoeHUD.Hud.Trackers
 {
-	public class PoiTracker : Plugin<PoiTrackerSettings>, IHudPluginWithMapIcons
+	public class PoiTracker : Plugin<PoiTrackerSettings>, IPluginWithMapIcons
 	{
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Hud.DPS;
+using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
@@ -14,9 +14,9 @@ using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
-using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings;
+using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
 using PoeHUD.Poe.UI;
 
@@ -86,7 +86,7 @@ namespace PoeHUD.Hud
 
         private IEnumerable<MapIcon> GatherMapIcons()
         {
-            IEnumerable<IHudPluginWithMapIcons> pluginsWithIcons = plugins.OfType<IHudPluginWithMapIcons>();
+            IEnumerable<IPluginWithMapIcons> pluginsWithIcons = plugins.OfType<IPluginWithMapIcons>();
             return pluginsWithIcons.SelectMany(iconSource => iconSource.GetIcons());
         }
 
@@ -127,18 +127,18 @@ namespace PoeHUD.Hud
             graphics = new Graphics2D(this, Bounds.Width, Bounds.Height);
             graphics.Render += OnRender;
 
-            plugins.Add(new HealthBarRenderer(gameController, graphics, settings.HealthBarSettings));
+            plugins.Add(new HealthBarPlugin(gameController, graphics, settings.HealthBarSettings));
             plugins.Add(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
-            plugins.Add(new MinimapRenderer(gameController, graphics, GatherMapIcons, settings.MinimapSettings));
-            plugins.Add(new LargeMapRenderer(gameController, graphics, GatherMapIcons, settings.LargeMapSettings));
+            plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MinimapSettings));
+            plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.LargeMapSettings));
             plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
-            plugins.Add(new ItemRollsRenderer(gameController, graphics, settings.ItemModsSettings));
+            plugins.Add(new ItemRollsPlugin(gameController, graphics, settings.ItemRollsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
-            plugins.Add(new XPHRenderer(gameController, graphics, settings.XpRateSettings));
+            plugins.Add(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));
             plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
-            plugins.Add(new PreloadAlert(gameController, graphics, settings.PreloadAlertSettings));
-            plugins.Add(new DpsMeter(gameController, graphics, settings.DpsMeterSettings));
+            plugins.Add(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
+            plugins.Add(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
             if (settings.MenuSettings.Enable)
             {
                 //#if !DEBUG

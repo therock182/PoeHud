@@ -1,6 +1,6 @@
 ﻿using PoeHUD.Hud.Settings;
 
-namespace PoeHUD.Hud.Monster
+namespace PoeHUD.Hud.Trackers
 {
     public sealed class PoiTrackerSettings : SettingsBase
     {

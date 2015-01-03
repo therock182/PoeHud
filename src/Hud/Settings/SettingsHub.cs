@@ -3,16 +3,16 @@ using System.IO;
 
 using Newtonsoft.Json;
 
-using PoeHUD.Hud.DPS;
+using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
-using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings.Converters;
+using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
 
 namespace PoeHUD.Hud.Settings
@@ -43,7 +43,7 @@ namespace PoeHUD.Hud.Settings
             MinimapSettings = new MinimapSettings();
             ItemAlertSettings = new ItemAlertSettings();
             ItemLevelSettings = new ItemLevelSettings();
-            ItemModsSettings = new ItemModsSettings();
+            ItemRollsSettings = new ItemRollsSettings();
             MonsterTrackerSettings = new MonsterTrackerSettings();
             PoiTrackerSettings = new PoiTrackerSettings();
             PreloadAlertSettings = new PreloadAlertSettings();
@@ -72,8 +72,8 @@ namespace PoeHUD.Hud.Settings
         [JsonProperty("Item level")]
         public ItemLevelSettings ItemLevelSettings { get; private set; }
 
-        [JsonProperty("Item mods")]
-        public ItemModsSettings ItemModsSettings { get; private set; }
+        [JsonProperty("Item rolls")]
+        public ItemRollsSettings ItemRollsSettings { get; private set; }
 
         [JsonProperty("Monster tracker")]
         public MonsterTrackerSettings MonsterTrackerSettings { get; private set; }
