@@ -133,7 +133,7 @@ namespace PoeHUD.Hud.Loot
 			float y = rightTopAnchor.Y;
 			int fontSize = Settings.GetInt("ItemAlert.ShowText.FontSize");
 
-		    var itemsOnGroundLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels;
+		    var itemsOnGroundLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.Where(z=>z.IsVisible);
 			const int vMargin = 2;
 			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
 			{

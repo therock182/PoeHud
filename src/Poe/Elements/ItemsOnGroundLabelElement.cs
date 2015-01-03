@@ -15,6 +15,11 @@ namespace PoeHUD.Poe.Elements
             get { return base.ReadObject<Element>(Address + 0x8); }
         }
 
+        public new bool IsVisible
+        {
+            get { return Label.IsVisible; }
+        }
+        
         public new IEnumerable<ItemsOnGroundLabelElement> Children
         {
             get
