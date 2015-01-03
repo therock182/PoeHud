@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.IO;
+using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
@@ -49,5 +50,22 @@ namespace PoeHUD.Hud
         protected virtual void OnEntityAdded(EntityWrapper entityWrapper) {}
 
         protected virtual void OnEntityRemoved(EntityWrapper entityWrapper) {}
+
+        protected static Dictionary<string, string> LoadConfig(string path)
+        {
+            var result = new Dictionary<string, string>();
+
+            string[] lines = File.ReadAllLines(path);
+            foreach (string line in lines.Select(a => a.Trim()))
+            {
+                if (string.IsNullOrWhiteSpace(line) || line.IndexOf(',') < 0 || line.StartsWith("#"))
+                    continue;
+
+                var parts = line.Split(new[] { ',' }, 2);
+                result[parts[0].Trim()] = parts[1].Trim();
+            }
+
+            return result;
+        }
     }
 }

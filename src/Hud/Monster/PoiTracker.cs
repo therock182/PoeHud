@@ -100,38 +100,6 @@ namespace PoeHUD.Hud.Monster
 
 		}
 
-		private static Dictionary<string, string> LoadMonsterModAlerts()
-		{
-			var result = new Dictionary<string, string>();
-
-			string[] lines = File.ReadAllLines("config/monster_mod_alerts.txt");
-			foreach (string line in lines.Select(a => a.Trim()))
-			{
-				if (string.IsNullOrWhiteSpace(line) || line.IndexOf(',') < 0)
-					continue;
-
-				var parts = line.Split(new[] {','}, 2);
-				result[parts[0].Trim()] = parts[1].Trim();
-			}
-
-			return result;
-		}
-
-		private static Dictionary<string, string> LoadMonsterNameAlerts()
-		{
-			var result = new Dictionary<string, string>();
-
-			string[] lines = File.ReadAllLines("config/monster_name_alerts.txt");
-			foreach (string line in lines.Select(a => a.Trim()))
-			{
-				if (string.IsNullOrWhiteSpace(line) || line.IndexOf(',') < 0)
-					continue;
-
-				var parts = line.Split(new[] { ',' }, 2);
-				result[parts[0].Trim()] = parts[1].Trim();
-			}
-
-			return result;
-		}
+	
 	}
 }
