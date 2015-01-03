@@ -21,11 +21,18 @@ namespace PoeHUD.Hud.Settings
     {
         private const string SETTINGS_FILE_NAME = "config/settings.json";
 
-        private static readonly JsonConverter[] converters =
+        private static readonly JsonSerializerSettings jsonSettings;
+
+        static SettingsHub()
         {
-            new ColorConverter(),
-            new ToggleNodeConverter()
-        };
+            jsonSettings = new JsonSerializerSettings();
+            jsonSettings.ContractResolver = new SortContractResolver();
+            jsonSettings.Converters = new JsonConverter[]
+            {
+                new ColorConverter(),
+                new ToggleNodeConverter()
+            };
+        }
 
         public SettingsHub()
         {
@@ -91,7 +98,7 @@ namespace PoeHUD.Hud.Settings
             try
             {
                 string json = File.ReadAllText(SETTINGS_FILE_NAME);
-                return JsonConvert.DeserializeObject<SettingsHub>(json, converters);
+                return JsonConvert.DeserializeObject<SettingsHub>(json, jsonSettings);
             }
             catch
             {
@@ -111,7 +118,7 @@ namespace PoeHUD.Hud.Settings
         {
             using (var stream = new StreamWriter(File.Create(SETTINGS_FILE_NAME)))
             {
-                string json = JsonConvert.SerializeObject(settings, Formatting.Indented, converters);
+                string json = JsonConvert.SerializeObject(settings, Formatting.Indented, jsonSettings);
                 stream.Write(json);
             }
         }

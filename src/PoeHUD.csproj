@@ -96,6 +96,7 @@
     <Compile Include="Hud\Settings\RangeNode.cs" />
     <Compile Include="Hud\Settings\SettingsBase.cs" />
     <Compile Include="Hud\Settings\SettingsHub.cs" />
+    <Compile Include="Hud\Settings\SortContractResolver.cs" />
     <Compile Include="Hud\Settings\ToggleNode.cs" />
     <Compile Include="Hud\UiMountPoint.cs" />
     <Compile Include="Hud\UI\Graphics.cs" />
