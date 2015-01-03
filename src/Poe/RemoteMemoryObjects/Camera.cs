@@ -31,31 +31,24 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             get { return new Vec3(M.ReadFloat(Address + 256), M.ReadFloat(Address + 260), M.ReadFloat(Address + 264)); }
         }
 
-        static Vector4 oldtranslation;
+   
         static Vector2 oldplayerCord;
-        public unsafe Vector2 WorldToScreen(Vec3 vec3, EntityWrapper entityWrapper, int times = 0)
+        public unsafe Vector2 WorldToScreen(Vec3 vec3, EntityWrapper entityWrapper)
         {
 
             var isplayer = Game.IngameState.Data.LocalPlayer.IsValid && Game.IngameState.Data.LocalPlayer.Address == entityWrapper.Address;
             var isMoving = Game.IngameState.Data.LocalPlayer.GetComponent<Actor>().isMoving;
-            float x, y, z;
+            float x, y;
             int addr = base.Address + 0xbc;
             fixed (byte* numRef = base.M.ReadBytes(addr, 0x40))
             {
                 Matrix matrix = *(Matrix*)numRef;
-                var translation = *(Vector4*)&matrix.M41;
                 Vector4 cord = *(Vector4*)&vec3;
                 cord.W = 1;
                 cord = Vector4.Transform(cord, matrix);
                 cord = Vector4.Divide(cord, cord.W);
                 x = ((cord.X + 1.0f) * 0.5f) * Width;
                 y = ((1.0f - cord.Y) * 0.5f) * Height;
-
-                if (times < 2500 && isMoving && isplayer && oldtranslation == translation)
-                {
-                    return WorldToScreen(vec3, entityWrapper, times + 1);
-                }
-                oldtranslation = translation;
             }
             var resultCord = new Vector2(x, y);
             if (isMoving && isplayer)
