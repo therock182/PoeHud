@@ -139,12 +139,7 @@ namespace PoeHUD.Hud
             plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
             plugins.Add(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
             plugins.Add(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
-            if (settings.MenuSettings.Enable)
-            {
-                //#if !DEBUG
-                plugins.Add(new MenuPlugin(gameController, graphics, settings));
-                //#endif
-            }
+            plugins.Add(new MenuPlugin(gameController, graphics, settings));
 
             Deactivate += OnDeactivate;
             FormClosing += OnClosing;

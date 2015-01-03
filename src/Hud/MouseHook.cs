@@ -1,9 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-
-using PoeHUD.Framework;
 
 namespace PoeHUD.Hud
 {
@@ -41,21 +39,17 @@ namespace PoeHUD.Hud
 
         private int LLMouseProc(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (Imports.IsKeyDown(Keys.F12))
-            {
-                return CallNextHookEx(mousehookId, nCode, wParam, lParam);
-            }
-            var point = (Point)Marshal.PtrToStructure(lParam, typeof(Point));
             try
             {
-                if (mouseEvent((MouseEventID)((int)wParam), point.X, point.Y))
+                var point = (Point)Marshal.PtrToStructure(lParam, typeof(Point));
+                if (mouseEvent((MouseEventID)wParam, point.X, point.Y))
                 {
                     return 1;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error in mousehook " + ex.Message);
+                Debug.WriteLine("Error in mousehook " + ex.Message);
             }
             return CallNextHookEx(mousehookId, nCode, wParam, lParam);
         }

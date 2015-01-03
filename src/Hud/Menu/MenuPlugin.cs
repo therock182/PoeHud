@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 using PoeHUD.Controllers;
+using PoeHUD.Framework;
+using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 
@@ -24,6 +27,8 @@ namespace PoeHUD.Hud.Menu
 
         private bool menuVisible;
 
+        private bool holdKey;
+
         public MenuPlugin(GameController gameController, Graphics graphics, SettingsHub settingsHub)
             : base(gameController, graphics, settingsHub.MenuSettings)
         {
@@ -40,6 +45,21 @@ namespace PoeHUD.Hud.Menu
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
+            if (!holdKey && Imports.IsKeyDown(Keys.F12))
+            {
+                holdKey = true;
+                Settings.Enable.Value = !Settings.Enable.Value;
+            }
+            else if (holdKey && !Imports.IsKeyDown(Keys.F12))
+            {
+                holdKey = false;
+            }
+
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
             Color boxColor = Color.Gray;
             boxColor.A = menuVisible ? (byte)255 : (byte)100;
             Graphics.DrawBox(bounds, boxColor);
@@ -60,7 +80,7 @@ namespace PoeHUD.Hud.Menu
         {
             int r = 0;
             buttons = new List<ToggleButton>();
-            var healthBarPlugin = settingsHub.HealthBarSettings;
+            HealthBarSettings healthBarPlugin = settingsHub.HealthBarSettings;
             ToggleButton parent = CreateRootMenu("Health bars", r++, healthBarPlugin.Enable);
             ToggleButton toggleButton = AddButton(parent, "Players", healthBarPlugin.Players.Enable);
             ToggleButton parent2 = AddButton(parent, "Enemies", healthBarPlugin.ShowEnemies);
@@ -144,7 +164,7 @@ namespace PoeHUD.Hud.Menu
 
         private bool OnMouseEvent(MouseEventID id, int x, int y)
         {
-            if (!GameController.Window.IsForeground())
+            if (!Settings.Enable || !GameController.Window.IsForeground())
             {
                 return false;
             }
