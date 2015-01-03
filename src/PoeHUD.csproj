@@ -75,6 +75,7 @@
     <Compile Include="Hud\UI\Renderers\TextureRenderer.cs" />
     <Compile Include="Hud\UI\Vertexes\ColoredVertex.cs" />
     <Compile Include="Hud\UI\Vertexes\TexturedVertex.cs" />
+    <Compile Include="Models\Enums\DamageType.cs" />
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
