@@ -52,10 +52,6 @@ namespace PoeHUD
 			}
 
 			Sounds.LoadSounds();
-			if (!Settings.LoadSettings())
-			{
-				return;
-			}
 
 			AppDomain.CurrentDomain.UnhandledException += ( sender,  exceptionArgs)=>
 			{

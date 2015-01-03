@@ -18,17 +18,18 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.MaxRolls
 {
-	public class ItemRollsRenderer : Plugin
+	public class ItemRollsRenderer : Plugin<ItemModsSettings>
 	{
 		private Entity itemEntity;
         private List<RollValue> mods = new List<RollValue>();
-        public ItemRollsRenderer(GameController gameController, Graphics graphics) : base(gameController, graphics)
+        public ItemRollsRenderer(GameController gameController, Graphics graphics, ItemModsSettings settings)
+            : base(gameController, graphics, settings)
 	    {
 	    }
         
 	    public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!Settings.GetBool("Tooltip") || !Settings.GetBool("Tooltip.ShowItemMods"))
+			if (!Settings.Enable)
 				return;
 			Element uiHover = this.GameController.Game.IngameState.UIHover;
 
@@ -65,8 +66,7 @@ namespace PoeHUD.Hud.MaxRolls
 			//    yPos += 20;
 			//}
             
-            //todo add to setting
-	        if (poeEntity.HasComponent<Weapon>())
+	        if (Settings.ShowWeaponDps && poeEntity.HasComponent<Weapon>())
 	        {
 	            RenderWeaponStats(clientRect);
 	        }

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
 
-namespace PoeHUD.Hud
+namespace PoeHUD.Hud.MiscHacks
 {
-    public class ClientHacks : Plugin
+    public class MiscHacksPlugin : Plugin<MiscHacksSettings>
     {
         private bool fullbrightEnabled;
         private bool hasSetWriteAccess;
@@ -20,24 +20,22 @@ namespace PoeHUD.Hud
 
 
 
-        public ClientHacks(GameController gameController, Graphics graphics):base(gameController, graphics)
+        public MiscHacksPlugin(GameController gameController, Graphics graphics, MiscHacksSettings settings)
+            : base(gameController, graphics, settings)
         {
 
             m = GameController.Memory;
-            if (Settings.GetBool("ClientHacks"))
+            if (Settings.Enable)
             {
-                maphackEnabled = Settings.GetBool("ClientHacks.Maphack");
-                if (maphackEnabled)
+                if (Settings.Maphack)
                 {
                     EnableMaphack();
                 }
-                zoomhackEnabled = Settings.GetBool("ClientHacks.Zoomhack");
-                if (zoomhackEnabled)
+                if (Settings.Zoomhack)
                 {
                     EnableZoomhack();
                 }
-                fullbrightEnabled = Settings.GetBool("ClientHacks.Fullbright");
-                if (fullbrightEnabled)
+                if (Settings.Fullbright)
                 {
                     EnableFullbright();
                 }
@@ -46,7 +44,7 @@ namespace PoeHUD.Hud
       
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            bool flag = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Maphack");
+            bool flag = Settings.Enable && Settings.Maphack;
             if (flag != maphackEnabled)
             {
                 maphackEnabled = !maphackEnabled;
@@ -58,12 +56,12 @@ namespace PoeHUD.Hud
             if (zoomhackEnabled && GameController.InGame)
             {
                 float zFar = GameController.Game.IngameState.Camera.ZFar;
-                if (zFar != 10000f)
+                if (Math.Abs(zFar - 10000) > 1)
                 {
-                    GameController.Game.IngameState.Camera.ZFar = 10000f;
+                    GameController.Game.IngameState.Camera.ZFar = 10000;
                 }
             }
-            bool flag2 = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Zoomhack");
+            bool flag2 = Settings.Enable && Settings.Zoomhack;
             if (flag2 != zoomhackEnabled)
             {
                 zoomhackEnabled = !zoomhackEnabled;
@@ -72,7 +70,7 @@ namespace PoeHUD.Hud
                 else
                     DisableZoomhack();
             }
-            bool flag3 = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Fullbright");
+            bool flag3 = Settings.Enable && Settings.Fullbright;
             if (flag3 != fullbrightEnabled)
             {
                 fullbrightEnabled = !fullbrightEnabled;
@@ -81,7 +79,7 @@ namespace PoeHUD.Hud
                 else
                     DisableFullbright();
             }
-            bool flag4 = Settings.GetBool("ClientHacks") && Settings.GetBool("ClientHacks.Particles");
+            bool flag4 = Settings.Enable && Settings.Particles;
             if (flag4 != particlesEnabled)
             {
                 particlesEnabled = !particlesEnabled;

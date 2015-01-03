@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
@@ -8,15 +8,15 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-    public class IntPicker : MenuItem
+    public class FloatPicker : MenuItem
     {
         private readonly string name;
 
-        private readonly RangeNode<int> node;
+        private readonly RangeNode<float> node;
 
         private bool isHolding;
 
-        public IntPicker(string name, RangeNode<int> node)
+        public FloatPicker(string name, RangeNode<float> node)
         {
             this.name = name;
             this.node = node;

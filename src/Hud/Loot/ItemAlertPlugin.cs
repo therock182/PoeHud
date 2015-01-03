@@ -22,7 +22,7 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlerter : Plugin, IHudPluginWithMapIcons
+	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IHudPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -31,7 +31,8 @@ namespace PoeHUD.Hud.Loot
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
 
-	    public ItemAlerter(GameController gameController, Graphics graphics) : base(gameController, graphics)
+	    public ItemAlertPlugin(GameController gameController, Graphics graphics, ItemAlertSettings settings)
+            : base(gameController, graphics, settings)
 	    {
             playedSoundsCache = new HashSet<long>();
             currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
@@ -56,7 +57,7 @@ namespace PoeHUD.Hud.Loot
 
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
-			if (!Settings.GetBool("ItemAlert") || currentAlerts.ContainsKey(entity))
+			if (!Settings.Enable || currentAlerts.ContainsKey(entity))
 			{
 				return;
 			}
@@ -65,13 +66,13 @@ namespace PoeHUD.Hud.Loot
 			    IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
 				ItemUsefulProperties props = EvaluateItem(item);
 
-				if (props.IsWorthAlertingPlayer(currencyNames))
+				if (props.IsWorthAlertingPlayer(currencyNames, Settings))
 				{
 					AlertDrawStyle drawStyle = props.GetDrawStyle();
 					currentAlerts.Add(entity, drawStyle);
 					currentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), 8);
 
-					if (Settings.GetBool("ItemAlert.PlaySound") && !playedSoundsCache.Contains(entity.LongId))
+					if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
 					{
 						playedSoundsCache.Add(entity.LongId);
 						Sounds.AlertSound.Play();
@@ -105,7 +106,7 @@ namespace PoeHUD.Hud.Loot
 			ip.IsVaalFragment = item.Path.Contains("VaalFragment");
 
 			CraftingBase craftingBase;
-			if (craftingBases.TryGetValue(ip.Name, out craftingBase) && Settings.GetBool("ItemAlert.Crafting"))
+			if (craftingBases.TryGetValue(ip.Name, out craftingBase) && Settings.Crafting)
 				ip.IsCraftingBase = ip.ItemLevel >= craftingBase.MinItemLevel 
 					&& ip.Quality >= craftingBase.MinQuality
 					&& (craftingBase.Rarities == null || craftingBase.Rarities.Contains(ip.Rarity));
@@ -120,7 +121,7 @@ namespace PoeHUD.Hud.Loot
 		}
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!Settings.GetBool("ItemAlert") || !Settings.GetBool("ItemAlert.ShowText"))
+			if (!Settings.Enable || !Settings.ShowText)
 			{
 				return;
 			}
@@ -131,7 +132,6 @@ namespace PoeHUD.Hud.Loot
 
 			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
 			float y = rightTopAnchor.Y;
-			int fontSize = Settings.GetInt("ItemAlert.ShowText.FontSize");
 
 		    var itemsOnGroundLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.Where(z=>z.IsVisible);
 			const int vMargin = 2;
@@ -153,7 +153,7 @@ namespace PoeHUD.Hud.Loot
 				var delta = itemPos - playerPos;
 
 				var vPadding = new Vector2(5, 2);
-				var itemDrawnSize = drawItem(kv.Value, delta, rightTopAnchor.X, y, vPadding, text, fontSize);
+                var itemDrawnSize = DrawItem(kv.Value, delta, rightTopAnchor.X, y, vPadding, text);
 				y += itemDrawnSize.Y + vMargin;
 			}
 			
@@ -175,8 +175,7 @@ namespace PoeHUD.Hud.Loot
 			}
 		}
 
-		private Vector2 drawItem(AlertDrawStyle drawStyle, Vec2 delta, float x, float y, Vector2 vPadding, string text,
-			int fontSize)
+		private Vector2 DrawItem(AlertDrawStyle drawStyle, Vec2 delta, float x, float y, Vector2 vPadding, string text)
 		{
 			// collapse padding when there's a frame
 			vPadding.X -= drawStyle.FrameWidth;
@@ -189,9 +188,9 @@ namespace PoeHUD.Hud.Loot
 
 			//text = text + " @ " + (int)distance + " : " + (int)(phi / Math.PI * 180)  + " : " + xSprite;
 
-			int compassOffset = fontSize + 8;
+            float compassOffset = Settings.TextSize + 8;
 			var textPos = new Vector2(x - vPadding.X - compassOffset, y + vPadding.Y);
-            var vTextSize = Graphics.DrawText(text, fontSize, textPos, drawStyle.color, FontDrawFlags.Right);
+            var vTextSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.color, FontDrawFlags.Right);
 
 			int iconSize =  drawStyle.IconIndex >= 0 ? vTextSize.Height : 0;
 

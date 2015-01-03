@@ -12,7 +12,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-    public class XPHRenderer : Plugin
+    public class XPHRenderer : Plugin<XpRateSettings>
     {
         private string xpRate, timeLeft;
 
@@ -20,8 +20,8 @@ namespace PoeHUD.Hud.XpRate
 
         private long startXp;
 
-        public XPHRenderer(GameController gameController, Graphics graphics)
-            : base(gameController, graphics)
+        public XPHRenderer(GameController gameController, Graphics graphics, XpRateSettings settings)
+            : base(gameController, graphics, settings)
         {
             Reset();
             GameController.Area.OnAreaChange += area => Reset();
@@ -29,8 +29,7 @@ namespace PoeHUD.Hud.XpRate
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            if (!Settings.GetBool("XphDisplay") ||
-                (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100))
+            if (!Settings.Enable || (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100))
             {
                 return;
             }
@@ -44,7 +43,7 @@ namespace PoeHUD.Hud.XpRate
             }
 
             Vector2 position = mountPoints[UiMountPoint.LeftOfMinimap];
-            int fontSize = Settings.GetInt("XphDisplay.FontSize");
+            float fontSize = Settings.TextSize;
 
             Size2 xpRateSize = Graphics.DrawText(xpRate, fontSize, position, FontDrawFlags.Right);
             Vector2 secondLine = position.Translate(0, xpRateSize.Height);
@@ -64,8 +63,7 @@ namespace PoeHUD.Hud.XpRate
             Graphics.DrawText(systemTime, fontSize, new Vector2(bounds.X + 5, position.Y), Color.White);
             Graphics.DrawText(timer, fontSize, new Vector2(bounds.X + 5, thirdLine.Y), Color.White);
 
-            var backgroundColor = new ColorBGRA(1, 1, 1, (byte)Settings.GetInt("XphDisplay.BgAlpha")); // TODO Move to settings
-            Graphics.DrawBox(bounds, backgroundColor);
+            Graphics.DrawBox(bounds, Settings.BackgroundColor);
 
             mountPoints[UiMountPoint.LeftOfMinimap] = position.Translate(0, bounds.Height + 5);
         }

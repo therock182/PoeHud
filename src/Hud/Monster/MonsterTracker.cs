@@ -16,7 +16,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class MonsterTracker : Plugin, IHudPluginWithMapIcons
+	public class MonsterTracker : Plugin<MonsterTrackerSettings>, IHudPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;
@@ -26,7 +26,8 @@ namespace PoeHUD.Hud.Monster
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
 
-	    public MonsterTracker(GameController gameController, Graphics graphics) : base(gameController, graphics)
+	    public MonsterTracker(GameController gameController, Graphics graphics, MonsterTrackerSettings settings)
+            : base(gameController, graphics, settings)
 	    {
 
             this.alreadyAlertedOf = new HashSet<int>();
@@ -50,7 +51,7 @@ namespace PoeHUD.Hud.Monster
 
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
-			if (!Settings.GetBool("MonsterTracker") || this.alertTexts.ContainsKey(entity))
+			if (!Settings.Enable || this.alertTexts.ContainsKey(entity))
 			{
 				return;
 			}
@@ -81,7 +82,7 @@ namespace PoeHUD.Hud.Monster
 		}
 		private void PlaySound(EntityWrapper entity)
 		{
-			if (!Settings.GetBool("MonsterTracker.PlaySound"))
+			if (!Settings.PlaySound)
 			{
 				return;
 			}
@@ -99,7 +100,7 @@ namespace PoeHUD.Hud.Monster
 		}
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!Settings.GetBool("MonsterTracker.ShowText"))
+			if (!Settings.ShowText)
 			{
 				return;
 			}
@@ -108,7 +109,6 @@ namespace PoeHUD.Hud.Monster
 			int yPos = rect.H / 10 + rect.Y;
 
 			var playerPos = this.GameController.Player.GetComponent<Positioned>().GridPos;
-			int fontSize = Settings.GetInt("MonsterTracker.ShowText.FontSize");
 			bool first = true;
 			var rectBackground = new RectangleF();
 
@@ -123,12 +123,11 @@ namespace PoeHUD.Hud.Monster
 		        .GroupBy(y => y.Dic.Value)
 		        .Select(y => new {Text = y.Key, Monster = y.First(), Count=y.Count()}).ToList();
 
-            Color backgroundColor = new ColorBGRA(1, 1, 1, (byte)Settings.GetInt("MonsterTracker.ShowText.BgAlpha"));
             foreach (var group in groupedAlerts)
             {
                 var uv = GetDirectionsUV(group.Monster.Phi, group.Monster.Distance);
                 string text = String.Format("{0} {1}", group.Text, group.Count > 1 ? "(" + group.Count + ")" : string.Empty);
-                var textSize = Graphics.DrawText(text, fontSize, new Vector2(xScreenCenter, yPos), Color.Red, FontDrawFlags.Center);
+                var textSize = Graphics.DrawText(text, Settings.TextSize, new Vector2(xScreenCenter, yPos), Color.Red, FontDrawFlags.Center);
 
                 rectBackground = new RectangleF(xScreenCenter - textSize.Width / 2 - 6, yPos, textSize.Width + 12, textSize.Height);
                 rectBackground.X -= textSize.Height + 3;
@@ -142,7 +141,7 @@ namespace PoeHUD.Hud.Monster
                     rectBackground.Height += 5;
                     first = false;
                 }
-                Graphics.DrawBox(rectBackground, backgroundColor);
+                Graphics.DrawBox(rectBackground, Settings.BackgroundColor);
                 Graphics.DrawImage("directions.png", rectDirection, uv, Color.Red);
                 yPos += textSize.Height;
                 
@@ -151,7 +150,7 @@ namespace PoeHUD.Hud.Monster
 			{
 				rectBackground.Y = rectBackground.Y + rectBackground.Height;
 				rectBackground.Height = 5;
-                Graphics.DrawBox(rectBackground, backgroundColor);
+                Graphics.DrawBox(rectBackground, Settings.BackgroundColor);
 			}
 		}
 

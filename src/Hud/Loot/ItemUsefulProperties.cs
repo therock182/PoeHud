@@ -25,17 +25,18 @@ namespace PoeHUD.Hud.Loot
 		public int MapLevel;
 		public bool IsVaalFragment;
 
-		public bool IsWorthAlertingPlayer(HashSet<string> currencyNames)
-		{			
-			if( Rarity == ItemRarity.Rare && Settings.GetBool("ItemAlert.Rares"))
+		public bool IsWorthAlertingPlayer(HashSet<string> currencyNames, ItemAlertSettings settings)
+		{
+            if (Rarity == ItemRarity.Rare && settings.Rares)
 				return true;
-			if( Rarity == ItemRarity.Unique && Settings.GetBool("ItemAlert.Uniques"))
+            if (Rarity == ItemRarity.Unique && settings.Uniques)
 				return true;
-			if(( MapLevel > 0  || IsVaalFragment ) && Settings.GetBool("ItemAlert.Maps"))
+            if ((MapLevel > 0 || IsVaalFragment) && settings.Maps)
 				return true;
-			if( NumLinks >= Settings.GetInt("ItemAlert.MinLinks"))
+            if (NumLinks >= settings.MinLinks)
 				return true;
-			if( IsCurrency && Settings.GetBool("ItemAlert.Currency")) {
+            if (IsCurrency && settings.Currency)
+            {
 				if (currencyNames == null) {
 					if( !Name.Contains("Portal") && Name.Contains("Wisdom") )
 						return true;
@@ -44,12 +45,10 @@ namespace PoeHUD.Hud.Loot
 					return true;
 			}
 
-			if (IsSkillGem && Settings.GetBool("ItemAlert.SkillGems")) return true;
-			if (IsSkillGem && Settings.GetBool("ItemAlert.QualitySkillGems") && Quality >= Settings.GetInt("ItemAlert.QualitySkillGemsLevel")) return true;
-			if (WorthChrome && Settings.GetBool("ItemAlert.RGB")) return true;
-			if (NumSockets >= Settings.GetInt("ItemAlert.MinSockets")) return true;
-
-			return IsCraftingBase;
+            if (IsSkillGem && settings.SkillGems) return true;
+            if (IsSkillGem && settings.QualitySkillGems && Quality >= settings.QualitySkillGemsLevel) return true;
+            if (WorthChrome && settings.Rgb) return true;
+            return NumSockets >= settings.MinSockets || IsCraftingBase;
 		}
 
 		internal AlertDrawStyle GetDrawStyle()

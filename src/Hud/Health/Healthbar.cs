@@ -11,16 +11,16 @@ namespace PoeHUD.Hud.Health
         public readonly EntityWrapper Entity;
         public readonly bool IsValid;
         public RenderPrio Prio;
-        public readonly string Settings;
+        public readonly AllyUnitSettings Settings;
 
 
-        public Healthbar(EntityWrapper entity)
+        public Healthbar(EntityWrapper entity, HealthBarSettings settings)
         {
             Entity = entity;
             if (entity.HasComponent<Player>())
             {
                 Prio = RenderPrio.Player;
-                Settings = "Healthbars.Players";
+                Settings = settings.Players;
                 IsValid = true;
             }
             if (entity.HasComponent<Poe.Components.Monster>())
@@ -33,18 +33,18 @@ namespace PoeHUD.Hud.Health
                     {
                         case MonsterRarity.White:
                             Prio = RenderPrio.Normal;
-                            Settings = "Healthbars.Enemies.Normal";
+                            Settings = settings.NormalEnemy;
                             break;
                         case MonsterRarity.Magic:
                             Prio = RenderPrio.Magic;
-                            Settings = "Healthbars.Enemies.Magic";
+                            Settings = settings.MagicEnemy;
                             break;
                         case MonsterRarity.Rare:
-                            Settings = "Healthbars.Enemies.Rare";
+                            Settings = settings.RareEnemy;
                             Prio = RenderPrio.Rare;
                             break;
                         case MonsterRarity.Unique:
-                            Settings = "Healthbars.Enemies.Unique";
+                            Settings = settings.UniqueEnemy;
                             Prio = RenderPrio.Unique;
                             break;
                     }
@@ -52,18 +52,14 @@ namespace PoeHUD.Hud.Health
                 else
                 {
                     Prio = RenderPrio.Minion;
-                    Settings = "Healthbars.Minions";
+                    Settings = settings.Minions;
                 }
             }
         }
 
-        public Bool Show
+        public bool IsShow(bool showEnemy)
         {
-            get
-            {
-                bool showEnemies = Hud.Settings.GetBool("Healthbars.Enemies") && isHostile;
-                return !isHostile ? Hud.Settings.GetBool(Settings) : Hud.Settings.GetBool(Settings) && showEnemies;
-            }
+            return !isHostile ? Settings.Enable.Value : Settings.Enable && showEnemy && isHostile;
         }
     }
 }

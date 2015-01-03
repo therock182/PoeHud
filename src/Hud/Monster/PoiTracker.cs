@@ -12,12 +12,13 @@ using SharpDX;
 
 namespace PoeHUD.Hud.Monster
 {
-	public class PoiTracker : Plugin, IHudPluginWithMapIcons
+	public class PoiTracker : Plugin<PoiTrackerSettings>, IHudPluginWithMapIcons
 	{
 		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
 
 
-	    public PoiTracker(GameController gameController, Graphics graphics) : base(gameController, graphics)
+	    public PoiTracker(GameController gameController, Graphics graphics, PoiTrackerSettings settings)
+            : base(gameController, graphics, settings)
 	    {
             this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
@@ -36,7 +37,7 @@ namespace PoeHUD.Hud.Monster
 
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
-			if (!Settings.GetBool("MonsterTracker"))
+			if (!Settings.Enable)
 			{
 				return;
 			}
@@ -51,7 +52,7 @@ namespace PoeHUD.Hud.Monster
 		}
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!Settings.GetBool("MonsterTracker.ShowText"))
+            if (!Settings.Enable)
 			{
 				return;
 			}

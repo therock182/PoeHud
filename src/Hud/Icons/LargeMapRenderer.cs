@@ -15,12 +15,12 @@ using Map = PoeHUD.Poe.UI.Elements.Map;
 
 namespace PoeHUD.Hud.Icons
 {
-    public class LargeMapRenderer : Plugin
+    public class LargeMapRenderer : Plugin<LargeMapSettings>
     {
         private readonly Func<IEnumerable<MapIcon>> getIcons;
 
-        public LargeMapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons)
-            : base(gameController, graphics)
+        public LargeMapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, LargeMapSettings settings)
+            : base(gameController, graphics, settings)
         {
             getIcons = gatherMapIcons;
         }
@@ -28,7 +28,7 @@ namespace PoeHUD.Hud.Icons
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            if (!GameController.InGame || !Settings.GetBool("MinimapIcons"))
+            if (!GameController.InGame || !Settings.Enable)
             {
                 return;
             }

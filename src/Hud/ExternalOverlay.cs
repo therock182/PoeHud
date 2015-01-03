@@ -12,8 +12,11 @@ using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.MaxRolls;
+using PoeHUD.Hud.Menu;
+using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.XpRate;
 using PoeHUD.Poe.UI;
 
@@ -28,24 +31,28 @@ namespace PoeHUD.Hud
 {
     internal class ExternalOverlay : RenderForm
     {
+        private readonly SettingsHub settings;
+
         private readonly GameController gameController;
 
         private readonly Func<bool> gameEnded;
 
         private readonly IntPtr gameHandle;
 
-        private readonly List<Plugin> plugins = new List<Plugin>();
+        private readonly List<IPlugin> plugins = new List<IPlugin>();
 
         private Graphics2D graphics;
 
         public ExternalOverlay(GameController gameController, Func<bool> gameEnded)
         {
+            settings = SettingsHub.Load();
+
             this.gameController = gameController;
             this.gameEnded = gameEnded;
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            string title = Settings.GetString("Window.Name");
+            string title = settings.WindowName;
             Text = string.IsNullOrWhiteSpace(title) ? "PoeHUD" : title;
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
@@ -105,6 +112,7 @@ namespace PoeHUD.Hud
         {
             plugins.ForEach(plugin => plugin.Dispose());
             graphics.Dispose();
+            SettingsHub.Save(settings);
         }
 
         private void OnDeactivate(object sender, EventArgs e)
@@ -119,22 +127,22 @@ namespace PoeHUD.Hud
             graphics = new Graphics2D(this, Bounds.Width, Bounds.Height);
             graphics.Render += OnRender;
 
-            plugins.Add(new HealthBarRenderer(gameController, graphics));
-            plugins.Add(new ItemAlerter(gameController, graphics));
-            plugins.Add(new MinimapRenderer(gameController, graphics, GatherMapIcons));
-            plugins.Add(new LargeMapRenderer(gameController, graphics, GatherMapIcons));
-            plugins.Add(new ItemLevelRenderer(gameController, graphics));
-            plugins.Add(new ItemRollsRenderer(gameController, graphics));
-            plugins.Add(new MonsterTracker(gameController, graphics));
-            plugins.Add(new PoiTracker(gameController, graphics));
-            plugins.Add(new XPHRenderer(gameController, graphics));
-            plugins.Add(new ClientHacks(gameController, graphics));
-            plugins.Add(new PreloadAlert(gameController, graphics));
-            plugins.Add(new DpsMeter(gameController, graphics));
-            //if (Settings.GetBool("Window.ShowIngameMenu"))
+            plugins.Add(new HealthBarRenderer(gameController, graphics, settings.HealthBarSettings));
+            plugins.Add(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
+            plugins.Add(new MinimapRenderer(gameController, graphics, GatherMapIcons, settings.MinimapSettings));
+            plugins.Add(new LargeMapRenderer(gameController, graphics, GatherMapIcons, settings.LargeMapSettings));
+            plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
+            plugins.Add(new ItemRollsRenderer(gameController, graphics, settings.ItemModsSettings));
+            plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
+            plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
+            plugins.Add(new XPHRenderer(gameController, graphics, settings.XpRateSettings));
+            plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
+            plugins.Add(new PreloadAlert(gameController, graphics, settings.PreloadAlertSettings));
+            plugins.Add(new DpsMeter(gameController, graphics, settings.DpsMeterSettings));
+            if (settings.MenuSettings.Enable)
             {
                 //#if !DEBUG
-                plugins.Add(new Menu.Menu(gameController, graphics));
+                plugins.Add(new MenuPlugin(gameController, graphics, settings));
                 //#endif
             }
 
@@ -148,7 +156,7 @@ namespace PoeHUD.Hud
 
         private void OnRender()
         {
-            if (gameController.InGame && (!Settings.GetBool("Window.RequireForeground") || WinApi.IsForegroundWindow(gameHandle)))
+            if (gameController.InGame && WinApi.IsForegroundWindow(gameHandle))
             {
                 gameController.RefreshState();
 

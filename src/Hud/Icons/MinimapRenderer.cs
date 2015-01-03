@@ -11,12 +11,13 @@ using SharpDX;
 
 namespace PoeHUD.Hud.Icons
 {
-	public class MinimapRenderer : Plugin
+	public class MinimapRenderer : Plugin<MinimapSettings>
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
 
 
-        public MinimapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons): base(gameController, graphics)
+        public MinimapRenderer(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, MinimapSettings settings)
+            : base(gameController, graphics, settings)
 	    {
             getIcons = gatherMapIcons;
 	    }
@@ -24,7 +25,7 @@ namespace PoeHUD.Hud.Icons
 	
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!GameController.InGame || !Settings.GetBool("MinimapIcons"))
+			if (!GameController.InGame || !Settings.Enable)
 			{
 				return;
 			}

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using PoeHUD.Controllers;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 
@@ -10,19 +12,22 @@ using SharpDX;
 
 namespace PoeHUD.Hud
 {
-    public abstract class Plugin : IDisposable
+    public abstract class Plugin<TSettings> : IPlugin where TSettings : SettingsBase
     {
         protected readonly GameController GameController;
 
         protected readonly Graphics Graphics;
 
-        protected Plugin(GameController gameController, Graphics graphics)
+        protected Plugin(GameController gameController, Graphics graphics, TSettings settings)
         {
             GameController = gameController;
             Graphics = graphics;
+            Settings = settings;
             gameController.EntityListWrapper.EntityAdded += OnEntityAdded;
             gameController.EntityListWrapper.EntityRemoved += OnEntityRemoved;
         }
+
+        protected TSettings Settings { get; private set; }
 
         public virtual void Dispose() {}
 
@@ -47,25 +52,16 @@ namespace PoeHUD.Hud
             return new RectangleF(x, y, (xSprite + 1) / 8 - x, (ySprite + 1) / 3 - y);
         }
 
+        protected static Dictionary<string, string> LoadConfig(string path)
+        {
+            return File.ReadAllLines(path)
+                .Where(line => !string.IsNullOrWhiteSpace(line) && line.IndexOf(',') >= 0 && !line.StartsWith("#"))
+                .Select(line => line.Split(new[] { ',' }, 2))
+                .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
+        }
+
         protected virtual void OnEntityAdded(EntityWrapper entityWrapper) {}
 
         protected virtual void OnEntityRemoved(EntityWrapper entityWrapper) {}
-
-        protected static Dictionary<string, string> LoadConfig(string path)
-        {
-            var result = new Dictionary<string, string>();
-
-            string[] lines = File.ReadAllLines(path);
-            foreach (string line in lines.Select(a => a.Trim()))
-            {
-                if (string.IsNullOrWhiteSpace(line) || line.IndexOf(',') < 0 || line.StartsWith("#"))
-                    continue;
-
-                var parts = line.Split(new[] { ',' }, 2);
-                result[parts[0].Trim()] = parts[1].Trim();
-            }
-
-            return result;
-        }
     }
 }

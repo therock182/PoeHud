@@ -1,3 +1,4 @@
+using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
@@ -5,19 +6,16 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-    public class BooleanButton : MenuItem
+    public class ToggleButton : MenuItem
     {
-        private readonly string text;
+        private readonly string name;
 
-        private readonly string settingName;
+        private readonly ToggleNode node;
 
-        private bool isEnabled;
-
-        public BooleanButton(string text, string settingName)
+        public ToggleButton(string name, ToggleNode node)
         {
-            this.text = text;
-            this.settingName = settingName;
-            isEnabled = Settings.GetBool(settingName);
+            this.name = name;
+            this.node = node;
         }
 
         public override int DesiredHeight
@@ -36,9 +34,9 @@ namespace PoeHUD.Hud.Menu
             {
                 return;
             }
-            Color color = isEnabled ? Color.Gray : Color.Crimson;
+            Color color = node.Value ? Color.Gray : Color.Crimson;
             var textPosition = new Vector2(Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 2);
-            graphics.DrawText(text, 12, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            graphics.DrawText(name, 12, textPosition, Color.White, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             graphics.DrawBox(Bounds, Color.Black);
             graphics.DrawBox(new RectangleF(Bounds.X + 1, Bounds.Y + 1, Bounds.Width - 2, Bounds.Height - 2), color);
             if (Children.Count > 0)
@@ -55,8 +53,7 @@ namespace PoeHUD.Hud.Menu
         {
             if (id == MouseEventID.LeftButtonDown)
             {
-                isEnabled = !isEnabled;
-                Settings.SetBool(settingName, isEnabled);
+                node.Value = !node.Value;
             }
         }
     }

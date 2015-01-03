@@ -15,7 +15,7 @@ using PoeMonster = PoeHUD.Poe.Components.Monster; // TODO Need rename Monster di
 
 namespace PoeHUD.Hud.DPS
 {
-    public class DpsMeter : Plugin
+    public class DpsMeter : Plugin<DpsMeterSettings>
     {
         private const double DPS_PERIOD = 0.2;
 
@@ -29,7 +29,8 @@ namespace PoeHUD.Hud.DPS
 
         private int maxDps;
 
-        public DpsMeter(GameController gameController, Graphics graphics) : base(gameController, graphics)
+        public DpsMeter(GameController gameController, Graphics graphics, DpsMeterSettings settings)
+            : base(gameController, graphics, settings)
         {
             lastTime = DateTime.Now;
             GameController.Area.OnAreaChange += area =>
@@ -43,7 +44,7 @@ namespace PoeHUD.Hud.DPS
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            if (!Settings.GetBool("DpsDisplay"))
+            if (!Settings.Enable)
             {
                 return;
             }
@@ -65,20 +66,16 @@ namespace PoeHUD.Hud.DPS
             var dps = (int)damageMemory.Average();
             maxDps = Math.Max(dps, maxDps);
 
-            float dpsFontSize = Settings.GetInt("XphDisplay.FontSize") * 3f / 2f; // TODO Move to settings
-            float peakFontSize = Settings.GetInt("XphDisplay.FontSize") * 2f / 3f; // TODO Move to settings
             string dpsText = dps + " DPS";
             string peakText = maxDps + " peak DPS";
-            Size2 dpsSize = Graphics.DrawText(dpsText, dpsFontSize, position, FontDrawFlags.Right);
-            Size2 peakSize = Graphics.DrawText(peakText, peakFontSize, position.Translate(0, dpsSize.Height), FontDrawFlags.Right);
+            Size2 dpsSize = Graphics.DrawText(dpsText, Settings.DpsTextSize, position, FontDrawFlags.Right);
+            Size2 peakSize = Graphics.DrawText(peakText, Settings.PeakDpsTextSize, position.Translate(0, dpsSize.Height),
+                FontDrawFlags.Right);
 
             int width = Math.Max(peakSize.Width, dpsSize.Width);
             int height = dpsSize.Height + peakSize.Height;
             var bounds = new RectangleF(position.X - 5 - width, position.Y - 5, width + 10, height + 10);
-
-            Color backgroundColor = Color.Black; // TODO Move to settings
-            backgroundColor.A = 160;
-            Graphics.DrawBox(bounds, backgroundColor);
+            Graphics.DrawBox(bounds, Settings.BackgroundColor);
 
             mountPoints[UiMountPoint.LeftOfMinimap] = position.Translate(0, bounds.Height + 5);
         }

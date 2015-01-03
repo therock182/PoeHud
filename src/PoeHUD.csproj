@@ -48,6 +48,10 @@
     <RootNamespace>PoeHUD</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
     </Reference>
@@ -67,16 +71,37 @@
     <Compile Include="Framework\Helpers\MathHepler.cs" />
     <Compile Include="Framework\Helpers\ConvertHelper.cs" />
     <Compile Include="Framework\WinApi.cs" />
+    <Compile Include="Hud\DPS\DpsMeterSettings.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Hud\Health\AllyUnitSettings.cs" />
+    <Compile Include="Hud\Health\EnemyUnitSettings.cs" />
+    <Compile Include="Hud\Health\HealthBarSettings.cs" />
+    <Compile Include="Hud\Icons\LargeMapSettings.cs" />
+    <Compile Include="Hud\Icons\MinimapSettings.cs" />
+    <Compile Include="Hud\IPlugin.cs" />
+    <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
+    <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
+    <Compile Include="Hud\MaxRolls\ItemModsSettings.cs" />
+    <Compile Include="Hud\Menu\FloatPicker.cs" />
+    <Compile Include="Hud\Menu\MenuSettings.cs" />
+    <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
+    <Compile Include="Hud\Monster\MonsterTrackerSettings.cs" />
+    <Compile Include="Hud\Monster\PoiTrackerSettings.cs" />
     <Compile Include="Hud\Plugin.cs" />
+    <Compile Include="Hud\Preload\PreloadAlertSettings.cs" />
+    <Compile Include="Hud\Settings\RangeNode.cs" />
+    <Compile Include="Hud\Settings\SettingsBase.cs" />
+    <Compile Include="Hud\Settings\SettingsHub.cs" />
+    <Compile Include="Hud\Settings\ToggleNode.cs" />
     <Compile Include="Hud\UiMountPoint.cs" />
     <Compile Include="Hud\UI\Graphics.cs" />
     <Compile Include="Hud\UI\Renderers\FontRenderer.cs" />
     <Compile Include="Hud\UI\Renderers\TextureRenderer.cs" />
     <Compile Include="Hud\UI\Vertexes\ColoredVertex.cs" />
     <Compile Include="Hud\UI\Vertexes\TexturedVertex.cs" />
+    <Compile Include="Hud\XpRate\XpRateSettings.cs" />
     <Compile Include="Models\Enums\DamageType.cs" />
     <Compile Include="Hud\XpRate\XPHRenderer.cs" />
     <Compile Include="Models\StatTranslator.cs" />
@@ -181,14 +206,14 @@
     <Compile Include="Framework\Vec2f.cs" />
     <Compile Include="Poe\Components\Weapon.cs" />
     <Compile Include="Poe\Components\WorldItem.cs" />
-    <Compile Include="Hud\Menu\BooleanButton.cs" />
-    <Compile Include="Hud\ClientHacks.cs" />
+    <Compile Include="Hud\Menu\ToggleButton.cs" />
+    <Compile Include="Hud\MiscHacks\MiscHacksPlugin.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Hud\Monster\MonsterTracker.cs" />
     <Compile Include="Hud\Menu\IntPicker.cs" />
-    <Compile Include="Hud\Loot\ItemAlerter.cs" />
-    <Compile Include="Hud\Loot\ItemLevelRenderer.cs" />
-    <Compile Include="Hud\Menu\Menu.cs" />
+    <Compile Include="Hud\Loot\ItemAlertPlugin.cs" />
+    <Compile Include="Hud\Loot\ItemLevelPlugin.cs" />
+    <Compile Include="Hud\Menu\MenuPlugin.cs" />
     <Compile Include="Hud\Menu\MenuItem.cs" />
     <Compile Include="Hud\MapIcon.cs" />
     <Compile Include="Hud\Icons\LargeMapRenderer.cs" />
@@ -197,7 +222,6 @@
     <Compile Include="Hud\Preload\PreloadAlert.cs" />
     <Compile Include="Poe\Elements\EntityLabel.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Hud\Settings.cs" />
     <Compile Include="Hud\Sounds.cs" />
     <Compile Include="Models\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
