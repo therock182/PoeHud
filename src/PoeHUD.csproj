@@ -91,6 +91,8 @@
     <Compile Include="Hud\Monster\PoiTrackerSettings.cs" />
     <Compile Include="Hud\Plugin.cs" />
     <Compile Include="Hud\Preload\PreloadAlertSettings.cs" />
+    <Compile Include="Hud\Settings\Converters\ColorConverter.cs" />
+    <Compile Include="Hud\Settings\Converters\ToggleNodeConverter.cs" />
     <Compile Include="Hud\Settings\RangeNode.cs" />
     <Compile Include="Hud\Settings\SettingsBase.cs" />
     <Compile Include="Hud\Settings\SettingsHub.cs" />

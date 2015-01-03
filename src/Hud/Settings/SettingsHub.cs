@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 using PoeHUD.Hud.DPS;
 using PoeHUD.Hud.Health;
@@ -14,15 +12,20 @@ using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Monster;
 using PoeHUD.Hud.Preload;
+using PoeHUD.Hud.Settings.Converters;
 using PoeHUD.Hud.XpRate;
-
-using SharpDX;
 
 namespace PoeHUD.Hud.Settings
 {
     public sealed class SettingsHub
     {
         private const string SETTINGS_FILE_NAME = "config/settings.json";
+
+        private static readonly JsonConverter[] converters =
+        {
+            new ColorConverter(),
+            new ToggleNodeConverter()
+        };
 
         public SettingsHub()
         {
@@ -42,53 +45,53 @@ namespace PoeHUD.Hud.Settings
             HealthBarSettings = new HealthBarSettings();
         }
 
-        public string WindowName { get; set; }
+        public string WindowName { get; private set; }
 
         [JsonProperty("Menu")]
-        public MenuSettings MenuSettings { get; set; }
+        public MenuSettings MenuSettings { get; private set; }
 
         [JsonProperty("DPS meter")]
-        public DpsMeterSettings DpsMeterSettings { get; set; }
+        public DpsMeterSettings DpsMeterSettings { get; private set; }
 
         [JsonProperty("Icons on large map")]
-        public LargeMapSettings LargeMapSettings { get; set; }
+        public LargeMapSettings LargeMapSettings { get; private set; }
 
         [JsonProperty("Icons on minimap")]
-        public MinimapSettings MinimapSettings { get; set; }
+        public MinimapSettings MinimapSettings { get; private set; }
 
         [JsonProperty("Item alert")]
-        public ItemAlertSettings ItemAlertSettings { get; set; }
+        public ItemAlertSettings ItemAlertSettings { get; private set; }
 
         [JsonProperty("Item level")]
-        public ItemLevelSettings ItemLevelSettings { get; set; }
+        public ItemLevelSettings ItemLevelSettings { get; private set; }
 
         [JsonProperty("Item mods")]
-        public ItemModsSettings ItemModsSettings { get; set; }
+        public ItemModsSettings ItemModsSettings { get; private set; }
 
         [JsonProperty("Monster tracker")]
-        public MonsterTrackerSettings MonsterTrackerSettings { get; set; }
+        public MonsterTrackerSettings MonsterTrackerSettings { get; private set; }
 
         [JsonProperty("Poi tracker")]
-        public PoiTrackerSettings PoiTrackerSettings { get; set; }
+        public PoiTrackerSettings PoiTrackerSettings { get; private set; }
 
         [JsonProperty("Preload alert")]
-        public PreloadAlertSettings PreloadAlertSettings { get; set; }
+        public PreloadAlertSettings PreloadAlertSettings { get; private set; }
 
         [JsonProperty("XP per hour")]
-        public XpRateSettings XpRateSettings { get; set; }
+        public XpRateSettings XpRateSettings { get; private set; }
 
         [JsonProperty("Misc hacks")]
-        public MiscHacksSettings MiscHacksSettings { get; set; }
+        public MiscHacksSettings MiscHacksSettings { get; private set; }
 
         [JsonProperty("Health bar")]
-        public HealthBarSettings HealthBarSettings { get; set; }
+        public HealthBarSettings HealthBarSettings { get; private set; }
 
         public static SettingsHub Load()
         {
             try
             {
                 string json = File.ReadAllText(SETTINGS_FILE_NAME);
-                return JsonConvert.DeserializeObject<SettingsHub>(json, new ColorConverter());
+                return JsonConvert.DeserializeObject<SettingsHub>(json, converters);
             }
             catch
             {
@@ -108,40 +111,8 @@ namespace PoeHUD.Hud.Settings
         {
             using (var stream = new StreamWriter(File.Create(SETTINGS_FILE_NAME)))
             {
-                string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new ColorConverter());
+                string json = JsonConvert.SerializeObject(settings, Formatting.Indented, converters);
                 stream.Write(json);
-            }
-        }
-
-        private class ColorConverter : CustomCreationConverter<Color>
-        {
-            public override bool CanWrite
-            {
-                get { return true; }
-            }
-
-            public override bool CanRead
-            {
-                get { return true; }
-            }
-
-            public override Color Create(Type objectType)
-            {
-                return new Color();
-            }
-
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            {
-                int argb;
-                return int.TryParse(reader.Value.ToString(), NumberStyles.HexNumber, null, out argb)
-                    ? Color.FromAbgr(argb)
-                    : Create(objectType);
-            }
-
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-            {
-                var color = (Color)value;
-                serializer.Serialize(writer, string.Format("{0:x8}", color.ToAbgr()));
             }
         }
     }
