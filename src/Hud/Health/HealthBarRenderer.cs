@@ -44,7 +44,7 @@ namespace PoeHUD.Hud.Health
             Parallel.ForEach(healthBars, healthbars => healthbars.RemoveAll(x => !(x.Entity.IsValid && x.Entity.IsAlive)));
 
             Camera camera = GameController.Game.IngameState.Camera;
-            foreach (Healthbar healthbar in healthBars.SelectMany(x => x).AsParallel().Where(x => x.Show))
+            foreach (Healthbar healthbar in healthBars.SelectMany(x => x).AsParallel().AsOrdered().Where(x => x.Show))
             {
                 Vec3 worldCoords = healthbar.Entity.Pos;
                 Vector2 mobScreenCoords = camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f), healthbar.Entity);
