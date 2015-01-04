@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
@@ -15,11 +16,11 @@ using Map = PoeHUD.Poe.UI.Elements.Map;
 
 namespace PoeHUD.Hud.Icons
 {
-    public class LargeMapPlugin : Plugin<LargeMapSettings>
+    public class LargeMapPlugin : Plugin<MapIconsSettings>
     {
         private readonly Func<IEnumerable<MapIcon>> getIcons;
 
-        public LargeMapPlugin(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, LargeMapSettings settings)
+        public LargeMapPlugin(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, MapIconsSettings settings)
             : base(gameController, graphics, settings)
         {
             getIcons = gatherMapIcons;
@@ -28,7 +29,7 @@ namespace PoeHUD.Hud.Icons
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            if (!GameController.InGame || !Settings.Enable)
+            if (!GameController.InGame || !Settings.Enable || !Settings.IconsOnLargeMap)
             {
                 return;
             }
@@ -47,11 +48,8 @@ namespace PoeHUD.Hud.Icons
             var k = camera.Width < 1024f ? 1120f : 1024f;
             float scale = k / camera.Height * camera.Width * 3 / 4;
 
-            foreach (MapIcon icon in getIcons())
+            foreach (MapIcon icon in getIcons().Where(x => x.IsVisible()))
             {
-                if (icon.ShouldSkip())
-                    continue;
-
                 float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
                 var point = screenCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iZ - pPosZ) / 20);
 

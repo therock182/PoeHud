@@ -39,8 +39,7 @@ namespace PoeHUD.Hud.Settings
             WindowName = "Something in Galaxy";
             MenuSettings = new MenuSettings();
             DpsMeterSettings = new DpsMeterSettings();
-            LargeMapSettings = new LargeMapSettings();
-            MinimapSettings = new MinimapSettings();
+            MapIconsSettings = new MapIconsSettings();
             ItemAlertSettings = new ItemAlertSettings();
             ItemLevelSettings = new ItemLevelSettings();
             ItemRollsSettings = new ItemRollsSettings();
@@ -60,11 +59,8 @@ namespace PoeHUD.Hud.Settings
         [JsonProperty("DPS meter")]
         public DpsMeterSettings DpsMeterSettings { get; private set; }
 
-        [JsonProperty("Icons on large map")]
-        public LargeMapSettings LargeMapSettings { get; private set; }
-
-        [JsonProperty("Icons on minimap")]
-        public MinimapSettings MinimapSettings { get; private set; }
+        [JsonProperty("Map icons")]
+        public MapIconsSettings MapIconsSettings { get; private set; }
 
         [JsonProperty("Item alert")]
         public ItemAlertSettings ItemAlertSettings { get; private set; }

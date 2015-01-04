@@ -129,8 +129,8 @@ namespace PoeHUD.Hud
 
             plugins.Add(new HealthBarPlugin(gameController, graphics, settings.HealthBarSettings));
             plugins.Add(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
-            plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MinimapSettings));
-            plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.LargeMapSettings));
+            plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
+            plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
             plugins.Add(new ItemRollsPlugin(gameController, graphics, settings.ItemRollsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));

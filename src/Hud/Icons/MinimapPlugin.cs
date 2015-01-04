@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
@@ -11,12 +13,12 @@ using SharpDX;
 
 namespace PoeHUD.Hud.Icons
 {
-	public class MinimapPlugin : Plugin<MinimapSettings>
+	public class MinimapPlugin : Plugin<MapIconsSettings>
 	{
 		private readonly Func<IEnumerable<MapIcon>> getIcons;
 
 
-        public MinimapPlugin(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, MinimapSettings settings)
+        public MinimapPlugin(GameController gameController, Graphics graphics, Func<IEnumerable<MapIcon>> gatherMapIcons, MapIconsSettings settings)
             : base(gameController, graphics, settings)
 	    {
             getIcons = gatherMapIcons;
@@ -25,7 +27,7 @@ namespace PoeHUD.Hud.Icons
 	
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
-			if (!GameController.InGame || !Settings.Enable)
+			if (!GameController.InGame || !Settings.Enable || !Settings.IconsOnMinimap)
 			{
 				return;
 			}
@@ -41,11 +43,8 @@ namespace PoeHUD.Hud.Icons
 			var clientRect = smallMinimap.GetClientRect();
 			var minimapCenter = new Vector2(clientRect.X + clientRect.Width / 2, clientRect.Y + clientRect.Height / 2);
 			double diag = Math.Sqrt(clientRect.Width * clientRect.Width + clientRect.Height * clientRect.Height) / 2.0;
-			foreach(MapIcon icon in getIcons())
+			foreach(MapIcon icon in getIcons().Where(x => x.IsVisible()))
 			{
-				if (icon.ShouldSkip())
-					continue;
-
 				float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
 				var point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iZ - pPosZ) / 20);
 

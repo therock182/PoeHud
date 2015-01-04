@@ -10,6 +10,7 @@ namespace PoeHUD.Hud.Loot
         public ItemAlertSettings()
         {
             Enable = true;
+            ShowItemOnMap = true;
             Crafting = true;
             ShowText = true;
             PlaySound = true;
@@ -28,6 +29,8 @@ namespace PoeHUD.Hud.Loot
             BorderColor = Color.FromAbgr(0x3bb252FF);
             BorderWidth=new RangeNode<int>(3,1,10);
         }
+
+        public ToggleNode ShowItemOnMap { get; set; }
 
         public ToggleNode Crafting { get; set; }
 

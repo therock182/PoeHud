@@ -79,8 +79,7 @@
     <Compile Include="Hud\Health\AllyUnitSettings.cs" />
     <Compile Include="Hud\Health\EnemyUnitSettings.cs" />
     <Compile Include="Hud\Health\HealthBarSettings.cs" />
-    <Compile Include="Hud\Icons\LargeMapSettings.cs" />
-    <Compile Include="Hud\Icons\MinimapSettings.cs" />
+    <Compile Include="Hud\Icons\MapIconsSettings.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\Loot\ItemLevelSettings.cs" />

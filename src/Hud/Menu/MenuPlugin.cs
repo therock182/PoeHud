@@ -111,15 +111,15 @@ namespace PoeHUD.Hud.Menu
             toggleButton6.AddChild(new ToggleButton("Print health text", healthBarPlugin.UniqueEnemy.ShowHealthText));
             toggleButton6.AddChild(new Picker<float>("Width", healthBarPlugin.UniqueEnemy.Width));
             toggleButton6.AddChild(new Picker<float>("Height", healthBarPlugin.UniqueEnemy.Height));
-            /*ToggleButton parent3 = CreateRootMenu("Minimap icons", r++, "MinimapIcons");
-            AddButton(parent3, "Monsters", "MinimapIcons.Monsters");
-            AddButton(parent3, "Minions", "MinimapIcons.Minions");
-            AddButton(parent3, "Strongboxes", "MinimapIcons.Strongboxes");
-            AddButton(parent3, "Chests", "MinimapIcons.Chests");
-            AddButton(parent3, "Alert items", "MinimapIcons.AlertedItems");
-            AddButton(parent3, "Masters", "MinimapIcons.Masters");*/
-            CreateRootMenu("Minimap icons", r++, settingsHub.MinimapSettings.Enable);
-            CreateRootMenu("Large map icons", r++, settingsHub.LargeMapSettings.Enable);
+            ToggleButton mapIconsRoot = CreateRootMenu("Map icons", r++, settingsHub.MapIconsSettings.Enable);
+            AddButton(mapIconsRoot, "Icons on minimap", settingsHub.MapIconsSettings.IconsOnMinimap);
+            AddButton(mapIconsRoot, "Icons on large map", settingsHub.MapIconsSettings.IconsOnLargeMap);
+            AddButton(mapIconsRoot, "Precious items", settingsHub.ItemAlertSettings.ShowItemOnMap);
+            AddButton(mapIconsRoot, "Monsters", settingsHub.MonsterTrackerSettings.Monsters);
+            AddButton(mapIconsRoot, "Minions", settingsHub.MonsterTrackerSettings.Minions);
+            AddButton(mapIconsRoot, "Strongboxes", settingsHub.PoiTrackerSettings.Strongboxes);
+            AddButton(mapIconsRoot, "Chests", settingsHub.PoiTrackerSettings.Chests);
+            AddButton(mapIconsRoot, "Masters", settingsHub.PoiTrackerSettings.Masters);
             ToggleButton parent4 = CreateRootMenu("Item alert", r++, settingsHub.ItemAlertSettings.Enable);
             AddButton(parent4, "Rares", settingsHub.ItemAlertSettings.Rares);
             AddButton(parent4, "Uniques", settingsHub.ItemAlertSettings.Uniques);
@@ -132,9 +132,9 @@ namespace PoeHUD.Hud.Menu
             AddButton(parent4, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             ToggleButton toggleButton7 = AddButton(parent4, "Show text", settingsHub.ItemAlertSettings.ShowText);
             toggleButton7.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));
-            CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
             ToggleButton showBorderToggleButton = AddButton(parent4, "Show border", settingsHub.ItemAlertSettings.ShowBorder);
             showBorderToggleButton.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderWidth));
+            CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
             ToggleButton itemModsRoot = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
             AddButton(itemModsRoot, "Weapon DPS", settingsHub.ItemRollsSettings.ShowWeaponDps);
             ToggleButton parent5 = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);

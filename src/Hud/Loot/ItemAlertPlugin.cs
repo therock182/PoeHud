@@ -71,7 +71,7 @@ namespace PoeHUD.Hud.Loot
 				{
 					AlertDrawStyle drawStyle = props.GetDrawStyle();
 					currentAlerts.Add(entity, drawStyle);
-					currentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), 8);
+					currentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), () => Settings.ShowItemOnMap, 8);
 
 					if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
 					{

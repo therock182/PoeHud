@@ -50,14 +50,18 @@ namespace PoeHUD.Hud.Trackers
 
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
-			if (!Settings.Enable || this.alertTexts.ContainsKey(entity))
+			if (!Settings.Enable || alertTexts.ContainsKey(entity))
 			{
 				return;
 			}
-			if (entity.IsAlive && entity.HasComponent<Poe.Components.Monster>())
+			if (entity.IsAlive && entity.HasComponent<Monster>())
 			{
-				currentIcons[entity] = GetMapIconForMonster(entity);
-				string text = entity.Path;
+                var mapIcon = GetMapIconForMonster(entity);
+			    if (mapIcon != null)
+			    {
+			        currentIcons[entity] = mapIcon;
+			    }
+			    string text = entity.Path;
 				if (text.Contains('@'))
 				{
 					text = text.Split('@')[0];
@@ -176,22 +180,25 @@ namespace PoeHUD.Hud.Trackers
 			this.typeAlerts = LoadMonsterNameAlerts();
 		}
 
-		private MapIcon GetMapIconForMonster(EntityWrapper e)
-		{
-			if (!e.IsHostile)
-				return new MapIconCreature(e, new HudTexture("monster_ally.png"), 6);
+	    private MapIcon GetMapIconForMonster(EntityWrapper e)
+	    {
+	        if (!e.IsHostile) return new MapIconCreature(e, new HudTexture("monster_ally.png"), () => Settings.Minions, 6);
 
-			switch (e.GetComponent<ObjectMagicProperties>().Rarity)
-			{
-				case MonsterRarity.White: return new MapIconCreature(e, new HudTexture("monster_enemy.png"), 6);
-				case MonsterRarity.Magic: return new MapIconCreature(e, new HudTexture("monster_enemy_blue.png"), 8);
-				case MonsterRarity.Rare: return new MapIconCreature(e, new HudTexture("monster_enemy_yellow.png"), 10);
-				case MonsterRarity.Unique: return new MapIconCreature(e, new HudTexture("monster_enemy_orange.png"), 10);
-			}
-			return null;
-		}
+	        switch (e.GetComponent<ObjectMagicProperties>().Rarity)
+	        {
+	            case MonsterRarity.White:
+                    return new MapIconCreature(e, new HudTexture("monster_enemy.png"), () => Settings.Monsters, 6);
+	            case MonsterRarity.Magic:
+                    return new MapIconCreature(e, new HudTexture("monster_enemy_blue.png"), () => Settings.Monsters, 8);
+	            case MonsterRarity.Rare:
+                    return new MapIconCreature(e, new HudTexture("monster_enemy_yellow.png"), () => Settings.Monsters, 10);
+	            case MonsterRarity.Unique:
+                    return new MapIconCreature(e, new HudTexture("monster_enemy_orange.png"), () => Settings.Monsters, 10);
+	        }
+	        return null;
+	    }
 
-		private static Dictionary<string, string> LoadMonsterModAlerts()
+	    private static Dictionary<string, string> LoadMonsterModAlerts()
 		{
             return LoadConfig("config/monster_mod_alerts.txt");
 		}
