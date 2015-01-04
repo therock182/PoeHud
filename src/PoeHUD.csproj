@@ -84,6 +84,7 @@
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
     <Compile Include="Hud\MaxRolls\ItemRollsSettings.cs" />
+    <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />

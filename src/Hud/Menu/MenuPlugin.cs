@@ -153,6 +153,7 @@ namespace PoeHUD.Hud.Menu
             ToggleButton dpsRoot = CreateRootMenu("Show DPS", r++, settingsHub.DpsMeterSettings.Enable);
             dpsRoot.AddChild(new Picker<int>("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
             dpsRoot.AddChild(new Picker<int>("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
+            dpsRoot.AddChild(new ColorButton("Background color:", settingsHub.DpsMeterSettings.BackgroundColor));
         }
 
         private ToggleButton CreateRootMenu(string text, int yIndex, ToggleNode node)
