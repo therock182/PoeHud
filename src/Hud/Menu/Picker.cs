@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 
@@ -8,15 +8,15 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-    public class IntPicker : MenuItem
+    public class Picker<T> : MenuItem where T:struct
     {
         private readonly string name;
 
-        private readonly RangeNode<int> node;
+        private readonly RangeNode<T> node;
 
         private bool isHolding;
 
-        public IntPicker(string name, RangeNode<int> node)
+        public Picker(string name, RangeNode<T> node)
         {
             this.name = name;
             this.node = node;
@@ -46,9 +46,16 @@ namespace PoeHUD.Hud.Menu
             graphics.DrawBox(Bounds, Color.Black);
             graphics.DrawBox(new RectangleF(Bounds.X + 1, Bounds.Y + 1, Bounds.Width - 2, Bounds.Height - 2), gray);
             graphics.DrawBox(new RectangleF(Bounds.X + 5, Bounds.Y + 3 * Bounds.Height / 4, Bounds.Width - 10, 5), Color.Black);
-            float sliderPosition = (Bounds.Width - 10) * (node.Value - node.Min) / (node.Max - node.Min);
+            float sliderPosition = (Bounds.Width - 10) * MinusFloat(node.Value, node.Min) / MinusFloat(node.Max, node.Min);
             graphics.DrawBox(new RectangleF(Bounds.X + 5 + sliderPosition - 2, Bounds.Y + 3 * Bounds.Height / 4 - 4, 4, 8),
                 Color.White);
+        }
+
+    
+
+        private float MinusFloat(T one, T two)
+        {
+            return (float)((dynamic)one - two);
         }
 
         protected override void HandleEvent(MouseEventID id, Vector2 pos)
@@ -85,7 +92,8 @@ namespace PoeHUD.Hud.Menu
                 float num2 = num + Bounds.Width - 10;
                 num3 = x >= num2 ? 1 : (x - num) / (num2 - num);
             }
-            node.Value = (int)Math.Round(node.Min + num3 * (node.Max - node.Min));
+            
+            node.Value = (T)(dynamic) Math.Round((float)(dynamic)node.Min + num3 * MinusFloat(node.Max, node.Min));
         }
     }
 }

@@ -48,6 +48,7 @@
     <RootNamespace>PoeHUD</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -84,7 +85,6 @@
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
     <Compile Include="Hud\MaxRolls\ItemRollsSettings.cs" />
-    <Compile Include="Hud\Menu\FloatPicker.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
@@ -213,7 +213,7 @@
     <Compile Include="Hud\MiscHacks\MiscHacksPlugin.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Hud\Trackers\MonsterTracker.cs" />
-    <Compile Include="Hud\Menu\IntPicker.cs" />
+    <Compile Include="Hud\Menu\Picker.cs" />
     <Compile Include="Hud\Loot\ItemAlertPlugin.cs" />
     <Compile Include="Hud\Loot\ItemLevelPlugin.cs" />
     <Compile Include="Hud\Menu\MenuPlugin.cs" />
