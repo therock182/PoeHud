@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using System.Windows.Forms;
 
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
@@ -52,32 +51,30 @@ namespace PoeHUD.Hud.Menu
             graphics.DrawBox(new RectangleF(colorBox.X, colorBox.Y, 1, colorSize), Color.Black);
         }
 
-        protected override void HandleEvent(MouseEventID id, Vector2 pos)
+        protected override async void HandleEvent(MouseEventID id, Vector2 pos)
         {
             if (id == MouseEventID.LeftButtonDown)
             {
-                /*Task.Run(() =>
+                var colorDialog = new CustomColorDialog(GetColorGdi(node));
+                await Task.Run(() =>
                 {
-                    var colorDialog = new ColorDialog();
-                    colorDialog.Color = GetColorGdi(node);
-                    colorDialog.SolidColorOnly = false;
-                    if (colorDialog.ShowDialog() == DialogResult.OK)
+                    if (colorDialog.Show())
                     {
-                        node.Value = GetColor(colorDialog.Color);
+                        node.Value = GetColor(colorDialog.SelectedColor);
                     }
-                });*/
+                });
             }
         }
 
         private static Color GetColor(ColorGdi color)
         {
-            return Color.FromRgba(color.R | (color.G << 8) | (color.B << 16) | (color.A << 24));
+            return Color.FromRgba(color.B | (color.G << 8) | (color.R << 16) | (color.A << 24));
         }
 
         private static ColorGdi GetColorGdi(ColorNode node)
         {
             Color color = node.Value;
-            return ColorGdi.FromArgb(color.A | (color.R << 8) | (color.G << 16) | (color.B << 24));
+            return ColorGdi.FromArgb((color.A << 24) | (color.B << 16) | (color.G << 8) | color.R);
         }
     }
 }

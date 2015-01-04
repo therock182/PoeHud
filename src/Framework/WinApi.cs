@@ -47,6 +47,19 @@ namespace PoeHUD.Framework
 
         #region Imports
 
+        [DllImport("ComDlg32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool ChooseColor(ref ChooseColor chooseColor);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("User32.dll", CharSet = CharSet.Unicode)]
+        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndParent);
+
         [DllImport("user32.dll")]
         private static extern bool ClientToScreen(IntPtr hWnd, out Point lpPoint);
 

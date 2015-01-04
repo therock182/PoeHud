@@ -84,7 +84,11 @@ namespace PoeHUD.Hud.XpRate
 
         private void Reset()
         {
-            startXp = GameController.Player.GetComponent<Player>().XP;
+            if (GameController.InGame)
+            {
+                startXp = GameController.Player.GetComponent<Player>().XP;
+            }
+
             startTime = lastTime = DateTime.Now;
             xpRate = "0.00 XP/h";
             timeLeft = "--h --m --s until level up";

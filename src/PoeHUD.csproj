@@ -67,11 +67,13 @@
   <ItemGroup>
     <Compile Include="Controllers\FsController.cs" />
     <Compile Include="Framework\Aero.cs" />
+    <Compile Include="Framework\ChooseColor.cs" />
     <Compile Include="Framework\Helpers\ActionHelper.cs" />
     <Compile Include="Framework\Helpers\LinqHelper.cs" />
     <Compile Include="Framework\Helpers\MathHepler.cs" />
     <Compile Include="Framework\Helpers\ConvertHelper.cs" />
     <Compile Include="Framework\WinApi.cs" />
+    <Compile Include="Hud\CustomColorDialog.cs" />
     <Compile Include="Hud\Dps\DpsMeterSettings.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>
