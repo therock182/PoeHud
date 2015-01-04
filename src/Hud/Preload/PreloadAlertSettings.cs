@@ -15,6 +15,6 @@ namespace PoeHUD.Hud.Preload
 
         public RangeNode<int> TextSize { get; set; }
 
-        public Color BackgroundColor { get; set; }
+        public ColorNode BackgroundColor { get; set; }
     }
 }

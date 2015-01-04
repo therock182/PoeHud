@@ -1,7 +1,5 @@
 ﻿using PoeHUD.Hud.Settings;
 
-using SharpDX;
-
 namespace PoeHUD.Hud.Health
 {
     public class AllyUnitSettings : SettingsBase
@@ -13,16 +11,16 @@ namespace PoeHUD.Hud.Health
             Enable = true;
             Width = new RangeNode<float>(105, 50, 180);
             Height = new RangeNode<float>(25, 10, 50);
-            Color = Color.FromAbgr(color);
-            Outline = Color.FromAbgr(outline);
+            Color = color;
+            Outline = outline;
         }
 
         public RangeNode<float> Width { get; set; }
 
         public RangeNode<float> Height { get; set; }
 
-        public Color Color { get; set; }
+        public ColorNode Color { get; set; }
 
-        public Color Outline { get; set; }
+        public ColorNode Outline { get; set; }
     }
 }

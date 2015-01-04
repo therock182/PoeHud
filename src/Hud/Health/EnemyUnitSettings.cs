@@ -1,7 +1,5 @@
 ﻿using PoeHUD.Hud.Settings;
 
-using SharpDX;
-
 namespace PoeHUD.Hud.Health
 {
     public class EnemyUnitSettings : AllyUnitSettings
@@ -11,22 +9,22 @@ namespace PoeHUD.Hud.Health
         public EnemyUnitSettings(uint color, uint outline, uint percentTextColor, bool showText)
             : base(color, outline)
         {
-            Under10Percent = Color.FromAbgr(0xffffffff);
-            PercentTextColor = Color.FromAbgr(percentTextColor);
-            HealthTextColor = Color.FromAbgr(0xffffffff);
-            HealthTextColorUnder10Percent = Color.FromAbgr(0xffff00ff);
+            Under10Percent = 0xffffffff;
+            PercentTextColor = percentTextColor;
+            HealthTextColor = 0xffffffff;
+            HealthTextColorUnder10Percent = 0xffff00ff;
             ShowPercents = showText;
             ShowHealthText = showText;
             TextSize = new RangeNode<int>(15, 10, 50);
         }
 
-        public Color Under10Percent { get; set; }
+        public ColorNode Under10Percent { get; set; }
 
-        public Color PercentTextColor { get; set; }
+        public ColorNode PercentTextColor { get; set; }
 
-        public Color HealthTextColor { get; set; }
+        public ColorNode HealthTextColor { get; set; }
 
-        public Color HealthTextColorUnder10Percent { get; set; }
+        public ColorNode HealthTextColorUnder10Percent { get; set; }
 
         public ToggleNode ShowPercents { get; set; }
 

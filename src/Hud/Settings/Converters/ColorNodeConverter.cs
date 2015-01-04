@@ -4,11 +4,9 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-using SharpDX;
-
 namespace PoeHUD.Hud.Settings.Converters
 {
-    public class ColorConverter : CustomCreationConverter<Color>
+    public class ColorNodeConverter : CustomCreationConverter<ColorNode>
     {
         public override bool CanWrite
         {
@@ -20,23 +18,23 @@ namespace PoeHUD.Hud.Settings.Converters
             get { return true; }
         }
 
-        public override Color Create(Type objectType)
+        public override ColorNode Create(Type objectType)
         {
-            return new Color();
+            return new ColorNode();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            int argb;
-            return int.TryParse(reader.Value.ToString(), NumberStyles.HexNumber, null, out argb)
-                ? Color.FromAbgr(argb)
+            uint argb;
+            return uint.TryParse(reader.Value.ToString(), NumberStyles.HexNumber, null, out argb)
+                ? new ColorNode(argb)
                 : Create(objectType);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var color = (Color)value;
-            serializer.Serialize(writer, string.Format("{0:x8}", color.ToAbgr()));
+            var color = (ColorNode)value;
+            serializer.Serialize(writer, string.Format("{0:x8}", color.Value.ToAbgr()));
         }
     }
 }

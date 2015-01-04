@@ -18,6 +18,6 @@ namespace PoeHUD.Hud.Dps
 
         public RangeNode<int> PeakDpsTextSize { get; set; }
 
-        public Color BackgroundColor { get; set; }
+        public ColorNode BackgroundColor { get; set; }
     }
 }

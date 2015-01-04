@@ -29,7 +29,7 @@ namespace PoeHUD.Hud.Settings
             jsonSettings.ContractResolver = new SortContractResolver();
             jsonSettings.Converters = new JsonConverter[]
             {
-                new ColorConverter(),
+                new ColorNodeConverter(),
                 new ToggleNodeConverter()
             };
         }
