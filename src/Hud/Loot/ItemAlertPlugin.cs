@@ -11,6 +11,7 @@ using PoeHUD.Models;
 using PoeHUD.Models.Enums;
 using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe.Components;
+using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
 
@@ -132,9 +133,8 @@ namespace PoeHUD.Hud.Loot
 
 			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
 			float y = rightTopAnchor.Y;
-
-		    var itemsOnGroundLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.Where(z=>z.IsVisible);
-			const int vMargin = 2;
+            var itemsOnGroundLabels = Settings.ShowBorder?GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.Where(z => z.IsVisible):null;
+		    const int vMargin = 2;
 			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
 			{
 				if (!kv.Key.IsValid) continue;
@@ -142,13 +142,10 @@ namespace PoeHUD.Hud.Loot
 				string text = GetItemName(kv);
 				if( null == text ) continue;
 
-                var element = itemsOnGroundLabels.FirstOrDefault(z => z.ItemOnGround.Address == kv.Key.Address);
-                if (element != null)
-                {
-                    var rect = element.Label.GetClientRect();
-                    Graphics.DrawFrame(rect, 1, Color.Red);
-                }
-
+			    if (Settings.ShowBorder)
+			    {
+			        DrawBorder(itemsOnGroundLabels, kv.Key.Address);
+			    }
 			    Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
 				var delta = itemPos - playerPos;
 
@@ -159,7 +156,17 @@ namespace PoeHUD.Hud.Loot
 			
 		}
 
-		public IEnumerable<MapIcon> GetIcons()
+	    private void DrawBorder(IEnumerable<ItemsOnGroundLabelElement> itemsOnGroundLabels, int entityAddres)
+	    {
+            var element = itemsOnGroundLabels.FirstOrDefault(z => z.ItemOnGround.Address == entityAddres);
+	        if (element != null)
+	        {
+	            var rect = element.Label.GetClientRect();
+	            Graphics.DrawFrame(rect, Settings.BorderWidth, Settings.BorderColor);
+	        }
+	    }
+
+	    public IEnumerable<MapIcon> GetIcons()
 		{
 			List<EntityWrapper> toRemove = new List<EntityWrapper>();
 			foreach (KeyValuePair<EntityWrapper, MapIcon> kv in currentIcons)

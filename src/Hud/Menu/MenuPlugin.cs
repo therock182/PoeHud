@@ -133,6 +133,8 @@ namespace PoeHUD.Hud.Menu
             ToggleButton toggleButton7 = AddButton(parent4, "Show text", settingsHub.ItemAlertSettings.ShowText);
             toggleButton7.AddChild(new IntPicker("Font size", settingsHub.ItemAlertSettings.TextSize));
             CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
+            ToggleButton showBorderToggleButton = AddButton(parent4, "Show border", settingsHub.ItemAlertSettings.ShowBorder);
+            showBorderToggleButton.AddChild(new IntPicker("Border weight", settingsHub.ItemAlertSettings.BorderWidth));
             ToggleButton itemModsRoot = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
             AddButton(itemModsRoot, "Weapon DPS", settingsHub.ItemRollsSettings.ShowWeaponDps);
             ToggleButton parent5 = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);
