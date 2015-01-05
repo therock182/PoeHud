@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Icons;
@@ -28,7 +29,7 @@ namespace PoeHUD.Hud.Loot
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
 		private Dictionary<EntityWrapper, MapIcon> currentIcons;
-
+	    private Dictionary<int, ItemsOnGroundLabelElement> currentLabels;
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
 
@@ -38,6 +39,7 @@ namespace PoeHUD.Hud.Loot
             playedSoundsCache = new HashSet<long>();
             currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
             currentIcons = new Dictionary<EntityWrapper, MapIcon>();
+            currentLabels=new Dictionary<int, ItemsOnGroundLabelElement>();
             currencyNames = LoadCurrency();
             craftingBases = LoadCraftingBases();
 
@@ -54,6 +56,7 @@ namespace PoeHUD.Hud.Loot
 		{
 			currentAlerts.Remove(entity);
 			currentIcons.Remove(entity);
+		    currentLabels.Remove(entity.Address);
 		}
 
         protected override void OnEntityAdded(EntityWrapper entity)
@@ -119,6 +122,7 @@ namespace PoeHUD.Hud.Loot
 		{
 			playedSoundsCache.Clear();
 			currentIcons.Clear();
+            currentLabels.Clear();
 		}
 		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
 		{
@@ -129,12 +133,10 @@ namespace PoeHUD.Hud.Loot
 
 
             var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-
-
+            
 			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
 			float y = rightTopAnchor.Y;
-            var itemsOnGroundLabels = Settings.ShowBorder?GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.Where(z => z.IsVisible):null;
-		    const int vMargin = 2;
+            const int vMargin = 2;
 			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
 			{
 				if (!kv.Key.IsValid) continue;
@@ -144,7 +146,7 @@ namespace PoeHUD.Hud.Loot
 
 			    if (Settings.ShowBorder)
 			    {
-			        DrawBorder(itemsOnGroundLabels, kv.Key.Address);
+			        DrawBorder(kv.Key.Address);
 			    }
 			    Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
 				var delta = itemPos - playerPos;
@@ -156,14 +158,21 @@ namespace PoeHUD.Hud.Loot
 			
 		}
 
-	    private void DrawBorder(IEnumerable<ItemsOnGroundLabelElement> itemsOnGroundLabels, int entityAddres)
+	    private void DrawBorder(int entityAddres)
 	    {
-            var element = itemsOnGroundLabels.FirstOrDefault(z => z.ItemOnGround.Address == entityAddres);
-	        if (element != null)
-	        {
-	            var rect = element.Label.GetClientRect();
-	            Graphics.DrawFrame(rect, Settings.BorderWidth, Settings.BorderColor);
-	        }
+           if (currentLabels.ContainsKey(entityAddres))
+           {
+               var entitylabel = currentLabels[entityAddres];
+               if (entitylabel.IsVisible)
+               {
+                   var rect = entitylabel.Label.GetClientRect();
+                   Graphics.DrawFrame(rect, Settings.BorderWidth, Settings.BorderColor);
+               }
+           }
+           else
+           {
+              currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
+           }
 	    }
 
 	    public IEnumerable<MapIcon> GetIcons()
