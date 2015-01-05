@@ -54,11 +54,17 @@ namespace PoeHUD.Framework
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
 
         [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
+
+        [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("User32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndParent);
+
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
 
         [DllImport("user32.dll")]
         private static extern bool ClientToScreen(IntPtr hWnd, out Point lpPoint);
@@ -80,9 +86,6 @@ namespace PoeHUD.Framework
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
-        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
-        public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize,int maximumWorkingSetSize);
 
         #endregion
 

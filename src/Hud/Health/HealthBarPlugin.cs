@@ -37,8 +37,8 @@ namespace PoeHUD.Hud.Health
                 return;
             }
 
-            float clientWidth = GameController.Window.ClientRect().W / 2560f;
-            float clientHeight = GameController.Window.ClientRect().H / 1600f;
+            float clientWidth = GameController.Window.ClientRect().Width / 2560f;
+            float clientHeight = GameController.Window.ClientRect().Height / 1600f;
 
             Parallel.ForEach(healthBars, healthbars => healthbars.RemoveAll(x => !(x.Entity.IsValid && x.Entity.IsAlive)));
 
@@ -46,7 +46,7 @@ namespace PoeHUD.Hud.Health
             Func<Healthbar, bool> showHealthBar = x => x.IsShow(Settings.ShowEnemies);
             foreach (Healthbar healthbar in healthBars.SelectMany(x => x).AsParallel().AsOrdered().Where(showHealthBar))
             {
-                Vec3 worldCoords = healthbar.Entity.Pos;
+                Vector3 worldCoords = healthbar.Entity.Pos;
                 Vector2 mobScreenCoords = camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f), healthbar.Entity);
                 // System.Diagnostics.Debug.WriteLine("{0} is at {1} => {2} on screen", current.entity.Path, worldCoords, mobScreenCoords);
                 if (mobScreenCoords != new Vector2())

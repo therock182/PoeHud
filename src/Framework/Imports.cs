@@ -41,14 +41,6 @@ namespace PoeHUD.Framework
 		[DllImport("user32.dll")]
 		public static extern IntPtr GetForegroundWindow();
 		[DllImport("user32.dll")]
-		public static extern bool ClientToScreen(IntPtr hWnd, ref Vec2 lpPoint);
-		[DllImport("user32.dll")]
-		public static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
-		[DllImport("user32.dll")]
-		public static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
-		[DllImport("user32.dll")]
-		public static extern bool ScreenToClient(IntPtr hWnd, ref Vec2 lpPoint);
-		[DllImport("user32.dll")]
 		public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 		[DllImport("kernel32.dll")]
 		public static extern uint GetTickCount();

@@ -4,6 +4,7 @@ using System.Linq;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
@@ -107,9 +108,9 @@ namespace PoeHUD.Hud.Trackers
 			{
 				return;
 			}
-			Rect rect = this.GameController.Window.ClientRect();
-			int xScreenCenter = rect.W / 2 + rect.X;
-			int yPos = rect.H / 10 + rect.Y;
+			var rect = this.GameController.Window.ClientRect();
+			int xScreenCenter = rect.Width / 2 + rect.X;
+			int yPos = rect.Height / 10 + rect.Y;
 
 			var playerPos = this.GameController.Player.GetComponent<Positioned>().GridPos;
 			bool first = true;
@@ -117,7 +118,7 @@ namespace PoeHUD.Hud.Trackers
 
 		    var groupedAlerts = alertTexts.Where(y => y.Key.IsAlive).Select(y =>
 		    {
-		        Vec2 delta = y.Key.GetComponent<Positioned>().GridPos - playerPos;
+		        Vector2 delta = y.Key.GetComponent<Positioned>().GridPos - playerPos;
 		        double phi;
 		        var distance = delta.GetPolarCoordinates(out phi);
 		        return new {Dic = y, Phi = phi, Distance = distance};

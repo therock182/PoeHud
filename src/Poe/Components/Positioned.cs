@@ -1,5 +1,7 @@
 using PoeHUD.Framework;
 
+using SharpDX;
+
 namespace PoeHUD.Poe.Components
 {
     public class Positioned : Component
@@ -52,9 +54,9 @@ namespace PoeHUD.Poe.Components
             }
         }
 
-        public Vec2 GridPos
+        public Vector2 GridPos
         {
-            get { return new Vec2(GridX, GridY); }
+            get { return new Vector2(GridX, GridY); }
         }
     }
 }

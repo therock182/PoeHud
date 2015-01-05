@@ -41,7 +41,7 @@ namespace PoeHUD.Hud.Icons
             Map mapWindow = GameController.Game.IngameState.IngameUi.Map;
             var rcMap = mapWindow.GetClientRect();
 
-            Vec2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+            Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             float pPosZ = GameController.Player.GetComponent<Render>().Z;
             var screenCenter = new Vector2(rcMap.Width / 2, rcMap.Height / 2) + new Vector2(rcMap.X, rcMap.Y) + new Vector2(mapWindow.ShiftX, mapWindow.ShiftY);
             var diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);

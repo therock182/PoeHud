@@ -1,5 +1,7 @@
 using PoeHUD.Framework;
 
+using SharpDX;
+
 namespace PoeHUD.Poe.Components
 {
     public class Render : Component
@@ -40,9 +42,9 @@ namespace PoeHUD.Poe.Components
             }
         }
 
-        public Vec3 Pos
+        public Vector3 Pos
         {
-            get { return new Vec3(X, Y, Z); }
+            get { return new Vector3(X, Y, Z); }
         }
 
         public string DisplayName

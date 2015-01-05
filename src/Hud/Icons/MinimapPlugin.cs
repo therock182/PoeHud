@@ -36,7 +36,7 @@ namespace PoeHUD.Hud.Icons
 				return;
 
 
-			Vec2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+			Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
 			float pPosZ = GameController.Player.GetComponent<Render>().Z;
 			
 			const float scale = 240f;

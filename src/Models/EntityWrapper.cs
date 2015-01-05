@@ -7,6 +7,8 @@ using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe;
 using PoeHUD.Poe.Components;
 
+using Vector3 = SharpDX.Vector3;
+
 namespace PoeHUD.Models
 {
     public class EntityWrapper:IEntity
@@ -60,12 +62,12 @@ namespace PoeHUD.Models
             get { return GetComponent<Life>().CurHP > 0; }
         }
 
-        public Vec3 Pos
+        public Vector3 Pos
         {
             get
             {
                 var p = GetComponent<Positioned>();
-                return new Vec3(p.X, p.Y, GetComponent<Render>().Z);
+                return new Vector3(p.X, p.Y, GetComponent<Render>().Z);
             }
         }
 
