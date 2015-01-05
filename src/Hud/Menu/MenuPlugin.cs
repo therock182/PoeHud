@@ -80,80 +80,108 @@ namespace PoeHUD.Hud.Menu
         {
             int r = 0;
             buttons = new List<ToggleButton>();
+
+            // Health bars
             HealthBarSettings healthBarPlugin = settingsHub.HealthBarSettings;
-            ToggleButton parent = CreateRootMenu("Health bars", r++, healthBarPlugin.Enable);
-            ToggleButton toggleButton = AddButton(parent, "Players", healthBarPlugin.Players.Enable);
-            ToggleButton parent2 = AddButton(parent, "Enemies", healthBarPlugin.ShowEnemies);
-            ToggleButton toggleButton2 = AddButton(parent, "Minions", healthBarPlugin.Minions.Enable);
-            AddButton(parent, "Show ES", healthBarPlugin.ShowES);
-            AddButton(parent, "Show in town", healthBarPlugin.ShowInTown);
-            toggleButton.AddChild(new Picker<float>("Width", healthBarPlugin.Players.Width));
-            toggleButton.AddChild(new Picker<float>("Height", healthBarPlugin.Players.Height));
-            toggleButton2.AddChild(new Picker<float>("Width", healthBarPlugin.Minions.Width));
-            toggleButton2.AddChild(new Picker<float>("Height", healthBarPlugin.Minions.Height));
-            ToggleButton toggleButton3 = AddButton(parent2, "White", healthBarPlugin.NormalEnemy.Enable);
-            toggleButton3.AddChild(new ToggleButton("Print percents", healthBarPlugin.NormalEnemy.ShowPercents));
-            toggleButton3.AddChild(new ToggleButton("Print health text", healthBarPlugin.NormalEnemy.ShowHealthText));
-            toggleButton3.AddChild(new Picker<float>("Width", healthBarPlugin.NormalEnemy.Width));
-            toggleButton3.AddChild(new Picker<float>("Height", healthBarPlugin.NormalEnemy.Height));
-            ToggleButton toggleButton4 = AddButton(parent2, "Magic", healthBarPlugin.MagicEnemy.Enable);
-            toggleButton4.AddChild(new ToggleButton("Print percents", healthBarPlugin.MagicEnemy.ShowPercents));
-            toggleButton4.AddChild(new ToggleButton("Print health text", healthBarPlugin.MagicEnemy.ShowHealthText));
-            toggleButton4.AddChild(new Picker<float>("Width", healthBarPlugin.MagicEnemy.Width));
-            toggleButton4.AddChild(new Picker<float>("Height", healthBarPlugin.MagicEnemy.Height));
-            ToggleButton toggleButton5 = AddButton(parent2, "Rare", healthBarPlugin.RareEnemy.Enable);
-            toggleButton5.AddChild(new ToggleButton("Print percents", healthBarPlugin.RareEnemy.ShowPercents));
-            toggleButton5.AddChild(new ToggleButton("Print health text", healthBarPlugin.RareEnemy.ShowHealthText));
-            toggleButton5.AddChild(new Picker<float>("Width", healthBarPlugin.RareEnemy.Width));
-            toggleButton5.AddChild(new Picker<float>("Height", healthBarPlugin.RareEnemy.Height));
-            ToggleButton toggleButton6 = AddButton(parent2, "Uniques", healthBarPlugin.UniqueEnemy.Enable);
-            toggleButton6.AddChild(new ToggleButton("Print percents", healthBarPlugin.UniqueEnemy.ShowPercents));
-            toggleButton6.AddChild(new ToggleButton("Print health text", healthBarPlugin.UniqueEnemy.ShowHealthText));
-            toggleButton6.AddChild(new Picker<float>("Width", healthBarPlugin.UniqueEnemy.Width));
-            toggleButton6.AddChild(new Picker<float>("Height", healthBarPlugin.UniqueEnemy.Height));
-            ToggleButton mapIconsRoot = CreateRootMenu("Map icons", r++, settingsHub.MapIconsSettings.Enable);
-            AddButton(mapIconsRoot, "Icons on minimap", settingsHub.MapIconsSettings.IconsOnMinimap);
-            AddButton(mapIconsRoot, "Icons on large map", settingsHub.MapIconsSettings.IconsOnLargeMap);
-            AddButton(mapIconsRoot, "Precious items", settingsHub.ItemAlertSettings.ShowItemOnMap);
-            AddButton(mapIconsRoot, "Monsters", settingsHub.MonsterTrackerSettings.Monsters);
-            AddButton(mapIconsRoot, "Minions", settingsHub.MonsterTrackerSettings.Minions);
-            AddButton(mapIconsRoot, "Strongboxes", settingsHub.PoiTrackerSettings.Strongboxes);
-            AddButton(mapIconsRoot, "Chests", settingsHub.PoiTrackerSettings.Chests);
-            AddButton(mapIconsRoot, "Masters", settingsHub.PoiTrackerSettings.Masters);
-            ToggleButton parent4 = CreateRootMenu("Item alert", r++, settingsHub.ItemAlertSettings.Enable);
-            AddButton(parent4, "Rares", settingsHub.ItemAlertSettings.Rares);
-            AddButton(parent4, "Uniques", settingsHub.ItemAlertSettings.Uniques);
-            AddButton(parent4, "Currency", settingsHub.ItemAlertSettings.Currency);
-            AddButton(parent4, "Maps", settingsHub.ItemAlertSettings.Maps);
-            AddButton(parent4, "RGB", settingsHub.ItemAlertSettings.Rgb);
-            AddButton(parent4, "Crafting bases", settingsHub.ItemAlertSettings.Crafting);
-            AddButton(parent4, "Skill gems", settingsHub.ItemAlertSettings.SkillGems);
-            AddButton(parent4, "Only quality gems", settingsHub.ItemAlertSettings.QualitySkillGems);
-            AddButton(parent4, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
-            ToggleButton toggleButton7 = AddButton(parent4, "Show text", settingsHub.ItemAlertSettings.ShowText);
-            toggleButton7.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));
-            ToggleButton showBorderToggleButton = AddButton(parent4, "Show border", settingsHub.ItemAlertSettings.ShowBorder);
-            showBorderToggleButton.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderWidth));
-            CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
-            ToggleButton itemModsRoot = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
-            AddButton(itemModsRoot, "Weapon DPS", settingsHub.ItemRollsSettings.ShowWeaponDps);
-            ToggleButton parent5 = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);
-            AddButton(parent5, "Sound warning", settingsHub.MonsterTrackerSettings.PlaySound);
-            ToggleButton toggleButton8 = AddButton(parent5, "Text warning", settingsHub.MonsterTrackerSettings.ShowText);
-            toggleButton8.AddChild(new Picker<int>("Font size", settingsHub.MonsterTrackerSettings.TextSize));
-            ToggleButton toggleButton9 = CreateRootMenu("Xph Display", r++, settingsHub.XpRateSettings.Enable);
-            toggleButton9.AddChild(new Picker<int>("Font size", settingsHub.XpRateSettings.TextSize));
-            ToggleButton parent6 = CreateRootMenu("Client hacks", r++, settingsHub.MiscHacksSettings.Enable);
-            AddButton(parent6, "Maphack", settingsHub.MiscHacksSettings.Maphack);
-            AddButton(parent6, "Zoomhack", settingsHub.MiscHacksSettings.Zoomhack);
-            AddButton(parent6, "Fullbright", settingsHub.MiscHacksSettings.Fullbright);
-            AddButton(parent6, "Disable Particles", settingsHub.MiscHacksSettings.Particles);
-            ToggleButton toggleButton10 = CreateRootMenu("Preload Alert", r++, settingsHub.PreloadAlertSettings.Enable);
-            toggleButton10.AddChild(new Picker<int>("Font size", settingsHub.PreloadAlertSettings.TextSize));
-            ToggleButton dpsRoot = CreateRootMenu("Show DPS", r++, settingsHub.DpsMeterSettings.Enable);
-            dpsRoot.AddChild(new Picker<int>("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
-            dpsRoot.AddChild(new Picker<int>("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
-            dpsRoot.AddChild(new ColorButton("Background color:", settingsHub.DpsMeterSettings.BackgroundColor));
+            ToggleButton healthMenu = CreateRootMenu("Health bars", r++, healthBarPlugin.Enable);
+            ToggleButton playersMenu = AddButton(healthMenu, "Players", healthBarPlugin.Players.Enable);
+            ToggleButton enemiesMenu = AddButton(healthMenu, "Enemies", healthBarPlugin.ShowEnemies);
+            ToggleButton minionsMenu = AddButton(healthMenu, "Minions", healthBarPlugin.Minions.Enable);
+            AddButton(healthMenu, "Show ES", healthBarPlugin.ShowES);
+            AddButton(healthMenu, "Show in town", healthBarPlugin.ShowInTown);
+            playersMenu.AddChild(new Picker<float>("Width", healthBarPlugin.Players.Width));
+            playersMenu.AddChild(new Picker<float>("Height", healthBarPlugin.Players.Height));
+            minionsMenu.AddChild(new Picker<float>("Width", healthBarPlugin.Minions.Width));
+            minionsMenu.AddChild(new Picker<float>("Height", healthBarPlugin.Minions.Height));
+            ToggleButton whiteEnemyMenu = AddButton(enemiesMenu, "White", healthBarPlugin.NormalEnemy.Enable);
+            whiteEnemyMenu.AddChild(new ToggleButton("Print percents", healthBarPlugin.NormalEnemy.ShowPercents));
+            whiteEnemyMenu.AddChild(new ToggleButton("Print health text", healthBarPlugin.NormalEnemy.ShowHealthText));
+            whiteEnemyMenu.AddChild(new Picker<float>("Width", healthBarPlugin.NormalEnemy.Width));
+            whiteEnemyMenu.AddChild(new Picker<float>("Height", healthBarPlugin.NormalEnemy.Height));
+            ToggleButton magicEnemyMenu = AddButton(enemiesMenu, "Magic", healthBarPlugin.MagicEnemy.Enable);
+            magicEnemyMenu.AddChild(new ToggleButton("Print percents", healthBarPlugin.MagicEnemy.ShowPercents));
+            magicEnemyMenu.AddChild(new ToggleButton("Print health text", healthBarPlugin.MagicEnemy.ShowHealthText));
+            magicEnemyMenu.AddChild(new Picker<float>("Width", healthBarPlugin.MagicEnemy.Width));
+            magicEnemyMenu.AddChild(new Picker<float>("Height", healthBarPlugin.MagicEnemy.Height));
+            ToggleButton rareEnemyMenu = AddButton(enemiesMenu, "Rare", healthBarPlugin.RareEnemy.Enable);
+            rareEnemyMenu.AddChild(new ToggleButton("Print percents", healthBarPlugin.RareEnemy.ShowPercents));
+            rareEnemyMenu.AddChild(new ToggleButton("Print health text", healthBarPlugin.RareEnemy.ShowHealthText));
+            rareEnemyMenu.AddChild(new Picker<float>("Width", healthBarPlugin.RareEnemy.Width));
+            rareEnemyMenu.AddChild(new Picker<float>("Height", healthBarPlugin.RareEnemy.Height));
+            ToggleButton uniquesEnemyMenu = AddButton(enemiesMenu, "Uniques", healthBarPlugin.UniqueEnemy.Enable);
+            uniquesEnemyMenu.AddChild(new ToggleButton("Print percents", healthBarPlugin.UniqueEnemy.ShowPercents));
+            uniquesEnemyMenu.AddChild(new ToggleButton("Print health text", healthBarPlugin.UniqueEnemy.ShowHealthText));
+            uniquesEnemyMenu.AddChild(new Picker<float>("Width", healthBarPlugin.UniqueEnemy.Width));
+            uniquesEnemyMenu.AddChild(new Picker<float>("Height", healthBarPlugin.UniqueEnemy.Height));
+
+            // Map icons
+            ToggleButton mapIconsMenu = CreateRootMenu("Map icons", r++, settingsHub.MapIconsSettings.Enable);
+            AddButton(mapIconsMenu, "Icons on minimap", settingsHub.MapIconsSettings.IconsOnMinimap);
+            AddButton(mapIconsMenu, "Icons on large map", settingsHub.MapIconsSettings.IconsOnLargeMap);
+            AddButton(mapIconsMenu, "Precious items", settingsHub.ItemAlertSettings.ShowItemOnMap);
+            AddButton(mapIconsMenu, "Monsters", settingsHub.MonsterTrackerSettings.Monsters);
+            AddButton(mapIconsMenu, "Minions", settingsHub.MonsterTrackerSettings.Minions);
+            AddButton(mapIconsMenu, "Strongboxes", settingsHub.PoiTrackerSettings.Strongboxes);
+            AddButton(mapIconsMenu, "Chests", settingsHub.PoiTrackerSettings.Chests);
+            AddButton(mapIconsMenu, "Masters", settingsHub.PoiTrackerSettings.Masters);
+
+            // Item Alert
+            ToggleButton itemAlertMenu = CreateRootMenu("Item alert", r++, settingsHub.ItemAlertSettings.Enable);
+            AddButton(itemAlertMenu, "Rares", settingsHub.ItemAlertSettings.Rares);
+            AddButton(itemAlertMenu, "Uniques", settingsHub.ItemAlertSettings.Uniques);
+            AddButton(itemAlertMenu, "Currency", settingsHub.ItemAlertSettings.Currency);
+            AddButton(itemAlertMenu, "Maps", settingsHub.ItemAlertSettings.Maps);
+            AddButton(itemAlertMenu, "RGB", settingsHub.ItemAlertSettings.Rgb);
+            AddButton(itemAlertMenu, "Crafting bases", settingsHub.ItemAlertSettings.Crafting);
+            AddButton(itemAlertMenu, "Skill gems", settingsHub.ItemAlertSettings.SkillGems);
+            AddButton(itemAlertMenu, "Only quality gems", settingsHub.ItemAlertSettings.QualitySkillGems);
+            AddButton(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
+            ToggleButton alertTextMenu = AddButton(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
+            alertTextMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));
+            ToggleButton showBorderMenu = AddButton(itemAlertMenu, "Show border", settingsHub.ItemAlertSettings.ShowBorder);
+            showBorderMenu.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderWidth));
+            showBorderMenu.AddChild(new ColorButton("Border color:", settingsHub.ItemAlertSettings.BorderColor));
+
+            // Item level
+            ToggleButton itemLevelMenu = CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
+            itemLevelMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemLevelSettings.TextSize));
+
+            // Item mods
+            ToggleButton itemModsMenu = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
+            itemModsMenu.AddChild(new Picker<int>("Mods size", settingsHub.ItemRollsSettings.ModTextSize));
+            ToggleButton weaponDpsMenu = AddButton(itemModsMenu, "Weapon DPS", settingsHub.ItemRollsSettings.ShowWeaponDps);
+            weaponDpsMenu.AddChild(new Picker<int>("DPS size", settingsHub.ItemRollsSettings.DpsTextSize));
+            weaponDpsMenu.AddChild(new Picker<int>("DPS name size", settingsHub.ItemRollsSettings.DpsNameTextSize));
+
+            // Boss warnings
+            ToggleButton bossWarningsMenu = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);
+            AddButton(bossWarningsMenu, "Sound warning", settingsHub.MonsterTrackerSettings.PlaySound);
+            ToggleButton warningTextMenu = AddButton(bossWarningsMenu, "Text warning", settingsHub.MonsterTrackerSettings.ShowText);
+            warningTextMenu.AddChild(new Picker<int>("Font size", settingsHub.MonsterTrackerSettings.TextSize));
+            warningTextMenu.AddChild(new ColorButton("Background color:", settingsHub.MonsterTrackerSettings.BackgroundColor));
+
+            // Xph Display
+            ToggleButton xpRateMenu = CreateRootMenu("Xph Display", r++, settingsHub.XpRateSettings.Enable);
+            xpRateMenu.AddChild(new Picker<int>("Font size", settingsHub.XpRateSettings.TextSize));
+            xpRateMenu.AddChild(new ColorButton("Background color:", settingsHub.XpRateSettings.BackgroundColor));
+
+            // Client hacks
+            ToggleButton clientHacksMenu = CreateRootMenu("Client hacks", r++, settingsHub.MiscHacksSettings.Enable);
+            AddButton(clientHacksMenu, "Maphack", settingsHub.MiscHacksSettings.Maphack);
+            AddButton(clientHacksMenu, "Zoomhack", settingsHub.MiscHacksSettings.Zoomhack);
+            AddButton(clientHacksMenu, "Fullbright", settingsHub.MiscHacksSettings.Fullbright);
+            AddButton(clientHacksMenu, "Disable Particles", settingsHub.MiscHacksSettings.Particles);
+
+            // Preload Alert
+            ToggleButton preloadMenu = CreateRootMenu("Preload Alert", r++, settingsHub.PreloadAlertSettings.Enable);
+            preloadMenu.AddChild(new Picker<int>("Font size", settingsHub.PreloadAlertSettings.TextSize));
+            preloadMenu.AddChild(new ColorButton("Background color:", settingsHub.PreloadAlertSettings.BackgroundColor));
+
+            // Show DPS
+            ToggleButton showDpsMenu = CreateRootMenu("Show DPS", r++, settingsHub.DpsMeterSettings.Enable);
+            showDpsMenu.AddChild(new Picker<int>("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
+            showDpsMenu.AddChild(new Picker<int>("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
+            showDpsMenu.AddChild(new ColorButton("Background color:", settingsHub.DpsMeterSettings.BackgroundColor));
         }
 
         private ToggleButton CreateRootMenu(string text, int yIndex, ToggleNode node)
