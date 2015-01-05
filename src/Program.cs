@@ -42,7 +42,10 @@ namespace PoeHUD
 	    [STAThread]
 		public static void Main(string[] args)
 		{
-			Offsets offs;
+#if !DEBUG
+            MemoryControl.Start();
+#endif
+            Offsets offs;
 			int pid = FindPoeProcess(out offs);
 
 			if (pid == 0)

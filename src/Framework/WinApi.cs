@@ -81,6 +81,9 @@ namespace PoeHUD.Framework
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize,int maximumWorkingSetSize);
+
         #endregion
 
         #region Structures
