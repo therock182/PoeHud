@@ -1,11 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe.Elements
 {
     public class ItemsOnGroundLabelElement : Element
     {
-       public Entity ItemOnGround
+        private readonly Lazy<int> labelInfo;
+
+        public ItemsOnGroundLabelElement()
+        {
+            labelInfo = new Lazy<int>(GetLabelInfo);
+        }
+
+        public Entity ItemOnGround
         {
             get { return base.ReadObject<Entity>(Address + 0xC); }
         }
@@ -15,11 +23,40 @@ namespace PoeHUD.Poe.Elements
             get { return base.ReadObject<Element>(Address + 0x8); }
         }
 
+
+        public bool CanPickUp
+        {
+            get { return labelInfo.Value == 0; }
+        }
+
+
+        public TimeSpan TimeLeft
+        {
+            get
+            {
+                if (!CanPickUp)
+                {
+                    int futureTime = M.ReadInt(labelInfo.Value + 0x20);
+                    return TimeSpan.FromMilliseconds(futureTime - Environment.TickCount);
+                }
+                return new TimeSpan();
+            }
+        }
+
+        public TimeSpan MaxTimeForPickUp
+        {
+            get
+            {
+                return !CanPickUp ? TimeSpan.FromMilliseconds(M.ReadInt(labelInfo.Value + 0x1C)) : new TimeSpan();
+            }
+        }
+
+
         public new bool IsVisible
         {
             get { return Label.IsVisible; }
         }
-        
+
         public new IEnumerable<ItemsOnGroundLabelElement> Children
         {
             get
@@ -30,6 +67,15 @@ namespace PoeHUD.Poe.Elements
                     yield return GetObject<ItemsOnGroundLabelElement>(nextAddress);
                 }
             }
+        }
+
+        private int GetLabelInfo()
+        {
+            if (Label.Address != 0)
+            {
+                return M.ReadInt(Label.Address + 0xC78);
+            }
+            return 0;
         }
     }
 }

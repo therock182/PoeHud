@@ -61,5 +61,10 @@ namespace PoeHUD.Poe.Components
                 return M.ReadStringU(M.ReadInt(Address + 72));
             }
         }
+
+        public int UknownValue
+        {
+            get { return M.ReadInt(Address + 4, 4, 8); }
+        }
     }
 }

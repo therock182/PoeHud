@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
@@ -70,7 +71,7 @@ namespace PoeHUD.Hud.Loot
 			    IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
 				ItemUsefulProperties props = EvaluateItem(item);
 
-				if (props.IsWorthAlertingPlayer(currencyNames, Settings))
+                if (props.IsWorthAlertingPlayer(currencyNames, Settings))
 				{
 					AlertDrawStyle drawStyle = props.GetDrawStyle();
 					currentAlerts.Add(entity, drawStyle);
@@ -167,6 +168,9 @@ namespace PoeHUD.Hud.Loot
                {
                    var rect = entitylabel.Label.GetClientRect();
                    Graphics.DrawFrame(rect, Settings.BorderWidth, Settings.BorderColor);
+                   TimeSpan timeLeft = entitylabel.TimeLeft;
+                   if (!entitylabel.CanPickUp && timeLeft.TotalMilliseconds>0)
+                       Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), 12, rect.TopRight.Translate(4, 0), Color.White);
                }
            }
            else
