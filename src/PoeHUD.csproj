@@ -139,7 +139,6 @@
     <Compile Include="Hud\MaxRolls\ItemRollsPlugin.cs" />
     <Compile Include="Hud\MaxRolls\MaxRolls.cs" />
     <Compile Include="Framework\GameWindow.cs" />
-    <Compile Include="Framework\Imports.cs" />
     <Compile Include="Framework\Memory.cs" />
     <Compile Include="Framework\KeyboardAndMouse\GlobalEventProvider.cs">
       <SubType>Component</SubType>

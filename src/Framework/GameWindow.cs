@@ -25,7 +25,7 @@ namespace PoeHUD.Framework
 
         public bool IsForeground()
         {
-            return Imports.GetForegroundWindow() == handle;
+            return WinApi.IsForegroundWindow(handle);
         }
 
         public Vector2 ScreenToClient(int x, int y)

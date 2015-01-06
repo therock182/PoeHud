@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+using PoeHUD.Framework.Enums;
 
 namespace PoeHUD.Framework
 {
@@ -31,6 +35,28 @@ namespace PoeHUD.Framework
             return GetForegroundWindow() == handle;
         }
 
+        public static bool IsKeyDown(Keys key)
+        {
+            return (GetAsyncKeyState(key) & 0x8000) != 0;
+        }
+
+        public static IntPtr OpenProcess(Process process, ProcessAccessFlags flags)
+        {
+            return OpenProcess(flags, false, process.Id);
+        }
+
+        public static bool ReadProcessMemory(IntPtr handle, IntPtr baseAddress, byte[] buffer)
+        {
+            IntPtr bytesRead;
+            return ReadProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
+        }
+
+        public static bool WriteProcessMemory(IntPtr handle, IntPtr baseAddress, byte[] buffer)
+        {
+            IntPtr bytesRead;
+            return WriteProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
+        }
+
         #endregion
 
         #region Constants
@@ -49,6 +75,10 @@ namespace PoeHUD.Framework
 
         [DllImport("ComDlg32.dll", CharSet = CharSet.Unicode)]
         public static extern bool ChooseColor(ref ChooseColor chooseColor);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CloseHandle(IntPtr hObject);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
@@ -73,6 +103,9 @@ namespace PoeHUD.Framework
         private static extern IntPtr DwmExtendFrameIntoClientArea(IntPtr hWnd, ref Margins pMarInset);
 
         [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
+
+        [DllImport("user32.dll")]
         private static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
 
         [DllImport("user32.dll")]
@@ -81,11 +114,20 @@ namespace PoeHUD.Framework
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool ReadProcessMemory(IntPtr hWnd, IntPtr baseAddr, byte[] buffer, int size, out IntPtr bytesRead);
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool WriteProcessMemory(IntPtr hWnd, IntPtr baseAddr, byte[] buffer, int size, out IntPtr bytesRead);
 
         #endregion
 

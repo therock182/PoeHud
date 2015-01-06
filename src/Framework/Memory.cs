@@ -181,7 +181,7 @@ namespace PoeHUD.Framework
 
         private void Open()
         {
-            procHandle = Imports.OpenProcess(ProcessAccessFlags.All, false, Process.Id);
+            procHandle = WinApi.OpenProcess(Process, ProcessAccessFlags.All);
         }
 
         private bool Close()
@@ -189,7 +189,7 @@ namespace PoeHUD.Framework
             if (!closed)
             {
                 closed = true;
-                return Imports.CloseHandle(procHandle) != 0;
+                return WinApi.CloseHandle(procHandle);
             }
             return true;
         }
@@ -197,14 +197,13 @@ namespace PoeHUD.Framework
         private byte[] ReadMem(int addr, int size)
         {
             var array = new byte[size];
-            Imports.ReadProcessMemory(procHandle, (IntPtr)addr, array, size, 0);
+            WinApi.ReadProcessMemory(procHandle, (IntPtr)addr, array);
             return array;
         }
 
         private void WriteMem(int addr, byte[] data)
         {
-            int num = 0;
-            if (!Imports.WriteProcessMemory(procHandle, new IntPtr(addr), data, (uint)data.Length, out num))
+            if (!WinApi.WriteProcessMemory(procHandle, new IntPtr(addr), data))
             {
                 Console.WriteLine(string.Concat(new object[]
                 {

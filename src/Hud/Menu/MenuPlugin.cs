@@ -45,12 +45,12 @@ namespace PoeHUD.Hud.Menu
 
         public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
         {
-            if (!holdKey && Imports.IsKeyDown(Keys.F12))
+            if (!holdKey && WinApi.IsKeyDown(Keys.F12))
             {
                 holdKey = true;
                 Settings.Enable.Value = !Settings.Enable.Value;
             }
-            else if (holdKey && !Imports.IsKeyDown(Keys.F12))
+            else if (holdKey && !WinApi.IsKeyDown(Keys.F12))
             {
                 holdKey = false;
             }
