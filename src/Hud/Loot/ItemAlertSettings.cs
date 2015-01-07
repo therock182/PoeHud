@@ -29,6 +29,7 @@ namespace PoeHUD.Hud.Loot
             ShowBorder = true;
             BorderColor = Color.FromAbgr(0x3bb252FF);
             BorderWidth = new RangeNode<int>(3, 1, 10);
+            QualityItems = new QualityItemsSettings();
         }
 
         public ToggleNode ShowItemOnMap { get; set; }
@@ -67,5 +68,8 @@ namespace PoeHUD.Hud.Loot
         public ColorNode BorderColor { get; set; }
 
         public RangeNode<int> BorderWidth { get; set; }
+
+        [JsonProperty("Show quality items")]
+        public QualityItemsSettings QualityItems { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace PoeHUD.Hud.Loot
 		public int MapLevel;
 		public bool IsVaalFragment;
 
-		public bool IsWorthAlertingPlayer(HashSet<string> currencyNames, ItemAlertSettings settings)
+        public bool IsWorthAlertingPlayer(HashSet<string> currencyNames, ItemAlertSettings settings)
 		{
             if (Rarity == ItemRarity.Rare && settings.Rares)
 				return true;
@@ -48,8 +48,24 @@ namespace PoeHUD.Hud.Loot
             if (IsSkillGem && settings.SkillGems) return true;
             if (IsSkillGem && settings.QualitySkillGems && Quality >= settings.QualitySkillGemsLevel) return true;
             if (WorthChrome && settings.Rgb) return true;
+            if (settings.QualityItems.Enable)
+            {
+                var qualitySettings = settings.QualityItems;
+                if (qualitySettings.Weapon.Enable && IsWeapon && Quality >= qualitySettings.Weapon.MinQuality
+                    || qualitySettings.Armour.Enable && IsArmour && Quality >= qualitySettings.Armour.MinQuality
+                    || qualitySettings.Flask.Enable && IsFlask && Quality >= qualitySettings.Flask.MinQuality)
+                {
+                    return true;
+                }
+            }
             return NumSockets >= settings.MinSockets || IsCraftingBase;
 		}
+
+        public bool IsWeapon { get; set; }
+
+        public bool IsArmour { get; set; }
+
+        public bool IsFlask { get; set; }
 
 		internal AlertDrawStyle GetDrawStyle()
 		{

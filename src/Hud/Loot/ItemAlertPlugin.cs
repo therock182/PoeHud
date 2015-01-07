@@ -108,6 +108,10 @@ namespace PoeHUD.Hud.Loot
 			ip.Quality = q == null ? 0 : q.ItemQuality;
 			ip.WorthChrome = socks != null && socks.IsRGB;
 
+		    ip.IsWeapon = item.HasComponent<Weapon>();
+		    ip.IsArmour = item.HasComponent<Armour>();
+		    ip.IsFlask = item.HasComponent<Flask>();
+
 			ip.IsVaalFragment = item.Path.Contains("VaalFragment");
 
 			CraftingBase craftingBase;

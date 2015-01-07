@@ -86,6 +86,8 @@
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
+    <Compile Include="Hud\Loot\QualityItemSettings.cs" />
+    <Compile Include="Hud\Loot\QualityItemsSettings.cs" />
     <Compile Include="Hud\MaxRolls\ItemRollsSettings.cs" />
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Hud\Health\RenderPrio.cs" />
     <Compile Include="Hud\Interfaces\IPluginWithMapIcons.cs" />
     <Compile Include="Models\AreaInstance.cs" />
+    <Compile Include="Poe\Components\Flask.cs" />
     <Compile Include="Poe\Components\Inventories.cs" />
     <Compile Include="Poe\Components\Stack.cs" />
     <Compile Include="Poe\Elements\HPbarElement.cs" />
