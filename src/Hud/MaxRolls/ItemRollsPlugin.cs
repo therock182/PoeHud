@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.Interfaces;
@@ -74,7 +76,6 @@ namespace PoeHUD.Hud.MaxRolls
 			{
 				i = DrawStatLine(item, clientRect, i);
 
-				i += 4;
 				//if (item.curr2 != null && item.max2 != null)
 				//{
 				//	rc.AddTextWithHeight(new Vec2(clientRect.X + clientRect.W - 100, yPos), item.AllTiersRange2.ToString(), Color.White, 8, DrawTextFormat.Left);
@@ -82,7 +83,7 @@ namespace PoeHUD.Hud.MaxRolls
 				//	yPos += 20;
 				//}
 			}
-			if (i > yPosTooltil + 4)
+            if (i > yPosTooltil + 4)
 			{
 				var helpRect = new RectangleF(clientRect.X + 1, yPosTooltil, clientRect.Width, i - yPosTooltil);
                 Color backgroundColor = Color.Black;
@@ -190,8 +191,11 @@ namespace PoeHUD.Hud.MaxRolls
 
 		private float DrawStatLine(RollValue item, RectangleF clientRect, float yPos)
 		{
+		    const float EPSILON = 0.001f;
+            const int MARGIN_BOTTOM = 4;
 			const int leftRuler = 50;
 
+            float oldY = yPos;
 			bool isUniqAffix = item.AffixType == ModsDat.ModType.Hidden;
 			string prefix = item.AffixType == ModsDat.ModType.Prefix
 				? "[P]"
@@ -238,7 +242,7 @@ namespace PoeHUD.Hud.MaxRolls
 				//		DrawTextFormat.Right);
 				yPos += txSize.Height;
 			}
-			return yPos;
+		    return Math.Abs(yPos - oldY) > EPSILON ? yPos + MARGIN_BOTTOM : oldY;
 		}
 	}
 }
