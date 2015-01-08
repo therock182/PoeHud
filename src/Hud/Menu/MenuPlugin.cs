@@ -146,9 +146,12 @@ namespace PoeHUD.Hud.Menu
             AddButton(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             ToggleButton alertTextMenu = AddButton(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
             alertTextMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));
-            ToggleButton showBorderMenu = AddButton(itemAlertMenu, "Show border", settingsHub.ItemAlertSettings.ShowBorder);
-            showBorderMenu.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderWidth));
-            showBorderMenu.AddChild(new ColorButton("Border color:", settingsHub.ItemAlertSettings.BorderColor));
+            ToggleButton showBorderMenu = AddButton(itemAlertMenu, "Show border", settingsHub.ItemAlertSettings.BorderSetting.Enable);
+            showBorderMenu.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderSetting.BorderWidth));
+            showBorderMenu.AddChild(new ColorButton("Border color", settingsHub.ItemAlertSettings.BorderSetting.BorderColor));
+            showBorderMenu.AddChild(new ColorButton("Cn't pck up brd color", settingsHub.ItemAlertSettings.BorderSetting.CantPickUpBorderColor));
+            showBorderMenu.AddChild(new ToggleButton("Show timer", settingsHub.ItemAlertSettings.BorderSetting.ShowTimer));
+            showBorderMenu.AddChild(new Picker<int>("Timer text size", settingsHub.ItemAlertSettings.BorderSetting.TimerTextSize));
 
             // Item level
             ToggleButton itemLevelMenu = CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);

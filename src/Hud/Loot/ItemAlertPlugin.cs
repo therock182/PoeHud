@@ -8,6 +8,7 @@ using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
@@ -149,7 +150,7 @@ namespace PoeHUD.Hud.Loot
 				string text = GetItemName(kv);
 				if( null == text ) continue;
 
-			    if (Settings.ShowBorder)
+			    if (Settings.BorderSetting.Enable)
 			    {
 			        DrawBorder(kv.Key.Address);
 			    }
@@ -163,25 +164,31 @@ namespace PoeHUD.Hud.Loot
 			
 		}
 
-	    private void DrawBorder(int entityAddres)
-	    {
-           if (currentLabels.ContainsKey(entityAddres))
-           {
-               var entitylabel = currentLabels[entityAddres];
-               if (entitylabel.IsVisible)
-               {
-                   var rect = entitylabel.Label.GetClientRect();
-                   Graphics.DrawFrame(rect, Settings.BorderWidth, Settings.BorderColor);
-                   TimeSpan timeLeft = entitylabel.TimeLeft;
-                   if (!entitylabel.CanPickUp && timeLeft.TotalMilliseconds>0)
-                       Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), 12, rect.TopRight.Translate(4, 0), Color.White);
-               }
-           }
-           else
-           {
-              currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
-           }
-	    }
+        private void DrawBorder(int entityAddres)
+        {
+            if (currentLabels.ContainsKey(entityAddres))
+            {
+                var entitylabel = currentLabels[entityAddres];
+                if (entitylabel.IsVisible)
+                {
+                    var rect = entitylabel.Label.GetClientRect();
+
+                    ColorNode borderColor = Settings.BorderSetting.BorderColor;
+                    if (!entitylabel.CanPickUp)
+                    {
+                        borderColor = Settings.BorderSetting.CantPickUpBorderColor;
+                        TimeSpan timeLeft = entitylabel.TimeLeft;
+                        if (Settings.BorderSetting.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                            Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSetting.TimerTextSize, rect.TopRight.Translate(4, 0));
+                    }
+                    Graphics.DrawFrame(rect, Settings.BorderSetting.BorderWidth, borderColor);
+                }
+            }
+            else
+            {
+                currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
+            }
+        }
 
 	    public IEnumerable<MapIcon> GetIcons()
 		{

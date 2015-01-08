@@ -86,6 +86,7 @@
     <Compile Include="Hud\Health\HealthBarSettings.cs" />
     <Compile Include="Hud\Icons\MapIconsSettings.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
+    <Compile Include="Hud\Loot\BorderSetting.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemSettings.cs" />

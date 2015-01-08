@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-
 using PoeHUD.Hud.Settings;
-
-using SharpDX;
 
 namespace PoeHUD.Hud.Loot
 {
@@ -23,10 +20,8 @@ namespace PoeHUD.Hud.Loot
             Rgb = true;
             MinLinks = new RangeNode<int>(5, 0, 6);
             MinSockets = new RangeNode<int>(6, 0, 6);
-            ShowBorder = true;
-            BorderColor = Color.FromAbgr(0x3bb252FF);
-            BorderWidth = new RangeNode<int>(3, 1, 10);
             QualityItems = new QualityItemsSettings();
+            BorderSetting = new BorderSetting();
         }
 
         public ToggleNode ShowItemOnMap { get; set; }
@@ -54,13 +49,9 @@ namespace PoeHUD.Hud.Loot
 
         public RangeNode<int> MinSockets { get; set; }
 
-        public ToggleNode ShowBorder { get; set; }
-
-        public ColorNode BorderColor { get; set; }
-
-        public RangeNode<int> BorderWidth { get; set; }
-
         [JsonProperty("Show quality items")]
         public QualityItemsSettings QualityItems { get; set; }
+
+        public BorderSetting BorderSetting { get; set; }
     }
 }
