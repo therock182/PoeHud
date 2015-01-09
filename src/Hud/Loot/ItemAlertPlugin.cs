@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
-using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
@@ -15,7 +12,6 @@ using PoeHUD.Models.Enums;
 using PoeHUD.Models.Interfaces;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.Elements;
-using PoeHUD.Poe.UI;
 using PoeHUD.Poe.UI.Elements;
 
 using SharpDX;
@@ -26,7 +22,7 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IPluginWithMapIcons,IPanelChild
+    public class ItemAlertPlugin : SizedPlugin<ItemAlertSettings>, IPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -132,6 +128,7 @@ namespace PoeHUD.Hud.Loot
 		}
 		public override void Render()
 		{
+            base.Render();
 			if (!Settings.Enable || !Settings.ShowText)
 			{
 				return;
@@ -172,6 +169,12 @@ namespace PoeHUD.Hud.Loot
                 if (entitylabel.IsVisible)
                 {
                     var rect = entitylabel.Label.GetClientRect();
+                    var ui = GameController.Game.IngameState.IngameUi;
+                    if (ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)
+                        || ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect))
+                    {
+                        return;
+                    }
 
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;
                     if (!entitylabel.CanPickUp)
@@ -335,9 +338,5 @@ namespace PoeHUD.Hud.Loot
 			}
 			return hashSet;
 		}
-
-	    public Size2F Size { get; private set; }
-	    public Func<Vector2> StartDrawPointFunc { get; set; }
-	    public Vector2 Margin { get; private set; }
 	}
 }

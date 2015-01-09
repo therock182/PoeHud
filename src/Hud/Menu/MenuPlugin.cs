@@ -196,6 +196,11 @@ namespace PoeHUD.Hud.Menu
             showDpsMenu.AddChild(new Picker<int>("DPS font size", settingsHub.DpsMeterSettings.DpsTextSize));
             showDpsMenu.AddChild(new Picker<int>("Peak DPS font size", settingsHub.DpsMeterSettings.PeakDpsTextSize));
             showDpsMenu.AddChild(new ColorButton("Background color:", settingsHub.DpsMeterSettings.BackgroundColor));
+
+            // Show monster kills
+            ToggleButton showMonsterKillsMenu = CreateRootMenu("Show MK", r++, settingsHub.KillsCounterSettings.Enable);
+            showMonsterKillsMenu.AddChild(new ToggleButton("Show details", settingsHub.KillsCounterSettings.ShowDetail));
+            
         }
 
         private ToggleButton CreateRootMenu(string text, int yIndex, ToggleNode node)
