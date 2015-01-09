@@ -25,7 +25,7 @@ namespace PoeHUD.Hud.Icons
 	    }
 
 	
-		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+		public override void Render()
 		{
 			if (!GameController.InGame || !Settings.Enable || !Settings.IconsOnMinimap)
 			{

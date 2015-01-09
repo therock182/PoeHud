@@ -7,6 +7,6 @@ namespace PoeHUD.Hud.Interfaces
 {
     public interface IPlugin : IDisposable
     {
-        void Render(Dictionary<UiMountPoint, Vector2> mountPoints);
+        void Render();
     }
 }

@@ -128,7 +128,6 @@ namespace PoeHUD.Hud
             graphics.Render += OnRender;
 
             plugins.Add(new HealthBarPlugin(gameController, graphics, settings.HealthBarSettings));
-            plugins.Add(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
             plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
@@ -136,10 +135,18 @@ namespace PoeHUD.Hud
             plugins.Add(new WeaponDpsPlugin(gameController, graphics, settings.WeaponDpsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
-            plugins.Add(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));
             plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
-            plugins.Add(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
-            plugins.Add(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
+
+            PluginPanel leftPanel = new PluginPanel(GetLeftCornerMap);
+            leftPanel.AddChildren(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));
+            leftPanel.AddChildren(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
+            leftPanel.AddChildren(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
+            plugins.AddRange(leftPanel.GetPlugins());
+
+            PluginPanel undePanelPanel = new PluginPanel(GetUnderCornerMap);
+            undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
+            plugins.AddRange(undePanelPanel.GetPlugins());
+
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
 
             Deactivate += OnDeactivate;
@@ -155,11 +162,7 @@ namespace PoeHUD.Hud
             if (gameController.InGame && WinApi.IsForegroundWindow(gameHandle))
             {
                 gameController.RefreshState();
-
-                var mountPoints = new Dictionary<UiMountPoint, Vector2>();
-                mountPoints[UiMountPoint.UnderMinimap] = GetUnderCornerMap();
-                mountPoints[UiMountPoint.LeftOfMinimap] = GetLeftCornerMap();
-                plugins.ForEach(x => x.Render(mountPoints));
+                plugins.ForEach(x => x.Render());
             }
         }
     }

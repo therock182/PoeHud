@@ -32,7 +32,7 @@ namespace PoeHUD.Hud
 
         public virtual void Dispose() {}
 
-        public abstract void Render(Dictionary<UiMountPoint, Vector2> mountPoints);
+        public abstract void Render();
 
         protected static RectangleF GetDirectionsUV(double phi, double distance)
         {

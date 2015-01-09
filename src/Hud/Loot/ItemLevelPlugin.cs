@@ -20,7 +20,7 @@ namespace PoeHUD.Hud.Loot
 	    {
 	    }
 
-	    public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+	    public override void Render()
 		{
 			if (!Settings.Enable)
 			{

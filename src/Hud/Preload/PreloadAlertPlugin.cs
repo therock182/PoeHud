@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
@@ -10,7 +11,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Preload
 {
-    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>
+    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>, IPanelChild
     {
         private readonly HashSet<string> disp;
         private Dictionary<string, string> alertStrings;
@@ -76,7 +77,7 @@ namespace PoeHUD.Hud.Preload
             }
         }
 
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             if (!Settings.Enable)
             {
@@ -92,7 +93,7 @@ namespace PoeHUD.Hud.Preload
             }
             if (disp.Count > 0)
             {
-                var vec = mountPoints[UiMountPoint.LeftOfMinimap];
+                var vec = StartDrawPointFunc();
                 float num2 = vec.Y;
                 int maxWidth = 0;
                 foreach (string current in disp)
@@ -108,7 +109,8 @@ namespace PoeHUD.Hud.Preload
                 {
                     var bounds = new RectangleF(vec.X - maxWidth + 5, vec.Y - 5, maxWidth, num2 - vec.Y + 10);
                     Graphics.DrawBox(bounds, Settings.BackgroundColor);
-                    mountPoints[UiMountPoint.LeftOfMinimap] = new Vector2(vec.X, vec.Y + 5 + bounds.Height);
+                    Size = bounds.Size;
+                    Margin=new Vector2(0,5);
                 }
             }
         }
@@ -117,5 +119,9 @@ namespace PoeHUD.Hud.Preload
         {
             alertStrings = LoadConfig("config/preload_alerts.txt");
         }
+
+        public Size2F Size { get; private set; }
+        public Func<Vector2> StartDrawPointFunc { get; set; }
+        public Vector2 Margin { get; private set; }
     }
 }

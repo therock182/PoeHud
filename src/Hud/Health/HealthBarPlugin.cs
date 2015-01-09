@@ -30,7 +30,7 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             if (!GameController.InGame || !Settings.Enable || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
             {

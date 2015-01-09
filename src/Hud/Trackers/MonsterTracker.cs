@@ -101,7 +101,7 @@ namespace PoeHUD.Hud.Trackers
 			this.alertTexts.Clear();
 			currentIcons.Clear();
 		}
-		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+		public override void Render()
 		{
 			if (!Settings.ShowText)
 			{

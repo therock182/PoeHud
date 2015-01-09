@@ -29,7 +29,7 @@ namespace PoeHUD.Hud.Dps
         public WeaponDpsPlugin(GameController gameController, Graphics graphics, WeaponDpsSettings settings)
             : base(gameController, graphics, settings) {}
 
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             if (!Settings.Enable)
             return;

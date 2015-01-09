@@ -43,7 +43,7 @@ namespace PoeHUD.Hud.Menu
             hook.Dispose();
         }
 
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             if (!holdKey && Imports.IsKeyDown(Keys.F12))
             {

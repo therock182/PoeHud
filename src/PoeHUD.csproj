@@ -85,6 +85,7 @@
     <Compile Include="Hud\Health\EnemyUnitSettings.cs" />
     <Compile Include="Hud\Health\HealthBarSettings.cs" />
     <Compile Include="Hud\Icons\MapIconsSettings.cs" />
+    <Compile Include="Hud\Interfaces\IPanelChild.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
     <Compile Include="Hud\Loot\BorderSetting.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
+    <Compile Include="Hud\PluginPanel.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
@@ -107,7 +109,6 @@
     <Compile Include="Hud\Settings\SettingsHub.cs" />
     <Compile Include="Hud\Settings\SortContractResolver.cs" />
     <Compile Include="Hud\Settings\ToggleNode.cs" />
-    <Compile Include="Hud\UiMountPoint.cs" />
     <Compile Include="Hud\UI\Graphics.cs" />
     <Compile Include="Hud\UI\Renderers\FontRenderer.cs" />
     <Compile Include="Hud\UI\Renderers\TextureRenderer.cs" />

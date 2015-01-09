@@ -4,6 +4,7 @@ using System.Linq;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
+using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
@@ -13,7 +14,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Dps
 {
-    public class DpsMeterPlugin : Plugin<DpsMeterSettings>
+    public class DpsMeterPlugin : Plugin<DpsMeterSettings>, IPanelChild
     {
         private const double DPS_PERIOD = 0.2;
 
@@ -40,7 +41,7 @@ namespace PoeHUD.Hud.Dps
             };
         }
 
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             if (!Settings.Enable)
             {
@@ -60,7 +61,7 @@ namespace PoeHUD.Hud.Dps
                 lastTime = nowTime;
             }
 
-            Vector2 position = mountPoints[UiMountPoint.LeftOfMinimap];
+            Vector2 position = StartDrawPointFunc();
             var dps = (int)damageMemory.Average();
             maxDps = Math.Max(dps, maxDps);
 
@@ -75,7 +76,8 @@ namespace PoeHUD.Hud.Dps
             var bounds = new RectangleF(position.X - 5 - width, position.Y - 5, width + 10, height + 10);
             Graphics.DrawBox(bounds, Settings.BackgroundColor);
 
-            mountPoints[UiMountPoint.LeftOfMinimap] = position.Translate(0, bounds.Height + 5);
+            Size = bounds.Size;
+            Margin = new Vector2(0, 5);
         }
 
         private double CalculateDps(TimeSpan elapsedTime)
@@ -98,5 +100,9 @@ namespace PoeHUD.Hud.Dps
             lastMonsters = monsters;
             return totalDamage / elapsedTime.TotalSeconds;
         }
+
+        public Size2F Size { get; private set; }
+        public Func<Vector2> StartDrawPointFunc { get; set; }
+        public Vector2 Margin { get; private set; }
     }
 }

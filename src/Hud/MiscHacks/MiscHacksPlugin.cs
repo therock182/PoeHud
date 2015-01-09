@@ -42,7 +42,7 @@ namespace PoeHUD.Hud.MiscHacks
             }
         }
       
-        public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+        public override void Render()
         {
             bool flag = Settings.Enable && Settings.Maphack;
             if (flag != maphackEnabled)

@@ -26,7 +26,7 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IPluginWithMapIcons
+	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IPluginWithMapIcons,IPanelChild
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -130,7 +130,7 @@ namespace PoeHUD.Hud.Loot
 			currentIcons.Clear();
             currentLabels.Clear();
 		}
-		public override void Render(Dictionary<UiMountPoint, Vector2> mountPoints)
+		public override void Render()
 		{
 			if (!Settings.Enable || !Settings.ShowText)
 			{
@@ -139,8 +139,8 @@ namespace PoeHUD.Hud.Loot
 
 
             var playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            
-			var rightTopAnchor = mountPoints[UiMountPoint.UnderMinimap];
+
+		    var rightTopAnchor = StartDrawPointFunc();
 			float y = rightTopAnchor.Y;
             const int vMargin = 2;
 			foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts)
@@ -161,7 +161,7 @@ namespace PoeHUD.Hud.Loot
                 var itemDrawnSize = DrawItem(kv.Value, delta, rightTopAnchor.X, y, vPadding, text);
 				y += itemDrawnSize.Y + vMargin;
 			}
-			
+			Size=new Size2F(0,y); //bug absent width
 		}
 
         private void DrawBorder(int entityAddres)
@@ -335,5 +335,9 @@ namespace PoeHUD.Hud.Loot
 			}
 			return hashSet;
 		}
+
+	    public Size2F Size { get; private set; }
+	    public Func<Vector2> StartDrawPointFunc { get; set; }
+	    public Vector2 Margin { get; private set; }
 	}
 }
