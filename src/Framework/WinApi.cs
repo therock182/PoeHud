@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using PoeHUD.Framework.Enums;
+using PoeHUD.Framework.InputHooks;
 
 namespace PoeHUD.Framework
 {
@@ -73,6 +74,9 @@ namespace PoeHUD.Framework
 
         #region Imports
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CallNextHookEx(int idHook, int nCode, int wParam, IntPtr lParam);
+
         [DllImport("ComDlg32.dll", CharSet = CharSet.Unicode)]
         public static extern bool ChooseColor(ref ChooseColor chooseColor);
 
@@ -95,6 +99,12 @@ namespace PoeHUD.Framework
 
         [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
         public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern int SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, int dwThreadId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern int UnhookWindowsHookEx(int idHook);
 
         [DllImport("user32.dll")]
         private static extern bool ClientToScreen(IntPtr hWnd, out Point lpPoint);

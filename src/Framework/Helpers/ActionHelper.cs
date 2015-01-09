@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 namespace PoeHUD.Framework.Helpers
 {
@@ -7,12 +6,22 @@ namespace PoeHUD.Framework.Helpers
     {
         public static void SafeInvoke<T>(this Action<T> action, T parameter)
         {
-            SafeInvoke(() => action(parameter));
+            if (action != null)
+            {
+                action(parameter);
+            }
+        }
+
+        public static void SafeInvoke<T1, T2, T3>(this Action<T1, T2, T3> action, T1 parameter1, T2 parameter2, T3 parameter3)
+        {
+            if (action != null)
+            {
+                action(parameter1, parameter2, parameter3);
+            }
         }
 
         public static void SafeInvoke(this Action action)
         {
-            action = Volatile.Read(ref action);
             if (action != null)
             {
                 action();
