@@ -157,9 +157,11 @@ namespace PoeHUD.Hud.Menu
             // Item mods
             ToggleButton itemModsMenu = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
             itemModsMenu.AddChild(new Picker<int>("Mods size", settingsHub.ItemRollsSettings.ModTextSize));
-            ToggleButton weaponDpsMenu = AddButton(itemModsMenu, "Weapon DPS", settingsHub.ItemRollsSettings.ShowWeaponDps);
-            weaponDpsMenu.AddChild(new Picker<int>("DPS size", settingsHub.ItemRollsSettings.DpsTextSize));
-            weaponDpsMenu.AddChild(new Picker<int>("DPS name size", settingsHub.ItemRollsSettings.DpsNameTextSize));
+
+            // Weapon DPS
+            ToggleButton weaponDpsMenu = CreateRootMenu("Weapon DPS", r++, settingsHub.WeaponDpsSettings.Enable);
+            weaponDpsMenu.AddChild(new Picker<int>("DPS size", settingsHub.WeaponDpsSettings.DpsTextSize));
+            weaponDpsMenu.AddChild(new Picker<int>("DPS name size", settingsHub.WeaponDpsSettings.DpsNameTextSize));
 
             // Boss warnings
             ToggleButton bossWarningsMenu = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);

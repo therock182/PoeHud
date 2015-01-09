@@ -43,6 +43,7 @@ namespace PoeHUD.Hud.Settings
             ItemAlertSettings = new ItemAlertSettings();
             ItemLevelSettings = new ItemLevelSettings();
             ItemRollsSettings = new ItemRollsSettings();
+            WeaponDpsSettings = new WeaponDpsSettings();
             MonsterTrackerSettings = new MonsterTrackerSettings();
             PoiTrackerSettings = new PoiTrackerSettings();
             PreloadAlertSettings = new PreloadAlertSettings();
@@ -70,6 +71,9 @@ namespace PoeHUD.Hud.Settings
 
         [JsonProperty("Item rolls")]
         public ItemRollsSettings ItemRollsSettings { get; private set; }
+
+        [JsonProperty("Weapon DPS")]
+        public WeaponDpsSettings WeaponDpsSettings { get; private set; }
 
         [JsonProperty("Monster tracker")]
         public MonsterTrackerSettings MonsterTrackerSettings { get; private set; }

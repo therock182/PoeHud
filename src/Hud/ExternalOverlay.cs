@@ -133,6 +133,7 @@ namespace PoeHUD.Hud
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
             plugins.Add(new ItemRollsPlugin(gameController, graphics, settings.ItemRollsSettings));
+            plugins.Add(new WeaponDpsPlugin(gameController, graphics, settings.WeaponDpsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
             plugins.Add(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));

@@ -76,6 +76,8 @@
     <Compile Include="Framework\WinApi.cs" />
     <Compile Include="Hud\CustomColorDialog.cs" />
     <Compile Include="Hud\Dps\DpsMeterSettings.cs" />
+    <Compile Include="Hud\Dps\WeaponDpsPlugin.cs" />
+    <Compile Include="Hud\Dps\WeaponDpsSettings.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
