@@ -6,9 +6,9 @@ namespace PoeHUD.Hud.Loot
     {
         public QualityItemSettings() {}
 
-        public QualityItemSettings(int minQuality)
+        public QualityItemSettings(bool enable, int minQuality)
         {
-            Enable = true;
+            Enable = enable;
             MinQuality = new RangeNode<int>(minQuality, 0, 20);
         }
 

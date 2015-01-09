@@ -6,10 +6,11 @@ namespace PoeHUD.Hud.Loot
     {
         public QualityItemsSettings()
         {
-            Enable = false;
-            Weapon = new QualityItemSettings(12);
-            Armour = new QualityItemSettings(12);
-            Flask = new QualityItemSettings(10);
+            Enable = true;
+            Weapon = new QualityItemSettings(false, 12);
+            Armour = new QualityItemSettings(false, 12);
+            Flask = new QualityItemSettings(false, 10);
+            SkillGem = new QualityItemSettings(true, 0);
         }
 
         public QualityItemSettings Weapon { get; set; }
@@ -17,5 +18,7 @@ namespace PoeHUD.Hud.Loot
         public QualityItemSettings Armour { get; set; }
 
         public QualityItemSettings Flask { get; set; }
+
+        public QualityItemSettings SkillGem { get; set; }
     }
 }

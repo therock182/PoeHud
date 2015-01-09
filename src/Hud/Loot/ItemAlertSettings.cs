@@ -20,12 +20,9 @@ namespace PoeHUD.Hud.Loot
             Uniques = true;
             Maps = true;
             Currency = true;
-            SkillGems = true;
-            QualitySkillGems = true;
             Rgb = true;
             MinLinks = new RangeNode<int>(5, 0, 6);
             MinSockets = new RangeNode<int>(6, 0, 6);
-            QualitySkillGemsLevel = new RangeNode<int>(1, 1, 30);
             ShowBorder = true;
             BorderColor = Color.FromAbgr(0x3bb252FF);
             BorderWidth = new RangeNode<int>(3, 1, 10);
@@ -50,18 +47,12 @@ namespace PoeHUD.Hud.Loot
 
         public ToggleNode Currency { get; set; }
 
-        public ToggleNode SkillGems { get; set; }
-
-        public ToggleNode QualitySkillGems { get; set; }
-
         [JsonProperty("RGB")]
         public ToggleNode Rgb { get; set; }
 
         public RangeNode<int> MinLinks { get; set; }
 
         public RangeNode<int> MinSockets { get; set; }
-
-        public RangeNode<int> QualitySkillGemsLevel { get; set; }
 
         public ToggleNode ShowBorder { get; set; }
 

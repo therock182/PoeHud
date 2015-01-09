@@ -133,8 +133,6 @@ namespace PoeHUD.Hud.Menu
             AddButton(itemAlertMenu, "Maps", settingsHub.ItemAlertSettings.Maps);
             AddButton(itemAlertMenu, "RGB", settingsHub.ItemAlertSettings.Rgb);
             AddButton(itemAlertMenu, "Crafting bases", settingsHub.ItemAlertSettings.Crafting);
-            AddButton(itemAlertMenu, "Skill gems", settingsHub.ItemAlertSettings.SkillGems);
-            AddButton(itemAlertMenu, "Only quality gems", settingsHub.ItemAlertSettings.QualitySkillGems);
             var qualityItemsSettings = settingsHub.ItemAlertSettings.QualityItems;
             ToggleButton qualityMenu = AddButton(itemAlertMenu, "Show quality items", qualityItemsSettings.Enable);
             ToggleButton qualityWeaponMenu = AddButton(qualityMenu, "Weapons", qualityItemsSettings.Weapon.Enable);
@@ -143,6 +141,8 @@ namespace PoeHUD.Hud.Menu
             qualityArmourMenu.AddChild(new Picker<int>("Min. quality", qualityItemsSettings.Armour.MinQuality));
             ToggleButton qualityFlaskMenu = AddButton(qualityMenu, "Flasks", qualityItemsSettings.Flask.Enable);
             qualityFlaskMenu.AddChild(new Picker<int>("Min. quality", qualityItemsSettings.Flask.MinQuality));
+            ToggleButton qualitySkillGemMenu = AddButton(qualityMenu, "Skill gems", qualityItemsSettings.SkillGem.Enable);
+            qualitySkillGemMenu.AddChild(new Picker<int>("Min. quality", qualityItemsSettings.SkillGem.MinQuality));
             AddButton(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             ToggleButton alertTextMenu = AddButton(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
             alertTextMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));

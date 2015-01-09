@@ -45,15 +45,14 @@ namespace PoeHUD.Hud.Loot
 					return true;
 			}
 
-            if (IsSkillGem && settings.SkillGems) return true;
-            if (IsSkillGem && settings.QualitySkillGems && Quality >= settings.QualitySkillGemsLevel) return true;
             if (WorthChrome && settings.Rgb) return true;
             if (settings.QualityItems.Enable)
             {
                 var qualitySettings = settings.QualityItems;
                 if (qualitySettings.Weapon.Enable && IsWeapon && Quality >= qualitySettings.Weapon.MinQuality
                     || qualitySettings.Armour.Enable && IsArmour && Quality >= qualitySettings.Armour.MinQuality
-                    || qualitySettings.Flask.Enable && IsFlask && Quality >= qualitySettings.Flask.MinQuality)
+                    || qualitySettings.Flask.Enable && IsFlask && Quality >= qualitySettings.Flask.MinQuality
+                    || qualitySettings.SkillGem.Enable && IsSkillGem && Quality >= qualitySettings.SkillGem.MinQuality)
                 {
                     return true;
                 }
