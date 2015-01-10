@@ -51,6 +51,10 @@ namespace PoeHUD.Hud.Menu
             {
                 holdKey = true;
                 Settings.Enable.Value = !Settings.Enable.Value;
+                if (!Settings.Enable.Value)
+                {
+                    SettingsHub.Save(settingsHub);
+                }
             }
             else if (holdKey && !WinApi.IsKeyDown(Keys.F12))
             {
