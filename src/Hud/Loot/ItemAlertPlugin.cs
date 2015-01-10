@@ -172,6 +172,12 @@ namespace PoeHUD.Hud.Loot
                 if (entitylabel.IsVisible)
                 {
                     var rect = entitylabel.Label.GetClientRect();
+                    var ui = GameController.Game.IngameState.IngameUi;
+                    if (ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)
+                        || ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect))
+                    {
+                        return;
+                    }
 
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;
                     if (!entitylabel.CanPickUp)

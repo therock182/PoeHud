@@ -80,42 +80,42 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element InventoryPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0xF4); }
+            get { return ReadObjectAt<Element>(0x100); }
         }
 
         public Element StashPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0xF8); }
+            get { return ReadObjectAt<Element>(0x104); }
         }
 
         public Element SocialPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x104); }
+            get { return ReadObjectAt<Element>(0x110); }
         }
 
         public Element TreePanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x108); }
+            get { return ReadObjectAt<Element>(0x114); }
         }
 
         public Element CharacterPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x10C); }
+            get { return ReadObjectAt<Element>(0x118); }
         }
 
         public Element OptionsPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x110); }
+            get { return ReadObjectAt<Element>(0x11C); }
         }
 
         public Element AchievementsPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x114); }
+            get { return ReadObjectAt<Element>(0x120); }
         }
 
         public Element WorldPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x118); }
+            get { return ReadObjectAt<Element>(0x128); }
         }
 
         public Map Map
@@ -152,12 +152,12 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element OpenLeftPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x154); }
+            get { return ReadObjectAt<Element>(0x164); }
         }
 
         public Element OpenRightPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x158); }
+            get { return ReadObjectAt<Element>(0x168); }
         }
 
         public Element OpenNpcDialogPanel
