@@ -154,7 +154,7 @@ namespace PoeHUD.Hud.Loot
 			    {
 			        DrawBorder(kv.Key.Address);
 			    }
-			    Vec2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
+			    Vector2 itemPos = kv.Key.GetComponent<Positioned>().GridPos;
 				var delta = itemPos - playerPos;
 
 				var vPadding = new Vector2(5, 2);
@@ -206,7 +206,7 @@ namespace PoeHUD.Hud.Loot
 			}
 		}
 
-		private Vector2 DrawItem(AlertDrawStyle drawStyle, Vec2 delta, float x, float y, Vector2 vPadding, string text)
+		private Vector2 DrawItem(AlertDrawStyle drawStyle, Vector2 delta, float x, float y, Vector2 vPadding, string text)
 		{
 			// collapse padding when there's a frame
 			vPadding.X -= drawStyle.FrameWidth;

@@ -26,14 +26,14 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             set { M.WriteFloat(Address + 392, value); }
         }
 
-        public Vec3 Position
+        public Vector3 Position
         {
-            get { return new Vec3(M.ReadFloat(Address + 256), M.ReadFloat(Address + 260), M.ReadFloat(Address + 264)); }
+            get { return new Vector3(M.ReadFloat(Address + 256), M.ReadFloat(Address + 260), M.ReadFloat(Address + 264)); }
         }
 
    
         static Vector2 oldplayerCord;
-        public unsafe Vector2 WorldToScreen(Vec3 vec3, EntityWrapper entityWrapper)
+        public unsafe Vector2 WorldToScreen(Vector3 vec3, EntityWrapper entityWrapper)
         {
 
             var isplayer = Game.IngameState.Data.LocalPlayer.IsValid && Game.IngameState.Data.LocalPlayer.Address == entityWrapper.Address;

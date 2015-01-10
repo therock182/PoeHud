@@ -52,12 +52,12 @@ namespace PoeHUD.Hud
 
         public int Size { get; set; }
 
-        public Vec2 WorldPosition
+        public Vector2 WorldPosition
         {
             get { return EntityWrapper.GetComponent<Positioned>().GridPos; }
         }
 
-        public static Vector2 deltaInWorldToMinimapDelta(Vec2 delta, double diag, float scale, float deltaZ = 0)
+        public static Vector2 deltaInWorldToMinimapDelta(Vector2 delta, double diag, float scale, float deltaZ = 0)
         {
             const double CameraAngle = Math.PI / 180 * 38;
 

@@ -72,6 +72,12 @@
     <Compile Include="Framework\Helpers\LinqHelper.cs" />
     <Compile Include="Framework\Helpers\MathHepler.cs" />
     <Compile Include="Framework\Helpers\ConvertHelper.cs" />
+    <Compile Include="Framework\InputHooks\HookProc.cs" />
+    <Compile Include="Framework\InputHooks\KeyInfo.cs" />
+    <Compile Include="Framework\InputHooks\MouseInfo.cs" />
+    <Compile Include="Framework\InputHooks\Structures\KeyboardHookStruct.cs" />
+    <Compile Include="Framework\InputHooks\MouseHook.cs" />
+    <Compile Include="Framework\InputHooks\Structures\MouseLLHookStruct.cs" />
     <Compile Include="Framework\MemoryControl.cs" />
     <Compile Include="Framework\WinApi.cs" />
     <Compile Include="Hud\CustomColorDialog.cs" />
@@ -146,20 +152,8 @@
     <Compile Include="Hud\MaxRolls\ItemRollsPlugin.cs" />
     <Compile Include="Hud\MaxRolls\MaxRolls.cs" />
     <Compile Include="Framework\GameWindow.cs" />
-    <Compile Include="Framework\Imports.cs" />
     <Compile Include="Framework\Memory.cs" />
-    <Compile Include="Framework\Rect.cs" />
-    <Compile Include="Framework\RectUV.cs" />
-    <Compile Include="Framework\Vec2.cs" />
-    <Compile Include="Framework\Vec3.cs" />
-    <Compile Include="Framework\KeyboardAndMouse\GlobalEventProvider.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Framework\KeyboardAndMouse\Callbacks.cs" />
-    <Compile Include="Framework\KeyboardAndMouse\HookManager.cs" />
-    <Compile Include="Framework\KeyboardAndMouse\Structures.cs" />
-    <Compile Include="Framework\KeyboardAndMouse\Windows.cs" />
-    <Compile Include="Framework\KeyboardAndMouse\MouseEventExtArgs.cs" />
+    <Compile Include="Framework\InputHooks\KeyboardHook.cs" />
     <Compile Include="Hud\Trackers\PoiTracker.cs" />
     <Compile Include="Poe\Components\Actor.cs" />
     <Compile Include="Controllers\AreaController.cs" />
@@ -217,7 +211,6 @@
     <Compile Include="Models\Legacy\LegacyStat.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\Legacy\LegacyStats.cs" />
     <Compile Include="Poe\Components\Targetable.cs" />
-    <Compile Include="Framework\Vec2f.cs" />
     <Compile Include="Poe\Components\Weapon.cs" />
     <Compile Include="Poe\Components\WorldItem.cs" />
     <Compile Include="Hud\Menu\ToggleButton.cs" />

@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+using PoeHUD.Framework.Enums;
+using PoeHUD.Framework.InputHooks;
 
 namespace PoeHUD.Framework
 {
@@ -31,6 +36,28 @@ namespace PoeHUD.Framework
             return GetForegroundWindow() == handle;
         }
 
+        public static bool IsKeyDown(Keys key)
+        {
+            return (GetAsyncKeyState(key) & 0x8000) != 0;
+        }
+
+        public static IntPtr OpenProcess(Process process, ProcessAccessFlags flags)
+        {
+            return OpenProcess(flags, false, process.Id);
+        }
+
+        public static bool ReadProcessMemory(IntPtr handle, IntPtr baseAddress, byte[] buffer)
+        {
+            IntPtr bytesRead;
+            return ReadProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
+        }
+
+        public static bool WriteProcessMemory(IntPtr handle, IntPtr baseAddress, byte[] buffer)
+        {
+            IntPtr bytesRead;
+            return WriteProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
+        }
+
         #endregion
 
         #region Constants
@@ -47,11 +74,21 @@ namespace PoeHUD.Framework
 
         #region Imports
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        public static extern int CallNextHookEx(int idHook, int nCode, int wParam, IntPtr lParam);
+
         [DllImport("ComDlg32.dll", CharSet = CharSet.Unicode)]
         public static extern bool ChooseColor(ref ChooseColor chooseColor);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CloseHandle(IntPtr hObject);
+
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
+
+        [DllImport("user32.dll")]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -60,11 +97,23 @@ namespace PoeHUD.Framework
         [DllImport("User32.dll", CharSet = CharSet.Unicode)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndParent);
 
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
+        public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize, int maximumWorkingSetSize);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern int SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, int dwThreadId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall, SetLastError = true)]
+        public static extern int UnhookWindowsHookEx(int idHook);
+
         [DllImport("user32.dll")]
         private static extern bool ClientToScreen(IntPtr hWnd, out Point lpPoint);
 
         [DllImport("dwmapi.dll")]
         private static extern IntPtr DwmExtendFrameIntoClientArea(IntPtr hWnd, ref Margins pMarInset);
+
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
 
         [DllImport("user32.dll")]
         private static extern bool GetClientRect(IntPtr hWnd, out Rect lpRect);
@@ -75,14 +124,20 @@ namespace PoeHUD.Framework
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr OpenProcess(ProcessAccessFlags processAccess, bool bInheritHandle, int processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool ReadProcessMemory(IntPtr hWnd, IntPtr baseAddr, byte[] buffer, int size, out IntPtr bytesRead);
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool SetLayeredWindowAttributes(IntPtr hWnd, uint crKey, byte bAlpha, uint dwFlags);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport("kernel32.dll", EntryPoint = "SetProcessWorkingSetSize", ExactSpelling = true)]
-        public static extern int SetProcessWorkingSetSize(IntPtr process, int minimumWorkingSetSize,int maximumWorkingSetSize);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool WriteProcessMemory(IntPtr hWnd, IntPtr baseAddr, byte[] buffer, int size, out IntPtr bytesRead);
 
         #endregion
 

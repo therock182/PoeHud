@@ -1,7 +1,8 @@
 using System;
+using System.Drawing;
 using System.Diagnostics;
 
-using SharpDX;
+using Vector2 = SharpDX.Vector2;
 
 namespace PoeHUD.Framework
 {
@@ -17,27 +18,21 @@ namespace PoeHUD.Framework
 
         public Process Process { get; private set; }
 
-        public Rect ClientRect()
+        public Rectangle ClientRect()
         {
-            Rect result;
-            Imports.GetClientRect(handle, out result);
-            Vec2 vec = Vec2.Empty;
-            Imports.ClientToScreen(handle, ref vec);
-            result.X = vec.X;
-            result.Y = vec.Y;
-            return result;
+            return WinApi.GetClientRectangle(handle);
         }
 
         public bool IsForeground()
         {
-            return Imports.GetForegroundWindow() == handle;
+            return WinApi.IsForegroundWindow(handle);
         }
 
         public Vector2 ScreenToClient(int x, int y)
         {
-            var vector = new Vec2(x, y);
-            Imports.ScreenToClient(handle, ref vector);
-            return new Vector2(vector.X, vector.Y);
+            var point = new Point(x, y);
+            WinApi.ScreenToClient(handle, ref point);
+            return new Vector2(point.X, point.Y);
         }
     }
 }
