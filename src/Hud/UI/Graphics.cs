@@ -63,7 +63,7 @@ namespace PoeHUD.Hud.UI
         {
             while (!device.IsDisposed)
             {
-                ActionHelper.TryInvoke(() =>
+                try
                 {
                     if (resized)
                     {
@@ -77,13 +77,21 @@ namespace PoeHUD.Hud.UI
 
                     fontRenderer.Begin();
                     textureRenderer.Begin();
-                    Render.SafeInvoke();
-                    textureRenderer.End();
-                    fontRenderer.End();
 
-                    device.EndScene();
-                    device.Present();
-                });
+                    try
+                    {
+                        Render.SafeInvoke();
+                    }
+                    finally
+                    {
+                        textureRenderer.End();
+                        fontRenderer.End();
+
+                        device.EndScene();
+                        device.Present();
+                    }
+                }
+                catch (SharpDXException) {}
             }
         }
 

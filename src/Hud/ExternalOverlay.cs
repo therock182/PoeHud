@@ -120,7 +120,7 @@ namespace PoeHUD.Hud
             BringToFront();
         }
 
-        private void OnLoad(object sender, EventArgs e)
+        private async void OnLoad(object sender, EventArgs e)
         {
             Bounds = WinApi.GetClientRectangle(gameHandle);
             WinApi.EnableTransparent(Handle, Bounds);
@@ -152,7 +152,7 @@ namespace PoeHUD.Hud
 
             CheckGameWindow();
             CheckGameState();
-            Task.Run(() => graphics.RenderLoop());
+            await Task.Run(() => graphics.RenderLoop());
         }
 
         private void OnRender()
