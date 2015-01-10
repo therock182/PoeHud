@@ -48,12 +48,8 @@ namespace PoeHUD.Hud.Trackers
 		{
 			currentIcons.Clear();
 		}
-		public override void Render()
+        protected override void Draw()
 		{
-            if (!Settings.Enable)
-			{
-				return;
-			}
 		}
 
 		public IEnumerable<MapIcon> GetIcons()

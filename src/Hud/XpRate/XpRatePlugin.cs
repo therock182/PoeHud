@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
-using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
@@ -13,7 +11,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-    public class XpRatePlugin : Plugin<XpRateSettings>,IPanelChild
+    public class XpRatePlugin : Plugin<XpRateSettings>
     {
         private string xpRate, timeLeft;
 
@@ -28,9 +26,9 @@ namespace PoeHUD.Hud.XpRate
             GameController.Area.OnAreaChange += area => Reset();
         }
 
-        public override void Render()
+        protected override void Draw()
         {
-            if (!Settings.Enable || (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100))
+            if (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100)
             {
                 return;
             }
@@ -94,9 +92,5 @@ namespace PoeHUD.Hud.XpRate
             xpRate = "0.00 XP/h";
             timeLeft = "--h --m --s until level up";
         }
-
-        public Size2F Size { get; private set; }
-        public Func<Vector2> StartDrawPointFunc { get; set; }
-        public Vector2 Margin { get; private set; }
     }
 }

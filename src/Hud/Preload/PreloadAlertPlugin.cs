@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
-using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
@@ -11,7 +9,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Preload
 {
-    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>, IPanelChild
+    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>
     {
         private readonly HashSet<string> disp;
         private Dictionary<string, string> alertStrings;
@@ -77,12 +75,8 @@ namespace PoeHUD.Hud.Preload
             }
         }
 
-        public override void Render()
+        protected override void Draw()
         {
-            if (!Settings.Enable)
-            {
-                return;
-            }
             int num =
                 GameController.Memory.ReadInt(
                     GameController.Memory.AddressOfProcess + GameController.Memory.offsets.FileRoot, 12);
@@ -119,9 +113,5 @@ namespace PoeHUD.Hud.Preload
         {
             alertStrings = LoadConfig("config/preload_alerts.txt");
         }
-
-        public Size2F Size { get; private set; }
-        public Func<Vector2> StartDrawPointFunc { get; set; }
-        public Vector2 Margin { get; private set; }
     }
 }

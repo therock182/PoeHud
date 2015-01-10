@@ -41,8 +41,8 @@ namespace PoeHUD.Hud.MiscHacks
                 }
             }
         }
-      
-        public override void Render()
+
+        protected override void Draw()
         {
             bool flag = Settings.Enable && Settings.Maphack;
             if (flag != maphackEnabled)

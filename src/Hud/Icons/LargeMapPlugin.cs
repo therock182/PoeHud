@@ -27,9 +27,9 @@ namespace PoeHUD.Hud.Icons
         }
 
 
-        public override void Render()
+        protected override void Draw()
         {
-            if (!GameController.InGame || !Settings.Enable || !Settings.IconsOnLargeMap)
+            if (!GameController.InGame || !Settings.IconsOnLargeMap)
             {
                 return;
             }

@@ -45,7 +45,7 @@ namespace PoeHUD.Hud.Menu
             hook.Dispose();
         }
 
-        public override void Render()
+        protected override void Update()
         {
             if (!holdKey && WinApi.IsKeyDown(Keys.F12))
             {
@@ -56,12 +56,10 @@ namespace PoeHUD.Hud.Menu
             {
                 holdKey = false;
             }
+        }
 
-            if (!Settings.Enable)
-            {
-                return;
-            }
-
+        protected override void Draw()
+        {
             Color boxColor = Color.Gray;
             boxColor.A = menuVisible ? (byte)255 : (byte)100;
             Graphics.DrawBox(bounds, boxColor);

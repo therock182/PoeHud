@@ -102,7 +102,7 @@ namespace PoeHUD.Hud.Trackers
 			this.alertTexts.Clear();
 			currentIcons.Clear();
 		}
-		public override void Render()
+        protected override void Draw()
 		{
 			if (!Settings.ShowText)
 			{

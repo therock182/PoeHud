@@ -13,7 +13,7 @@ using SharpDX;
 
 namespace PoeHUD.Hud
 {
-    public abstract class Plugin<TSettings> : IPlugin where TSettings : SettingsBase
+    public abstract class Plugin<TSettings> : IPlugin, IPanelChild where TSettings : SettingsBase
     {
         protected readonly GameController GameController;
 
@@ -28,11 +28,29 @@ namespace PoeHUD.Hud
             gameController.EntityListWrapper.EntityRemoved += OnEntityRemoved;
         }
 
+        public Size2F Size { get; protected set; }
+
+        public Func<Vector2> StartDrawPointFunc { get; set; }
+
+        public Vector2 Margin { get; protected set; }
+
         protected TSettings Settings { get; private set; }
 
         public virtual void Dispose() {}
 
-        public abstract void Render();
+        public void Render()
+        {
+            Update(); // Bug move to if
+            if (Settings.Enable)
+            {
+                Draw();
+            }
+            else
+            {
+                Size = new Size2F();
+                Margin = new Vector2();
+            }
+        }
 
         protected static RectangleF GetDirectionsUV(double phi, double distance)
         {
@@ -61,8 +79,12 @@ namespace PoeHUD.Hud
                 .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
         }
 
+        protected abstract void Draw();
+
         protected virtual void OnEntityAdded(EntityWrapper entityWrapper) {}
 
         protected virtual void OnEntityRemoved(EntityWrapper entityWrapper) {}
+
+        protected virtual void Update() {}
     }
 }

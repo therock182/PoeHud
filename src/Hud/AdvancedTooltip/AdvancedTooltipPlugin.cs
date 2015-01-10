@@ -33,13 +33,8 @@ namespace PoeHUD.Hud.AdvancedTooltip
         public AdvancedTooltipPlugin(GameController gameController, Graphics graphics, AdvancedTooltipSettings settings)
             : base(gameController, graphics, settings) {}
 
-        public override void Render()
+        protected override void Draw()
         {
-            if (!Settings.Enable)
-            {
-                return;
-            }
-
             Element uiHover = GameController.Game.IngameState.UIHover;
             Element tooltip = GetTooltip(uiHover);
             Entity poeEntity = uiHover.AsObject<InventoryItemIcon>().Item;

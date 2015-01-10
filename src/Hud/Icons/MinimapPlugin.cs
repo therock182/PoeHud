@@ -24,10 +24,10 @@ namespace PoeHUD.Hud.Icons
             getIcons = gatherMapIcons;
 	    }
 
-	
-		public override void Render()
+
+        protected override void Draw()
 		{
-			if (!GameController.InGame || !Settings.Enable || !Settings.IconsOnMinimap)
+			if (!GameController.InGame || !Settings.IconsOnMinimap)
 			{
 				return;
 			}
