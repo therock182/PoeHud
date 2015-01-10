@@ -4,7 +4,9 @@ using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Health;
+using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 
@@ -133,7 +135,7 @@ namespace PoeHUD.Hud.Menu
             AddButton(itemAlertMenu, "Maps", settingsHub.ItemAlertSettings.Maps);
             AddButton(itemAlertMenu, "RGB", settingsHub.ItemAlertSettings.Rgb);
             AddButton(itemAlertMenu, "Crafting bases", settingsHub.ItemAlertSettings.Crafting);
-            var qualityItemsSettings = settingsHub.ItemAlertSettings.QualityItems;
+            QualityItemsSettings qualityItemsSettings = settingsHub.ItemAlertSettings.QualityItems;
             ToggleButton qualityMenu = AddButton(itemAlertMenu, "Show quality items", qualityItemsSettings.Enable);
             ToggleButton qualityWeaponMenu = AddButton(qualityMenu, "Weapons", qualityItemsSettings.Weapon.Enable);
             qualityWeaponMenu.AddChild(new Picker<int>("Min. quality", qualityItemsSettings.Weapon.MinQuality));
@@ -146,25 +148,24 @@ namespace PoeHUD.Hud.Menu
             AddButton(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             ToggleButton alertTextMenu = AddButton(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
             alertTextMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemAlertSettings.TextSize));
-            ToggleButton showBorderMenu = AddButton(itemAlertMenu, "Show border", settingsHub.ItemAlertSettings.BorderSetting.Enable);
-            showBorderMenu.AddChild(new Picker<int>("Border weight", settingsHub.ItemAlertSettings.BorderSetting.BorderWidth));
-            showBorderMenu.AddChild(new ColorButton("Border color", settingsHub.ItemAlertSettings.BorderSetting.BorderColor));
-            showBorderMenu.AddChild(new ColorButton("Cn't pck up brd color", settingsHub.ItemAlertSettings.BorderSetting.CantPickUpBorderColor));
-            showBorderMenu.AddChild(new ToggleButton("Show timer", settingsHub.ItemAlertSettings.BorderSetting.ShowTimer));
-            showBorderMenu.AddChild(new Picker<int>("Timer text size", settingsHub.ItemAlertSettings.BorderSetting.TimerTextSize));
+            BorderSettings borderSettings = settingsHub.ItemAlertSettings.BorderSettings;
+            ToggleButton showBorderMenu = AddButton(itemAlertMenu, "Show border", borderSettings.Enable);
+            showBorderMenu.AddChild(new Picker<int>("Border width", borderSettings.BorderWidth));
+            showBorderMenu.AddChild(new ColorButton("Border color:", borderSettings.BorderColor));
+            showBorderMenu.AddChild(new ColorButton("Cn't pck up brd color:", borderSettings.CantPickUpBorderColor));
+            showBorderMenu.AddChild(new ToggleButton("Show timer", borderSettings.ShowTimer));
+            showBorderMenu.AddChild(new Picker<int>("Timer text size", borderSettings.TimerTextSize));
 
-            // Item level
-            ToggleButton itemLevelMenu = CreateRootMenu("Item level", r++, settingsHub.ItemLevelSettings.Enable);
-            itemLevelMenu.AddChild(new Picker<int>("Font size", settingsHub.ItemLevelSettings.TextSize));
-
-            // Item mods
-            ToggleButton itemModsMenu = CreateRootMenu("Item mods", r++, settingsHub.ItemRollsSettings.Enable);
-            itemModsMenu.AddChild(new Picker<int>("Mods size", settingsHub.ItemRollsSettings.ModTextSize));
-
-            // Weapon DPS
-            ToggleButton weaponDpsMenu = CreateRootMenu("Weapon DPS", r++, settingsHub.WeaponDpsSettings.Enable);
-            weaponDpsMenu.AddChild(new Picker<int>("DPS size", settingsHub.WeaponDpsSettings.DpsTextSize));
-            weaponDpsMenu.AddChild(new Picker<int>("DPS name size", settingsHub.WeaponDpsSettings.DpsNameTextSize));
+            // Advanced tooltip
+            AdvancedTooltipSettings tooltipSettings = settingsHub.AdvancedTooltipSettings;
+            ToggleButton tooltipMenu = CreateRootMenu("Adv. tooltip", r++, tooltipSettings.Enable);
+            ToggleButton itemLevelMenu = AddButton(tooltipMenu, "Item level", tooltipSettings.ItemLevel.Enable);
+            itemLevelMenu.AddChild(new Picker<int>("Font size", tooltipSettings.ItemLevel.TextSize));
+            ToggleButton itemModsMenu = AddButton(tooltipMenu, "Item mods", tooltipSettings.ItemMods.Enable);
+            itemModsMenu.AddChild(new Picker<int>("Mods size", tooltipSettings.ItemMods.ModTextSize));
+            ToggleButton weaponDpsMenu = AddButton(tooltipMenu, "Weapon DPS", tooltipSettings.WeaponDps.Enable);
+            weaponDpsMenu.AddChild(new Picker<int>("DPS size", tooltipSettings.WeaponDps.DpsTextSize));
+            weaponDpsMenu.AddChild(new Picker<int>("DPS name size", tooltipSettings.WeaponDps.DpsNameTextSize));
 
             // Boss warnings
             ToggleButton bossWarningsMenu = CreateRootMenu("Boss warnings", r++, settingsHub.MonsterTrackerSettings.Enable);

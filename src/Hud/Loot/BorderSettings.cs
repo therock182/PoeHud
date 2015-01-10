@@ -1,11 +1,12 @@
 using PoeHUD.Hud.Settings;
+
 using SharpDX;
 
 namespace PoeHUD.Hud.Loot
 {
-    public sealed class BorderSetting : SettingsBase
+    public sealed class BorderSettings : SettingsBase
     {
-        public BorderSetting()
+        public BorderSettings()
         {
             Enable = true;
             BorderColor = Color.FromAbgr(0xbb252ff);
@@ -16,9 +17,13 @@ namespace PoeHUD.Hud.Loot
         }
 
         public ColorNode BorderColor { get; set; }
+
         public ColorNode CantPickUpBorderColor { get; set; }
+
         public ToggleNode ShowTimer { get; set; }
+
         public RangeNode<int> BorderWidth { get; set; }
+
         public RangeNode<int> TimerTextSize { get; set; }
     }
 }

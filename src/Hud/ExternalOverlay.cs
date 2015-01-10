@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Loot;
-using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Preload;
@@ -130,20 +130,18 @@ namespace PoeHUD.Hud
             plugins.Add(new HealthBarPlugin(gameController, graphics, settings.HealthBarSettings));
             plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
-            plugins.Add(new ItemLevelPlugin(gameController, graphics, settings.ItemLevelSettings));
-            plugins.Add(new ItemRollsPlugin(gameController, graphics, settings.ItemRollsSettings));
-            plugins.Add(new WeaponDpsPlugin(gameController, graphics, settings.WeaponDpsSettings));
+            plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
             plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
 
-            PluginPanel leftPanel = new PluginPanel(GetLeftCornerMap);
+            var leftPanel = new PluginPanel(GetLeftCornerMap);
             leftPanel.AddChildren(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));
             leftPanel.AddChildren(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
             leftPanel.AddChildren(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
             plugins.AddRange(leftPanel.GetPlugins());
 
-            PluginPanel undePanelPanel = new PluginPanel(GetUnderCornerMap);
+            var undePanelPanel = new PluginPanel(GetUnderCornerMap);
             undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
             plugins.AddRange(undePanelPanel.GetPlugins());
 

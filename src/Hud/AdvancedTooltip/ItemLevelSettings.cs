@@ -1,6 +1,6 @@
 ﻿using PoeHUD.Hud.Settings;
 
-namespace PoeHUD.Hud.Loot
+namespace PoeHUD.Hud.AdvancedTooltip
 {
     public sealed class ItemLevelSettings : SettingsBase
     {

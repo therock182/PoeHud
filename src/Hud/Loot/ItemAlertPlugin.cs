@@ -150,7 +150,7 @@ namespace PoeHUD.Hud.Loot
 				string text = GetItemName(kv);
 				if( null == text ) continue;
 
-			    if (Settings.BorderSetting.Enable)
+			    if (Settings.BorderSettings.Enable)
 			    {
 			        DrawBorder(kv.Key.Address);
 			    }
@@ -173,15 +173,15 @@ namespace PoeHUD.Hud.Loot
                 {
                     var rect = entitylabel.Label.GetClientRect();
 
-                    ColorNode borderColor = Settings.BorderSetting.BorderColor;
+                    ColorNode borderColor = Settings.BorderSettings.BorderColor;
                     if (!entitylabel.CanPickUp)
                     {
-                        borderColor = Settings.BorderSetting.CantPickUpBorderColor;
+                        borderColor = Settings.BorderSettings.CantPickUpBorderColor;
                         TimeSpan timeLeft = entitylabel.TimeLeft;
-                        if (Settings.BorderSetting.ShowTimer && timeLeft.TotalMilliseconds > 0)
-                            Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSetting.TimerTextSize, rect.TopRight.Translate(4, 0));
+                        if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                            Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize, rect.TopRight.Translate(4, 0));
                     }
-                    Graphics.DrawFrame(rect, Settings.BorderSetting.BorderWidth, borderColor);
+                    Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
                 }
             }
             else

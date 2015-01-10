@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Poe;
 using PoeHUD.Poe.FilesInMemory;
 using PoeHUD.Poe.RemoteMemoryObjects;
 
 using SharpDX;
 
-namespace PoeHUD.Hud.MaxRolls
+namespace PoeHUD.Hud.AdvancedTooltip
 {
 
-	public class RollValue
+	public class ModValue
 	{
 		public readonly int Tier = -1;
 		private readonly int TotalTiers = 1;
@@ -25,7 +24,7 @@ namespace PoeHUD.Hud.MaxRolls
 		public readonly int[] StatValue;
 
 
-		public RollValue(ItemMod mod, FsController fs, int iLvl)
+		public ModValue(ItemMod mod, FsController fs, int iLvl)
 		{
 			string name = mod.RawName;
 			TheMod = fs.Mods.records[name];

@@ -3,11 +3,11 @@ using System.IO;
 
 using Newtonsoft.Json;
 
+using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Loot;
-using PoeHUD.Hud.MaxRolls;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Preload;
@@ -41,9 +41,7 @@ namespace PoeHUD.Hud.Settings
             DpsMeterSettings = new DpsMeterSettings();
             MapIconsSettings = new MapIconsSettings();
             ItemAlertSettings = new ItemAlertSettings();
-            ItemLevelSettings = new ItemLevelSettings();
-            ItemRollsSettings = new ItemRollsSettings();
-            WeaponDpsSettings = new WeaponDpsSettings();
+            AdvancedTooltipSettings = new AdvancedTooltipSettings();
             MonsterTrackerSettings = new MonsterTrackerSettings();
             PoiTrackerSettings = new PoiTrackerSettings();
             PreloadAlertSettings = new PreloadAlertSettings();
@@ -66,14 +64,8 @@ namespace PoeHUD.Hud.Settings
         [JsonProperty("Item alert")]
         public ItemAlertSettings ItemAlertSettings { get; private set; }
 
-        [JsonProperty("Item level")]
-        public ItemLevelSettings ItemLevelSettings { get; private set; }
-
-        [JsonProperty("Item rolls")]
-        public ItemRollsSettings ItemRollsSettings { get; private set; }
-
-        [JsonProperty("Weapon DPS")]
-        public WeaponDpsSettings WeaponDpsSettings { get; private set; }
+        [JsonProperty("Advanced tooltip")]
+        public AdvancedTooltipSettings AdvancedTooltipSettings { get; private set; }
 
         [JsonProperty("Monster tracker")]
         public MonsterTrackerSettings MonsterTrackerSettings { get; private set; }

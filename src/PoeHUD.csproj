@@ -80,10 +80,11 @@
     <Compile Include="Framework\InputHooks\Structures\MouseLLHookStruct.cs" />
     <Compile Include="Framework\MemoryControl.cs" />
     <Compile Include="Framework\WinApi.cs" />
+    <Compile Include="Hud\AdvancedTooltip\AdvancedTooltipPlugin.cs" />
+    <Compile Include="Hud\AdvancedTooltip\AdvancedTooltipSettings.cs" />
     <Compile Include="Hud\CustomColorDialog.cs" />
     <Compile Include="Hud\Dps\DpsMeterSettings.cs" />
-    <Compile Include="Hud\Dps\WeaponDpsPlugin.cs" />
-    <Compile Include="Hud\Dps\WeaponDpsSettings.cs" />
+    <Compile Include="Hud\AdvancedTooltip\WeaponDpsSettings.cs" />
     <Compile Include="Hud\ExternalOverlay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,12 +94,12 @@
     <Compile Include="Hud\Icons\MapIconsSettings.cs" />
     <Compile Include="Hud\Interfaces\IPanelChild.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
-    <Compile Include="Hud\Loot\BorderSetting.cs" />
+    <Compile Include="Hud\Loot\BorderSettings.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
-    <Compile Include="Hud\Loot\ItemLevelSettings.cs" />
+    <Compile Include="Hud\AdvancedTooltip\ItemLevelSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemsSettings.cs" />
-    <Compile Include="Hud\MaxRolls\ItemRollsSettings.cs" />
+    <Compile Include="Hud\AdvancedTooltip\ItemModsSettings.cs" />
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
@@ -149,8 +150,7 @@
     <Compile Include="Hud\Loot\AlertDrawStyle.cs" />
     <Compile Include="Hud\Loot\CraftingBase.cs" />
     <Compile Include="Hud\Loot\ItemUsefulProperties.cs" />
-    <Compile Include="Hud\MaxRolls\ItemRollsPlugin.cs" />
-    <Compile Include="Hud\MaxRolls\MaxRolls.cs" />
+    <Compile Include="Hud\AdvancedTooltip\ModValue.cs" />
     <Compile Include="Framework\GameWindow.cs" />
     <Compile Include="Framework\Memory.cs" />
     <Compile Include="Framework\InputHooks\KeyboardHook.cs" />
@@ -219,7 +219,6 @@
     <Compile Include="Hud\Trackers\MonsterTracker.cs" />
     <Compile Include="Hud\Menu\Picker.cs" />
     <Compile Include="Hud\Loot\ItemAlertPlugin.cs" />
-    <Compile Include="Hud\Loot\ItemLevelPlugin.cs" />
     <Compile Include="Hud\Menu\MenuPlugin.cs" />
     <Compile Include="Hud\Menu\MenuItem.cs" />
     <Compile Include="Hud\MapIcon.cs" />
