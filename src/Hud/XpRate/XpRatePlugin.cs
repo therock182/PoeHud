@@ -11,7 +11,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.XpRate
 {
-    public class XpRatePlugin : Plugin<XpRateSettings>
+    public class XpRatePlugin : SizedPlugin<XpRateSettings>
     {
         private string xpRate, timeLeft;
 

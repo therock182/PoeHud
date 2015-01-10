@@ -13,7 +13,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Dps
 {
-    public class DpsMeterPlugin : Plugin<DpsMeterSettings>
+    public class DpsMeterPlugin : SizedPlugin<DpsMeterSettings>
     {
         private const double DPS_PERIOD = 0.2;
 
@@ -71,7 +71,7 @@ namespace PoeHUD.Hud.Dps
             Graphics.DrawBox(bounds, Settings.BackgroundColor);
 
             Size = bounds.Size;
-            Margin = new Vector2(0, 5);
+            Margin = new Vector2(5, 0);
         }
 
         private double CalculateDps(TimeSpan elapsedTime)

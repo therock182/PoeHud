@@ -95,6 +95,8 @@
     <Compile Include="Hud\Interfaces\IPanelChild.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
     <Compile Include="Hud\Loot\BorderSettings.cs" />
+    <Compile Include="Hud\KC\KillCounterSettings.cs" />
+    <Compile Include="Hud\KC\KillsCounterPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemLevelSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemSettings.cs" />
@@ -105,6 +107,7 @@
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
     <Compile Include="Hud\PluginPanel.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />
+    <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
     <Compile Include="Hud\Plugin.cs" />

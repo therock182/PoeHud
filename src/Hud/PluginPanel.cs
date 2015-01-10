@@ -42,8 +42,8 @@ namespace PoeHUD.Hud
                 }
                 return new Size2F(0, 0);
             }
-
-        }
+                
+            }
 
         private Size2F GetHorizontalSize()
         {
@@ -121,7 +121,7 @@ namespace PoeHUD.Hud
                     child.StartDrawPointFunc = () => ChoosingStartDrawPoint(index, prevChild => prevChild.StartDrawPointFunc().Translate(prevChild.Margin.X, prevChild.Size.Height + prevChild.Margin.Y));
                     break;
                 case Direction.Left:
-                    child.StartDrawPointFunc = () => ChoosingStartDrawPoint(index, prevChild => prevChild.StartDrawPointFunc().Translate(prevChild.Margin.X - prevChild.Size.Width, prevChild.Margin.Y));
+                    child.StartDrawPointFunc = () => ChoosingStartDrawPoint(index, prevChild => prevChild.StartDrawPointFunc().Translate(-prevChild.Margin.X - prevChild.Size.Width, prevChild.Margin.Y));
                     break;
             }
         }

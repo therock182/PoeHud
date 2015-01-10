@@ -11,6 +11,7 @@ using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.MiscHacks;
@@ -130,7 +131,6 @@ namespace PoeHUD.Hud
             plugins.Add(new HealthBarPlugin(gameController, graphics, settings.HealthBarSettings));
             plugins.Add(new MinimapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
-            plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
             plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
@@ -138,13 +138,17 @@ namespace PoeHUD.Hud
             var leftPanel = new PluginPanel(GetLeftCornerMap);
             leftPanel.AddChildren(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));
             leftPanel.AddChildren(new PreloadAlertPlugin(gameController, graphics, settings.PreloadAlertSettings));
-            leftPanel.AddChildren(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
+            var horizontalPanel = new PluginPanel(Direction.Left);
+            horizontalPanel.AddChildren(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
+            horizontalPanel.AddChildren(new KillsCounterPlugin(gameController, graphics, settings.KillsCounterSettings));
+            leftPanel.AddChildren(horizontalPanel);
             plugins.AddRange(leftPanel.GetPlugins());
 
             var undePanelPanel = new PluginPanel(GetUnderCornerMap);
             undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
             plugins.AddRange(undePanelPanel.GetPlugins());
-
+            
+            plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
 
             Deactivate += OnDeactivate;

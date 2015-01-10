@@ -22,7 +22,7 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemAlertPlugin : Plugin<ItemAlertSettings>, IPluginWithMapIcons
+    public class ItemAlertPlugin : SizedPlugin<ItemAlertSettings>, IPluginWithMapIcons
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
@@ -178,10 +178,12 @@ namespace PoeHUD.Hud.Loot
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;
                     if (!entitylabel.CanPickUp)
                     {
-                        borderColor = Settings.BorderSettings.CantPickUpBorderColor;
                         TimeSpan timeLeft = entitylabel.TimeLeft;
                         if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                        {
+                            borderColor = Settings.BorderSettings.CantPickUpBorderColor;
                             Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize, rect.TopRight.Translate(4, 0));
+                        }
                     }
                     Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
                 }

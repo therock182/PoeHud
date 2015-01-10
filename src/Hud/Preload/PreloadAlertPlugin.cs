@@ -9,7 +9,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Preload
 {
-    public class PreloadAlertPlugin : Plugin<PreloadAlertSettings>
+    public class PreloadAlertPlugin : SizedPlugin<PreloadAlertSettings>
     {
         private readonly HashSet<string> disp;
         private Dictionary<string, string> alertStrings;
