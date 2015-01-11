@@ -28,6 +28,8 @@ namespace PoeHUD.Hud.UI
 
         private bool resized;
 
+        private volatile bool running = true;
+
         public Graphics(RenderForm form, int width, int height)
         {
             reset = () => form.Invoke(new Action(() =>
@@ -61,7 +63,7 @@ namespace PoeHUD.Hud.UI
 
         public void RenderLoop()
         {
-            while (!device.IsDisposed)
+            while (running)
             {
                 try
                 {
@@ -93,6 +95,11 @@ namespace PoeHUD.Hud.UI
                 }
                 catch (SharpDXException) {}
             }
+        }
+
+        public void Stop()
+        {
+            running = false;
         }
 
         public void Dispose()

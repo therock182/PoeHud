@@ -178,6 +178,7 @@ namespace PoeHUD.Hud.Loot
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;
                     if (!entitylabel.CanPickUp)
                     {
+                        borderColor = Settings.BorderSettings.NotMyItemBorderColor;
                         TimeSpan timeLeft = entitylabel.TimeLeft;
                         if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
                         {

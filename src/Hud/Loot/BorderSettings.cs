@@ -11,6 +11,7 @@ namespace PoeHUD.Hud.Loot
             Enable = true;
             BorderColor = Color.FromAbgr(0xbb252ff);
             CantPickUpBorderColor = Color.Red;
+            NotMyItemBorderColor = Color.Yellow;
             ShowTimer = true;
             BorderWidth = new RangeNode<int>(3, 1, 10);
             TimerTextSize = new RangeNode<int>(10, 8, 40);
@@ -19,6 +20,8 @@ namespace PoeHUD.Hud.Loot
         public ColorNode BorderColor { get; set; }
 
         public ColorNode CantPickUpBorderColor { get; set; }
+
+        public ColorNode NotMyItemBorderColor { get; set; }
 
         public ToggleNode ShowTimer { get; set; }
 

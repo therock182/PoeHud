@@ -80,8 +80,11 @@ namespace PoeHUD.Hud.KC
             {
                 countedIds.Add(entityWrapper.LongId);
                 MonsterRarity rarity = entityWrapper.GetComponent<ObjectMagicProperties>().Rarity;
-                counters[rarity]++;
-                summaryCounter++;
+                if (entityWrapper.IsHostile && counters.ContainsKey(rarity))
+                {
+                    counters[rarity]++;
+                    summaryCounter++;
+                }
             }
         }
         protected override void Draw()

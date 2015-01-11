@@ -151,6 +151,7 @@ namespace PoeHUD.Hud.Menu
             AddChild(showBorderMenu, "Border width", borderSettings.BorderWidth);
             AddChild(showBorderMenu, "Border color:", borderSettings.BorderColor);
             AddChild(showBorderMenu, "Cn't pck up brd color:", borderSettings.CantPickUpBorderColor);
+            AddChild(showBorderMenu, "Not my item brd color:", borderSettings.NotMyItemBorderColor);
             AddChild(showBorderMenu, "Show timer", borderSettings.ShowTimer);
             AddChild(showBorderMenu, "Timer text size", borderSettings.TimerTextSize);
 
