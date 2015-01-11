@@ -104,6 +104,7 @@
     <Compile Include="Hud\AdvancedTooltip\ItemModsSettings.cs" />
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
+    <Compile Include="Hud\Menu\RootButton.cs" />
     <Compile Include="Hud\MiscHacks\MiscHacksSettings.cs" />
     <Compile Include="Hud\PluginPanel.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />

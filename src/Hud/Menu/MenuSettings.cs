@@ -7,18 +7,12 @@ namespace PoeHUD.Hud.Menu
         public MenuSettings()
         {
             Enable = true;
-            Size = 25;
-            Length = 50;
-            PositionWidth = 0;
-            PositionHeight = 100;
+            X = 10;
+            Y = 100;
         }
 
-        public float Size { get; set; }
+        public float X { get; set; }
 
-        public float Length { get; set; }
-
-        public float PositionWidth { get; set; }
-
-        public float PositionHeight { get; set; }
+        public float Y { get; set; }
     }
 }

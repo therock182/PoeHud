@@ -20,13 +20,13 @@ namespace PoeHUD.Hud.Menu
             Children = new List<MenuItem>();
         }
 
-        public RectangleF Bounds { protected get; set; }
+        public RectangleF Bounds { get; set; }
 
         public abstract int DesiredWidth { get; }
 
         public abstract int DesiredHeight { get; }
 
-        public void AddChild(MenuItem item)
+        public virtual void AddChild(MenuItem item)
         {
             float x = Bounds.X + Bounds.Width;
             float y = Bounds.Y + Children.Sum(current => current.Bounds.Height);
