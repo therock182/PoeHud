@@ -48,10 +48,13 @@ namespace PoeHUD.Hud.Icons
 				float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
 				var point = minimapCenter + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iZ - pPosZ) / 20);
 
-				var texture = icon.MinimapIcon;
+                var texture = icon.MinimapIcon;
 				int size = icon.Size;
-				var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
-				texture.Draw(Graphics, rect);
+                var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
+                bool isContain;
+                clientRect.Contains(ref rect, out isContain);
+                if (isContain)
+                    texture.Draw(Graphics, rect);
 			}
 		}
 	}
