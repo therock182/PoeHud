@@ -44,8 +44,6 @@ namespace PoeHUD.Hud
 
         private Graphics2D graphics;
 
-        private Task renderLoop;
-
         public ExternalOverlay(GameController gameController, Func<bool> gameEnded)
         {
             settings = SettingsHub.Load();
@@ -113,11 +111,9 @@ namespace PoeHUD.Hud
 
         private void OnClosing(object sender, FormClosingEventArgs e)
         {
-            graphics.Stop();
-            renderLoop.Wait();
+            SettingsHub.Save(settings);
             plugins.ForEach(plugin => plugin.Dispose());
             graphics.Dispose();
-            SettingsHub.Save(settings);
         }
 
         private void OnDeactivate(object sender, EventArgs e)
@@ -160,8 +156,7 @@ namespace PoeHUD.Hud
 
             CheckGameWindow();
             CheckGameState();
-            renderLoop = Task.Run(() => graphics.RenderLoop());
-            await renderLoop;
+            await Task.Run(() => graphics.RenderLoop());
         }
 
         private void OnRender()

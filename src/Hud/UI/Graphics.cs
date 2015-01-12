@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 using PoeHUD.Framework.Helpers;
@@ -28,7 +29,9 @@ namespace PoeHUD.Hud.UI
 
         private bool resized;
 
-        private volatile bool running = true;
+        private bool running = true;
+
+        private ManualResetEventSlim renderLocker = new ManualResetEventSlim(false);
 
         public Graphics(RenderForm form, int width, int height)
         {
@@ -57,6 +60,7 @@ namespace PoeHUD.Hud.UI
             device = new DeviceEx(direct3D, 0, DeviceType.Hardware, form.Handle, CREATE_FLAGS, presentParameters);
             fontRenderer = new FontRenderer(device);
             textureRenderer = new TextureRenderer(device);
+            renderLocker.Reset();
         }
 
         public event Action Render;
@@ -95,17 +99,16 @@ namespace PoeHUD.Hud.UI
                 }
                 catch (SharpDXException) {}
             }
-        }
-
-        public void Stop()
-        {
-            running = false;
+            renderLocker.Set();
         }
 
         public void Dispose()
         {
             if (!device.IsDisposed)
             {
+                running = false;
+                renderLocker.Wait();
+                renderLocker.Dispose();
                 device.Dispose();
                 direct3D.Dispose();
                 fontRenderer.Dispose();
