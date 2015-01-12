@@ -16,16 +16,14 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Trackers
 {
-	public class MonsterTracker : Plugin<MonsterTrackerSettings>, IPluginWithMapIcons
+	public class MonsterTracker : PluginWithMapIcons <MonsterTrackerSettings>, IPluginWithMapIcons
 	{
 		private HashSet<int> alreadyAlertedOf;
 		private Dictionary<EntityWrapper, string> alertTexts;
 
 		private Dictionary<string, string> modAlerts;
 		private Dictionary<string, string> typeAlerts;
-		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
-
-
+		
 	    public MonsterTracker(GameController gameController, Graphics graphics, MonsterTrackerSettings settings)
             : base(gameController, graphics, settings)
 	    {
@@ -34,20 +32,14 @@ namespace PoeHUD.Hud.Trackers
             this.alertTexts = new Dictionary<EntityWrapper, string>();
             this.InitAlertStrings();
             this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
-
-            currentIcons.Clear();
-            foreach (EntityWrapper current in this.GameController.Entities)
-            {
-                this.OnEntityAdded(current);
-            }
 	    }
 
 	
 		protected override void OnEntityRemoved(EntityWrapper entity)
 		{
+            base.OnEntityRemoved(entity);
 			alertTexts.Remove(entity);
-			currentIcons.Remove(entity);
-		}
+	    }
 
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
@@ -60,7 +52,7 @@ namespace PoeHUD.Hud.Trackers
                 var mapIcon = GetMapIconForMonster(entity);
 			    if (mapIcon != null)
 			    {
-			        currentIcons[entity] = mapIcon;
+			        CurrentIcons[entity] = mapIcon;
 			    }
 			    string text = entity.Path;
 				if (text.Contains('@'))
@@ -100,11 +92,10 @@ namespace PoeHUD.Hud.Trackers
 		{
 			this.alreadyAlertedOf.Clear();
 			this.alertTexts.Clear();
-			currentIcons.Clear();
-		}
+	    }
 		public override void Render()
 		{
-			if (!Settings.ShowText)
+            if (!Settings.ShowText)
 			{
 				return;
 			}
@@ -155,22 +146,6 @@ namespace PoeHUD.Hud.Trackers
 				rectBackground.Y = rectBackground.Y + rectBackground.Height;
 				rectBackground.Height = 5;
                 Graphics.DrawBox(rectBackground, Settings.BackgroundColor);
-			}
-		}
-
-		public IEnumerable<MapIcon> GetIcons()
-		{
-			List<EntityWrapper> toRemove = new List<EntityWrapper>();
-			foreach (KeyValuePair<EntityWrapper, MapIcon> kv in currentIcons)
-			{
-				if (kv.Value.IsEntityStillValid())
-					yield return kv.Value;
-				else
-					toRemove.Add(kv.Key);
-			}
-			foreach (EntityWrapper wrapper in toRemove)
-			{
-				currentIcons.Remove(wrapper);
 			}
 		}
 

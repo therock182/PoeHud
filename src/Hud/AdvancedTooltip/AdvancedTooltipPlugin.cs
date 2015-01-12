@@ -41,8 +41,9 @@ namespace PoeHUD.Hud.AdvancedTooltip
             }
 
             Element uiHover = GameController.Game.IngameState.UIHover;
-            Element tooltip = GetTooltip(uiHover);
-            Entity poeEntity = uiHover.AsObject<InventoryItemIcon>().Item;
+            var inventoryItemIcon = uiHover.AsObject<InventoryItemIcon>();
+            Element tooltip = GetTooltip(inventoryItemIcon);
+            Entity poeEntity = inventoryItemIcon.Item;
             if (tooltip == null || poeEntity.Address == 0 || !poeEntity.IsValid)
             {
                 return;
@@ -81,9 +82,9 @@ namespace PoeHUD.Hud.AdvancedTooltip
             }
         }
 
-        private static Element GetTooltip(RemoteMemoryObject uiHover)
+        private static Element GetTooltip(InventoryItemIcon inventoryItemIcon)
         {
-            Element tooltip = uiHover.AsObject<InventoryItemIcon>().Tooltip;
+            Element tooltip = inventoryItemIcon.Tooltip;
             if (tooltip == null)
             {
                 return null;
