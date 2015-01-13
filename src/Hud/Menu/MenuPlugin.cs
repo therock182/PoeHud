@@ -201,6 +201,10 @@ namespace PoeHUD.Hud.Menu
             ToggleButton showMonsterKillsMenu = CreateRootMenu("Show MK", r++, settingsHub.KillsCounterSettings.Enable);
             showMonsterKillsMenu.AddChild(new ToggleButton("Show details", settingsHub.KillsCounterSettings.ShowDetail));
             
+            // Show inventory preview
+            ToggleButton showInventoryPreviewMenu = CreateRootMenu("Show inv preview", r++, settingsHub.InventoryPreviewSettings.Enable);
+            showInventoryPreviewMenu.AddChild(new ColorButton("Free cell color", settingsHub.InventoryPreviewSettings.CellFreeColor));
+            showInventoryPreviewMenu.AddChild(new ColorButton("Used cell color", settingsHub.InventoryPreviewSettings.CellUsedColor));
         }
 
         private ToggleButton CreateRootMenu(string text, int yIndex, ToggleNode node)

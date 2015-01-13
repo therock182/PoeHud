@@ -80,7 +80,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element InventoryPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0xF4); }
+            get { return ReadObjectAt<Element>(12 + 0xF4); }
         }
 
         public Element StashPanel
@@ -152,12 +152,12 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element OpenLeftPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x154); }
+            get { return ReadObjectAt<Element>(16 + 0x154); }
         }
 
         public Element OpenRightPanel
         {
-            get { return ReadObjectAt<Element>(4 + 0x158); }
+            get { return ReadObjectAt<Element>(16 + 0x158); }
         }
 
         public Element OpenNpcDialogPanel

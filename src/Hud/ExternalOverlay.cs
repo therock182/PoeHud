@@ -11,6 +11,7 @@ using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.InventoryPreview;
 using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
@@ -144,12 +145,14 @@ namespace PoeHUD.Hud
             leftPanel.AddChildren(horizontalPanel);
             plugins.AddRange(leftPanel.GetPlugins());
 
-            var undePanelPanel = new PluginPanel(GetUnderCornerMap);
-            undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
-            plugins.AddRange(undePanelPanel.GetPlugins());
+            var underPanel = new PluginPanel(GetUnderCornerMap);
+            underPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
+            plugins.AddRange(underPanel.GetPlugins());
             
             plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
+            plugins.Add(new InventoryPreviewPlugin(gameController, graphics, settings.InventoryPreviewSettings));
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
+
 
             Deactivate += OnDeactivate;
             FormClosing += OnClosing;
