@@ -7,11 +7,17 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud;
 using PoeHUD.Poe;
+using System.Runtime.InteropServices;
 
 namespace PoeHUD
 {
 	public class Program
 	{
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern bool SetWindowText(IntPtr hwnd, String lpString);
 
 		private static int FindPoeProcess(out Offsets offs)
 		{
@@ -42,6 +48,13 @@ namespace PoeHUD
 	    [STAThread]
 		public static void Main(string[] args)
 		{
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var initname = new string(
+                Enumerable.Repeat(chars, 12)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+            SetWindowText(Process.GetCurrentProcess().MainWindowHandle, initname);
 #if !DEBUG
             MemoryControl.Start();
 #endif

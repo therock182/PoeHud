@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.AdvancedTooltip;
@@ -14,7 +13,6 @@ using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
-using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.Trackers;
@@ -46,6 +44,14 @@ namespace PoeHUD.Hud
 
         public ExternalOverlay(GameController gameController, Func<bool> gameEnded)
         {
+
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var windowname = new string(
+                Enumerable.Repeat(chars, 12)
+                          .Select(s => s[random.Next(s.Length)])
+                          .ToArray());
+
             settings = SettingsHub.Load();
 
             this.gameController = gameController;
@@ -53,8 +59,8 @@ namespace PoeHUD.Hud
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            string title = settings.WindowName;
-            Text = string.IsNullOrWhiteSpace(title) ? "PoeHUD" : title;
+            string title = windowname;
+            Text = string.IsNullOrWhiteSpace(title) ? "glitchd" : title;
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
             FormBorderStyle = FormBorderStyle.None;
@@ -133,7 +139,6 @@ namespace PoeHUD.Hud
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
-            plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
 
             var leftPanel = new PluginPanel(GetLeftCornerMap);
             leftPanel.AddChildren(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));

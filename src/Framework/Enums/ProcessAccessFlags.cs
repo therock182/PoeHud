@@ -10,7 +10,6 @@ namespace PoeHUD.Framework.Enums
         CreateThread = 0x00000002,
         VirtualMemoryOperation = 0x00000008,
         VirtualMemoryRead = 0x00000010,
-        VirtualMemoryWrite = 0x00000020,
         DuplicateHandle = 0x00000040,
         CreateProcess = 0x000000080,
         SetQuota = 0x00000100,

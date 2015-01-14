@@ -9,13 +9,6 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         {
             get { return base.GetObject<Camera>(Address + 0x15B4 + Offsets.IgsOffsetDelta); }
         }
-
-        public float CurrentZoomLevel
-        {
-            get { return M.ReadFloat(Address + 0x1694 + Offsets.IgsOffsetDelta); }
-            set { M.WriteFloat(Address + 0x1694 + Offsets.IgsOffsetDelta, value); }
-        }
-
         public IngameData Data
         {
             get { return base.ReadObject<IngameData>(Address + 0x138 + Offsets.IgsOffset); }

@@ -43,19 +43,6 @@ namespace PoeHUD.Poe
         89 0C 24              - mov [esp],ecx
         D9 00                 - fld dword ptr [eax]         //4 (prev+0xC) replace to  fld1  ( D9E8 )
         */
-        private static readonly Pattern maphackPattern = new Pattern(new byte[]
-        {
-            81, 139, 70, 104, 139, 8, 104, 0, 32, 0, 0, 141, 84, 36, 4, 82,
-            106, 0, 106, 0, 80, 139, 65, 44, 255, 208, 139, 70, 72, 59, 70, 76
-        }, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-        private static readonly Pattern zoomhackPattern = new Pattern(new byte[]
-        {
-            85, 139, 236, 131, 228, 248, 139, 69, 12, 131, 236, 44, 128, 56, 0, 83,
-            86, 87, 139, 217, 15, 133, 233, 0, 0, 0, 131, 187
-        }, "xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-
         /* fullbright base (function begin here)
         55                    - push ebp
         8B EC                 - mov ebp,esp
@@ -135,24 +122,14 @@ namespace PoeHUD.Poe
 			75 12                   jnz     short loc_542DBB
 		 */
 
-        private static readonly Pattern particlePattern = new Pattern(new byte[]
-        {
-            0x00, 0x8B, 0, 0, 0x80, 0xB8, 0, 0, 0, 0, 0x00, 0x75, 0x12
-        }, "xx??xx????xxx");
-
 
    
         public int AreaChangeCount { get; private set; }
         public int Base { get; private set; }
         public string ExeName { get; private set; }
         public int FileRoot { get; private set; }
-        public int Fullbright1 { get; private set; }
-        public int Fullbright2 { get; private set; }
         public int IgsDelta { get; private set; }
         public int IgsOffset { get; private set; }
-        public int MaphackFunc { get; private set; }
-        public int ParticlesCode { get; private set; }
-        public int ZoomHackFunc { get; private set; }
 
         public int IgsOffsetDelta 
         {
@@ -165,22 +142,13 @@ namespace PoeHUD.Poe
         {
             int[] array = m.FindPatterns(new[]
             {
-                maphackPattern,
-                zoomhackPattern,
-                fullbrightPattern,
                 basePtrPattern,
                 fileRootPattern,
                 areaChangePattern,
-                particlePattern
             });
-            MaphackFunc = array[0];
-            ZoomHackFunc = array[1] + 247;
-            Fullbright1 = m.ReadInt(m.AddressOfProcess + array[2] + 0x600) - m.AddressOfProcess;
-            Fullbright2 = m.ReadInt(m.AddressOfProcess + array[2] + 0x656) - m.AddressOfProcess;
             Base = m.ReadInt(m.AddressOfProcess + array[3] + 22) - m.AddressOfProcess;
             FileRoot = m.ReadInt(m.AddressOfProcess + array[4] + 40) - m.AddressOfProcess;
             AreaChangeCount = m.ReadInt(m.AddressOfProcess + array[5] + 13) - m.AddressOfProcess;
-            ParticlesCode = m.AddressOfProcess + array[6] - 5;
         }
     }
 }

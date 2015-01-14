@@ -23,7 +23,6 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         public float ZFar
         {
             get { return M.ReadFloat(Address + 392); }
-            set { M.WriteFloat(Address + 392, value); }
         }
 
         public Vector3 Position
