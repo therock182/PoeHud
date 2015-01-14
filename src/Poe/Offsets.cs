@@ -146,9 +146,9 @@ namespace PoeHUD.Poe
                 fileRootPattern,
                 areaChangePattern,
             });
-            Base = m.ReadInt(m.AddressOfProcess + array[3] + 22) - m.AddressOfProcess;
-            FileRoot = m.ReadInt(m.AddressOfProcess + array[4] + 40) - m.AddressOfProcess;
-            AreaChangeCount = m.ReadInt(m.AddressOfProcess + array[5] + 13) - m.AddressOfProcess;
+            Base = m.ReadInt(m.AddressOfProcess + array[0] + 22) - m.AddressOfProcess;
+            FileRoot = m.ReadInt(m.AddressOfProcess + array[1] + 40) - m.AddressOfProcess;
+            AreaChangeCount = m.ReadInt(m.AddressOfProcess + array[2] + 13) - m.AddressOfProcess;
         }
     }
 }
