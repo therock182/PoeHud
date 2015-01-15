@@ -34,11 +34,11 @@ namespace PoeHUD.Hud.Icons
 
             Camera camera = GameController.Game.IngameState.Camera;
             Map mapWindow = GameController.Game.IngameState.IngameUi.Map;
-            RectangleF rcMap = mapWindow.GetClientRect();
+            RectangleF mapRect = mapWindow.GetClientRect();
 
             Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            float pPosZ = GameController.Player.GetComponent<Render>().Z;
-            Vector2 screenCenter = new Vector2(rcMap.Width / 2, rcMap.Height / 2) + new Vector2(rcMap.X, rcMap.Y)
+            float posZ = GameController.Player.GetComponent<Render>().Z;
+            Vector2 screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2) + new Vector2(mapRect.X, mapRect.Y)
                 + new Vector2(mapWindow.ShiftX, mapWindow.ShiftY);
             var diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
             float k = camera.Width < 1024f ? 1120f : 1024f;
@@ -46,14 +46,13 @@ namespace PoeHUD.Hud.Icons
 
             foreach (MapIcon icon in getIcons().Where(x => x.IsVisible()))
             {
-                float iZ = icon.EntityWrapper.GetComponent<Render>().Z;
+                float iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
                 Vector2 point = screenCenter
-                    + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iZ - pPosZ) / 20);
+                    + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, scale, (iconZ - posZ) / 20);
 
                 HudTexture texture = icon.LargeMapIcon ?? icon.MinimapIcon;
                 int size = icon.SizeOfLargeIcon.GetValueOrDefault(icon.Size * 2);
-                var rect = new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size);
-                texture.Draw(Graphics, rect);
+                texture.Draw(Graphics, new RectangleF(point.X - size / 2f, point.Y - size / 2f, size, size));
             }
         }
     }

@@ -1,6 +1,5 @@
 using System;
 
-using PoeHUD.Framework;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 
@@ -8,10 +7,10 @@ using SharpDX;
 
 namespace PoeHUD.Hud
 {
-    public class MapIconCreature : MapIcon
+    public class CreatureMapIcon : MapIcon
     {
-        public MapIconCreature(EntityWrapper entityWrapper, HudTexture hudTexture, Func<bool> show, int iconSize)
-            : base(entityWrapper, hudTexture, show, iconSize) {}
+        public CreatureMapIcon(EntityWrapper entityWrapper, string hudTexture, Func<bool> show, int iconSize)
+            : base(entityWrapper, new HudTexture(hudTexture), show, iconSize) {}
 
         public override bool IsVisible()
         {
@@ -19,9 +18,9 @@ namespace PoeHUD.Hud
         }
     }
 
-    public class MapIconChest : MapIcon
+    public class ChestMapIcon : MapIcon
     {
-        public MapIconChest(EntityWrapper entityWrapper, HudTexture hudTexture, Func<bool> show, int iconSize)
+        public ChestMapIcon(EntityWrapper entityWrapper, HudTexture hudTexture, Func<bool> show, int iconSize)
             : base(entityWrapper, hudTexture, show, iconSize) {}
 
         public override bool IsEntityStillValid()

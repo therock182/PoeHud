@@ -134,9 +134,9 @@
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
-    <Compile Include="Hud\Health\Healthbar.cs" />
+    <Compile Include="Hud\Health\HealthBar.cs" />
     <Compile Include="Hud\Health\HealthBarPlugin.cs" />
-    <Compile Include="Hud\Health\RenderPrio.cs" />
+    <Compile Include="Hud\Health\CreatureType.cs" />
     <Compile Include="Hud\Interfaces\IPluginWithMapIcons.cs" />
     <Compile Include="Models\AreaInstance.cs" />
     <Compile Include="Poe\Components\Flask.cs" />

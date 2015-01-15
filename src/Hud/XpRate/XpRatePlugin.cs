@@ -65,7 +65,7 @@ namespace PoeHUD.Hud.XpRate
 
             Graphics.DrawBox(bounds, Settings.BackgroundColor);
             Size = bounds.Size;
-            Margin=new Vector2(0,5);
+            Margin = new Vector2(0, 5);
         }
 
         private void CalculateXp(DateTime nowTime)

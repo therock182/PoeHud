@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 
@@ -8,7 +8,7 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Menu
 {
-    public class Picker<T> : MenuItem where T:struct
+    public class Picker<T> : MenuItem where T : struct
     {
         private readonly string name;
 
@@ -51,13 +51,6 @@ namespace PoeHUD.Hud.Menu
                 Color.White);
         }
 
-    
-
-        private float MinusFloat(T one, T two)
-        {
-            return (float)((dynamic)one - two);
-        }
-
         protected override void HandleEvent(MouseEventID id, Vector2 pos)
         {
             switch (id)
@@ -92,8 +85,13 @@ namespace PoeHUD.Hud.Menu
                 float num2 = num + Bounds.Width - 10;
                 num3 = x >= num2 ? 1 : (x - num) / (num2 - num);
             }
-            
-            node.Value = (T)(dynamic) Math.Round((float)(dynamic)node.Min + num3 * MinusFloat(node.Max, node.Min));
+
+            node.Value = (T)(dynamic)Math.Round((float)(dynamic)node.Min + num3 * MinusFloat(node.Max, node.Min));
+        }
+
+        private float MinusFloat(T one, T two)
+        {
+            return (float)((dynamic)one - two);
         }
     }
 }
