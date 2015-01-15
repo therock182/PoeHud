@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PoeHUD.Controllers;
-using PoeHUD.Hud;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 using SharpDX;
 
-namespace PoeHUD
+namespace PoeHUD.Hud
 {
     public abstract class SizedPluginWithMapIcons<TSettings> : PluginWithMapIcons<TSettings>, IPanelChild where TSettings : SettingsBase
     {
