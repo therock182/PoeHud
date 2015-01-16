@@ -48,20 +48,21 @@ namespace PoeHUD
 #endif
             FileStream fs = new FileStream("csum",FileMode.OpenOrCreate);
             fs.Close();
+            string HUDLOC = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
             string lastCsums = System.IO.File.ReadAllText("csum");
             int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
-            if (HashCheck.GetCSum(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) == 0 | HashCheck.GetCSum(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) == lastCsum)
+            if (HashCheck.GetCSum(HUDLOC) == 0 | HashCheck.GetCSum(HUDLOC) == lastCsum)
             {
                 MessageBox.Show("Please Run the Scrambler for your safety. LastCsum = "+lastCsums);
                 System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
-                store.WriteLine(HashCheck.GetCSum(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+                store.WriteLine(HashCheck.GetCSum(HUDLOC));
                 store.Close();
                 return;
             }
             else
             {
                 System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
-                store.WriteLine(HashCheck.GetCSum(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+                store.WriteLine(HashCheck.GetCSum(HUDLOC));
                 store.Close();
             }
 
