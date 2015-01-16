@@ -2,6 +2,8 @@ PoeHud
 ======
 
 Reads data from Path of Exile client application and displays it on transparent overlay, while you play PoE.
+No longer contains maphack/particleshack/zoomhack/fullbright.
+it now only relies on reading memory. Thinking about implementing another way than RPM to do this.
 
 
 ### Requirements

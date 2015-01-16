@@ -11,7 +11,6 @@ using PoeHUD.Hud.InventoryPreview;
 using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
-using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings.Converters;
 using PoeHUD.Hud.Trackers;
@@ -38,7 +37,6 @@ namespace PoeHUD.Hud.Settings
 
         public SettingsHub()
         {
-            WindowName = "Something in Galaxy";
             MenuSettings = new MenuSettings();
             DpsMeterSettings = new DpsMeterSettings();
             MapIconsSettings = new MapIconsSettings();
@@ -48,14 +46,10 @@ namespace PoeHUD.Hud.Settings
             PoiTrackerSettings = new PoiTrackerSettings();
             PreloadAlertSettings = new PreloadAlertSettings();
             XpRateSettings = new XpRateSettings();
-            MiscHacksSettings = new MiscHacksSettings();
             HealthBarSettings = new HealthBarSettings();
             InventoryPreviewSettings = new InventoryPreviewSettings();
             KillsCounterSettings = new KillCounterSettings();
         }
-
-        public string WindowName { get; private set; }
-
         [JsonProperty("Menu")]
         public MenuSettings MenuSettings { get; private set; }
 
@@ -82,9 +76,6 @@ namespace PoeHUD.Hud.Settings
 
         [JsonProperty("XP per hour")]
         public XpRateSettings XpRateSettings { get; private set; }
-
-        [JsonProperty("Misc hacks")]
-        public MiscHacksSettings MiscHacksSettings { get; private set; }
 
         [JsonProperty("Health bar")]
         public HealthBarSettings HealthBarSettings { get; private set; }

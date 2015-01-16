@@ -19,5 +19,4 @@ using System.Security.Permissions;
 [assembly: CompilationRelaxations(8)]
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
 [assembly: ComVisible(false)]
-[assembly: Guid("a2c8a5ae-96f4-431b-b80b-556f16de29da")]
 [module: UnverifiableCode]

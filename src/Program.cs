@@ -12,7 +12,6 @@ namespace PoeHUD
 {
 	public class Program
 	{
-
 		private static int FindPoeProcess(out Offsets offs)
 		{
 			var clients = Process.GetProcessesByName(Offsets.Regular.ExeName).Select(p => Tuple.Create(p, Offsets.Regular)).ToList();
@@ -40,7 +39,7 @@ namespace PoeHUD
 	    }
 
 	    [STAThread]
-		public static void Main(string[] args)
+		public static void Main()
 		{
 #if !DEBUG
             MemoryControl.Start();

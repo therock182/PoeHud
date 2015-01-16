@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
@@ -15,7 +16,6 @@ using PoeHUD.Hud.InventoryPreview;
 using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
-using PoeHUD.Hud.MiscHacks;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.Trackers;
@@ -54,8 +54,7 @@ namespace PoeHUD.Hud
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            string title = settings.WindowName;
-            Text = string.IsNullOrWhiteSpace(title) ? "PoeHUD" : title;
+            Text = MathHepler.GetRandomWord(MathHepler.Randomizer.Next(7) + 5);
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
             FormBorderStyle = FormBorderStyle.None;
@@ -134,7 +133,6 @@ namespace PoeHUD.Hud
             plugins.Add(new LargeMapPlugin(gameController, graphics, GatherMapIcons, settings.MapIconsSettings));
             plugins.Add(new MonsterTracker(gameController, graphics, settings.MonsterTrackerSettings));
             plugins.Add(new PoiTracker(gameController, graphics, settings.PoiTrackerSettings));
-            plugins.Add(new MiscHacksPlugin(gameController, graphics, settings.MiscHacksSettings));
 
             var leftPanel = new PluginPanel(GetLeftCornerMap);
             leftPanel.AddChildren(new XpRatePlugin(gameController, graphics, settings.XpRateSettings));

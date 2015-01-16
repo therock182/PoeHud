@@ -52,11 +52,6 @@ namespace PoeHUD.Framework
             return ReadProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
         }
 
-        public static bool WriteProcessMemory(IntPtr handle, IntPtr baseAddress, byte[] buffer)
-        {
-            IntPtr bytesRead;
-            return WriteProcessMemory(handle, baseAddress, buffer, buffer.Length, out bytesRead);
-        }
 
         #endregion
 
@@ -135,9 +130,6 @@ namespace PoeHUD.Framework
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool WriteProcessMemory(IntPtr hWnd, IntPtr baseAddr, byte[] buffer, int size, out IntPtr bytesRead);
 
         #endregion
 

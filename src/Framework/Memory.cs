@@ -153,32 +153,6 @@ namespace PoeHUD.Framework
             return ReadMem(addr, length);
         }
 
-
-        public void WriteStringU(int addr, string str)
-        {
-            if (addr <= 4096 && addr >= -1)
-            {
-                return;
-            }
-            byte[] bytes = Encoding.Unicode.GetBytes(str);
-            WriteMem(addr, bytes);
-        }
-
-        public void WriteInt(int addr, int value)
-        {
-            WriteMem(addr, BitConverter.GetBytes(value));
-        }
-
-        public void WriteFloat(int addr, float value)
-        {
-            WriteMem(addr, BitConverter.GetBytes(value));
-        }
-
-        public void WriteBytes(int addr, params byte[] bytes)
-        {
-            WriteMem(addr, bytes);
-        }
-
         private void Open()
         {
             procHandle = WinApi.OpenProcess(Process, ProcessAccessFlags.All);
@@ -199,29 +173,6 @@ namespace PoeHUD.Framework
             var array = new byte[size];
             WinApi.ReadProcessMemory(procHandle, (IntPtr)addr, array);
             return array;
-        }
-
-        private void WriteMem(int addr, byte[] data)
-        {
-            if (!WinApi.WriteProcessMemory(procHandle, new IntPtr(addr), data))
-            {
-                Console.WriteLine(string.Concat(new object[]
-                {
-                    "mem write addr ",
-                    addr.ToString("X"),
-                    " failed ",
-                    Marshal.GetLastWin32Error()
-                }));
-            }
-        }
-
-        public void MakeMemoryWriteable(int addr, int length)
-        {
-            uint num = 0u;
-            if (!VirtualProtectEx(procHandle, new IntPtr(addr), new IntPtr(length), 64u, ref num))
-            {
-                Console.WriteLine("VirtualProtectEx failed! " + Marshal.GetLastWin32Error());
-            }
         }
 
         [DllImport("kernel32.dll")]

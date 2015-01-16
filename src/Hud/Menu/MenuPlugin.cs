@@ -177,13 +177,6 @@ namespace PoeHUD.Hud.Menu
             AddChild(xpRateMenu, "Font size", settingsHub.XpRateSettings.TextSize);
             AddChild(xpRateMenu, "Background color:", settingsHub.XpRateSettings.BackgroundColor);
 
-            // Client hacks
-            MenuItem clientHacksMenu = AddChild(root, "Client hacks", settingsHub.MiscHacksSettings.Enable);
-            AddChild(clientHacksMenu, "Maphack", settingsHub.MiscHacksSettings.Maphack);
-            AddChild(clientHacksMenu, "Zoomhack", settingsHub.MiscHacksSettings.Zoomhack);
-            AddChild(clientHacksMenu, "Fullbright", settingsHub.MiscHacksSettings.Fullbright);
-            AddChild(clientHacksMenu, "Disable Particles", settingsHub.MiscHacksSettings.Particles);
-
             // Preload Alert
             MenuItem preloadMenu = AddChild(root, "Preload Alert", settingsHub.PreloadAlertSettings.Enable);
             AddChild(preloadMenu, "Font size", settingsHub.PreloadAlertSettings.TextSize);
