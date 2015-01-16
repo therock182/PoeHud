@@ -51,6 +51,11 @@ namespace PoeHUD
             string HUDLOC = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
             string lastCsums = System.IO.File.ReadAllText("csum");
             int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
+            if (System.AppDomain.CurrentDomain.FriendlyName == "PoeHUD.exe")
+            {
+                MessageBox.Show("Please rename the HUD for your safety.");
+                return;
+            }
             if (HashCheck.GetCSum(HUDLOC) == 0 | HashCheck.GetCSum(HUDLOC) == lastCsum)
             {
                 MessageBox.Show("Please Run the Scrambler for your safety. LastCsum = "+lastCsums);
