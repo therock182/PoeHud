@@ -5,6 +5,8 @@ Reads data from Path of Exile client application and displays it on transparent 
 No longer contains maphack/particleshack/zoomhack/fullbright.
 it now only relies on reading memory. Thinking about implementing another way than RPM to do this.
 
+Added a PE header scrambler (really basic at this point in time but hopefully I'll be able to dev it further to make this safer to use)
+
 
 ### Requirements
 * .NET framerwork v.4.5 or newer (you already have it on Windows 8+)
