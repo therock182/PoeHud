@@ -14,7 +14,7 @@ using System.Security.Permissions;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: AssemblyProduct("ExileHUD")]
-[assembly: AssemblyTitle("ExileHUD")]
+[assembly: AssemblyTitle("")]
 [assembly: AssemblyTrademark("")]
 [assembly: CompilationRelaxations(8)]
 [assembly: RuntimeCompatibility(WrapNonExceptionThrows = true)]
