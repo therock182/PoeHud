@@ -10,29 +10,16 @@ using SharpDX;
 
 namespace PoeHUD.Hud.Trackers
 {
-	public class PoiTracker : Plugin<PoiTrackerSettings>, IPluginWithMapIcons
+	public class PoiTracker : PluginWithMapIcons<PoiTrackerSettings>
 	{
-		private readonly Dictionary<EntityWrapper, MapIcon> currentIcons = new Dictionary<EntityWrapper, MapIcon>();
-
 
 	    public PoiTracker(GameController gameController, Graphics graphics, PoiTrackerSettings settings)
             : base(gameController, graphics, settings)
 	    {
-            this.GameController.Area.OnAreaChange += this.CurrentArea_OnAreaChange;
 
-            currentIcons.Clear();
-            foreach (EntityWrapper current in this.GameController.Entities)
-            {
-                this.OnEntityAdded(current);
             }
-	    }
 
 	
-		protected override void OnEntityRemoved(EntityWrapper entity)
-		{
-			currentIcons.Remove(entity);
-		}
-
         protected override void OnEntityAdded(EntityWrapper entity)
 		{
 			if (!Settings.Enable)
@@ -41,32 +28,18 @@ namespace PoeHUD.Hud.Trackers
 			}
 			var icon = GetMapIcon(entity);
 			if ( null != icon )
-				currentIcons[entity] = icon;
+				CurrentIcons[entity] = icon;
 
 		}
-		private void CurrentArea_OnAreaChange(AreaController area)
+
+        public override void Render()
 		{
-			currentIcons.Clear();
-		}
-        protected override void Draw()
-		{
+            if (!Settings.Enable)
+            {
+                return;
+            }
 		}
 
-		public IEnumerable<MapIcon> GetIcons()
-		{
-			List<EntityWrapper> toRemove = new List<EntityWrapper>();
-			foreach (KeyValuePair<EntityWrapper, MapIcon> kv in currentIcons)
-			{
-				if (kv.Value.IsEntityStillValid())
-					yield return kv.Value;
-				else
-					toRemove.Add(kv.Key);
-			}
-			foreach (EntityWrapper wrapper in toRemove)
-			{
-				currentIcons.Remove(wrapper);
-			}
-		}
 
 
 		private static readonly List<string> masters = new List<string> {

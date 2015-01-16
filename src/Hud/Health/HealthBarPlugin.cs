@@ -30,9 +30,9 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        protected override void Draw()
+        public override void Render()
         {
-            if (!GameController.InGame || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
+            if (!Settings.Enable || !GameController.InGame || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
             {
                 return;
             }

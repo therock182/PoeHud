@@ -75,8 +75,13 @@ namespace PoeHUD.Hud.Preload
             }
         }
 
-        protected override void Draw()
+        public override void Render()
         {
+            base.Render();
+            if (!Settings.Enable)
+            {
+                return;
+            }
             int num =
                 GameController.Memory.ReadInt(
                     GameController.Memory.AddressOfProcess + GameController.Memory.offsets.FileRoot, 12);

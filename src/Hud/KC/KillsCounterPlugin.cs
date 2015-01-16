@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
-using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Models.Enums;
@@ -87,8 +86,14 @@ namespace PoeHUD.Hud.KC
                 }
             }
         }
-        protected override void Draw()
+        public override void Render()
         {
+            base.Render();
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
             List<EntityWrapper> deadEntities = aliveEntities.Where(entity => !entity.IsAlive).ToList();
             foreach (EntityWrapper entity in deadEntities)
             {

@@ -23,7 +23,6 @@ namespace PoeHUD.Hud.MiscHacks
         public MiscHacksPlugin(GameController gameController, Graphics graphics, MiscHacksSettings settings)
             : base(gameController, graphics, settings)
         {
-
             m = GameController.Memory;
             if (Settings.Enable)
             {
@@ -42,8 +41,13 @@ namespace PoeHUD.Hud.MiscHacks
             }
         }
 
-        protected override void Draw()
+        public override void Render()
         {
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
             bool flag = Settings.Enable && Settings.Maphack;
             if (flag != maphackEnabled)
             {

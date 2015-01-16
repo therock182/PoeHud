@@ -50,12 +50,11 @@ namespace PoeHUD.Hud.Menu
             {
                 holdKey = false;
             }
-            base.Render();
-        }
 
-        protected override void Draw()
-        {
-            root.Render(Graphics);
+            if (Settings.Enable)
+            {
+                root.Render(Graphics);
+            }
         }
 
         private static MenuItem AddChild(MenuItem parent, string text, ToggleNode node)
@@ -199,6 +198,11 @@ namespace PoeHUD.Hud.Menu
             // Show monster kills
             MenuItem showMonsterKillsMenu = AddChild(root, "Show MK", settingsHub.KillsCounterSettings.Enable);
             AddChild(showMonsterKillsMenu, "Show details", settingsHub.KillsCounterSettings.ShowDetail);
+
+            // Show inventory preview
+            MenuItem showInventoryPreviewMenu = AddChild(root, "Show inv preview", settingsHub.InventoryPreviewSettings.Enable);
+            AddChild(showInventoryPreviewMenu, "Free cell color", settingsHub.InventoryPreviewSettings.CellFreeColor);
+            AddChild(showInventoryPreviewMenu, "Used cell color", settingsHub.InventoryPreviewSettings.CellUsedColor);
         }
 
         private bool OnMouseEvent(MouseEventID id, int x, int y)

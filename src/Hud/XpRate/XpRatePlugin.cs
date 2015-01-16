@@ -26,9 +26,10 @@ namespace PoeHUD.Hud.XpRate
             GameController.Area.OnAreaChange += area => Reset();
         }
 
-        protected override void Draw()
+        public override void Render()
         {
-            if (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100)
+            base.Render();
+            if (!Settings.Enable || (GameController.Player != null && GameController.Player.GetComponent<Player>().Level >= 100))
             {
                 return;
             }

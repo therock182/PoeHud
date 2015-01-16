@@ -22,11 +22,10 @@ using Map = PoeHUD.Poe.Components.Map;
 
 namespace PoeHUD.Hud.Loot
 {
-    public class ItemAlertPlugin : SizedPlugin<ItemAlertSettings>, IPluginWithMapIcons
+    public class ItemAlertPlugin : SizedPluginWithMapIcons<ItemAlertSettings>
 	{
 		private HashSet<long> playedSoundsCache;
 		private Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
-		private Dictionary<EntityWrapper, MapIcon> currentIcons;
 	    private Dictionary<int, ItemsOnGroundLabelElement> currentLabels;
 		private Dictionary<string, CraftingBase> craftingBases;
 		private HashSet<string> currencyNames;
@@ -36,7 +35,6 @@ namespace PoeHUD.Hud.Loot
 	    {
             playedSoundsCache = new HashSet<long>();
             currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
-            currentIcons = new Dictionary<EntityWrapper, MapIcon>();
             currentLabels=new Dictionary<int, ItemsOnGroundLabelElement>();
             currencyNames = LoadCurrency();
             craftingBases = LoadCraftingBases();
@@ -52,8 +50,8 @@ namespace PoeHUD.Hud.Loot
 	    
 		protected override void OnEntityRemoved(EntityWrapper entity)
 		{
+            base.OnEntityRemoved(entity);
 			currentAlerts.Remove(entity);
-			currentIcons.Remove(entity);
 		    currentLabels.Remove(entity.Address);
 		}
 
@@ -72,7 +70,7 @@ namespace PoeHUD.Hud.Loot
 				{
 					AlertDrawStyle drawStyle = props.GetDrawStyle();
 					currentAlerts.Add(entity, drawStyle);
-					currentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), () => Settings.ShowItemOnMap, 8);
+					CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.color), () => Settings.ShowItemOnMap, 8);
 
 					if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
 					{
@@ -123,12 +121,12 @@ namespace PoeHUD.Hud.Loot
 		private void CurrentArea_OnAreaChange(AreaController area)
 		{
 			playedSoundsCache.Clear();
-			currentIcons.Clear();
             currentLabels.Clear();
 		}
-        protected override void Draw()
+        public override void Render()
 		{
-			if (!Settings.ShowText)
+            base.Render();
+			if (!Settings.Enable || !Settings.ShowText)
 			{
 				return;
 			}
@@ -195,21 +193,6 @@ namespace PoeHUD.Hud.Loot
             }
         }
 
-	    public IEnumerable<MapIcon> GetIcons()
-		{
-			List<EntityWrapper> toRemove = new List<EntityWrapper>();
-			foreach (KeyValuePair<EntityWrapper, MapIcon> kv in currentIcons)
-			{
-				if (kv.Value.IsEntityStillValid())
-					yield return kv.Value;
-				else
-					toRemove.Add(kv.Key);
-			}
-			foreach (EntityWrapper wrapper in toRemove)
-			{
-				currentIcons.Remove(wrapper);
-			}
-		}
 
 		private Vector2 DrawItem(AlertDrawStyle drawStyle, Vector2 delta, float x, float y, Vector2 vPadding, string text)
 		{

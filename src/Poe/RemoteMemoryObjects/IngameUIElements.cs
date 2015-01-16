@@ -80,42 +80,42 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element InventoryPanel
         {
-            get { return ReadObjectAt<Element>(0x100); }
+            get { return ReadObjectAt<Element>(12 + 0xF4); }
         }
 
         public Element StashPanel
         {
-            get { return ReadObjectAt<Element>(0x104); }
+            get { return ReadObjectAt<Element>(12 + 0xF8); }
         }
 
         public Element SocialPanel
         {
-            get { return ReadObjectAt<Element>(0x110); }
+            get { return ReadObjectAt<Element>(12 + 0x104); }
         }
 
         public Element TreePanel
         {
-            get { return ReadObjectAt<Element>(0x114); }
+            get { return ReadObjectAt<Element>(12 + 0x108); }
         }
 
         public Element CharacterPanel
         {
-            get { return ReadObjectAt<Element>(0x118); }
+            get { return ReadObjectAt<Element>(12 + 0x10C); }
         }
 
         public Element OptionsPanel
         {
-            get { return ReadObjectAt<Element>(0x11C); }
+            get { return ReadObjectAt<Element>(12 + 0x110); }
         }
 
         public Element AchievementsPanel
         {
-            get { return ReadObjectAt<Element>(0x120); }
+            get { return ReadObjectAt<Element>(12 + 0x114); }
         }
 
         public Element WorldPanel
         {
-            get { return ReadObjectAt<Element>(0x128); }
+            get { return ReadObjectAt<Element>(12 + 0x11C); }
         }
 
         public Map Map
@@ -135,7 +135,8 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         public List<HPbarElement> MonsterHpLabels
         {
             get
-            {   var monsterHpLabelsRoot = ReadObjectAt<HPbarElement>(4 + 0x124);
+            {
+                var monsterHpLabelsRoot = ReadObjectAt<HPbarElement>(4 + 0x124);
                 return monsterHpLabelsRoot.Children;
             }
         }
@@ -152,12 +153,12 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element OpenLeftPanel
         {
-            get { return ReadObjectAt<Element>(0x164); }
+            get { return ReadObjectAt<Element>(16 + 0x154); }
         }
 
         public Element OpenRightPanel
         {
-            get { return ReadObjectAt<Element>(0x168); }
+            get { return ReadObjectAt<Element>(16 + 0x158); }
         }
 
         public Element OpenNpcDialogPanel
