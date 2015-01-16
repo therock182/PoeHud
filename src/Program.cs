@@ -7,17 +7,12 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud;
 using PoeHUD.Poe;
-using System.Runtime.InteropServices;
+using System.IO;
 
 namespace PoeHUD
 {
 	public class Program
 	{
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern bool SetWindowText(IntPtr hwnd, String lpString);
 
 		private static int FindPoeProcess(out Offsets offs)
 		{
@@ -48,16 +43,28 @@ namespace PoeHUD
 	    [STAThread]
 		public static void Main(string[] args)
 		{
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var initname = new string(
-                Enumerable.Repeat(chars, 12)
-                          .Select(s => s[random.Next(s.Length)])
-                          .ToArray());
-            SetWindowText(Process.GetCurrentProcess().MainWindowHandle, initname);
 #if !DEBUG
             MemoryControl.Start();
 #endif
+            FileStream fs = new FileStream("csum",FileMode.OpenOrCreate);
+            fs.Close();
+            string lastCsums = System.IO.File.ReadAllText("csum");
+            int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
+            if (HashCheck.GetCSum("PoeHUD.exe") == 0 |HashCheck.GetCSum("PoeHUD.exe") == lastCsum )
+            {
+                MessageBox.Show("Please Run the Scrambler for your safety. LastCsum = "+lastCsums);
+                System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
+                store.WriteLine(HashCheck.GetCSum("PoeHUD.exe"));
+                store.Close();
+                return;
+            }
+            else
+            {
+                System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
+                store.WriteLine(HashCheck.GetCSum("PoeHUD.exe"));
+                store.Close();
+            }
+
             Offsets offs;
 			int pid = FindPoeProcess(out offs);
 
