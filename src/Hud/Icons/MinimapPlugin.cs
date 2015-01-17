@@ -46,7 +46,7 @@ namespace PoeHUD.Hud.Icons
             {
                 float iconZ = icon.EntityWrapper.GetComponent<Render>().Z;
                 Vector2 point = mapCenter
-                    + MapIcon.deltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, SCALE, (iconZ - posZ) / 20);
+                    + MapIcon.DeltaInWorldToMinimapDelta(icon.WorldPosition - playerPos, diag, SCALE, (iconZ - posZ) / 20);
 
                 HudTexture texture = icon.MinimapIcon;
                 int size = icon.Size;

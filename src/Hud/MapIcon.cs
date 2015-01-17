@@ -43,30 +43,27 @@ namespace PoeHUD.Hud
 
         public int? SizeOfLargeIcon { get; set; }
 
-        public EntityWrapper EntityWrapper { get; set; }
+        public EntityWrapper EntityWrapper { get; private set; }
 
-        public HudTexture MinimapIcon { get; set; }
+        public HudTexture MinimapIcon { get; private set; }
 
         public HudTexture LargeMapIcon { get; set; }
 
-        public int Size { get; set; }
+        public int Size { get; private set; }
 
         public Vector2 WorldPosition
         {
             get { return EntityWrapper.GetComponent<Positioned>().GridPos; }
         }
 
-        public static Vector2 deltaInWorldToMinimapDelta(Vector2 delta, double diag, float scale, float deltaZ = 0)
+        public static Vector2 DeltaInWorldToMinimapDelta(Vector2 delta, double diag, float scale, float deltaZ = 0)
         {
-            const double CameraAngle = Math.PI / 180 * 38;
-
+            const float CAMERA_ANGLE = 38 * MathUtil.Pi / 180;
             // Values according to 40 degree rotation of cartesian coordiantes, still doesn't seem right but closer
-            var cosX = (float)(delta.X / scale * diag * Math.Cos(CameraAngle));
-            var cosY = (float)(delta.Y / scale * diag * Math.Cos(CameraAngle));
-            var sinX = (float)(delta.X / scale * diag * Math.Sin(CameraAngle));
-            var sinY = (float)(delta.Y / scale * diag * Math.Sin(CameraAngle));
+            var cos = (float)(diag * Math.Cos(CAMERA_ANGLE) / scale);
+            var sin = (float)(diag * Math.Cos(CAMERA_ANGLE) / scale);
             // 2D rotation formulas not correct, but it's what appears to work?
-            return new Vector2(cosX - cosY, -sinX - sinY + deltaZ);
+            return new Vector2((delta.X - delta.Y) * cos, deltaZ - (delta.X + delta.Y) * sin);
         }
 
         public virtual bool IsEntityStillValid()
