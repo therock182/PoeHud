@@ -1,7 +1,9 @@
+using System;
 using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.InputHooks;
 using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Loot;
@@ -16,7 +18,7 @@ namespace PoeHUD.Hud.Menu
     {
         private readonly SettingsHub settingsHub;
 
-        private readonly MouseHook hook;
+        private readonly Action<MouseInfo> onMouseDown, onMouseUp, onMouseMove;
 
         private bool holdKey;
 
@@ -27,12 +29,16 @@ namespace PoeHUD.Hud.Menu
         {
             this.settingsHub = settingsHub;
             CreateMenu();
-            hook = new MouseHook(OnMouseEvent);
+            MouseHook.MouseDown += onMouseDown = info => info.Handled = OnMouseEvent(MouseEventID.LeftButtonDown, info.Position);
+            MouseHook.MouseUp += onMouseUp = info => info.Handled = OnMouseEvent(MouseEventID.LeftButtonUp, info.Position);
+            MouseHook.MouseMove += onMouseMove = info => info.Handled = OnMouseEvent(MouseEventID.MouseMove, info.Position);
         }
 
         public override void Dispose()
         {
-            hook.Dispose();
+            MouseHook.MouseDown -= onMouseDown;
+            MouseHook.MouseUp -= onMouseUp;
+            MouseHook.MouseMove -= onMouseMove;
         }
 
         public override void Render()
@@ -198,14 +204,14 @@ namespace PoeHUD.Hud.Menu
             AddChild(showInventoryPreviewMenu, "Used cell color", settingsHub.InventoryPreviewSettings.CellUsedColor);
         }
 
-        private bool OnMouseEvent(MouseEventID id, int x, int y)
+        private bool OnMouseEvent(MouseEventID id, Point position)
         {
             if (!Settings.Enable || !GameController.Window.IsForeground())
             {
                 return false;
             }
 
-            Vector2 mousePosition = GameController.Window.ScreenToClient(x, y);
+            Vector2 mousePosition = GameController.Window.ScreenToClient(position.X, position.Y);
             return root.OnMouseEvent(id, mousePosition);
         }
     }

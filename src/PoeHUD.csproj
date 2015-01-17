@@ -230,7 +230,6 @@
     <Compile Include="Hud\MapIcon.cs" />
     <Compile Include="Hud\Icons\LargeMapPlugin.cs" />
     <Compile Include="Hud\MouseEventID.cs" />
-    <Compile Include="Hud\MouseHook.cs" />
     <Compile Include="Hud\Preload\PreloadAlertPlugin.cs" />
     <Compile Include="Poe\Elements\EntityLabel.cs" />
     <Compile Include="Program.cs" />
