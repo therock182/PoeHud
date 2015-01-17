@@ -62,6 +62,15 @@ namespace PoeHUD
                 System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
                 store.WriteLine(HashCheck.GetCSum(HUDLOC));
                 store.Close();
+                if (!File.Exists("config/scrambler.txt") || (new FileInfo("config/scrambler.txt").Length == 0))
+                {
+                    FileStream Ccreator = new FileStream("config/scrambler.txt", FileMode.OpenOrCreate);
+                    Ccreator.Close();
+                }
+                
+                System.IO.StreamWriter Cwriter = new System.IO.StreamWriter("config/scrambler.txt");
+                Cwriter.WriteLine(System.AppDomain.CurrentDomain.FriendlyName);
+                Cwriter.Close();
                 System.Diagnostics.Process.Start("Scrambler.exe","fromHUD");
                 return;
             }

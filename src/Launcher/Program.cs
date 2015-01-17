@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
+
 
 
 namespace Scrambler
@@ -14,6 +16,15 @@ namespace Scrambler
         [STAThread]
         static void Main(string[] args)
         {
+            if (!File.Exists("config/scrambler.txt") || (new FileInfo("config/scrambler.txt").Length == 0))
+            {
+                FileStream Ccreator = new FileStream("config/scrambler.txt", FileMode.OpenOrCreate);
+                Ccreator.Close();
+
+                System.IO.StreamWriter Cwriter = new System.IO.StreamWriter("config/scrambler.txt");
+                Cwriter.WriteLine("PoeHUD.exe");
+                Cwriter.Close();
+            }
             string HUDLOC = System.IO.File.ReadLines("config/scrambler.txt").First();
             if (!File.Exists(HUDLOC))
             {
@@ -50,9 +61,8 @@ namespace Scrambler
             Scrambler.ScrambleCsum(HUDLOC, HUDLOC, randu);
             Csum = Scrambler.GetCSum(HUDLOC);
             hash = Csum.ToString();
-            Console.ReadKey();
-            Console.WriteLine("New hash " + hash);
-            Console.ReadKey();
+            Console.WriteLine("New hash " + hash +"\n This window will close in 3 secconds.");
+            Thread.Sleep(3000);
             if (args.Length == 0) 
             {
                 return;
