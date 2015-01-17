@@ -14,18 +14,28 @@ namespace Scrambler
         [STAThread]
         static void Main(string[] args)
         {
-            string HUDLOC = "PoeHud.exe";
+
+            string HUDLOC = System.IO.File.ReadLines("config/scrambler.txt").First();
             if (!File.Exists(HUDLOC))
             {
                 OpenFileDialog finder = new OpenFileDialog();
                 finder.InitialDirectory = Application.StartupPath;
                 finder.Filter = "executable files (*.exe)|*.exe";
                 finder.RestoreDirectory = true;
-                MessageBox.Show("Couldn't find PoeHUD.exe, please choose the HUD executable"); 
+                MessageBox.Show("Couldn't find "+HUDLOC+" , please choose the HUD executable, this will set it as the new base executable so you don't have to pick every time."); 
 
                 if (finder.ShowDialog() == DialogResult.OK)
                 {
                     HUDLOC = finder.SafeFileName;
+                    System.IO.StreamWriter savehudex = new System.IO.StreamWriter("config/scrambler.txt");
+                    savehudex.WriteLine(HUDLOC);
+                    savehudex.Close();
+                }
+                else
+                {
+                    Console.WriteLine("You haven't chosen a file, or chose an inproper file please try again.");
+                    Console.ReadKey();
+                    return;
                 }
 
 
