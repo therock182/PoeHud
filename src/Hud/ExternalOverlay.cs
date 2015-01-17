@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.Interfaces;
+using PoeHUD.Hud.InventoryPreview;
 using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
@@ -44,14 +47,6 @@ namespace PoeHUD.Hud
 
         public ExternalOverlay(GameController gameController, Func<bool> gameEnded)
         {
-
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var windowname = new string(
-                Enumerable.Repeat(chars, 12)
-                          .Select(s => s[random.Next(s.Length)])
-                          .ToArray());
-
             settings = SettingsHub.Load();
 
             this.gameController = gameController;
@@ -59,8 +54,7 @@ namespace PoeHUD.Hud
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            string title = windowname;
-            Text = string.IsNullOrWhiteSpace(title) ? "glitchd" : title;
+            Text = MathHepler.GetRandomWord(MathHepler.Randomizer.Next(7) + 5);
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
             FormBorderStyle = FormBorderStyle.None;
@@ -149,11 +143,12 @@ namespace PoeHUD.Hud
             leftPanel.AddChildren(horizontalPanel);
             plugins.AddRange(leftPanel.GetPlugins());
 
-            var undePanelPanel = new PluginPanel(GetUnderCornerMap);
-            undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
-            plugins.AddRange(undePanelPanel.GetPlugins());
-            
+            var underPanel = new PluginPanel(GetUnderCornerMap);
+            underPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
+            plugins.AddRange(underPanel.GetPlugins());
+
             plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
+            plugins.Add(new InventoryPreviewPlugin(gameController, graphics, settings.InventoryPreviewSettings));
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
 
             Deactivate += OnDeactivate;

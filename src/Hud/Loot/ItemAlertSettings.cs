@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using PoeHUD.Hud.Settings;
 
 namespace PoeHUD.Hud.Loot

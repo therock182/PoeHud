@@ -32,13 +32,7 @@ namespace PoeHUD.Hud
 
         public virtual void Dispose() {}
 
-        public virtual void Render()
-        {
-            if (Settings.Enable)
-            {
-                Draw();
-            }
-        }
+        public abstract void Render();
 
         protected static RectangleF GetDirectionsUV(double phi, double distance)
         {
@@ -66,8 +60,6 @@ namespace PoeHUD.Hud
                 .Select(line => line.Split(new[] { ',' }, 2))
                 .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
         }
-
-        protected abstract void Draw();
 
         protected virtual void OnEntityAdded(EntityWrapper entityWrapper) {}
 

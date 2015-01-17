@@ -33,11 +33,17 @@ namespace PoeHUD.Hud.AdvancedTooltip
         public AdvancedTooltipPlugin(GameController gameController, Graphics graphics, AdvancedTooltipSettings settings)
             : base(gameController, graphics, settings) {}
 
-        protected override void Draw()
+        public override void Render()
         {
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
             Element uiHover = GameController.Game.IngameState.UIHover;
-            Element tooltip = GetTooltip(uiHover);
-            Entity poeEntity = uiHover.AsObject<InventoryItemIcon>().Item;
+            var inventoryItemIcon = uiHover.AsObject<InventoryItemIcon>();
+            Element tooltip = GetTooltip(inventoryItemIcon);
+            Entity poeEntity = inventoryItemIcon.Item;
             if (tooltip == null || poeEntity.Address == 0 || !poeEntity.IsValid)
             {
                 return;
@@ -76,9 +82,9 @@ namespace PoeHUD.Hud.AdvancedTooltip
             }
         }
 
-        private static Element GetTooltip(RemoteMemoryObject uiHover)
+        private static Element GetTooltip(InventoryItemIcon inventoryItemIcon)
         {
-            Element tooltip = uiHover.AsObject<InventoryItemIcon>().Tooltip;
+            Element tooltip = inventoryItemIcon.Tooltip;
             if (tooltip == null)
             {
                 return null;
@@ -107,19 +113,19 @@ namespace PoeHUD.Hud.AdvancedTooltip
                 }
 
                 Graphics.DrawText(prefix, settings.ModTextSize, position.Translate(5 - MARGIN_LEFT, 0));
-                Size2 textSize = Graphics.DrawText(item.AffixText, settings.ModTextSize, position, item.TextColor);
+                Size2 textSize = Graphics.DrawText(item.AffixText, settings.ModTextSize, position, item.Color);
                 position.Y += textSize.Height;
             }
 
             for (int i = 0; i < 4; i++)
             {
-                IntRange range = item.TheMod.StatRange[i];
+                IntRange range = item.Record.StatRange[i];
                 if (range.Min == 0 && range.Max == 0)
                 {
                     continue;
                 }
 
-                StatsDat.StatRecord stat = item.TheMod.StatNames[i];
+                StatsDat.StatRecord stat = item.Record.StatNames[i];
                 int value = item.StatValue[i];
                 float percents = range.GetPercentage(value);
                 bool noSpread = !range.HasSpread();
@@ -153,13 +159,13 @@ namespace PoeHUD.Hud.AdvancedTooltip
             {
                 for (int iStat = 0; iStat < 4; iStat++)
                 {
-                    IntRange range = mod.TheMod.StatRange[iStat];
+                    IntRange range = mod.Record.StatRange[iStat];
                     if (range.Min == 0 && range.Max == 0)
                     {
                         continue;
                     }
 
-                    StatsDat.StatRecord theStat = mod.TheMod.StatNames[iStat];
+                    StatsDat.StatRecord theStat = mod.Record.StatNames[iStat];
                     int value = mod.StatValue[iStat];
                     switch (theStat.Key)
                     {

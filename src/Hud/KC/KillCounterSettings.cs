@@ -9,6 +9,7 @@ namespace PoeHUD.Hud.KC
             Enable = false;
             ShowDetail = true;
         }
+
         public ToggleNode ShowDetail { get; set; }
     }
 }

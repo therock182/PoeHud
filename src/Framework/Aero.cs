@@ -19,9 +19,7 @@ namespace PoeHUD.Framework
 
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-       
-        [DllImport("user32.dll")]
-        static extern int SetWindowText(IntPtr hWnd, string text);
+
         /// Windows Constants
         private const uint WM_CLOSE = 0x10;
 
@@ -33,14 +31,6 @@ namespace PoeHUD.Framework
             p.StartInfo.FileName = filename;
             p.StartInfo.Arguments = arguments;
             p.Start();
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var aeroname = new string(
-                Enumerable.Repeat(chars, 12)
-                          .Select(s => s[random.Next(s.Length)])
-                          .ToArray());
-            Task.Delay(TimeSpan.FromSeconds(1));
-            SetWindowText(p.MainWindowHandle, aeroname);
 
             bExited = false;
             int counter = 0;

@@ -9,16 +9,17 @@ using SharpDX;
 
 namespace PoeHUD.Hud
 {
-    public abstract class SizedPlugin<TSettings> : Plugin<TSettings>, IPanelChild where TSettings : SettingsBase
+    public abstract class SizedPluginWithMapIcons<TSettings> : PluginWithMapIcons<TSettings>, IPanelChild
+        where TSettings : SettingsBase
     {
-        protected SizedPlugin(GameController gameController, Graphics graphics, TSettings settings)
+        protected SizedPluginWithMapIcons(GameController gameController, Graphics graphics, TSettings settings)
             : base(gameController, graphics, settings) {}
 
-        public Size2F Size { get; set; }
+        public Size2F Size { get; protected set; }
 
         public Func<Vector2> StartDrawPointFunc { get; set; }
 
-        public Vector2 Margin { get; set; }
+        public Vector2 Margin { get; private set; }
 
         public override void Render()
         {

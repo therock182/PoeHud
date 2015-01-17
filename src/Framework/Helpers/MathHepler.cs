@@ -7,6 +7,15 @@ namespace PoeHUD.Framework.Helpers
 {
     public static class MathHepler
     {
+        private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        static MathHepler()
+        {
+            Randomizer = new Random();
+        }
+
+        public static Random Randomizer { get; private set; }
+
         public static double GetPolarCoordinates(this Vector2 vector, out double phi)
         {
             double distance = vector.Length();
@@ -16,6 +25,16 @@ namespace PoeHUD.Framework.Helpers
                 phi = MathUtil.TwoPi - phi;
             }
             return distance;
+        }
+
+        public static string GetRandomWord(int length)
+        {
+            var array = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = CHARS[Randomizer.Next(CHARS.Length)];
+            }
+            return new string(array);
         }
 
         public static float Max(params float[] values)

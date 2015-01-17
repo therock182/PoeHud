@@ -40,8 +40,14 @@ namespace PoeHUD.Hud.Dps
             };
         }
 
-        protected override void Draw()
+        public override void Render()
         {
+            base.Render();
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
             DateTime nowTime = DateTime.Now;
             TimeSpan elapsedTime = nowTime - lastTime;
             if (elapsedTime.TotalSeconds > DPS_PERIOD)

@@ -6,14 +6,14 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
 using System.Security.Permissions;
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("6.3.9600.0")]
 [assembly: Debuggable(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyProduct("ExileHUD")]
+[assembly: AssemblyFileVersion("6.3.9600.0")]
+[assembly: AssemblyProduct("Windows Calculator")]
 [assembly: AssemblyTitle("")]
 [assembly: AssemblyTrademark("")]
 [assembly: CompilationRelaxations(8)]

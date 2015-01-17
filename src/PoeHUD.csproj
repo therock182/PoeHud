@@ -11,21 +11,6 @@
     </TargetFrameworkProfile>
     <WarningLevel>4</WarningLevel>
     <NuGetPackageImportStamp>1fe28053</NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -110,6 +95,8 @@
     <Compile Include="Hud\Icons\MapIconsSettings.cs" />
     <Compile Include="Hud\Interfaces\IPanelChild.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
+    <Compile Include="Hud\InventoryPreview\InventoryPreviewSettings.cs" />
+    <Compile Include="Hud\InventoryPreview\InventoryPreviewPlugin.cs" />
     <Compile Include="Hud\Loot\BorderSettings.cs" />
     <Compile Include="Hud\KC\KillCounterSettings.cs" />
     <Compile Include="Hud\KC\KillsCounterPlugin.cs" />
@@ -122,8 +109,10 @@
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\Menu\RootButton.cs" />
     <Compile Include="Hud\PluginPanel.cs" />
+    <Compile Include="Hud\PluginWithMapIcons.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
+    <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
     <Compile Include="Hud\Plugin.cs" />
@@ -146,9 +135,9 @@
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
-    <Compile Include="Hud\Health\Healthbar.cs" />
+    <Compile Include="Hud\Health\HealthBar.cs" />
     <Compile Include="Hud\Health\HealthBarPlugin.cs" />
-    <Compile Include="Hud\Health\RenderPrio.cs" />
+    <Compile Include="Hud\Health\CreatureType.cs" />
     <Compile Include="Hud\Interfaces\IPluginWithMapIcons.cs" />
     <Compile Include="Models\AreaInstance.cs" />
     <Compile Include="Poe\Components\Flask.cs" />
@@ -242,7 +231,6 @@
     <Compile Include="Hud\MapIcon.cs" />
     <Compile Include="Hud\Icons\LargeMapPlugin.cs" />
     <Compile Include="Hud\MouseEventID.cs" />
-    <Compile Include="Hud\MouseHook.cs" />
     <Compile Include="Hud\Preload\PreloadAlertPlugin.cs" />
     <Compile Include="Poe\Elements\EntityLabel.cs" />
     <Compile Include="Program.cs" />

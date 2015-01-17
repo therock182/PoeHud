@@ -1,102 +1,132 @@
 using System;
 using System.Collections.Generic;
-using PoeHUD.Models.Enums;
+using System.Linq;
 
-using SharpDX;
+using PoeHUD.Models.Enums;
+using PoeHUD.Models.Interfaces;
+using PoeHUD.Poe.Components;
 
 namespace PoeHUD.Hud.Loot
 {
-	public class ItemUsefulProperties {
+    public class ItemUsefulProperties
+    {
+        private readonly bool isCurrency, isSkillGem, isRgb, isVaalFragment, isWeapon, isArmour, isFlask;
 
-		public string Name;
-		public string DisplayName { get { return (Quality > 0 ? "Superior " : String.Empty) + Name; } }
-		public bool IsCurrency;
-		public bool IsSkillGem;
-		public ItemRarity Rarity;
-		public bool WorthChrome;
+        private readonly int numSockets, numLinks, mapLevel, itemLevel, quality;
 
-		public bool IsCraftingBase;
-		
-		public int NumSockets;
-		public int NumLinks;
+        private readonly ItemRarity rarity;
 
-		public int ItemLevel;
-		public int Quality;
-		public int MapLevel;
-		public bool IsVaalFragment;
+        private bool isCraftingBase;
+
+        public ItemUsefulProperties(string name, IEntity item)
+        {
+            var mods = item.GetComponent<Mods>();
+            var socks = item.GetComponent<Sockets>();
+            Map map = item.HasComponent<Map>() ? item.GetComponent<Map>() : null;
+            Quality qualityComponent = item.HasComponent<Quality>() ? item.GetComponent<Quality>() : null;
+
+            Name = name;
+            itemLevel = mods.ItemLevel;
+            numLinks = socks.LargestLinkSize;
+            numSockets = socks.NumberOfSockets;
+            rarity = mods.ItemRarity;
+            mapLevel = map == null ? 0 : 1;
+            isCurrency = item.Path.Contains("Currency");
+            isSkillGem = item.HasComponent<SkillGem>();
+            quality = qualityComponent == null ? 0 : qualityComponent.ItemQuality;
+            isRgb = socks.IsRGB;
+            isWeapon = item.HasComponent<Weapon>();
+            isArmour = item.HasComponent<Armour>();
+            isFlask = item.HasComponent<Flask>();
+            isVaalFragment = item.Path.Contains("VaalFragment");
+        }
+
+        public string Name { get; private set; }
+
+        public AlertDrawStyle GetDrawStyle()
+        {
+            int iconIndex = -1;
+            if (isRgb)
+            {
+                iconIndex = 1;
+            }
+            if (numSockets == 6)
+            {
+                iconIndex = 0;
+            }
+            if (isCraftingBase)
+            {
+                iconIndex = 2;
+            }
+            if (numLinks == 6)
+            {
+                iconIndex = 3;
+            }
+
+            return new AlertDrawStyle(rarity, isSkillGem, isCurrency)
+            {
+                FrameWidth = mapLevel > 0 || isVaalFragment ? 1 : 0,
+                Text = string.Concat(quality > 0 ? "Superior " : String.Empty, Name),
+                IconIndex = iconIndex
+            };
+        }
 
         public bool IsWorthAlertingPlayer(HashSet<string> currencyNames, ItemAlertSettings settings)
-		{
-            if (Rarity == ItemRarity.Rare && settings.Rares)
-				return true;
-            if (Rarity == ItemRarity.Unique && settings.Uniques)
-				return true;
-            if ((MapLevel > 0 || IsVaalFragment) && settings.Maps)
-				return true;
-            if (NumLinks >= settings.MinLinks)
-				return true;
-            if (IsCurrency && settings.Currency)
+        {
+            if (rarity == ItemRarity.Rare && settings.Rares)
             {
-				if (currencyNames == null) {
-					if( !Name.Contains("Portal") && Name.Contains("Wisdom") )
-						return true;
-				}
-				else if (currencyNames.Contains(Name))
-					return true;
-			}
-
-            if (WorthChrome && settings.Rgb) return true;
-            if (settings.QualityItems.Enable)
+                return true;
+            }
+            if (rarity == ItemRarity.Unique && settings.Uniques)
             {
-                var qualitySettings = settings.QualityItems;
-                if (qualitySettings.Weapon.Enable && IsWeapon && Quality >= qualitySettings.Weapon.MinQuality
-                    || qualitySettings.Armour.Enable && IsArmour && Quality >= qualitySettings.Armour.MinQuality
-                    || qualitySettings.Flask.Enable && IsFlask && Quality >= qualitySettings.Flask.MinQuality
-                    || qualitySettings.SkillGem.Enable && IsSkillGem && Quality >= qualitySettings.SkillGem.MinQuality)
+                return true;
+            }
+            if ((mapLevel > 0 || isVaalFragment) && settings.Maps)
+            {
+                return true;
+            }
+            if (numLinks >= settings.MinLinks)
+            {
+                return true;
+            }
+            if (isCurrency && settings.Currency)
+            {
+                if (currencyNames == null)
+                {
+                    if (!Name.Contains("Portal") && Name.Contains("Wisdom")) // TODO it's need to check
+                    {
+                        return true;
+                    }
+                }
+                else if (currencyNames.Contains(Name))
                 {
                     return true;
                 }
             }
-            return NumSockets >= settings.MinSockets || IsCraftingBase;
-		}
 
-        public bool IsWeapon { get; set; }
+            if (isRgb && settings.Rgb)
+            {
+                return true;
+            }
+            if (settings.QualityItems.Enable)
+            {
+                QualityItemsSettings qualitySettings = settings.QualityItems;
+                if (qualitySettings.Weapon.Enable && isWeapon && quality >= qualitySettings.Weapon.MinQuality
+                    || qualitySettings.Armour.Enable && isArmour && quality >= qualitySettings.Armour.MinQuality
+                    || qualitySettings.Flask.Enable && isFlask && quality >= qualitySettings.Flask.MinQuality
+                    || qualitySettings.SkillGem.Enable && isSkillGem && quality >= qualitySettings.SkillGem.MinQuality)
+                {
+                    return true;
+                }
+            }
+            return numSockets >= settings.MinSockets || isCraftingBase;
+        }
 
-        public bool IsArmour { get; set; }
-
-        public bool IsFlask { get; set; }
-
-		internal AlertDrawStyle GetDrawStyle()
-		{
-			Color color = Color.White;
-			switch(this.Rarity) {
-				case ItemRarity.White : color = Color.White; break;
-				case ItemRarity.Magic: color = HudSkin.MagicColor; break;
-				case ItemRarity.Rare: color = HudSkin.RareColor; break;
-				case ItemRarity.Unique: color = HudSkin.UniqueColor; break;
-			}
-			if( IsSkillGem )
-				color = HudSkin.SkillGemColor;
-			if (IsCurrency)
-				color = HudSkin.CurrencyColor;
-
-			int iconIndex = -1;
-			if (WorthChrome)
-				iconIndex = 1;
-			if (NumSockets == 6)
-				iconIndex = 0;
-			if (IsCraftingBase)
-				iconIndex = 2;
-			if (NumLinks == 6)
-				iconIndex = 3;
-
-			return new AlertDrawStyle()
-			{
-				color = color,
-				FrameWidth = MapLevel > 0 || IsVaalFragment ? 1 : 0,
-				Text = DisplayName,
-				IconIndex = iconIndex
-			};
-		}
-	}
+        public void SetCraftingBase(CraftingBase craftingBase)
+        {
+            isCraftingBase = itemLevel >= craftingBase.MinItemLevel
+                && quality >= craftingBase.MinQuality
+                && (craftingBase.Rarities == null || craftingBase.Rarities.Contains(rarity));
+        }
+    }
 }

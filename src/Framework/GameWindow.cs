@@ -1,8 +1,10 @@
 using System;
-using System.Drawing;
 using System.Diagnostics;
 
-using Vector2 = SharpDX.Vector2;
+using SharpDX;
+
+using Point = System.Drawing.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace PoeHUD.Framework
 {
@@ -18,9 +20,10 @@ namespace PoeHUD.Framework
 
         public Process Process { get; private set; }
 
-        public Rectangle ClientRect()
+        public RectangleF GetWindowRectangle()
         {
-            return WinApi.GetClientRectangle(handle);
+            Rectangle rectangle = WinApi.GetClientRectangle(handle);
+            return new RectangleF(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
         }
 
         public bool IsForeground()

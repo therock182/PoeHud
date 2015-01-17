@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using PoeHUD.Controllers;
-using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
@@ -18,115 +17,62 @@ namespace PoeHUD.Hud.Health
 {
     public class HealthBarPlugin : Plugin<HealthBarSettings>
     {
-        private readonly List<Healthbar>[] healthBars;
+        private readonly Dictionary<CreatureType, List<HealthBar>> healthBars;
 
         public HealthBarPlugin(GameController gameController, Graphics graphics, HealthBarSettings settings)
             : base(gameController, graphics, settings)
         {
-            healthBars = new List<Healthbar>[Enum.GetValues(typeof(RenderPrio)).Length];
-            for (int i = 0; i < healthBars.Length; i++)
+            CreatureType[] types = Enum.GetValues(typeof(CreatureType)).Cast<CreatureType>().ToArray();
+            healthBars = new Dictionary<CreatureType, List<HealthBar>>(types.Length);
+            foreach (CreatureType type in types)
             {
-                healthBars[i] = new List<Healthbar>();
+                healthBars.Add(type, new List<HealthBar>());
             }
         }
 
-        protected override void Draw()
+        public override void Render()
         {
-            if (!GameController.InGame || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
+            if (!Settings.Enable || !GameController.InGame || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
             {
                 return;
             }
 
-            float clientWidth = GameController.Window.ClientRect().Width / 2560f;
-            float clientHeight = GameController.Window.ClientRect().Height / 1600f;
-
-            Parallel.ForEach(healthBars, healthbars => healthbars.RemoveAll(x => !(x.Entity.IsValid && x.Entity.IsAlive)));
+            RectangleF windowRectangle = GameController.Window.GetWindowRectangle();
+            var windowSize = new Size2F(windowRectangle.Width / 2560, windowRectangle.Height / 1600);
 
             Camera camera = GameController.Game.IngameState.Camera;
-            Func<Healthbar, bool> showHealthBar = x => x.IsShow(Settings.ShowEnemies);
-            foreach (Healthbar healthbar in healthBars.SelectMany(x => x).AsParallel().AsOrdered().Where(showHealthBar))
+            Func<HealthBar, bool> showHealthBar = x => x.IsShow(Settings.ShowEnemies);
+            Parallel.ForEach(healthBars, x => x.Value.RemoveAll(hp => !(hp.Entity.IsValid && hp.Entity.IsAlive)));
+            foreach (HealthBar healthBar in healthBars.SelectMany(x => x.Value).AsParallel().AsOrdered().Where(showHealthBar))
             {
-                Vector3 worldCoords = healthbar.Entity.Pos;
-                Vector2 mobScreenCoords = camera.WorldToScreen(worldCoords.Translate(0f, 0f, -170f), healthbar.Entity);
-                // System.Diagnostics.Debug.WriteLine("{0} is at {1} => {2} on screen", current.entity.Path, worldCoords, mobScreenCoords);
+                Vector3 worldCoords = healthBar.Entity.Pos;
+                Vector2 mobScreenCoords = camera.WorldToScreen(worldCoords.Translate(0, 0, -170), healthBar.Entity);
                 if (mobScreenCoords != new Vector2())
                 {
-                    float scaledWidth = healthbar.Settings.Width * clientWidth;
-                    float scaledHeight = healthbar.Settings.Height * clientHeight;
-                    Color color = healthbar.Settings.Color;
-                    Color color2 = healthbar.Settings.Outline;
-                    var lifeComponent = healthbar.Entity.GetComponent<Life>();
-                    float hpPercent = lifeComponent.HPPercentage;
-                    float esPercent = lifeComponent.ESPercentage;
-                    float hpWidth = hpPercent * scaledWidth;
-                    float esWidth = esPercent * scaledWidth;
-                    var bg = new RectangleF(mobScreenCoords.X - scaledWidth / 2f, mobScreenCoords.Y - scaledHeight / 2f,
-                        scaledWidth,
-                        scaledHeight);
-                    
-                    // Draw percents or health text for hostiles. Configurable in settings.txt
-                    if (healthbar.Entity.IsHostile)
-                    {
-                        var enemySettings = healthbar.Settings as EnemyUnitSettings;
-
-                        // Set healthbar color to configured in settings.txt for hostiles when hp is <=10%
-                        if (hpPercent <= 0.1)
-                        {
-                            color = enemySettings.Under10Percent;
-                        }
-
-                        Color percentsTextColor = enemySettings.PercentTextColor;
-                        int curHp = lifeComponent.CurHP;
-                        int maxHp = lifeComponent.MaxHP;
-                        string monsterHp = string.Format("{0}/{1}", ConvertHelper.ToShorten(curHp), ConvertHelper.ToShorten(maxHp));
-                        string hppercentAsString = Convert.ToString((int)(hpPercent * 100));
-                        Color monsterHpColor = hpPercent <= 0.1
-                            ? enemySettings.HealthTextColorUnder10Percent
-                            : enemySettings.HealthTextColor;
-
-                        if (enemySettings.ShowHealthText)
-                        {
-                            bg.Y = (int)bg.Y;
-                            Size2 size = DrawEntityHealthbarText(monsterHp, enemySettings.TextSize, bg, monsterHpColor);
-                            bg.Y += (size.Height - bg.Height) / 2f; // Correct text in a frame
-                        }
-                        if (enemySettings.ShowPercents)
-                        {
-                            DrawEntityHealthPercents(percentsTextColor, enemySettings.TextSize, hppercentAsString, bg);
-                        }
-                    }
-
-                    // Draw healthbar
-                    DrawEntityHealthbar(color, color2, bg, hpWidth, esWidth);
+                    DrawHealthBar(healthBar, windowSize, mobScreenCoords);
                 }
             }
         }
 
         protected override void OnEntityAdded(EntityWrapper entity)
         {
-            var healthbarSettings = new Healthbar(entity, Settings);
+            var healthbarSettings = new HealthBar(entity, Settings);
             if (healthbarSettings.IsValid)
             {
-                healthBars[(int)healthbarSettings.Prio].Add(healthbarSettings);
+                healthBars[healthbarSettings.Type].Add(healthbarSettings);
             }
         }
 
-        private void DrawEntityHealthPercents(Color color, int textSize, string text, RectangleF bg)
-        {
-            // Draw percents
-            Graphics.DrawText(text, textSize, new Vector2(bg.X + bg.Width + 4, bg.Y), color);
-        }
-
-        private void DrawEntityHealthbar(Color color, Color outline, RectangleF bg, float hpWidth, float esWidth)
+        private void DrawBackground(Color color, Color outline, RectangleF bg, float hpWidth, float esWidth)
         {
             if (outline != Color.Black)
             {
-                Graphics.DrawFrame(bg, 2f, outline);
+                Graphics.DrawFrame(bg, 2, outline);
             }
             string healthBar = Settings.ShowIncrements ? "healthbar_increment.png" : "healthbar.png";
             Graphics.DrawImage("healthbar_bg.png", bg, color);
             var hpRectangle = new RectangleF(bg.X, bg.Y, hpWidth, bg.Height);
-            Graphics.DrawImage(healthBar, hpRectangle, color, hpWidth * 10f / bg.Width);
+            Graphics.DrawImage(healthBar, hpRectangle, color, hpWidth * 10 / bg.Width);
             if (Settings.ShowES)
             {
                 bg.Width = esWidth;
@@ -134,10 +80,56 @@ namespace PoeHUD.Hud.Health
             }
         }
 
-        private Size2 DrawEntityHealthbarText(string health, int textSize, RectangleF bg, Color color)
+        private void DrawHealthBar(HealthBar healthBar, Size2F windowSize, Vector2 coords)
         {
-            // Draw monster health ex. "163 / 12k
-            return Graphics.DrawText(health, textSize, new Vector2(bg.X + bg.Width / 2f, bg.Y), color, FontDrawFlags.Center);
+            float scaledWidth = healthBar.Settings.Width * windowSize.Width;
+            float scaledHeight = healthBar.Settings.Height * windowSize.Height;
+            Color color = healthBar.Settings.Color;
+            var life = healthBar.Entity.GetComponent<Life>();
+            float hpPercent = life.HPPercentage;
+            float esPercent = life.ESPercentage;
+            float hpWidth = hpPercent * scaledWidth;
+            float esWidth = esPercent * scaledWidth;
+
+            var bg = new RectangleF(coords.X - scaledWidth / 2, coords.Y - scaledHeight / 2, scaledWidth, scaledHeight);
+            if (healthBar.Entity.IsHostile)
+            {
+                var enemySettings = healthBar.Settings as EnemyUnitSettings;
+                if (hpPercent <= 0.1f)
+                {
+                    color = enemySettings.Under10Percent;
+                }
+
+                bg.Y = DrawHp(life, hpPercent, enemySettings, bg);
+                DrawPercents(enemySettings, hpPercent, bg);
+            }
+
+            DrawBackground(color, healthBar.Settings.Outline, bg, hpWidth, esWidth);
+        }
+
+        private float DrawHp(Life life, float hpPercent, EnemyUnitSettings enemySettings, RectangleF bg)
+        {
+            if (enemySettings.ShowHealthText)
+            {
+                string curHp = ConvertHelper.ToShorten(life.CurHP);
+                string maxHp = ConvertHelper.ToShorten(life.MaxHP);
+                string text = string.Format("{0}/{1}", curHp, maxHp);
+                Color color = hpPercent <= 0.1f ? enemySettings.HealthTextColorUnder10Percent : enemySettings.HealthTextColor;
+                var position = new Vector2(bg.X + bg.Width / 2, bg.Y);
+                Size2 size = Graphics.DrawText(text, enemySettings.TextSize, position, color, FontDrawFlags.Center);
+                return (int)bg.Y + (size.Height - bg.Height) / 2;
+            }
+            return bg.Y;
+        }
+
+        private void DrawPercents(EnemyUnitSettings settings, float hpPercent, RectangleF bg)
+        {
+            if (settings.ShowPercents)
+            {
+                string text = Convert.ToString((int)(hpPercent * 100));
+                var position = new Vector2(bg.X + bg.Width + 4, bg.Y);
+                Graphics.DrawText(text, settings.TextSize, position, settings.PercentTextColor);
+            }
         }
     }
 }
