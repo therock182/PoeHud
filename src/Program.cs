@@ -58,10 +58,11 @@ namespace PoeHUD
             }
             if (HashCheck.GetCSum(HUDLOC) == 0 | HashCheck.GetCSum(HUDLOC) == lastCsum)
             {
-                MessageBox.Show("Please Run the Scrambler for your safety. LastCsum = "+lastCsums);
+                MessageBox.Show("Running the Scrambler for your safety. LastCsum = "+lastCsums);
                 System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
                 store.WriteLine(HashCheck.GetCSum(HUDLOC));
                 store.Close();
+                System.Diagnostics.Process.Start("Scrambler.exe","fromHUD");
                 return;
             }
             else

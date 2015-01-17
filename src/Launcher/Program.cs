@@ -14,7 +14,6 @@ namespace Scrambler
         [STAThread]
         static void Main(string[] args)
         {
-
             string HUDLOC = System.IO.File.ReadLines("config/scrambler.txt").First();
             if (!File.Exists(HUDLOC))
             {
@@ -54,6 +53,19 @@ namespace Scrambler
             Console.ReadKey();
             Console.WriteLine("New hash " + hash);
             Console.ReadKey();
+            if (args.Length == 0) 
+            {
+                return;
+            }
+            if (args[0] == "fromHUD")
+            {
+                System.Diagnostics.Process.Start(HUDLOC);
+            }
+            else
+            {
+                MessageBox.Show("Invalid arguments passed to scrambler");
+                return;
+            }
         }
     }
 }
