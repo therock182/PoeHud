@@ -14,15 +14,10 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private const int CELLS_X_COUNT = 12;
 
-        private readonly IngameUIElements ingameUiElements;
-
         private bool[,] cells;
 
         public InventoryPreviewPlugin(GameController gameController, Graphics graphics, InventoryPreviewSettings settings)
-            : base(gameController, graphics, settings)
-        {
-            ingameUiElements = GameController.Game.IngameState.IngameUi;
-        }
+            : base(gameController, graphics, settings) {}
 
         public override void Render()
         {
@@ -34,7 +29,7 @@ namespace PoeHUD.Hud.InventoryPreview
             cells = new bool[CELLS_Y_COUNT, CELLS_X_COUNT];
             AddItems();
 
-            Element hpGlobe = ingameUiElements.HpGlobe;
+            Element hpGlobe = GameController.Game.IngameState.IngameUi.HpGlobe;
             RectangleF hpGlobeRectangle = hpGlobe.GetClientRect();
             var startDrawPoint = new Vector2(hpGlobeRectangle.X + hpGlobeRectangle.Width, hpGlobe.Children[0].GetClientRect().Y);
             var size = (int)(hpGlobeRectangle.Height * 0.1); //size=20, hbglobe=200.5 -> 20/200.5~0.1
@@ -62,7 +57,8 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private void AddItems()
         {
-            var inventoryZone = ingameUiElements.ReadObject<Element>(ingameUiElements.InventoryPanel.Address + 0x808 + 0x248);
+            IngameUIElements ui = GameController.Game.IngameState.IngameUi;
+            var inventoryZone = ui.ReadObject<Element>(ui.InventoryPanel.Address + 0x808 + 0x248);
             RectangleF inventoryZoneRectangle = inventoryZone.GetClientRect();
             var oneCellSize = new Size2F(inventoryZoneRectangle.Width / CELLS_X_COUNT,
                 inventoryZoneRectangle.Height / CELLS_Y_COUNT);
