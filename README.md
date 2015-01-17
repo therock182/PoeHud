@@ -2,7 +2,7 @@ PoeHud
 ======
 
 Reads data from Path of Exile client application and displays it on transparent overlay, while you play PoE.
-
+Without writing to it so no map hack, disabling particles, zoom hack, fullbright.
 
 ### Requirements
 * .NET framerwork v.4.5 or newer (you already have it on Windows 8+)
@@ -22,8 +22,6 @@ Reads data from Path of Exile client application and displays it on transparent 
 * DPS meter
 * Monster kills counter
 * Inventory preview
-
-Features are temporarily unavailable: map hack, disabling particles, zoom hack, fullbright.
 
 ### Item alert settings
 The file config/crafting_bases.txt has the following syntax:
