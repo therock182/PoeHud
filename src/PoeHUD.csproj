@@ -94,6 +94,8 @@
     <Compile Include="Hud\Health\EnemyUnitSettings.cs" />
     <Compile Include="Hud\Health\HealthBarSettings.cs" />
     <Compile Include="Hud\Icons\MapIconsSettings.cs" />
+    <Compile Include="Hud\ICounter\ItemCounterPlugin.cs" />
+    <Compile Include="Hud\ICounter\ItemCounterSettings.cs" />
     <Compile Include="Hud\Interfaces\IPanelChild.cs" />
     <Compile Include="Hud\Interfaces\IPlugin.cs" />
     <Compile Include="Hud\InventoryPreview\InventoryPreviewSettings.cs" />

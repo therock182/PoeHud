@@ -21,6 +21,7 @@ using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
 using PoeHUD.Poe.UI;
+using PoeHUD.Hud.ICounter;
 
 using SharpDX;
 using SharpDX.Windows;
@@ -140,6 +141,7 @@ namespace PoeHUD.Hud
             var horizontalPanel = new PluginPanel(Direction.Left);
             horizontalPanel.AddChildren(new DpsMeterPlugin(gameController, graphics, settings.DpsMeterSettings));
             horizontalPanel.AddChildren(new KillsCounterPlugin(gameController, graphics, settings.KillsCounterSettings));
+            //horizontalPanel.AddChildren(new ItemCounterPlugin(gameController, graphics, settings.ItemCounterSettings)); // Doesnt work yet
             leftPanel.AddChildren(horizontalPanel);
             plugins.AddRange(leftPanel.GetPlugins());
 

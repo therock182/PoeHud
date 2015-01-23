@@ -51,6 +51,8 @@ namespace PoeHUD
             string HUDLOC = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
             string lastCsums = System.IO.File.ReadAllText("csum");
             int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
+#if !DEBUG
+            // impossible to Run in debugger with Namecheck and Stuff
             if (System.AppDomain.CurrentDomain.FriendlyName == "PoeHUD.exe" || System.AppDomain.CurrentDomain.FriendlyName == "ExileHUD.exe" || System.AppDomain.CurrentDomain.FriendlyName == "ExileBuddy.exe")
             {
                 MessageBox.Show("Please rename the HUD for your safety.");
@@ -80,7 +82,7 @@ namespace PoeHUD
                 store.WriteLine(HashCheck.GetCSum(HUDLOC));
                 store.Close();
             }
-
+#endif
             Offsets offs;
             int pid = FindPoeProcess(out offs);
 
