@@ -15,6 +15,7 @@ using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings.Converters;
 using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
+using PoeHUD.Hud.ICounter;
 
 namespace PoeHUD.Hud.Settings
 {
@@ -49,6 +50,7 @@ namespace PoeHUD.Hud.Settings
             HealthBarSettings = new HealthBarSettings();
             InventoryPreviewSettings = new InventoryPreviewSettings();
             KillsCounterSettings = new KillCounterSettings();
+            ItemCounterSettings = new ItemCounterSettings();
         }
         [JsonProperty("Menu")]
         public MenuSettings MenuSettings { get; private set; }
@@ -85,6 +87,11 @@ namespace PoeHUD.Hud.Settings
 
         [JsonProperty("Kills Counter")]
         public KillCounterSettings KillsCounterSettings { get; private set; }
+
+        [JsonProperty("ItemCounter")]
+        public ItemCounterSettings ItemCounterSettings { get; private set; }
+
+
 
         public static SettingsHub Load()
         {

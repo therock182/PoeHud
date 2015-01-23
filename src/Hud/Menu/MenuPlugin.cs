@@ -198,6 +198,10 @@ namespace PoeHUD.Hud.Menu
             MenuItem showMonsterKillsMenu = AddChild(root, "Show MK", settingsHub.KillsCounterSettings.Enable);
             AddChild(showMonsterKillsMenu, "Show details", settingsHub.KillsCounterSettings.ShowDetail);
 
+            // show Item-Drop-Counter // doesnt work yet
+            //MenuItem showItemDropMenu = AddChild(root, "Show ItemDrops", settingsHub.ItemCounterSettings.Enable);
+            //AddChild(showItemDropMenu, "Show details", settingsHub.ItemCounterSettings.ShowDetail);
+
             // Show inventory preview
             MenuItem showInventoryPreviewMenu = AddChild(root, "Show inv preview", settingsHub.InventoryPreviewSettings.Enable);
             AddChild(showInventoryPreviewMenu, "Free cell color", settingsHub.InventoryPreviewSettings.CellFreeColor);
