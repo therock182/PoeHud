@@ -1,4 +1,6 @@
-﻿namespace PoeHUD.Framework.Helpers
+﻿using System;
+
+namespace PoeHUD.Framework.Helpers
 {
     public static class ConvertHelper
     {
@@ -6,9 +8,15 @@
         {
             if (value >= 1000000)
             {
-                return string.Concat((value / 1000000).ToString(format), "M");
+                return string.Concat((value / 1000000).ToString("F2"), "M");
             }
-            return value >= 1000 ? string.Concat((value / 1000).ToString(format), "K") : value.ToString(format);
+
+			if (value >= 1000)
+			{
+				return string.Concat((value / 1000).ToString("F1"), "K");
+			}
+
+            return value.ToString(format);
         }
     }
 }
