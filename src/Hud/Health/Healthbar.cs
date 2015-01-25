@@ -55,7 +55,7 @@ namespace PoeHUD.Hud.Health
 
         public bool IsValid { get; private set; }
 
-        public AllyUnitSettings Settings { get; private set; }
+        public UnitSettings Settings { get; private set; }
 
         public CreatureType Type { get; private set; }
 
