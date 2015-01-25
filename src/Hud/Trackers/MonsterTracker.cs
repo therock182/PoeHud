@@ -55,8 +55,8 @@ namespace PoeHUD.Hud.Trackers
             }
 
             RectangleF rect = GameController.Window.GetWindowRectangle();
-            float xScreenCenter = rect.Width / 2 + rect.X;
-            float yPos = rect.Height / 10 + rect.Y;
+            float xPos = rect.Width * Settings.TextPositionX * 0.01f + rect.X;
+            float yPos = rect.Height * Settings.TextPositionY * 0.01f + rect.Y;
 
             Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             bool first = true;
@@ -77,10 +77,10 @@ namespace PoeHUD.Hud.Trackers
             {
                 RectangleF uv = GetDirectionsUV(group.Monster.Phi, group.Monster.Distance);
                 string text = String.Format("{0} {1}", group.Text, group.Count > 1 ? "(" + group.Count + ")" : string.Empty);
-                Size2 textSize = Graphics.DrawText(text, Settings.TextSize, new Vector2(xScreenCenter, yPos), Color.Red,
+                Size2 textSize = Graphics.DrawText(text, Settings.TextSize, new Vector2(xPos, yPos), Color.Red,
                     FontDrawFlags.Center);
 
-                rectBackground = new RectangleF(xScreenCenter - textSize.Width / 2f - 6, yPos, textSize.Width + 12,
+                rectBackground = new RectangleF(xPos - textSize.Width / 2f - 6, yPos, textSize.Width + 12,
                     textSize.Height);
                 rectBackground.X -= textSize.Height + 3;
                 rectBackground.Width += textSize.Height;
