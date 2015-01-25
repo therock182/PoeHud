@@ -92,37 +92,31 @@ namespace PoeHUD.Hud.Health
             float esWidth = esPercent * scaledWidth;
 
             var bg = new RectangleF(coords.X - scaledWidth / 2, coords.Y - scaledHeight / 2, scaledWidth, scaledHeight);
-            if (healthBar.Entity.IsHostile)
-            {
-                var enemySettings = healthBar.Settings as EnemyUnitSettings;
-                if (hpPercent <= 0.1f)
-                {
-                    color = enemySettings.Under10Percent;
-                }
 
-                bg.Y = DrawHp(life, hpPercent, enemySettings, bg);
-                DrawPercents(enemySettings, hpPercent, bg);
+            if (hpPercent <= 0.1f) {
+                color = healthBar.Settings.Under10Percent;
             }
-
+            bg.Y = DrawHp(life, hpPercent, healthBar.Settings, bg);
+            DrawPercents(healthBar.Settings, hpPercent, bg);
             DrawBackground(color, healthBar.Settings.Outline, bg, hpWidth, esWidth);
         }
 
-        private float DrawHp(Life life, float hpPercent, EnemyUnitSettings enemySettings, RectangleF bg)
+        private float DrawHp(Life life, float hpPercent, UnitSettings settings, RectangleF bg)
         {
-            if (enemySettings.ShowHealthText)
+            if (settings.ShowHealthText)
             {
                 string curHp = ConvertHelper.ToShorten(life.CurHP);
                 string maxHp = ConvertHelper.ToShorten(life.MaxHP);
                 string text = string.Format("{0}/{1}", curHp, maxHp);
-                Color color = hpPercent <= 0.1f ? enemySettings.HealthTextColorUnder10Percent : enemySettings.HealthTextColor;
+                Color color = hpPercent <= 0.1f ? settings.HealthTextColorUnder10Percent : settings.HealthTextColor;
                 var position = new Vector2(bg.X + bg.Width / 2, bg.Y);
-                Size2 size = Graphics.DrawText(text, enemySettings.TextSize, position, color, FontDrawFlags.Center);
+                Size2 size = Graphics.DrawText(text, settings.TextSize, position, color, FontDrawFlags.Center);
                 return (int)bg.Y + (size.Height - bg.Height) / 2;
             }
             return bg.Y;
         }
 
-        private void DrawPercents(EnemyUnitSettings settings, float hpPercent, RectangleF bg)
+        private void DrawPercents(UnitSettings settings, float hpPercent, RectangleF bg)
         {
             if (settings.ShowPercents)
             {
