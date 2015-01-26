@@ -21,7 +21,9 @@ namespace PoeHUD.Hud.InventoryPreview
 
         public override void Render()
         {
-            if (!Settings.Enable || GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible)
+            if (!Settings.Enable ||
+                GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible ||
+                GameController.Game.IngameState.IngameUi.OpenRightPanel.IsVisible)
             {
                 return;
             }
