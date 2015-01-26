@@ -55,8 +55,8 @@ namespace PoeHUD.Hud.Trackers
             }
 
             RectangleF rect = GameController.Window.GetWindowRectangle();
-            float xPos = rect.Width * Settings.TextPositionX / 100 + rect.X;
-            float yPos = rect.Height * Settings.TextPositionY / 100 + rect.Y;
+            float xPos = rect.Width * Settings.TextPositionX / 100;
+            float yPos = rect.Height * Settings.TextPositionY / 100;
 
             Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             bool first = true;

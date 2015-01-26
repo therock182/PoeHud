@@ -37,8 +37,8 @@ namespace PoeHUD.Hud.InventoryPreview
             AddItems();
 
             RectangleF rect = GameController.Window.GetWindowRectangle();
-            float xPos = rect.Width * Settings.PositionX / 100 + rect.X;
-            float yPos = rect.Height * Settings.PositionY / 100 + rect.Y;
+            float xPos = rect.Width * Settings.PositionX / 100;
+            float yPos = rect.Height * Settings.PositionY / 100;
             var startDrawPoint = new Vector2(xPos, yPos);
             for (int i = 0; i < cells.GetLength(0); i++)
             {
