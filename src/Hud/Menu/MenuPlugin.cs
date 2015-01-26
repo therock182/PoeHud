@@ -94,8 +94,12 @@ namespace PoeHUD.Hud.Menu
             MenuItem minionsMenu = AddChild(healthMenu, "Minions", healthBarPlugin.Minions.Enable);
             AddChild(healthMenu, "Show ES", healthBarPlugin.ShowES);
             AddChild(healthMenu, "Show in town", healthBarPlugin.ShowInTown);
+            AddChild(playersMenu, "Print percents", healthBarPlugin.Players.ShowPercents);
+            AddChild(playersMenu, "Print health text", healthBarPlugin.Players.ShowHealthText);
             AddChild(playersMenu, "Width", healthBarPlugin.Players.Width);
             AddChild(playersMenu, "Height", healthBarPlugin.Players.Height);
+            AddChild(minionsMenu, "Print percents", healthBarPlugin.Minions.ShowPercents);
+            AddChild(minionsMenu, "Print health text", healthBarPlugin.Minions.ShowHealthText);
             AddChild(minionsMenu, "Width", healthBarPlugin.Minions.Width);
             AddChild(minionsMenu, "Height", healthBarPlugin.Minions.Height);
             MenuItem whiteEnemyMenu = AddChild(enemiesMenu, "White", healthBarPlugin.NormalEnemy.Enable);
@@ -177,6 +181,8 @@ namespace PoeHUD.Hud.Menu
             MenuItem warningTextMenu = AddChild(bossWarningsMenu, "Text warning", settingsHub.MonsterTrackerSettings.ShowText);
             AddChild(warningTextMenu, "Font size", settingsHub.MonsterTrackerSettings.TextSize);
             AddChild(warningTextMenu, "Background color:", settingsHub.MonsterTrackerSettings.BackgroundColor);
+            AddChild(warningTextMenu, "Position X", settingsHub.MonsterTrackerSettings.TextPositionX);
+            AddChild(warningTextMenu, "Position Y", settingsHub.MonsterTrackerSettings.TextPositionY);
 
             // Xph Display
             MenuItem xpRateMenu = AddChild(root, "Xph Display", settingsHub.XpRateSettings.Enable);

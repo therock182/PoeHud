@@ -53,7 +53,7 @@ namespace PoeHUD
             int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
 #if !DEBUG
             // impossible to Run in debugger with Namecheck and Stuff
-            if (System.AppDomain.CurrentDomain.FriendlyName == "PoeHUD.exe")
+            if (System.AppDomain.CurrentDomain.FriendlyName == "PoeHUD.exe" || System.AppDomain.CurrentDomain.FriendlyName == "ExileHUD.exe" || System.AppDomain.CurrentDomain.FriendlyName == "ExileBuddy.exe")
             {
                 MessageBox.Show("Please rename the HUD for your safety.");
                 return;

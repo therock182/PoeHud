@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Poe.FilesInMemory;
@@ -29,11 +29,20 @@ namespace PoeHUD.Hud.AdvancedTooltip
             List<ModsDat.ModRecord> allTiers;
             if (fs.Mods.recordsByTier.TryGetValue(Tuple.Create(Record.Group, Record.AffixType), out allTiers))
             {
+                IEnumerable<string> validTags = Record.Tags.Select(t => t.Key)
+                    .Where((t, tIdx) => Record.TagChances
+                    .Where((c, cIdx) => tIdx == cIdx && c > 0).Any());
                 bool tierFound = false;
                 totalTiers = 0;
                 foreach (ModsDat.ModRecord record in allTiers)
                 {
-                    // still not filtering out some mods. (like a.spd from gloves projected onto rings)
+                    // skip tiers that cannot be attained normally
+                    if (!record.Tags.Where((t, tIdx) => record.TagChances
+                        .Where((c, cIdx) => tIdx == cIdx && c > 0 && (t.Key == "default" || validTags.Contains(t.Key)))
+                        .Any()).Any())
+                    {
+                        continue;
+                    }
                     if (record.StatNames[0] == Record.StatNames[0] && record.StatNames[1] == Record.StatNames[1]
                         && record.StatNames[2] == Record.StatNames[2] && record.StatNames[3] == Record.StatNames[3])
                     {
