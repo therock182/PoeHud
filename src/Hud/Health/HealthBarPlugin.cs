@@ -9,96 +9,76 @@ using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.RemoteMemoryObjects;
-using PoeHUD.Hud.Settings;
 
 using SharpDX;
 using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.Health
 {
-	public class HealthBarPlugin : Plugin<HealthBarSettings>
-	{
-		private readonly Dictionary<CreatureType, List<HealthBar>> healthBars;
+    public class HealthBarPlugin : Plugin<HealthBarSettings>
+    {
+        private readonly Dictionary<CreatureType, List<HealthBar>> healthBars;
 
-		public HealthBarPlugin(GameController gameController, Graphics graphics,
-			HealthBarSettings settings)
-			: base(gameController, graphics, settings)
-		{
-			CreatureType[] types = Enum.GetValues(typeof(CreatureType)).Cast<CreatureType>()
-				.ToArray();
-			healthBars = new Dictionary<CreatureType, List<HealthBar>>(types.Length);
-			foreach (CreatureType type in types)
-			{
-				healthBars.Add(type, new List<HealthBar>());
-			}
-		}
+        public HealthBarPlugin(GameController gameController, Graphics graphics, HealthBarSettings settings)
+            : base(gameController, graphics, settings)
+        {
+            CreatureType[] types = Enum.GetValues(typeof(CreatureType)).Cast<CreatureType>().ToArray();
+            healthBars = new Dictionary<CreatureType, List<HealthBar>>(types.Length);
+            foreach (CreatureType type in types)
+            {
+                healthBars.Add(type, new List<HealthBar>());
+            }
+        }
 
-		public override void Render()
-		{
-			if (!Settings.Enable || !GameController.InGame ||
-				!Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
-			{
-				return;
-			}
+        public override void Render()
+        {
+            if (!Settings.Enable || !GameController.InGame || !Settings.ShowInTown && GameController.Area.CurrentArea.IsTown)
+            {
+                return;
+            }
 
-			// Which of these vars is the numeric life value?
-			// When I've found it, how do I draw it?
-			// How are monster health bars finding and drawing it
+            RectangleF windowRectangle = GameController.Window.GetWindowRectangle();
+            var windowSize = new Size2F(windowRectangle.Width / 2560, windowRectangle.Height / 1600);
 
-			RectangleF windowRectangle = GameController.Window.GetWindowRectangle();
-			var windowSize = new Size2F(
-				windowRectangle.Width / 2560,
-				windowRectangle.Height / 1600
-			);
+            Camera camera = GameController.Game.IngameState.Camera;
+            Func<HealthBar, bool> showHealthBar = x => x.IsShow(Settings.ShowEnemies);
+            Parallel.ForEach(healthBars, x => x.Value.RemoveAll(hp => !(hp.Entity.IsValid && hp.Entity.IsAlive)));
+            foreach (HealthBar healthBar in healthBars.SelectMany(x => x.Value).AsParallel().AsOrdered().Where(showHealthBar))
+            {
+                Vector3 worldCoords = healthBar.Entity.Pos;
+                Vector2 mobScreenCoords = camera.WorldToScreen(worldCoords.Translate(0, 0, -170), healthBar.Entity);
+                if (mobScreenCoords != new Vector2())
+                {
+                    DrawHealthBar(healthBar, windowSize, mobScreenCoords);
+                }
+            }
+        }
 
-			Camera camera = GameController.Game.IngameState.Camera;
-			Func<HealthBar, bool> showHealthBar = x => x.IsShow(Settings.ShowEnemies);
-			Parallel.ForEach(healthBars,
-				x => x.Value.RemoveAll(hp => !(hp.Entity.IsValid && hp.Entity.IsAlive))
-			);
+        protected override void OnEntityAdded(EntityWrapper entity)
+        {
+            var healthbarSettings = new HealthBar(entity, Settings);
+            if (healthbarSettings.IsValid)
+            {
+                healthBars[healthbarSettings.Type].Add(healthbarSettings);
+            }
+        }
 
-			var allHealthBars = healthBars.SelectMany(x => x.Value)
-				.AsParallel().AsOrdered().Where(showHealthBar);
-			foreach (HealthBar healthBar in allHealthBars)
-			{
-				Vector3 worldCoords = healthBar.Entity.Pos;
-				Vector2 mobScreenCoords = camera.WorldToScreen(
-					worldCoords.Translate(0, 0, -170), healthBar.Entity
-				);
-				if (mobScreenCoords != new Vector2())
-				{
-					DrawHealthBar(healthBar, windowSize, mobScreenCoords);
-				}
-			}
-		}
-
-		protected override void OnEntityAdded(EntityWrapper entity)
-		{
-			var healthbarSettings = new HealthBar(entity, Settings);
-			if (healthbarSettings.IsValid)
-			{
-				healthBars[healthbarSettings.Type].Add(healthbarSettings);
-			}
-		}
-
-		private void DrawBackground(Color color, Color outline, RectangleF bg, 
-			float hpWidth, float esWidth)
-		{
-			if (outline != Color.Black)
-			{
-				Graphics.DrawFrame(bg, 2, outline);
-			}
-			string healthBar = Settings.ShowIncrements ? "healthbar_increment.png"
-				: "healthbar.png";
-			Graphics.DrawImage("healthbar_bg.png", bg, color);
-			var hpRectangle = new RectangleF(bg.X, bg.Y, hpWidth, bg.Height);
-			Graphics.DrawImage(healthBar, hpRectangle, color, hpWidth * 10 / bg.Width);
-			if (Settings.ShowES)
-			{
-				bg.Width = esWidth;
-				Graphics.DrawImage("esbar.png", bg);
-			}
-		}
+        private void DrawBackground(Color color, Color outline, RectangleF bg, float hpWidth, float esWidth)
+        {
+            if (outline != Color.Black)
+            {
+                Graphics.DrawFrame(bg, 2, outline);
+            }
+            string healthBar = Settings.ShowIncrements ? "healthbar_increment.png" : "healthbar.png";
+            Graphics.DrawImage("healthbar_bg.png", bg, color);
+            var hpRectangle = new RectangleF(bg.X, bg.Y, hpWidth, bg.Height);
+            Graphics.DrawImage(healthBar, hpRectangle, color, hpWidth * 10 / bg.Width);
+            if (Settings.ShowES)
+            {
+                bg.Width = esWidth;
+                Graphics.DrawImage("esbar.png", bg);
+            }
+        }
 
 		/**
 		 * Render the health bar including the colours showing the proportion of life lost,
@@ -177,15 +157,15 @@ namespace PoeHUD.Hud.Health
 				color, FontDrawFlags.Center);
 			return (int)bg.Y + (size.Height - bg.Height) / 2;
 		}
-
-		private void DrawPercents(UnitSettings settings, float hpPercent, RectangleF bg)
-		{
-			if (settings.ShowPercents)
-			{
-				string text = Convert.ToString((int)(hpPercent * 100));
-				var position = new Vector2(bg.X + bg.Width + 4, bg.Y);
-				Graphics.DrawText(text, settings.TextSize, position, settings.PercentTextColor);
-			}
-		}
-	}
+		
+        private void DrawPercents(UnitSettings settings, float hpPercent, RectangleF bg)
+        {
+            if (settings.ShowPercents)
+            {
+                string text = Convert.ToString((int)(hpPercent * 100));
+                var position = new Vector2(bg.X + bg.Width + 4, bg.Y);
+                Graphics.DrawText(text, settings.TextSize, position, settings.PercentTextColor);
+            }
+        }
+    }
 }
