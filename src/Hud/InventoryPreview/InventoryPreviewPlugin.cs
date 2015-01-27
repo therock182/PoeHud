@@ -55,6 +55,11 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private void AddItem(int x, int y, Size2 itemSize)
         {
+            if (x < 0 || x + itemSize.Width > CELLS_X_COUNT ||
+                y < 0 || y + itemSize.Height > CELLS_Y_COUNT)
+            {
+                return; // shouldn't happen but apparently there are cases where the size calcuation runs into issues
+            }
             for (int i = y; i < itemSize.Height + y; i++)
             {
                 for (int j = x; j < itemSize.Width + x; j++)
