@@ -94,7 +94,11 @@ namespace PoeHUD.Hud.Dps
                     {
                         totalDamage += lastHP - hp;
                     }
-                    monsters.Add(monster.Id, hp);
+                    try {
+                        monsters.Add(monster.Id, hp);
+                    } catch (ArgumentException) {
+                        monsters[monster.Id] = hp;
+                    }
                 }
             }
             lastMonsters = monsters;
