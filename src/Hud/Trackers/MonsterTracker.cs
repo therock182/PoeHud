@@ -23,14 +23,16 @@ namespace PoeHUD.Hud.Trackers
 
         private readonly Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>> iconCreators;
 
-        private readonly Dictionary<string, string> modAlerts, typeAlerts;
+        private readonly Dictionary<string, string> typeAlerts;
+
+        private readonly Dictionary<string, List<string>> modAlerts;
 
         public MonsterTracker(GameController gameController, Graphics graphics, MonsterTrackerSettings settings)
             : base(gameController, graphics, settings)
         {
             alreadyAlertedOf = new HashSet<int>();
             alertTexts = new Dictionary<EntityWrapper, string>();
-            modAlerts = LoadConfig("config/monster_mod_alerts.txt");
+            modAlerts = LoadConfigList("config/monster_mod_alerts.txt");
             typeAlerts = LoadConfig("config/monster_name_alerts.txt");
             Func<bool> monsterSettings = () => Settings.Monsters;
             iconCreators = new Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>>
@@ -133,8 +135,11 @@ namespace PoeHUD.Hud.Trackers
                 string modAlert = entity.GetComponent<ObjectMagicProperties>().Mods.FirstOrDefault(x => modAlerts.ContainsKey(x));
                 if (modAlert != null)
                 {
-                    alertTexts.Add(entity, modAlerts[modAlert]);
+                    if (modAlerts[modAlert].Count > 1) // Special Icon for that Mod ?
+                        CurrentIcons[entity].MinimapIcon.FileName = modAlerts[modAlert][1]; // Overwrite the Default Icon !
+                    alertTexts.Add(entity, modAlerts[modAlert][0]);
                     PlaySound(entity);
+
                 }
             }
         }
