@@ -53,9 +53,7 @@ namespace PoeHUD
 
 #if !DEBUG
             MemoryControl.Start();
-            bool firstLaunch = args.Length == 0;
-	        Scrambler.Scramble(firstLaunch ? null : args[0]);
-	        if (firstLaunch)
+            if (Scrambler.Scramble(args.Length > 0 ? args[0] : null))
 	        {
 	            return;
 	        }

