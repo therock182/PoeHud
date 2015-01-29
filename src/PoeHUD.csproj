@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
-    <AssemblyName>PoeHUD</AssemblyName>
+    <AssemblyName>Calculator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -83,7 +83,6 @@
     <Compile Include="Controllers\FsController.cs" />
     <Compile Include="Framework\Aero.cs" />
     <Compile Include="Framework\ChooseColor.cs" />
-    <Compile Include="Framework\HashCheck.cs" />
     <Compile Include="Framework\Helpers\ActionHelper.cs" />
     <Compile Include="Framework\Helpers\LinqHelper.cs" />
     <Compile Include="Framework\Helpers\MathHepler.cs" />
@@ -271,7 +270,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="Tools\Tools.fsproj">
+      <Project>{5f2ae016-51d1-42c4-95cd-4e12118e3a6e}</Project>
+      <Name>Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>set LIBZ=$(SolutionDir)packages\LibZ.Bootstrap.1.1.0.2\tools\libz.exe

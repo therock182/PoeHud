@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud.AdvancedTooltip;
@@ -44,14 +47,6 @@ namespace PoeHUD.Hud
 
         public ExternalOverlay(GameController gameController, Func<bool> gameEnded)
         {
-
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var windowname = new string(
-                Enumerable.Repeat(chars, 12)
-                          .Select(s => s[random.Next(s.Length)])
-                          .ToArray());
-
             settings = SettingsHub.Load();
 
             this.gameController = gameController;
@@ -59,8 +54,7 @@ namespace PoeHUD.Hud
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            string title = windowname;
-            Text = string.IsNullOrWhiteSpace(title) ? "glitchd" : title;
+            Text = Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location);
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
             FormBorderStyle = FormBorderStyle.None;
@@ -152,7 +146,7 @@ namespace PoeHUD.Hud
             var undePanelPanel = new PluginPanel(GetUnderCornerMap);
             undePanelPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
             plugins.AddRange(undePanelPanel.GetPlugins());
-            
+
             plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
 

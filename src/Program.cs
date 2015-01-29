@@ -9,6 +9,8 @@ using PoeHUD.Hud;
 using PoeHUD.Poe;
 using System.IO;
 
+using Tools;
+
 namespace PoeHUD
 {
 	public class Program
@@ -43,43 +45,21 @@ namespace PoeHUD
 	    [STAThread]
 		public static void Main(string[] args)
 		{
+            AppDomain.CurrentDomain.UnhandledException += (sender, exceptionArgs) =>
+            {
+                MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject);
+                Environment.Exit(1);
+            };
+
 #if !DEBUG
             MemoryControl.Start();
+            bool firstLaunch = args.Length == 0;
+	        Scrambler.Scramble(firstLaunch ? null : args[0]);
+	        if (firstLaunch)
+	        {
+	            return;
+	        }
 #endif
-            FileStream fs = new FileStream("csum",FileMode.OpenOrCreate);
-            fs.Close();
-            string HUDLOC = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-            string lastCsums = System.IO.File.ReadAllText("csum");
-            int lastCsum = string.IsNullOrEmpty(lastCsums) ? 0 : int.Parse(lastCsums);
-            if (System.AppDomain.CurrentDomain.FriendlyName == "PoeHUD.exe")
-            {
-                MessageBox.Show("Please rename the HUD for your safety.");
-                return;
-            }
-            if (HashCheck.GetCSum(HUDLOC) == 0 | HashCheck.GetCSum(HUDLOC) == lastCsum)
-            {
-                MessageBox.Show("Running the Scrambler for your safety. LastCsum = "+lastCsums);
-                System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
-                store.WriteLine(HashCheck.GetCSum(HUDLOC));
-                store.Close();
-                if (!File.Exists("config/scrambler.txt") || (new FileInfo("config/scrambler.txt").Length == 0))
-                {
-                    FileStream Ccreator = new FileStream("config/scrambler.txt", FileMode.OpenOrCreate);
-                    Ccreator.Close();
-                }
-                
-                System.IO.StreamWriter Cwriter = new System.IO.StreamWriter("config/scrambler.txt");
-                Cwriter.WriteLine(System.AppDomain.CurrentDomain.FriendlyName);
-                Cwriter.Close();
-                System.Diagnostics.Process.Start("Scrambler.exe","fromHUD");
-                return;
-            }
-            else
-            {
-                System.IO.StreamWriter store = new System.IO.StreamWriter("csum");
-                store.WriteLine(HashCheck.GetCSum(HUDLOC));
-                store.Close();
-            }
 
             Offsets offs;
 			int pid = FindPoeProcess(out offs);
@@ -92,21 +72,13 @@ namespace PoeHUD
 
 			Sounds.LoadSounds();
 
-			AppDomain.CurrentDomain.UnhandledException += ( sender,  exceptionArgs)=>
-			{
-				MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject.ToString());
-				Environment.Exit(1);
-			};
-
-
-			using (Memory memory = new Memory(offs, pid))
+			using (var memory = new Memory(offs, pid))
 			{
 				offs.DoPatternScans(memory);
-				GameController gameController = new GameController(memory);
+				var gameController = new GameController(memory);
 				gameController.RefreshState();
 
-                Func<bool> gameEnded = () => memory.IsInvalid();
-                var overlay = new ExternalOverlay(gameController, gameEnded);
+                var overlay = new ExternalOverlay(gameController, memory.IsInvalid);
                 Application.Run(overlay);
 			}
 		}
