@@ -7,6 +7,9 @@ using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Hud;
 using PoeHUD.Poe;
+using System.IO;
+
+using Tools;
 
 namespace PoeHUD
 {
@@ -39,11 +42,22 @@ namespace PoeHUD
 	    }
 
 	    [STAThread]
-		public static void Main()
+		public static void Main(string[] args)
 		{
+            AppDomain.CurrentDomain.UnhandledException += (sender, exceptionArgs) =>
+            {
+                MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject);
+                Environment.Exit(1);
+            };
+
 #if !DEBUG
             MemoryControl.Start();
+            if (Scrambler.Scramble(args.Length > 0 ? args[0] : null))
+	        {
+	            return;
+	        }
 #endif
+
             Offsets offs;
 			int pid = FindPoeProcess(out offs);
 
@@ -55,21 +69,13 @@ namespace PoeHUD
 
 			Sounds.LoadSounds();
 
-			AppDomain.CurrentDomain.UnhandledException += ( sender,  exceptionArgs)=>
-			{
-				MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject.ToString());
-				Environment.Exit(1);
-			};
-
-
-			using (Memory memory = new Memory(offs, pid))
+			using (var memory = new Memory(offs, pid))
 			{
 				offs.DoPatternScans(memory);
-				GameController gameController = new GameController(memory);
+				var gameController = new GameController(memory);
 				gameController.RefreshState();
 
-                Func<bool> gameEnded = () => memory.IsInvalid();
-                var overlay = new ExternalOverlay(gameController, gameEnded);
+                var overlay = new ExternalOverlay(gameController, memory.IsInvalid);
                 Application.Run(overlay);
 			}
 		}

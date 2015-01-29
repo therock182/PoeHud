@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
-using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
@@ -54,7 +55,7 @@ namespace PoeHUD.Hud
             gameHandle = gameController.Window.Process.MainWindowHandle;
 
             SuspendLayout();
-            Text = MathHepler.GetRandomWord(MathHepler.Randomizer.Next(7) + 5);
+            Text = Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location);
             TransparencyKey = Color.Transparent;
             BackColor = Color.Black;
             FormBorderStyle = FormBorderStyle.None;
