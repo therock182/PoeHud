@@ -50,7 +50,7 @@ namespace PoeHUD.Hud.Loot
             if (_item.HasComponent<Quality>()) 
             {
                 quality = _item.GetComponent<Quality>().ItemQuality; // update quality variable
-                alertText = string.Concat("Superior ", _name);
+                alertText = string.Concat(quality > 0 ? "Superior " : String.Empty, _name);
             }
 
             // Check if Map/Vaal Frag
