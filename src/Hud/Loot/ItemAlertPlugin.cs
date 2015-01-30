@@ -84,17 +84,21 @@ namespace PoeHUD.Hud.Loot
 
         protected override void OnEntityAdded(EntityWrapper entity)
         {
-            if (!GameController.Area.CurrentArea.IsTown && Settings.Enable && !currentAlerts.ContainsKey(entity) && entity.HasComponent<WorldItem>())
+            if (!Settings.Enable || currentAlerts.ContainsKey(entity))
+            {
+                return;
+            }
+            if (entity.HasComponent<WorldItem>())
             {
                 IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
-                // Check if we should alert WHILE loading item to preven useless compute
-                ItemUsefulProperties props = initItem(item);
+                ItemUsefulProperties props = EvaluateItem(item);
 
-                if (props.ShouldAlert(currencyNames, Settings))
+                if (props.IsWorthAlertingPlayer(currencyNames, Settings))
                 {
                     AlertDrawStyle drawStyle = props.GetDrawStyle();
                     currentAlerts.Add(entity, drawStyle);
-                    CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.AlertColor), () => Settings.ShowItemOnMap, 8);
+                    CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.Color),
+                        () => Settings.ShowItemOnMap, 8);
 
                     if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
                     {
@@ -227,7 +231,7 @@ namespace PoeHUD.Hud.Loot
             double distance = delta.GetPolarCoordinates(out phi);
             float compassOffset = Settings.TextSize + 8;
             Vector2 textPos = position.Translate(-padding.X - compassOffset, padding.Y);
-            Size2 textSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.AlertColor, FontDrawFlags.Right);
+            Size2 textSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.Color, FontDrawFlags.Right);
             int iconSize = drawStyle.IconIndex >= 0 ? textSize.Height : 0;
 
             float fullHeight = textSize.Height + 2 * padding.Y + 2 * drawStyle.FrameWidth;
@@ -250,22 +254,21 @@ namespace PoeHUD.Hud.Loot
             }
             if (drawStyle.FrameWidth > 0)
             {
-                Graphics.DrawFrame(boxRect, drawStyle.FrameWidth, drawStyle.AlertColor);
+                Graphics.DrawFrame(boxRect, drawStyle.FrameWidth, drawStyle.Color);
             }
             return new Vector2(fullWidth, fullHeight);
         }
 
-        private ItemUsefulProperties initItem(IEntity item)
+        private ItemUsefulProperties EvaluateItem(IEntity item)
         {
             string name = GameController.Files.BaseItemTypes.Translate(item.Path);
-
-            CraftingBase craftingBase = new CraftingBase();
-            if (Settings.Crafting)
+            var usefulProperties = new ItemUsefulProperties(name, item);
+            CraftingBase craftingBase;
+            if (craftingBases.TryGetValue(usefulProperties.Name, out craftingBase) && Settings.Crafting)
             {
-                craftingBases.TryGetValue(name, out craftingBase);
+                usefulProperties.SetCraftingBase(craftingBase);
             }
-
-            return new ItemUsefulProperties(name, item, craftingBase);
+            return usefulProperties;
         }
 
         private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)

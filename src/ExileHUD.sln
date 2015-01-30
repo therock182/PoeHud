@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoeHUD", "PoeHUD.csproj", "{E86368B2-AE1E-4489-A749-E29A0AB48F83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrambler", "Launcher\Scrambler.csproj", "{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tools", "Tools\Tools.fsproj", "{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,16 +27,16 @@ Global
 		{E86368B2-AE1E-4489-A749-E29A0AB48F83}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E86368B2-AE1E-4489-A749-E29A0AB48F83}.Release|x86.ActiveCfg = Release|x86
 		{E86368B2-AE1E-4489-A749-E29A0AB48F83}.Release|x86.Build.0 = Release|x86
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0FDD3CF8-3AD7-4B7D-BADB-305364D6756A}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5F2AE016-51D1-42C4-95CD-4E12118E3A6E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

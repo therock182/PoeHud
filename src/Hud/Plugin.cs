@@ -61,30 +61,6 @@ namespace PoeHUD.Hud
                 .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
         }
 
-
-        /// <summary>
-        /// Loads a Comma separated file into a list of Strings
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        protected static Dictionary<string, List<string>> LoadConfigList(string path)
-        {
-            var result = new Dictionary<string, List<string>>();
-                
-            string[] lines = File.ReadAllLines(path);
-            foreach (string line in lines.Select(a => a.Trim()))
-            {
-                if (string.IsNullOrWhiteSpace(line) || line.IndexOf(',') < 0 || line.StartsWith("#")) // Ignore empty lines, those without , and comments
-                    continue;
-                List<string> Values = line.Split(',').Select(s => s.Trim()).ToList(); // Split comma separated Values into the List of strings
-                string name = Values[0];  // Key Value for the Dictionary
-                Values.RemoveAt(0); // remove the key-Value from the List
-                result.Add(name, Values);
-            }
-            return result;
-        }
-
-
         protected virtual void OnEntityAdded(EntityWrapper entityWrapper) {}
 
         protected virtual void OnEntityRemoved(EntityWrapper entityWrapper) {}

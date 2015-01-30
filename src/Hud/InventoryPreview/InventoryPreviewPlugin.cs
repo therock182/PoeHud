@@ -3,8 +3,8 @@ using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
+
 using SharpDX;
-using System;
 
 namespace PoeHUD.Hud.InventoryPreview
 {
@@ -14,63 +14,43 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private const int CELLS_X_COUNT = 12;
 
-        private CellData[,] cells;
+        private bool[,] cells;
 
         public InventoryPreviewPlugin(GameController gameController, Graphics graphics, InventoryPreviewSettings settings)
             : base(gameController, graphics, settings) {}
 
         public override void Render()
         {
-            if (!Settings.Enable ||
-                GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible ||
-                GameController.Game.IngameState.IngameUi.OpenRightPanel.IsVisible)
+            if (!Settings.Enable || GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible)
             {
                 return;
             }
 
-            cells = new CellData[CELLS_Y_COUNT, CELLS_X_COUNT];
-            for (int y = 0; y < CELLS_Y_COUNT; ++y) {
-                for (int x = 0; x < CELLS_X_COUNT; ++x) {
-                    cells[y, x] = new CellData();
-                }
-            }
+            cells = new bool[CELLS_Y_COUNT, CELLS_X_COUNT];
             AddItems();
 
-            RectangleF rect = GameController.Window.GetWindowRectangle();
-            float xPos = rect.Width * Settings.PositionX / 100;
-            float yPos = rect.Height * Settings.PositionY / 100;
-            var startDrawPoint = new Vector2(xPos, yPos);
+            Element hpGlobe = GameController.Game.IngameState.IngameUi.HpGlobe;
+            RectangleF hpGlobeRectangle = hpGlobe.GetClientRect();
+            var startDrawPoint = new Vector2(hpGlobeRectangle.X + hpGlobeRectangle.Width, hpGlobe.Children[0].GetClientRect().Y);
+            var size = (int)(hpGlobeRectangle.Height * 0.1); //size=20, hbglobe=200.5 -> 20/200.5~0.1
             for (int i = 0; i < cells.GetLength(0); i++)
             {
                 for (int j = 0; j < cells.GetLength(1); j++)
                 {
-                    Vector2 d = startDrawPoint.Translate(j * Settings.CellSize, i * Settings.CellSize);
-                    float cellWidth = cells[i, j].ExtendsX ? Settings.CellSize : Math.Max(1, Settings.CellSize - Settings.CellPadding);
-                    float cellHeight = cells[i, j].ExtendsY ? Settings.CellSize : Math.Max(1, Settings.CellSize - Settings.CellPadding);
-                    var rectangleF = new RectangleF(d.X, d.Y, cellWidth, cellHeight);
-                    Graphics.DrawBox(rectangleF, cells[i, j].Used ? Settings.CellUsedColor : Settings.CellFreeColor);
+                    Vector2 d = startDrawPoint.Translate(j * size, i * size);
+                    var rectangleF = new RectangleF(d.X, d.Y, size - 2f, size - 2f);
+                    Graphics.DrawBox(rectangleF, cells[i, j] ? Settings.CellUsedColor : Settings.CellFreeColor);
                 }
             }
         }
 
         private void AddItem(int x, int y, Size2 itemSize)
         {
-            if (x < 0 || x + itemSize.Width > CELLS_X_COUNT ||
-                y < 0 || y + itemSize.Height > CELLS_Y_COUNT)
-            {
-                return; // shouldn't happen but apparently there are cases where the size calcuation runs into issues
-            }
             for (int i = y; i < itemSize.Height + y; i++)
             {
                 for (int j = x; j < itemSize.Width + x; j++)
                 {
-                    cells[i, j].Used = true;
-                    if (j < itemSize.Width + x - 1) {
-                        cells[i, j].ExtendsX = true;
-                    }
-                    if (i < itemSize.Height + y - 1) {
-                        cells[i, j].ExtendsY = true;
-                    }
+                    cells[i, j] = true;
                 }
             }
         }

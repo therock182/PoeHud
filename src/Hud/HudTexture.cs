@@ -7,9 +7,9 @@ namespace PoeHUD.Hud
 {
     public class HudTexture
     {
-        private string fileName;
+        private readonly string fileName;
 
-        private Color color;
+        private readonly Color color;
 
         public HudTexture(string fileName) : this(fileName, Color.White) {}
 
@@ -40,19 +40,5 @@ namespace PoeHUD.Hud
         {
             graphics.DrawImage(fileName, rectangle, color);
         }
-
-        public string FileName
-        {
-            get
-            {
-                return this.fileName;
-            }
-            set
-            {
-                if (this.fileName != value)
-                    this.fileName = value;
-            }
-        }
-
     }
 }
