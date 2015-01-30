@@ -13,7 +13,7 @@ using System.Security.Permissions;
 [assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyFileVersion("6.3.9600.0")]
-[assembly: AssemblyProduct("Windows Calculator")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyTitle("")]
 [assembly: AssemblyTrademark("")]
 [assembly: CompilationRelaxations(8)]

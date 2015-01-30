@@ -23,16 +23,14 @@ namespace PoeHUD.Hud.Trackers
 
         private readonly Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>> iconCreators;
 
-        private readonly Dictionary<string, string> typeAlerts;
-
-        private readonly Dictionary<string, List<string>> modAlerts;
+        private readonly Dictionary<string, string> modAlerts, typeAlerts;
 
         public MonsterTracker(GameController gameController, Graphics graphics, MonsterTrackerSettings settings)
             : base(gameController, graphics, settings)
         {
             alreadyAlertedOf = new HashSet<int>();
             alertTexts = new Dictionary<EntityWrapper, string>();
-            modAlerts = LoadConfigList("config/monster_mod_alerts.txt");
+            modAlerts = LoadConfig("config/monster_mod_alerts.txt");
             typeAlerts = LoadConfig("config/monster_name_alerts.txt");
             Func<bool> monsterSettings = () => Settings.Monsters;
             iconCreators = new Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>>
@@ -57,8 +55,8 @@ namespace PoeHUD.Hud.Trackers
             }
 
             RectangleF rect = GameController.Window.GetWindowRectangle();
-            float xPos = rect.Width * Settings.TextPositionX / 100;
-            float yPos = rect.Height * Settings.TextPositionY / 100;
+            float xPos = rect.Width * Settings.TextPositionX / 100 + rect.X;
+            float yPos = rect.Height * Settings.TextPositionY / 100 + rect.Y;
 
             Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             bool first = true;
@@ -135,11 +133,8 @@ namespace PoeHUD.Hud.Trackers
                 string modAlert = entity.GetComponent<ObjectMagicProperties>().Mods.FirstOrDefault(x => modAlerts.ContainsKey(x));
                 if (modAlert != null)
                 {
-                    if (modAlerts[modAlert].Count > 1) // Special Icon for that Mod ?
-                        CurrentIcons[entity].MinimapIcon.FileName = modAlerts[modAlert][1]; // Overwrite the Default Icon !
-                    alertTexts.Add(entity, modAlerts[modAlert][0]);
+                    alertTexts.Add(entity, modAlerts[modAlert]);
                     PlaySound(entity);
-
                 }
             }
         }
