@@ -4,8 +4,8 @@ open System
 open System.Diagnostics
 open System.IO
 open System.Reflection
-open System.Security.Cryptography
 open System.Windows.Forms
+open Generators
 
 [<AbstractClass; Sealed>]
 type Scrambler private () = 
@@ -13,29 +13,17 @@ type Scrambler private () =
     [<Literal>]
     static let e_csum = 0x12
     
-    [<Literal>]
-    static let table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    
-    static let randomizer = new Random()
-    
-    static let createString min max = 
-        randomizer.Next(min, max)
-        |> Array.zeroCreate
-        |> Array.map (fun _ -> table.[randomizer.Next(table.Length)])
-        |> fun array -> new string(array)
-    
-    static let createCSum size = 
-        let csum = Array.zeroCreate size
-        use rngCsp = new RNGCryptoServiceProvider()
-        rngCsp.GetBytes csum
-        csum
+    static let invalid = 
+        let names = [| "calculator.exe"; "poehud.exe"; "exilehud.exe"; "exilebuddy.exe" |]
+        let compare name illegal = String.Equals(name, illegal, StringComparison.InvariantCultureIgnoreCase)
+        fun name -> Array.exists (compare name) names
     
     static let encryptFile srcPath = 
         let fileData = File.ReadAllBytes srcPath
-        let csum = createCSum 4
+        let csum = generateCSum 4
         Buffer.BlockCopy(csum, 0, fileData, e_csum, csum.Length)
-        let dstFileName = createString 3 12
-        let dstPath = Path.Combine(Path.GetDirectoryName srcPath, dstFileName + ".exe")
+        let dstFileName = generateName 3 12 invalid
+        let dstPath = Path.Combine(Path.GetDirectoryName srcPath, dstFileName)
         File.WriteAllBytes(dstPath, fileData)
         dstPath
     
@@ -46,7 +34,7 @@ type Scrambler private () =
             let mutable result = true
             try 
                 let srcPath = Assembly.GetEntryAssembly().Location
-                if Path.GetFileName(srcPath).Equals("Calculator.exe", StringComparison.InvariantCultureIgnoreCase) 
+                if invalid (Path.GetFileName srcPath) 
                    || (new FileInfo(srcPath)).CreationTimeUtc < DateTime.UtcNow.AddDays -1.0 then 
                     let dstPath = encryptFile srcPath
                     Process.Start(dstPath, sprintf "\"%s\"" srcPath) |> ignore

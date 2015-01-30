@@ -43,6 +43,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators.fs" />
     <Compile Include="Scrambler.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
