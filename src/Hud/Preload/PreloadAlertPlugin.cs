@@ -13,19 +13,18 @@ namespace PoeHUD.Hud.Preload
 {
     public class PreloadAlertPlugin : SizedPlugin<PreloadAlertSettings>
     {
-        private readonly HashSet<string> disp;
+        private readonly HashSet<string> alerts;
 
-        private Dictionary<string, string> alertStrings;
+        private readonly Dictionary<string, string> alertStrings;
 
-        private int lastCount;
+        private bool areaChanged = true;
 
         public PreloadAlertPlugin(GameController gameController, Graphics graphics, PreloadAlertSettings settings)
             : base(gameController, graphics, settings)
         {
-            disp = new HashSet<string>();
-            InitAlertStrings();
-            GameController.Area.OnAreaChange += CurrentArea_OnAreaChange;
-            CurrentArea_OnAreaChange(GameController.Area);
+            alerts = new HashSet<string>();
+            alertStrings = LoadConfig("config/preload_alerts.txt");
+            GameController.Area.OnAreaChange += OnAreaChange;
         }
 
         public override void Render()
@@ -36,32 +35,26 @@ namespace PoeHUD.Hud.Preload
                 return;
             }
 
-            Memory memory = GameController.Memory;
-            int count = memory.ReadInt(memory.AddressOfProcess + memory.offsets.FileRoot, 12);
-            if (count != lastCount)
+            if (areaChanged)
             {
-                lastCount = count;
                 Parse();
             }
 
-            if (disp.Count > 0)
+            if (alerts.Count > 0)
             {
                 Vector2 startPosition = StartDrawPointFunc();
                 Vector2 position = startPosition;
                 int maxWidth = 0;
-                foreach (string current in disp)
+                foreach (string alert in alerts)
                 {
-                    Size2 size = Graphics.DrawText(current, Settings.TextSize, position, FontDrawFlags.Right);
-                    if (size.Width + 10 > maxWidth)
-                    {
-                        maxWidth = size.Width + 10;
-                    }
+                    Size2 size = Graphics.DrawText(alert, Settings.TextSize, position, FontDrawFlags.Right);
+                    maxWidth = Math.Max(size.Width, maxWidth);
                     position.Y += size.Height;
                 }
                 if (maxWidth > 0)
                 {
-                    var bounds = new RectangleF(startPosition.X - maxWidth + 5, startPosition.Y - 5,
-                        maxWidth, position.Y - startPosition.Y + 10);
+                    var bounds = new RectangleF(startPosition.X - maxWidth - 5, startPosition.Y - 5,
+                        maxWidth + 10, position.Y - startPosition.Y + 10);
                     Graphics.DrawBox(bounds, Settings.BackgroundColor);
                     Size = bounds.Size;
                     Margin = new Vector2(0, 5);
@@ -69,22 +62,22 @@ namespace PoeHUD.Hud.Preload
             }
         }
 
-        private void CurrentArea_OnAreaChange(AreaController area)
+        private void OnAreaChange(AreaController area)
         {
             if (Settings.Enable)
             {
                 Parse();
             }
-        }
-
-        private void InitAlertStrings()
-        {
-            alertStrings = LoadConfig("config/preload_alerts.txt");
+            else
+            {
+                areaChanged = true;
+            }
         }
 
         private void Parse()
         {
-            disp.Clear();
+            areaChanged = false;
+            alerts.Clear();
             Memory memory = GameController.Memory;
             int pFileRoot = memory.ReadInt(memory.AddressOfProcess + memory.offsets.FileRoot);
             int count = memory.ReadInt(pFileRoot + 12);
@@ -96,27 +89,26 @@ namespace PoeHUD.Hud.Preload
                 if (memory.ReadInt(listIterator + 8) != 0 && memory.ReadInt(listIterator + 12, 36) == areaChangeCount)
                 {
                     string text = memory.ReadStringU(memory.ReadInt(listIterator + 8));
-                    if (text.Contains("vaal_sidearea"))
-                    {
-                        disp.Add("Area contains Corrupted Area");
-                    }
                     if (text.Contains('@'))
                     {
                         text = text.Split(new[] { '@' })[0];
                     }
-                    if (text.StartsWith("Metadata/Monsters/Missions/MasterStrDex"))
+                    if (text.Contains("vaal_sidearea"))
                     {
-                        Console.WriteLine("bad alert " + text);
-                        disp.Add("Area contains Vagan, Weaponmaster");
+                        alerts.Add("Area contains Corrupted Area");
                     }
-                    if (alertStrings.ContainsKey(text))
+                    else if (text.StartsWith("Metadata/Monsters/Missions/MasterStrDex"))
+                    {
+                        alerts.Add("Area contains Vagan, Weaponmaster");
+                    }
+                    else if (alertStrings.ContainsKey(text))
                     {
                         Console.WriteLine("Alert because of " + text);
-                        disp.Add(alertStrings[text]);
+                        alerts.Add(alertStrings[text]);
                     }
                     else if (text.EndsWith("BossInvasion"))
                     {
-                        disp.Add("Area contains Invasion Boss");
+                        alerts.Add("Area contains Invasion Boss");
                     }
                 }
             }
