@@ -84,21 +84,16 @@ namespace PoeHUD.Hud.Loot
 
         protected override void OnEntityAdded(EntityWrapper entity)
         {
-            if (!Settings.Enable || currentAlerts.ContainsKey(entity))
-            {
-                return;
-            }
-            if (entity.HasComponent<WorldItem>())
+            if (Settings.Enable && !GameController.Area.CurrentArea.IsTown && !currentAlerts.ContainsKey(entity) && entity.HasComponent<WorldItem>())
             {
                 IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
-                ItemUsefulProperties props = EvaluateItem(item);
+                ItemUsefulProperties props = initItem(item);
 
-                if (props.IsWorthAlertingPlayer(currencyNames, Settings))
+                if (props.ShouldAlert(currencyNames, Settings))
                 {
                     AlertDrawStyle drawStyle = props.GetDrawStyle();
                     currentAlerts.Add(entity, drawStyle);
-                    CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.Color),
-                        () => Settings.ShowItemOnMap, 8);
+                    CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.AlertColor), () => Settings.ShowItemOnMap, 8);
 
                     if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
                     {
@@ -187,26 +182,25 @@ namespace PoeHUD.Hud.Loot
             return hashSet;
         }
 
-        private void DrawBorder(int entityAddres)
+        private void DrawBorder(int entityAddress)
         {
             IngameUIElements ui = GameController.Game.IngameState.IngameUi;
-            if (currentLabels.ContainsKey(entityAddres))
+            ItemsOnGroundLabelElement entityLabel;
+            if (currentLabels.TryGetValue(entityAddress, out entityLabel))
             {
-                ItemsOnGroundLabelElement entitylabel = currentLabels[entityAddres];
-                if (entitylabel.IsVisible)
+                if (entityLabel.IsVisible)
                 {
-                    RectangleF rect = entitylabel.Label.GetClientRect();
-                    if (ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)
-                        || ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect))
+                    RectangleF rect = entityLabel.Label.GetClientRect();
+                    if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
                     {
                         return;
                     }
 
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;
-                    if (!entitylabel.CanPickUp)
+                    if (!entityLabel.CanPickUp)
                     {
                         borderColor = Settings.BorderSettings.NotMyItemBorderColor;
-                        TimeSpan timeLeft = entitylabel.TimeLeft;
+                        TimeSpan timeLeft = entityLabel.TimeLeft;
                         if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
                         {
                             borderColor = Settings.BorderSettings.CantPickUpBorderColor;
@@ -231,7 +225,7 @@ namespace PoeHUD.Hud.Loot
             double distance = delta.GetPolarCoordinates(out phi);
             float compassOffset = Settings.TextSize + 8;
             Vector2 textPos = position.Translate(-padding.X - compassOffset, padding.Y);
-            Size2 textSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.Color, FontDrawFlags.Right);
+            Size2 textSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.AlertColor, FontDrawFlags.Right);
             int iconSize = drawStyle.IconIndex >= 0 ? textSize.Height : 0;
 
             float fullHeight = textSize.Height + 2 * padding.Y + 2 * drawStyle.FrameWidth;
@@ -254,21 +248,22 @@ namespace PoeHUD.Hud.Loot
             }
             if (drawStyle.FrameWidth > 0)
             {
-                Graphics.DrawFrame(boxRect, drawStyle.FrameWidth, drawStyle.Color);
+                Graphics.DrawFrame(boxRect, drawStyle.FrameWidth, drawStyle.AlertColor);
             }
             return new Vector2(fullWidth, fullHeight);
         }
 
-        private ItemUsefulProperties EvaluateItem(IEntity item)
+        private ItemUsefulProperties initItem(IEntity item)
         {
             string name = GameController.Files.BaseItemTypes.Translate(item.Path);
-            var usefulProperties = new ItemUsefulProperties(name, item);
-            CraftingBase craftingBase;
-            if (craftingBases.TryGetValue(usefulProperties.Name, out craftingBase) && Settings.Crafting)
+
+            CraftingBase craftingBase = new CraftingBase();
+            if (Settings.Crafting)
             {
-                usefulProperties.SetCraftingBase(craftingBase);
+                craftingBases.TryGetValue(name, out craftingBase);
             }
-            return usefulProperties;
+
+            return new ItemUsefulProperties(name, item, craftingBase);
         }
 
         private string GetItemName(KeyValuePair<EntityWrapper, AlertDrawStyle> kv)
@@ -295,6 +290,8 @@ namespace PoeHUD.Hud.Loot
         {
             playedSoundsCache.Clear();
             currentLabels.Clear();
+            currentAlerts.Clear();
+            CurrentIcons.Clear();
         }
     }
 }
