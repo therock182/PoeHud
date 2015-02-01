@@ -5,6 +5,7 @@ using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
 
 using SharpDX;
+using System.Diagnostics;
 
 namespace PoeHUD.Hud.InventoryPreview
 {
@@ -69,7 +70,11 @@ namespace PoeHUD.Hud.InventoryPreview
                 var y = (int)((itemElementRectangle.Y - inventoryZoneRectangle.Y) / oneCellSize.Height + 0.5);
                 var itemSize = new Size2((int)(itemElementRectangle.Width / oneCellSize.Width + 0.5),
                     (int)(itemElementRectangle.Height / oneCellSize.Height + 0.5));
-                AddItem(x, y, itemSize);
+
+                if (x > 0 && y > 0) // Prevent index out of bounds (when selling items)
+                {
+                    AddItem(x, y, itemSize);
+                }
             }
         }
     }
