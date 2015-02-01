@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
@@ -53,33 +55,62 @@ namespace PoeHUD.Hud.Loot
         public override void Render()
         {
             base.Render();
-            if (!Settings.Enable || !Settings.ShowText)
+            if (Settings.Enable)
             {
-                return;
-            }
-
-            Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
-            Vector2 position = StartDrawPointFunc();
-            const int BOTTOM_MARGIN = 2;
-            foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts.Where(x => x.Key.IsValid))
-            {
-                string text = GetItemName(kv);
-                if (text == null)
-                {
-                    continue;
-                }
+                Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
+                Vector2 position = StartDrawPointFunc();
+                const int BOTTOM_MARGIN = 2;
 
                 if (Settings.BorderSettings.Enable)
                 {
-                    DrawBorder(kv.Key.Address);
+                    Parallel.ForEach(currentAlerts.Where(x => x.Key.IsValid), kv =>
+                    {
+                        ItemsOnGroundLabelElement entityLabel;
+                        if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
+                        {
+                            DrawBorder(kv.Key.Address);
+                        }
+                    });
                 }
 
-                var padding = new Vector2(5, 2);
-                Vector2 delta = kv.Key.GetComponent<Positioned>().GridPos - playerPos;
-                Vector2 itemSize = DrawItem(kv.Value, delta, position, padding, text);
-                position.Y += itemSize.Y + BOTTOM_MARGIN;
+                foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts.Where(x => x.Key.IsValid))
+                {
+                    string text = GetItemName(kv);
+                    if (text == null)
+                    {
+                        continue;
+                    }
+
+                    ItemsOnGroundLabelElement entityLabel;
+                    if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
+                    {
+                        // Don't make labels on the right for items we can't pick up UNTIL we can pick it up
+                        if (Settings.HideOthers && !entityLabel.CanPickUp)
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
+                    }
+
+                    if (Settings.ShowText)
+                    {
+                        position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
+                    }
+                }
+                Size = new Size2F(0, position.Y); //bug absent width
             }
-            Size = new Size2F(0, position.Y); //bug absent width
+        }
+
+        private Vector2 DrawText(Vector2 playerPos, Vector2 position, int BOTTOM_MARGIN, KeyValuePair<EntityWrapper, AlertDrawStyle> kv, string text)
+        {
+            var padding = new Vector2(5, 2);
+            Vector2 delta = kv.Key.GetComponent<Positioned>().GridPos - playerPos;
+            Vector2 itemSize = DrawItem(kv.Value, delta, position, padding, text);
+            position.Y += itemSize.Y + BOTTOM_MARGIN;
+            return position;
         }
 
         protected override void OnEntityAdded(EntityWrapper entity)
@@ -188,32 +219,29 @@ namespace PoeHUD.Hud.Loot
             ItemsOnGroundLabelElement entityLabel;
             if (currentLabels.TryGetValue(entityAddress, out entityLabel))
             {
-                if (entityLabel.IsVisible)
+                RectangleF rect = entityLabel.Label.GetClientRect();
+                if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
                 {
-                    RectangleF rect = entityLabel.Label.GetClientRect();
-                    if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
-                    {
-                        return;
-                    }
-
-                    ColorNode borderColor = Settings.BorderSettings.BorderColor;
-                    if (!entityLabel.CanPickUp)
-                    {
-                        borderColor = Settings.BorderSettings.NotMyItemBorderColor;
-                        TimeSpan timeLeft = entityLabel.TimeLeft;
-                        if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
-                        {
-                            borderColor = Settings.BorderSettings.CantPickUpBorderColor;
-                            Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize,
-                                rect.TopRight.Translate(4, 0));
-                        }
-                    }
-                    Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
+                    return;
                 }
+
+                ColorNode borderColor = Settings.BorderSettings.BorderColor;
+                if (!entityLabel.CanPickUp)
+                {
+                    borderColor = Settings.BorderSettings.NotMyItemBorderColor;
+                    TimeSpan timeLeft = entityLabel.TimeLeft;
+                    if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                    {
+                        borderColor = Settings.BorderSettings.CantPickUpBorderColor;
+                        Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize,
+                            rect.TopRight.Translate(4, 0));
+                    }
+                }
+                Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
             }
             else
             {
-                currentLabels = ui.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
+                currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
             }
         }
 
