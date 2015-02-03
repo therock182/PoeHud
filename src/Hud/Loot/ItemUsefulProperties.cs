@@ -92,7 +92,7 @@ namespace PoeHUD.Hud.Loot
             }
 
             // RGB
-            if (sockets.IsRGB)
+            if (settings.Rgb && sockets.IsRGB)
             {
                 alertIcon = 1;
                 return true;
