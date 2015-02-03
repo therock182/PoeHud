@@ -70,13 +70,6 @@ namespace PoeHUD.Poe
         
         */
 
-        private static readonly Pattern fullbrightPattern = new Pattern(new byte[]
-        {
-            85, 139, 236, 131, 228, 248, 106, 255, 104, 0, 0, 0, 0, 100, 161, 0,
-            0, 0, 0, 80, 100, 137, 37, 0, 0, 0, 0, 129, 236, 160, 0, 0,
-            0, 83, 139, 93, 16, 199, 68, 36, 68, 0, 0, 0, 0, 139
-        }, "xxxxxxxxx????xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
         /* 
 			64 A1 00 00 00 00          mov     eax, large fs:0
 			6A FF                      push    0FFFFFFFFh

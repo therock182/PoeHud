@@ -3,8 +3,10 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
     public class ServerData : RemoteMemoryObject
     {
         public bool IsInGame
-        {  
-            get { return M.ReadInt(Address + 0x2d80) == 3; 
+        {
+            get
+            {
+                return M.ReadInt(Address + 0x2E80) == 3; 
             }
         }
 
