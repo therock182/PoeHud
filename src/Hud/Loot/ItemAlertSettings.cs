@@ -12,6 +12,7 @@ namespace PoeHUD.Hud.Loot
             ShowItemOnMap = true;
             Crafting = true;
             ShowText = true;
+            HideOthers = false;
             PlaySound = true;
             TextSize = new RangeNode<int>(25, 10, 50);
             Rares = true;
@@ -30,6 +31,8 @@ namespace PoeHUD.Hud.Loot
         public ToggleNode Crafting { get; set; }
 
         public ToggleNode ShowText { get; set; }
+
+        public ToggleNode HideOthers { get; set; }
 
         public ToggleNode PlaySound { get; set; }
 
