@@ -85,8 +85,8 @@ namespace PoeHUD.Hud.Loot
                     ItemsOnGroundLabelElement entityLabel;
                     if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
                     {
-                        // Don't make labels on the right for items we can't pick up UNTIL we can pick it up
-                        if (Settings.HideOthers && !entityLabel.CanPickUp)
+                        // Don't make labels on the right for items we can't pick up UNTIL we can pick it up or invisible
+                        if ((Settings.HideOthers && !entityLabel.CanPickUp) || !entityLabel.IsVisible)
                         {
                             return;
                         }
@@ -226,26 +226,29 @@ namespace PoeHUD.Hud.Loot
             bool shouldUpdate = false;
             if (currentLabels.TryGetValue(entityAddress, out entityLabel))
             {
-                RectangleF rect = entityLabel.Label.GetClientRect();
-                if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
+                if (entityLabel.IsVisible)
                 {
-                    return shouldUpdate;
-                }
-
-                ColorNode borderColor = Settings.BorderSettings.BorderColor;
-                if (!entityLabel.CanPickUp)
-                {
-                    borderColor = Settings.BorderSettings.NotMyItemBorderColor;
-                    TimeSpan timeLeft = entityLabel.TimeLeft;
-                    if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                    RectangleF rect = entityLabel.Label.GetClientRect();
+                    if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
                     {
-                        borderColor = Settings.BorderSettings.CantPickUpBorderColor;
-                        Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize,
-                            rect.TopRight.Translate(4, 0));
+                        return shouldUpdate;
                     }
+
+                    ColorNode borderColor = Settings.BorderSettings.BorderColor;
+                    if (!entityLabel.CanPickUp)
+                    {
+                        borderColor = Settings.BorderSettings.NotMyItemBorderColor;
+                        TimeSpan timeLeft = entityLabel.TimeLeft;
+                        if (Settings.BorderSettings.ShowTimer && timeLeft.TotalMilliseconds > 0)
+                        {
+                            borderColor = Settings.BorderSettings.CantPickUpBorderColor;
+                            Graphics.DrawText(timeLeft.ToString(@"mm\:ss"), Settings.BorderSettings.TimerTextSize,
+                                rect.TopRight.Translate(4, 0));
+                        }
+                    }
+                    Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
                 }
-                Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
-            }
+              }
             else
             {
                 shouldUpdate = true;
