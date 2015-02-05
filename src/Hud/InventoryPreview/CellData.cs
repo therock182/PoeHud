@@ -1,7 +1,6 @@
-﻿
-namespace PoeHUD.Hud.InventoryPreview
+﻿namespace PoeHUD.Hud.InventoryPreview
 {
-    class CellData
+    public sealed class CellData
     {
         public CellData()
         {
