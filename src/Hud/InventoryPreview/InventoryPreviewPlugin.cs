@@ -18,13 +18,20 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private CellData[,] cells;
 
+        private IngameUIElements ingameUiElements;
+
         public InventoryPreviewPlugin(GameController gameController, Graphics graphics, InventoryPreviewSettings settings)
             : base(gameController, graphics, settings) {}
 
         public override void Render()
         {
-            IngameUIElements ui = GameController.Game.IngameState.IngameUi;
-            if (!Settings.Enable || ui.OpenLeftPanel.IsVisible || ui.OpenRightPanel.IsVisible)
+            if (!Settings.Enable)
+            {
+                return;
+            }
+
+            ingameUiElements = GameController.Game.IngameState.IngameUi;
+            if (ingameUiElements.OpenLeftPanel.IsVisible || ingameUiElements.OpenRightPanel.IsVisible)
             {
                 return;
             }
@@ -71,8 +78,7 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private void AddItems()
         {
-            IngameUIElements ui = GameController.Game.IngameState.IngameUi;
-            var inventoryZone = ui.ReadObject<Element>(ui.InventoryPanel.Address + 0x808 + 0x248);
+            var inventoryZone = ingameUiElements.ReadObject<Element>(ingameUiElements.InventoryPanel.Address + 0x808 + 0x248);
             RectangleF inventoryZoneRectangle = inventoryZone.GetClientRect();
             var oneCellSize = new Size2F(inventoryZoneRectangle.Width / CELLS_X_COUNT,
                 inventoryZoneRectangle.Height / CELLS_Y_COUNT);
