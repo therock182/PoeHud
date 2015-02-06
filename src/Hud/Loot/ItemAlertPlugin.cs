@@ -86,7 +86,7 @@ namespace PoeHUD.Hud.Loot
                     if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
                     {
                         // Don't make labels on the right for items we can't pick up UNTIL we can pick it up or invisible
-                        if ((Settings.HideOthers && !entityLabel.CanPickUp) || !entityLabel.IsVisible)
+                        if (Settings.HideOthers && !entityLabel.CanPickUp)
                         {
                             return;
                         }
@@ -259,7 +259,7 @@ namespace PoeHUD.Hud.Loot
                     }
                     Graphics.DrawFrame(rect, Settings.BorderSettings.BorderWidth, borderColor);
                 }
-              }
+            }
             else
             {
                 shouldUpdate = true;
