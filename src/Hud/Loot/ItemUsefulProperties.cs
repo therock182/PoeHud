@@ -63,7 +63,7 @@ namespace PoeHUD.Hud.Loot
             if (settings.Currency && _item.Path.Contains("Currency"))
             {
                 color = HudSkin.CurrencyColor;
-                return (currencyNames != null && currencyNames.Contains(_name)) || (!_name.Contains("Wisdom") && !_name.Contains("Portal"));
+                return (currencyNames != null ? currencyNames.Contains(_name):  (!_name.Contains("Wisdom") && !_name.Contains("Portal")));
             }
 
             Sockets sockets = _item.GetComponent<Sockets>();

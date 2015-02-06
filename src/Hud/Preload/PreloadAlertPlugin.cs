@@ -19,6 +19,10 @@ namespace PoeHUD.Hud.Preload
 
         private bool areaChanged = true;
 
+        private DateTime maxParseTime = DateTime.Now;
+
+        private int lastCount;
+
         public PreloadAlertPlugin(GameController gameController, Graphics graphics, PreloadAlertSettings settings)
             : base(gameController, graphics, settings)
         {
@@ -38,6 +42,15 @@ namespace PoeHUD.Hud.Preload
             if (areaChanged)
             {
                 Parse();
+                lastCount = GetNumberOfObjects();
+            }
+            else if (DateTime.Now <= maxParseTime)
+            {
+                int count = GetNumberOfObjects();
+                if (lastCount != count)
+                {
+                    areaChanged = true;
+                }
             }
 
             if (alerts.Count > 0)
@@ -62,16 +75,16 @@ namespace PoeHUD.Hud.Preload
             }
         }
 
+        private int GetNumberOfObjects()
+        {
+            Memory memory = GameController.Memory;
+            return memory.ReadInt(memory.AddressOfProcess + memory.offsets.FileRoot, 12);
+        }
+
         private void OnAreaChange(AreaController area)
         {
-            if (Settings.Enable)
-            {
-                Parse();
-            }
-            else
-            {
-                areaChanged = true;
-            }
+            maxParseTime = area.CurrentArea.TimeEntered.AddSeconds(10);
+            areaChanged = true;
         }
 
         private void Parse()
