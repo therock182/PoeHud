@@ -126,7 +126,7 @@ namespace PoeHUD.Hud.Loot
             for (int i = 0; i != 8; i++ )
             {
                 string output = "";
-                if (entity.GetType().GetProperty(Attributes[i]).GetValue(Attributes[i]) == null)
+                if (entity.GetType().GetProperty(Attributes[1]).GetValue(entity, null) == null)
                 {
                     output = output + Attributes[i] + "is null \n";
                     File.AppendAllText("drawlog", output);
