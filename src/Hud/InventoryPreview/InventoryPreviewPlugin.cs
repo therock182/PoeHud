@@ -1,4 +1,6 @@
-﻿using PoeHUD.Controllers;
+﻿using System;
+
+using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Poe.RemoteMemoryObjects;
@@ -14,51 +16,69 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private const int CELLS_X_COUNT = 12;
 
-        private bool[,] cells;
+        private CellData[,] cells;
+
+        private IngameUIElements ingameUiElements;
 
         public InventoryPreviewPlugin(GameController gameController, Graphics graphics, InventoryPreviewSettings settings)
             : base(gameController, graphics, settings) {}
 
         public override void Render()
         {
-            if (!Settings.Enable || GameController.Game.IngameState.IngameUi.OpenLeftPanel.IsVisible)
+            if (!Settings.Enable)
             {
                 return;
             }
 
-            cells = new bool[CELLS_Y_COUNT, CELLS_X_COUNT];
+            ingameUiElements = GameController.Game.IngameState.IngameUi;
+            if (ingameUiElements.OpenLeftPanel.IsVisible || ingameUiElements.OpenRightPanel.IsVisible)
+            {
+                return;
+            }
+
+            cells = new CellData[CELLS_Y_COUNT, CELLS_X_COUNT];
+            for (int y = 0; y < CELLS_Y_COUNT; ++y)
+            {
+                for (int x = 0; x < CELLS_X_COUNT; ++x)
+                {
+                    cells[y, x] = new CellData();
+                }
+            }
             AddItems();
 
-            Element hpGlobe = GameController.Game.IngameState.IngameUi.HpGlobe;
-            RectangleF hpGlobeRectangle = hpGlobe.GetClientRect();
-            var startDrawPoint = new Vector2(hpGlobeRectangle.X + hpGlobeRectangle.Width, hpGlobe.Children[0].GetClientRect().Y);
-            var size = (int)(hpGlobeRectangle.Height * 0.1); //size=20, hbglobe=200.5 -> 20/200.5~0.1
+            RectangleF rect = GameController.Window.GetWindowRectangle();
+            float xPos = rect.Width * Settings.PositionX * .01f;
+            float yPos = rect.Height * Settings.PositionY * .01f;
+            var startDrawPoint = new Vector2(xPos, yPos);
             for (int i = 0; i < cells.GetLength(0); i++)
             {
                 for (int j = 0; j < cells.GetLength(1); j++)
                 {
-                    Vector2 d = startDrawPoint.Translate(j * size, i * size);
-                    var rectangleF = new RectangleF(d.X, d.Y, size - 2f, size - 2f);
-                    Graphics.DrawBox(rectangleF, cells[i, j] ? Settings.CellUsedColor : Settings.CellFreeColor);
+                    Vector2 d = startDrawPoint.Translate(j * Settings.CellSize, i * Settings.CellSize);
+                    float cellWidth = GetCellSize(cells[i, j].ExtendsX);
+                    float cellHeight = GetCellSize(cells[i, j].ExtendsY);
+                    var rectangleF = new RectangleF(d.X, d.Y, cellWidth, cellHeight);
+                    Graphics.DrawBox(rectangleF, cells[i, j].Used ? Settings.CellUsedColor : Settings.CellFreeColor);
                 }
             }
         }
 
-        private void AddItem(int x, int y, Size2 itemSize)
+        private void AddItem(int x, int y, int maxX, int maxY)
         {
-            for (int i = y; i < itemSize.Height + y; i++)
+            for (int i = y; i < maxY; i++)
             {
-                for (int j = x; j < itemSize.Width + x; j++)
+                for (int j = x; j < maxX; j++)
                 {
-                    cells[i, j] = true;
+                    cells[i, j].Used = true;
+                    cells[i, j].ExtendsX = j < maxX - 1;
+                    cells[i, j].ExtendsY = i < maxY - 1;
                 }
             }
         }
 
         private void AddItems()
         {
-            IngameUIElements ui = GameController.Game.IngameState.IngameUi;
-            var inventoryZone = ui.ReadObject<Element>(ui.InventoryPanel.Address + 0x808 + 0x248);
+            var inventoryZone = ingameUiElements.ReadObject<Element>(ingameUiElements.InventoryPanel.Address + 0x808 + 0x248);
             RectangleF inventoryZoneRectangle = inventoryZone.GetClientRect();
             var oneCellSize = new Size2F(inventoryZoneRectangle.Width / CELLS_X_COUNT,
                 inventoryZoneRectangle.Height / CELLS_Y_COUNT);
@@ -67,14 +87,22 @@ namespace PoeHUD.Hud.InventoryPreview
                 RectangleF itemElementRectangle = itemElement.GetClientRect();
                 var x = (int)((itemElementRectangle.X - inventoryZoneRectangle.X) / oneCellSize.Width + 0.5);
                 var y = (int)((itemElementRectangle.Y - inventoryZoneRectangle.Y) / oneCellSize.Height + 0.5);
-                var itemSize = new Size2((int)(itemElementRectangle.Width / oneCellSize.Width + 0.5),
-                    (int)(itemElementRectangle.Height / oneCellSize.Height + 0.5));
+                int maxX = (int)(itemElementRectangle.Width / oneCellSize.Width + 0.5) + x;
+                int maxY = (int)(itemElementRectangle.Height / oneCellSize.Height + 0.5) + y;
 
-                if (x >= 0 && y >= 0) // Prevent index out of bounds (when selling items)
+                // BUG Old inventoryZoneRectangle when the window is moved/resized
+                if (x < 0 || maxX > CELLS_X_COUNT || y < 0 || maxY > CELLS_Y_COUNT)
                 {
-                    AddItem(x, y, itemSize);
+                    break;
                 }
+
+                AddItem(x, y, maxX, maxY);
             }
+        }
+
+        private int GetCellSize(bool extendsSide)
+        {
+            return extendsSide ? Settings.CellSize : Math.Max(1, Settings.CellSize - Settings.CellPadding);
         }
     }
 }
