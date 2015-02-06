@@ -121,7 +121,18 @@ namespace PoeHUD.Hud.Loot
 
         protected override void OnEntityAdded(EntityWrapper entity)
         {
-            if (Settings.Enable && !GameController.Area.CurrentArea.IsTown && !currentAlerts.ContainsKey(entity) && entity.HasComponent<WorldItem>())
+            // Added a check to see if it's null, will need to figure out why it can be null, if crashes still occur one of the atributes of an entity can be null but only in partyplay (have to investigate).
+            string[] Attributes = new string[] { "Address", "Id", "IsAlive", "IsHostile", "IsValid", "LongId", "Minions", "Path" };
+            for (int i = 0; i != 8; i++ )
+            {
+                string output = "";
+                if (entity.GetType().GetProperty(Attributes[i]).GetValue(Attributes[i]) == null)
+                {
+                    output = output + Attributes[i] + "is null \n";
+                    File.AppendAllText("drawlog", output);
+                }
+            }
+            if (Settings.Enable  && entity != null && !GameController.Area.CurrentArea.IsTown && !currentAlerts.ContainsKey(entity) && entity.HasComponent<WorldItem>())
             {
                 IEntity item = entity.GetComponent<WorldItem>().ItemEntity;
                 ItemUsefulProperties props = initItem(item);
