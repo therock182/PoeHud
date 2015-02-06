@@ -134,9 +134,6 @@ namespace PoeHUD.Hud.Trackers
                 if (modAlert != null)
                 {
                     alertTexts.Add(entity, modAlerts[modAlert]);
-                    if (modAlerts[modAlert].Count > 1) // Special Icon for that Mod ?
-                        CurrentIcons[entity].MinimapIcon.FileName = modAlerts[modAlert][1]; // Overwrite the Default Icon !
-                    alertTexts.Add(entity, modAlerts[modAlert][0]);
                     PlaySound(entity);
                 }
             }
