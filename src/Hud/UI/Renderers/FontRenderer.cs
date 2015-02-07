@@ -30,11 +30,18 @@ namespace PoeHUD.Hud.UI.Renderers
 
         public Size2 DrawText(string text, string fontName, int height, Vector2 position, Color color, FontDrawFlags align)
         {
-            Font font = GetFont(fontName, height);
-            var rectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-            Rectangle fontDimension = font.MeasureText(null, text, rectangle, align);
-            font.DrawText(sprite, text, fontDimension, align, color);
-            return new Size2(fontDimension.Width, fontDimension.Height);
+            try {
+                Font font = GetFont(fontName, height);
+                var rectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
+                Rectangle fontDimension = font.MeasureText(null, text, rectangle, align);
+                font.DrawText(sprite, text, fontDimension, align, color);
+                return new Size2(fontDimension.Width, fontDimension.Height);
+            }
+            catch (AccessViolationException exception)
+            {
+                // Console.WriteLine("Access Violation! " + position.X + ", " + position.Y);
+            }
+            return new Size2();
         }
 
         public void End()
