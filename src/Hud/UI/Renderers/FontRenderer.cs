@@ -30,16 +30,21 @@ namespace PoeHUD.Hud.UI.Renderers
 
         public Size2 DrawText(string text, string fontName, int height, Vector2 position, Color color, FontDrawFlags align)
         {
-            try {
-                Font font = GetFont(fontName, height);
+            Font font;
+            Rectangle fontDimension;
+            try
+            {
+                font = GetFont(fontName, height);
                 var rectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-                Rectangle fontDimension = font.MeasureText(null, text, rectangle, align);
-                font.DrawText(sprite, text, fontDimension, align, color);
+                fontDimension = font.MeasureText(null, text, rectangle, align);
+                if (!sprite.IsDisposed)
+                    font.DrawText(sprite, text, fontDimension, align, color);
                 return new Size2(fontDimension.Width, fontDimension.Height);
             }
             catch (Exception exception)
             {
-                // Console.WriteLine("Exception! " + position.X + ", " + position.Y);
+                //Console.WriteLine("Exception! X: " + position.X + ", Y: " + position.Y + ", Text: " + text);
+                //Console.WriteLine(exception.StackTrace);
             }
             return new Size2();
         }
