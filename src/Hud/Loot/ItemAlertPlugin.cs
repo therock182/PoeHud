@@ -115,7 +115,10 @@ namespace PoeHUD.Hud.Loot
             var padding = new Vector2(5, 2);
             Vector2 delta = kv.Key.GetComponent<Positioned>().GridPos - playerPos;
             Vector2 itemSize = DrawItem(kv.Value, delta, position, padding, text);
-            position.Y += itemSize.Y + BOTTOM_MARGIN;
+            if (itemSize != new Vector2())
+            {
+                position.Y += itemSize.Y + BOTTOM_MARGIN;
+            }
             return position;
         }
 
@@ -276,6 +279,12 @@ namespace PoeHUD.Hud.Loot
             float compassOffset = Settings.TextSize + 8;
             Vector2 textPos = position.Translate(-padding.X - compassOffset, padding.Y);
             Size2 textSize = Graphics.DrawText(text, Settings.TextSize, textPos, drawStyle.AlertColor, FontDrawFlags.Right);
+
+            if (textSize == new Size2()) // Access Violation
+            {
+                return new Vector2();
+            }
+
             int iconSize = drawStyle.IconIndex >= 0 ? textSize.Height : 0;
 
             float fullHeight = textSize.Height + 2 * padding.Y + 2 * drawStyle.FrameWidth;
