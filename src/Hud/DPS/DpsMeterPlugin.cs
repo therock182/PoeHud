@@ -90,11 +90,14 @@ namespace PoeHUD.Hud.Dps
                 if (hp > -1000000 && hp < 10000000)
                 {
                     int lastHP;
-                    if (lastMonsters.TryGetValue(monster.Id, out lastHP) && lastHP > hp)
+                    if (lastMonsters.TryGetValue(monster.Id, out lastHP))
                     {
-                        totalDamage += lastHP - hp;
+                        // make this a separte if statement to prevent dictionary already containing item
+                        if (lastHP > hp) 
+                        {
+                            totalDamage += lastHP - hp;
+                        }
                     }
-                    monsters.Add(monster.Id, hp);
                 }
             }
             lastMonsters = monsters;
