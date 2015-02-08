@@ -98,6 +98,7 @@ namespace PoeHUD.Hud.Dps
                             totalDamage += lastHP - hp;
                         }
                     }
+                    monsters.Add(monster.Id, hp);
                 }
             }
             lastMonsters = monsters;
