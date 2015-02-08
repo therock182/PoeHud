@@ -114,7 +114,10 @@ namespace PoeHUD.Hud.AdvancedTooltip
 
                 Graphics.DrawText(prefix, settings.ModTextSize, position.Translate(5 - MARGIN_LEFT, 0));
                 Size2 textSize = Graphics.DrawText(item.AffixText, settings.ModTextSize, position, item.Color);
-                position.Y += textSize.Height;
+                if (textSize != new Size2())
+                {
+                    position.Y += textSize.Height;
+                }
             }
 
             for (int i = 0; i < 4; i++)
