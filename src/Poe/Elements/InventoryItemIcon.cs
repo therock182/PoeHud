@@ -49,7 +49,7 @@ namespace PoeHUD.Poe.Elements
                     case ToolTipType.ItemOnGround:
                         return toolTipOnground().Item;
                     case ToolTipType.InventoryItem:
-                        return ReadObject<Entity>(Address + 0xb10);
+                        return ReadObject<Entity>(Address + 0xb14);
                 }
                 return null;
             }

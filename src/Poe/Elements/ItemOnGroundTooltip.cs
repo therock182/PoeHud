@@ -13,7 +13,7 @@ namespace PoeHUD.Poe.Elements
         {
             get
             {
-                var address = M.ReadInt(Address + OffsetBuffers, 0, 0x964, 0x974);
+                var address = M.ReadInt(Address + OffsetBuffers, 0, 0x968, 0x978);
                 var entity = GetObject<Entity>(address);
                 return entity;
             }

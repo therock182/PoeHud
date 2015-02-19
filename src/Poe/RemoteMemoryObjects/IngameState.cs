@@ -7,7 +7,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
     {
         public Camera Camera
         {
-            get { return base.GetObject<Camera>(Address + 0x15B4 + Offsets.IgsOffsetDelta); }
+            get { return base.GetObject<Camera>(Address + 0x15B8 + Offsets.IgsOffsetDelta); }
         }
         public IngameData Data
         {
