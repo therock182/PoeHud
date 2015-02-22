@@ -130,6 +130,10 @@ namespace PoeHUD.Hud.AdvancedTooltip
 
                 StatsDat.StatRecord stat = item.Record.StatNames[i];
                 int value = item.StatValue[i];
+                if (value <= 0)
+                {
+                    continue;
+                }
                 float percents = range.GetPercentage(value);
                 bool noSpread = !range.HasSpread();
                 double hue = percents > 1 ? 180 : 120 * percents;

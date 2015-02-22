@@ -75,7 +75,8 @@ namespace PoeHUD.Poe.FilesInMemory
                         return val.ToString("+#;-#") + "%";
                 }
 
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
+                return "";
             }
         }
     }
