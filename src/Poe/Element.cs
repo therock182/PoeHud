@@ -42,12 +42,12 @@ namespace PoeHUD.Poe.UI
 
         public float Width
         {
-            get { return M.ReadFloat(Address + 0xF0 + OffsetBuffers); }
+            get { return M.ReadFloat(Address + 0xF4 + OffsetBuffers); }
         }
 
         public float Height
         {
-            get { return M.ReadFloat(Address + 0xF4 + OffsetBuffers); }
+            get { return M.ReadFloat(Address + 0xF8 + OffsetBuffers); }
         }
 
         public int ChildCount

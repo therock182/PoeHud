@@ -7,7 +7,7 @@ namespace PoeHUD.Poe.UI.Elements
         {
             get
             {
-                return M.ReadFloat(M.ReadInt(Address+0x160 + OffsetBuffers) + 0x96C);
+                return M.ReadFloat(M.ReadInt(Address+0x164 + OffsetBuffers) + 0x970);
             }
         }
 
@@ -15,29 +15,29 @@ namespace PoeHUD.Poe.UI.Elements
         {
             get
             {
-                return M.ReadFloat(M.ReadInt(Address+0x160 + OffsetBuffers) + 0x970);
+                return M.ReadFloat(M.ReadInt(Address+0x164 + OffsetBuffers) + 0x974);
             }
         }
 
         public Element SmallMinimap
         {
-            get { return base.ReadObjectAt<Element>(0x164 + OffsetBuffers); }
+            get { return base.ReadObjectAt<Element>(0x168 + OffsetBuffers); }
         }
 
         // when this is visible, draw on large map
         public Element MapProperties
         {
-            get { return base.ReadObjectAt<Element>(0x16C + OffsetBuffers); }
+            get { return base.ReadObjectAt<Element>(0x170 + OffsetBuffers); }
         }
 
         public Element OrangeWords
         {
-            get { return base.ReadObjectAt<Element>(0x170 + OffsetBuffers); }
+            get { return base.ReadObjectAt<Element>(0x174 + OffsetBuffers); }
         }
 
         public Element BlueWords
         {
-            get { return base.ReadObjectAt<Element>(0x188 + OffsetBuffers); }
+            get { return base.ReadObjectAt<Element>(0x18c + OffsetBuffers); }
         }
     }
 }
