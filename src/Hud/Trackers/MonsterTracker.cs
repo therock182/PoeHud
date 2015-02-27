@@ -62,7 +62,7 @@ namespace PoeHUD.Hud.Trackers
             bool first = true;
             var rectBackground = new RectangleF();
 
-            var groupedAlerts = alertTexts.Where(y => y.Key.IsAlive).Select(y =>
+            var groupedAlerts = alertTexts.Where(y => y.Key.IsAlive && y.Key.IsHostile).Select(y =>
             {
                 Vector2 delta = y.Key.GetComponent<Positioned>().GridPos - playerPos;
                 double phi;
