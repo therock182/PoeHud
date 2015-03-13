@@ -106,7 +106,7 @@ namespace PoeHUD.Hud.Preload
                     {
                         text = text.Split(new[] { '@' })[0];
                     }
-                    if (text.Contains("vaal_sidearea"))
+                    if (text.StartsWith("Metadata/Particles/human_heart"))
                     {
                         alerts.Add("Area contains Corrupted Area");
                     }
