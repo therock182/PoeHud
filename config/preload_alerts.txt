@@ -11,7 +11,7 @@ Metadata/Chests/StrongBoxes/GemcutterStrongBox.ao, Area contains Gemcutter's Str
 Metadata/Chests/StrongBoxes/Chemist, Area contains Chemist's Strongbox
 Metadata/Chests/StrongBoxes/ChemistStrongBox.ao, Area contains Chemist's Strongbox
 Metadata/Chests/StrongBoxes/Cartographer, Area contains Cartographer's Strongbox
-Metadata/Chests/StrongBoxes/CartographerStrongBox.ao","Area contains Cartographer's Strongbox
+Metadata/Chests/StrongBoxes/CartographerStrongBox.ao, Area contains Cartographer's Strongbox
 Metadata/Chests/StrongBoxes/Artisan, Area contains Artisan's Strongbox
 Metadata/Chests/StrongBoxes/ArtisanStrongBox.ao, Area contains Artisan's Strongbox
 Metadata/Chests/StrongBoxes/Arsenal, Area contains Blacksmith's Strongbox
@@ -46,29 +46,29 @@ Metadata/Monsters/Exiles/ExileShadow4, Area contains Wilorin Demontamer
 Metadata/Monsters/Exiles/ExileScion2, Area contains Augustina Solaria
 Metadata/Monsters/Squid/SquidBossSideArea, Area contains The All-seeing Eye
 Metadata/Monsters/Goatman/GoatmanLeapBossSideArea, Area contains Konu, Maker of Wind
-Metadata/Monsters/GhostPirates/GhostPirateBossSideArea","Area contains Coniraya, Shadow of Malice
-Metadata/Monsters/DemonModular/DemonModularElementsBossSideArea","Area contains Atziri's Pride
-Metadata/Monsters/Goatman/GoatmanShamanBossSideArea","Area contains Sheaq, Maker of Floods
-Metadata/Monsters/Skeleton/SkeletonMeleeLargeBossSideArea","Area contains Ossecati, Boneshaper
+Metadata/Monsters/GhostPirates/GhostPirateBossSideArea, Area contains Coniraya, Shadow of Malice
+Metadata/Monsters/DemonModular/DemonModularElementsBossSideArea, Area contains Atziri's Pride
+Metadata/Monsters/Goatman/GoatmanShamanBossSideArea, Area contains Sheaq, Maker of Floods
+Metadata/Monsters/Skeleton/SkeletonMeleeLargeBossSideArea, Area contains Ossecati, Boneshaper
 Metadata/Monsters/RootSpiders/RootSpiderBossSideArea, Area contains Kamaq, Soilmaker
 Metadata/Monsters/Kiweth/KiwethBossSideArea, Area contains Inti of the Blood Moon
 Metadata/Monsters/incaminion/FragmentBossSideArea, Area contains Shrapnelbearer
-Metadata/Monsters/Snake/SnakeRoboBossSideArea","Area contains Wiraqucha, Ancient Guardian
+Metadata/Monsters/Snake/SnakeRoboBossSideArea, Area contains Wiraqucha, Ancient Guardian
 Metadata/Monsters/DemonFemale/WhipDemonBossSideArea, Area contains Cava, Artist of Pain
 Metadata/Monsters/Pyromaniac/PyromaniacBossSideArea, Area contains Curator Miem
-Metadata/Monsters/BloodChieftain/MonkeyChiefBossSideArea","Area contains Simi, the Nature Touched
-Metadata/Monsters/InsectSpawner/CarrionQueenBossSideArea","Area contains The Sunburst Queen
+Metadata/Monsters/BloodChieftain/MonkeyChiefBossSideArea, Area contains Simi, the Nature Touched
+Metadata/Monsters/InsectSpawner/CarrionQueenBossSideArea, Area contains The Sunburst Queen
 Metadata/Monsters/Totems/TotemBossSideArea, Area contains M'gaska, the Living Pyre
 Metadata/Monsters/Spiders/SpiderBossSideArea, Area contains Cintiq, the Inescapable
 Metadata/Monsters/Snake/SnakeScorpionBossSideArea, Area contains Thornrunner
 Metadata/Monsters/Cannibal/CannibalBossSideArea, Area contains Perquil the Lucky
-Metadata/Monsters/Skeletons/ConstructMeleeBossSideArea","Area contains Haviri, Vaal Metalsmith
-Metadata/Monsters/Skeletons/ConstructRangedBossSideArea","Area contains Kutec, Vaal Fleshsmith
-Metadata/Monsters/AnimatedItem/AnimatedArmourBossSideArea","Area contains Shadow of Vengeance
-Metadata/Monsters/DemonBosses/DemonBoss1/Demon1BossSideArea","Area contains Beheader Ataguchu
-Metadata/Monsters/DemonBosses/DemonBoss2/Demon2BossSideArea","Area contains Wiraq, the Impaler
-Metadata/Monsters/DemonBosses/DemonBoss3/Demon3BossSideArea","Area contains Ch'aska, Maker of Rain
-Metadata/Monsters/SandSpitterEmerge/SandSpitterBossSideArea","Area contains Mother of the Hive
+Metadata/Monsters/Skeletons/ConstructMeleeBossSideArea, Area contains Haviri, Vaal Metalsmith
+Metadata/Monsters/Skeletons/ConstructRangedBossSideArea, Area contains Kutec, Vaal Fleshsmith
+Metadata/Monsters/AnimatedItem/AnimatedArmourBossSideArea, Area contains Shadow of Vengeance
+Metadata/Monsters/DemonBosses/DemonBoss1/Demon1BossSideArea, Area contains Beheader Ataguchu
+Metadata/Monsters/DemonBosses/DemonBoss2/Demon2BossSideArea, Area contains Wiraq, the Impaler
+Metadata/Monsters/DemonBosses/DemonBoss3/Demon3BossSideArea, Area contains Ch'aska, Maker of Rain
+Metadata/Monsters/SandSpitterEmerge/SandSpitterBossSideArea, Area contains Mother of the Hive
 Metadata/Monsters/Seawitch/SeaWitchBossSideArea, Area contains Rima, Deep Temptress
 Metadata/Monsters/Axis/AxisCasterBossInvasion, Area contains Evocata Apocalyptica
 Metadata/Monsters/Axis/AxisExperimenterBossInvasion, Area contains Docere Incarnatis
@@ -78,7 +78,7 @@ Metadata/Monsters/Bandits/BanditBowBossInvasion, Area contains Kall Foxfly
 Metadata/Monsters/Beasts/BeastBossInvasion, Area contains Marrowcrush
 Metadata/Monsters/Rhoas/RhoaBossInvasion, Area contains The Cadaver Bull
 Metadata/Monsters/BloodChieftain/BloodChieftainBossInvasion, Area contains Junglemare
-Metadata/Monsters/BloodElemental/BloodElementalBossInvasion","Area contains The Sanguine Wave
+Metadata/Monsters/BloodElemental/BloodElementalBossInvasion, Area contains The Sanguine Wave
 Metadata/Monsters/Cannibal/CannibalMaleBossInvasion, Area contains Graveblood
 Metadata/Monsters/Cannibal/CannibalFemaleBossInvasion, Area contains Nighteater
 Metadata/Monsters/Undying/CityStalkerMaleBossInvasion, Area contains The Book Burner
@@ -92,15 +92,15 @@ Metadata/Monsters/incaminion/FragmentBossInvasion, Area contains Judgement Appar
 Metadata/Monsters/Frog/FrogBossInvasion, Area contains Spinesnap
 Metadata/Monsters/GemMonster/GemFrogBossInvasion, Area contains Genesis Paradisae
 Metadata/Monsters/Goatman/GoatmanBossInvasion, Area contains Death from Above
-Metadata/Monsters/Goatman/GoatmanShamanBossInvasion","Area contains Guardian of the Mound
+Metadata/Monsters/Goatman/GoatmanShamanBossInvasion, Area contains Guardian of the Mound
 Metadata/Monsters/Grappler/GrapplerBossInvasion, Area contains Wonderwalker
 Metadata/Monsters/Guardians/GuardianFireBossInvasion, Area contains The Raging Mask
-Metadata/Monsters/Guardians/GuardianLightningBossInvasion","Area contains The Teetering Mask
-Metadata/Monsters/Guardians/GuardianHeadFireBossInvasion","Area contains The Furious Mask
-Metadata/Monsters/Guardians/GuardianHeadColdBossInvasion","Area contains The Callous Mask
-Metadata/Monsters/Guardians/GuardianHeadLightningBossInvasion","Area contains The Capricious Mask
+Metadata/Monsters/Guardians/GuardianLightningBossInvasion, Area contains The Teetering Mask
+Metadata/Monsters/Guardians/GuardianHeadFireBossInvasion, Area contains The Furious Mask
+Metadata/Monsters/Guardians/GuardianHeadColdBossInvasion, Area contains The Callous Mask
+Metadata/Monsters/Guardians/GuardianHeadLightningBossInvasion, Area contains The Capricious Mask
 Metadata/Monsters/GemMonster/IguanaBossInvasion, Area contains Alpha Paradisae
-Metadata/Monsters/InsectSpawner/CarrionQueenBossInvasion","Area contains Mother of the Swarm
+Metadata/Monsters/InsectSpawner/CarrionQueenBossInvasion, Area contains Mother of the Swarm
 Metadata/Monsters/Kiweth/KiwethBossInvasion, Area contains Deathflutter
 Metadata/Monsters/Lion/LionBossInvasion, Area contains Bladetooth
 Metadata/Monsters/MossMonster/MossMonsterBossInvasion, Area contains Granitecrush
@@ -110,9 +110,9 @@ Metadata/Monsters/RootSpiders/RootSpiderBossInvasion, Area contains Wrigglechaw
 Metadata/Monsters/SandSpitterEmerge/SandSpitterBossInvasion, Area contains Blinkflame
 Metadata/Monsters/Seawitch/SeaWitchBossInvasion, Area contains The Duchess
 Metadata/Monsters/ShieldCrabs/ShieldCrabBossInvasion, Area contains Shivershell
-Metadata/Monsters/SandSpitters/SandSpitterFromCrabBossInvasion","Area contains Shivershell
+Metadata/Monsters/SandSpitters/SandSpitterFromCrabBossInvasion, Area contains Shivershell
 Metadata/Monsters/Beasts/BeastSkeletonBossInvasion, Area contains Mammothcage
-Metadata/Monsters/Skeletons/SkeletonElementalBossInvasion","Area contains Harbinger of Elements
+Metadata/Monsters/Skeletons/SkeletonElementalBossInvasion, Area contains Harbinger of Elements
 Metadata/Monsters/Skeletons/SkeletonBowBossInvasion, Area contains Nightsight
 Metadata/Monsters/Snake/SnakeMeleeBossInvasion, Area contains Tailsinger
 Metadata/Monsters/Snake/SnakeRangedBossInvasion, Area contains Razorleaf
