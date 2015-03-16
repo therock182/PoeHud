@@ -149,7 +149,7 @@ namespace PoeHUD.Hud
             underPanel.AddChildren(new ItemAlertPlugin(gameController, graphics, settings.ItemAlertSettings));
             plugins.AddRange(underPanel.GetPlugins());
 
-            plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings));
+            plugins.Add(new AdvancedTooltipPlugin(gameController, graphics, settings.AdvancedTooltipSettings, settings));
             plugins.Add(new InventoryPreviewPlugin(gameController, graphics, settings.InventoryPreviewSettings));
             plugins.Add(new MenuPlugin(gameController, graphics, settings));
 
