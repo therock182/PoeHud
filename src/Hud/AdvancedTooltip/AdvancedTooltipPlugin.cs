@@ -19,6 +19,9 @@ using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.AdvancedTooltip
 {
+    private bool holdKey;
+    private readonly SettingsHub settingsHub;
+    
     public class AdvancedTooltipPlugin : Plugin<AdvancedTooltipSettings>
     {
         private static readonly Color[] elementalDmgColors =
@@ -30,14 +33,30 @@ namespace PoeHUD.Hud.AdvancedTooltip
 
         private List<ModValue> mods = new List<ModValue>();
 
-        public AdvancedTooltipPlugin(GameController gameController, Graphics graphics, AdvancedTooltipSettings settings)
-            : base(gameController, graphics, settings) {}
+        public AdvancedTooltipPlugin(GameController gameController, Graphics graphics, AdvancedTooltipSettings settings, SettingsHub settingsHub)
+            : base(gameController, graphics, settings)
+        {
+            this.settingsHub = settingsHub;
+        }
 
         public override void Render()
         {
             if (!Settings.Enable)
             {
                 return;
+            }
+            if (!holdKey && WinApi.IsKeyDown(Keys.F9))
+            {
+                holdKey = true;
+                Settings.ItemMods.Enable.Value = !Settings.ItemMods.Enable.Value;
+                if (!Settings.ItemMods.Enable.Value)
+                {
+                    SettingsHub.Save(settingsHub);
+                }
+            }
+            else if (holdKey && !WinApi.IsKeyDown(Keys.F9))
+            {
+                holdKey = false;
             }
 
             Element uiHover = GameController.Game.IngameState.UIHover;
