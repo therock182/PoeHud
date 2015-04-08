@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
@@ -13,17 +14,17 @@ using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.FilesInMemory;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
+using PoeHUD.Hud.Settings;
 
 using SharpDX;
 using SharpDX.Direct3D9;
 
 namespace PoeHUD.Hud.AdvancedTooltip
-{
-    private bool holdKey;
-    private readonly SettingsHub settingsHub;
-    
+{   
     public class AdvancedTooltipPlugin : Plugin<AdvancedTooltipSettings>
     {
+        private bool holdKey;
+        private readonly SettingsHub settingsHub;
         private static readonly Color[] elementalDmgColors =
         {
             Color.White, HudSkin.DmgFireColor, HudSkin.DmgColdColor, HudSkin.DmgLightingColor, HudSkin.DmgChaosColor
