@@ -11,7 +11,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 80);
+                    return M.ReadInt(Address + 0x30);
                 }
                 return 1;
             }
@@ -23,7 +23,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 84);
+                    return M.ReadInt(Address + 0x34);
                 }
                 return 1;
             }
@@ -35,7 +35,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 92);
+                    return M.ReadInt(Address + 0x3C);
                 }
                 return 0;
             }
@@ -47,7 +47,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 116);
+                    return M.ReadInt(Address + 0x54);
                 }
                 return 1;
             }
@@ -59,7 +59,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 120);
+                    return M.ReadInt(Address + 0x58);
                 }
                 return 1;
             }
@@ -71,7 +71,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 128);
+                    return M.ReadInt(Address + 0x60);
                 }
                 return 0;
             }
@@ -83,7 +83,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 152);
+                    return M.ReadInt(Address + 0x78);
                 }
                 return 0;
             }
@@ -95,7 +95,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 156);
+                    return M.ReadInt(Address + 0x7c);
                 }
                 return 0;
             }
@@ -133,8 +133,8 @@ namespace PoeHUD.Poe.Components
             get
             {
                 var list = new List<Buff>();
-                int start = M.ReadInt(Address + 184);
-                int end = M.ReadInt(Address + 188);
+                int start = M.ReadInt(Address + 0x98);
+                int end = M.ReadInt(Address + 0x9C);
                 int count = (end - start)/4;
                 if (count <= 0 || count > 32)
                 {

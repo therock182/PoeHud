@@ -19,14 +19,14 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Entity LocalPlayer
         {
-            get { return base.ReadObject<Entity>(Address + 1440); }
+            get { return base.ReadObject<Entity>(Address + 1196); } 
         }
 
         public EntityList EntityList
         {
             get
             {
-                return base.GetObject<EntityList>(Address + 1476);
+                return base.GetObject<EntityList>(Address + 1304);
             }
         }
     }

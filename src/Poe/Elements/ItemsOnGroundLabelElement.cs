@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe.Elements
@@ -11,6 +12,13 @@ namespace PoeHUD.Poe.Elements
         public ItemsOnGroundLabelElement()
         {
             labelInfo = new Lazy<int>(GetLabelInfo);
+        }
+        static readonly TimeSpan zero=new TimeSpan();
+
+        public bool CanPickUp
+        
+        {
+            get { return TimeLeft <= zero; }
         }
 
         public Entity ItemOnGround
@@ -24,17 +32,11 @@ namespace PoeHUD.Poe.Elements
         }
 
 
-        public bool CanPickUp
-        {
-            get { return labelInfo.Value == 0; }
-        }
-
-
         public TimeSpan TimeLeft
         {
             get
             {
-                if (!CanPickUp)
+                if (labelInfo.Value != 0)
                 {
                     int futureTime = M.ReadInt(labelInfo.Value + 0x20);
                     return TimeSpan.FromMilliseconds(futureTime - Environment.TickCount);
@@ -45,10 +47,7 @@ namespace PoeHUD.Poe.Elements
 
         public TimeSpan MaxTimeForPickUp
         {
-            get
-            {
-                return !CanPickUp ? TimeSpan.FromMilliseconds(M.ReadInt(labelInfo.Value + 0x1C)) : new TimeSpan();
-            }
+            get { return TimeSpan.FromMilliseconds(M.ReadInt(labelInfo.Value + 0x1C)); }
         }
 
 
@@ -61,7 +60,8 @@ namespace PoeHUD.Poe.Elements
         {
             get
             {
-                int address = M.ReadInt(Address + 0x9b0);
+
+                int address = M.ReadInt(Address + 0x958);
                 for (int nextAddress = M.ReadInt(address); nextAddress != address; nextAddress = M.ReadInt(nextAddress))
                 {
                     yield return GetObject<ItemsOnGroundLabelElement>(nextAddress);
@@ -73,7 +73,7 @@ namespace PoeHUD.Poe.Elements
         {
             if (Label.Address != 0)
             {
-                return M.ReadInt(Label.Address + 0x0C80);
+                return ItemOnGround.GetComponent<Render>().UknownValue;
             }
             return 0;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using PoeHUD.Controllers;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Poe.Components;
 using PoeHUD.Poe.RemoteMemoryObjects;
@@ -27,7 +28,7 @@ namespace PoeHUD.Hud.Icons
         public override void Render()
         {
             if (!Settings.Enable || !GameController.InGame || !Settings.IconsOnLargeMap
-                || !GameController.Game.IngameState.IngameUi.Map.OrangeWords.IsVisible)
+                || !GameController.Game.IngameState.IngameUi.Map.LargeMap.IsVisible)
             {
                 return;
             }
@@ -38,7 +39,7 @@ namespace PoeHUD.Hud.Icons
 
             Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
             float posZ = GameController.Player.GetComponent<Render>().Z;
-            Vector2 screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2) + new Vector2(mapRect.X, mapRect.Y)
+            Vector2 screenCenter = new Vector2(mapRect.Width / 2, mapRect.Height / 2).Translate(0,-20) + new Vector2(mapRect.X, mapRect.Y)
                 + new Vector2(mapWindow.ShiftX, mapWindow.ShiftY);
             var diag = (float)Math.Sqrt(camera.Width * camera.Width + camera.Height * camera.Height);
             float k = camera.Width < 1024f ? 1120f : 1024f;

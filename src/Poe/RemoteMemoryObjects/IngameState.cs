@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe.RemoteMemoryObjects
@@ -7,41 +8,44 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
     {
         public Camera Camera
         {
-            get { return base.GetObject<Camera>(Address + 0x15B8 + Offsets.IgsOffsetDelta); }
+            get { return base.GetObject<Camera>(Address + 0x15F0 + Offsets.IgsOffsetDelta); }
         }
         public IngameData Data
         {
-            get { return base.ReadObject<IngameData>(Address + 0x138 + Offsets.IgsOffset); }
+            get { return base.ReadObject<IngameData>(Address + 0x13C + Offsets.IgsOffset); }
         }
 
         public bool InGame
         {
-            get { return M.ReadInt(Address + 0x138 + Offsets.IgsOffset) != 0 && ServerData.IsInGame; }
+            get
+            {
+                return M.ReadInt(Address + 0x13C + Offsets.IgsOffset) != 0 && ServerData.IsInGame;
+            }
         }
 
         public ServerData ServerData
         {
-            get { return base.ReadObjectAt<ServerData>(0x13C + Offsets.IgsOffset); }
+            get { return base.ReadObjectAt<ServerData>(0x140 + Offsets.IgsOffset); }
         }
 
         public IngameUIElements IngameUi
         {
-            get { return base.ReadObjectAt<IngameUIElements>(0x5E8 + Offsets.IgsOffset); }
+            get { return base.ReadObjectAt<IngameUIElements>(0x5EC + Offsets.IgsOffset); }
         }
 
         public Element UIRoot
         {
-            get { return base.ReadObjectAt<Element>(0xC0C + Offsets.IgsOffset); }
+            get { return base.ReadObjectAt<Element>(0xC10 + Offsets.IgsOffset); }
         }
 
         public Element UIHover
         {
-            get { return base.ReadObjectAt<Element>(0xC20 + Offsets.IgsOffset); }
+            get { return base.ReadObjectAt<Element>(0xC24 + Offsets.IgsOffset); }
         }
 
         public int EntityLabelMap
         {
-            get { return M.ReadInt(Address + 68, 2528); }
+            get { return M.ReadInt(Address + 68, 2528); } //todo deprecated maybe need to remove
         }
 
         /// <summary>
@@ -49,7 +53,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         /// </summary>
         public float CurLatency
         {
-            get { return M.ReadFloat(Address + 0xc8c); }
+            get { return M.ReadFloat(Address + 0xCA0); }
         }
 
         /// <summary>
@@ -57,7 +61,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         /// </summary>
         public float CurFrameTime
         {
-            get { return M.ReadFloat(Address + 0x10f4); }
+            get { return M.ReadFloat(Address + 0x1100); }
         }
 
 
@@ -71,7 +75,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         /// </summary>
         public TimeSpan TimeInGame
         {
-            get { return TimeSpan.FromMilliseconds(M.ReadInt(Address + 0xc7c)); }
+            get { return TimeSpan.FromMilliseconds(M.ReadInt(Address + 0xc80)); }
         }
 
     }
