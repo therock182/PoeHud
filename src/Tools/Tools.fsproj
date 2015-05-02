@@ -43,7 +43,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-  	<Compile Include="Generators.fs" />
+    <Compile Include="Generators.fs" />
     <Compile Include="Scrambler.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
@@ -63,4 +63,7 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)*.dll $(ProjectDir)..\$(OutDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
