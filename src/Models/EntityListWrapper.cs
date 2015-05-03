@@ -66,7 +66,9 @@ namespace PoeHUD.Models
             {
                 Player = new EntityWrapper(gameController, address);
             }
-
+            if (gameController.Area.CurrentArea == null)
+                return;
+            
             Dictionary<int, Entity> newEntities = gameController.Game.IngameState.Data.EntityList.EntitiesAsDictionary;
             var newCache = new Dictionary<int, EntityWrapper>();
             foreach (var keyEntity in newEntities)
