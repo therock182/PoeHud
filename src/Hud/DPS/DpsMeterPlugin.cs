@@ -19,7 +19,7 @@ namespace PoeHUD.Hud.Dps
 
         private DateTime lastTime;
 
-        private Dictionary<int, int> lastMonsters = new Dictionary<int, int>();
+        private Dictionary<long, int> lastMonsters = new Dictionary<long, int>();
 
         private double[] damageMemory = new double[10];
 
@@ -83,14 +83,14 @@ namespace PoeHUD.Hud.Dps
         private double CalculateDps(TimeSpan elapsedTime)
         {
             int totalDamage = 0;
-            var monsters = new Dictionary<int, int>();
+            var monsters = new Dictionary<long, int>();
             foreach (EntityWrapper monster in GameController.Entities.Where(x => x.HasComponent<Monster>() && x.IsHostile))
             {
                 int hp = monster.IsAlive ? monster.GetComponent<Life>().CurHP + monster.GetComponent<Life>().CurES : 0;
                 if (hp > -1000000 && hp < 10000000)
                 {
                     int lastHP;
-                    if (lastMonsters.TryGetValue(monster.Id, out lastHP))
+                    if (lastMonsters.TryGetValue(monster.LongId, out lastHP))
                     {
                         // make this a separte if statement to prevent dictionary already containing item
                         if (lastHP > hp) 
@@ -98,7 +98,7 @@ namespace PoeHUD.Hud.Dps
                             totalDamage += lastHP - hp;
                         }
                     }
-                    monsters.Add(monster.Id, hp);
+                    monsters.Add(monster.LongId, hp);
                 }
             }
             lastMonsters = monsters;
