@@ -17,6 +17,8 @@ namespace PoeHUD.Hud.Health
             MagicEnemy = new UnitSettings(0xff0000ff, 0x8888ffff, 0x66ff99ff, false);
             RareEnemy = new UnitSettings(0xff0000ff, 0xffff77ff, 0x66ff99ff, true);
             UniqueEnemy = new UnitSettings(0xff0000ff, 0xffa500ff, 0x66ff99ff, true);
+            ShowDebuffPanel = true;
+            DebuffPanelIconSize = new RangeNode<int>(20, 15, 40);
         }
 
         public ToggleNode ShowInTown { get; set; }
@@ -38,5 +40,10 @@ namespace PoeHUD.Hud.Health
         public UnitSettings RareEnemy { get; set; }
 
         public UnitSettings UniqueEnemy { get; set; }
+
+        public ToggleNode ShowDebuffPanel { get; set; }
+
+        public RangeNode<int> DebuffPanelIconSize { get; set; }
+
     }
 }

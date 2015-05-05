@@ -133,16 +133,16 @@ namespace PoeHUD.Poe.Components
             get
             {
                 var list = new List<Buff>();
-                int num = M.ReadInt(Address + 184);
-                int num2 = M.ReadInt(Address + 188);
-                int num3 = (num2 - num)/4;
-                if (num3 <= 0 || num3 > 32)
+                int start = M.ReadInt(Address + 184);
+                int end = M.ReadInt(Address + 188);
+                int count = (end - start)/4;
+                if (count <= 0 || count > 32)
                 {
                     return list;
                 }
-                for (int i = 0; i < num3; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    list.Add(base.ReadObject<Buff>(M.ReadInt(num + i*4) + 4));
+                    list.Add(base.ReadObject<Buff>(M.ReadInt(start + i*4) + 4));
                 }
                 return list;
             }
