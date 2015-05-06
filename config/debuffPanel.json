@@ -16,8 +16,8 @@ Filter:
     "poison":0,
     "viper_strike_orb":0,
     "monster_aura_pus_puke_degen":2,
-    "monster_aura_chaos_degen":0,
-    "monster_aura_physical_degen":0,
+    "monster_aura_chaos_degen":2,
+    "monster_aura_physical_degen":2,
     "ground_desecration":0,
     "chaos_bond_in_beam":0
   },
@@ -27,21 +27,21 @@ Filter:
     "ground_ice_chill":0,
     "chilling_bond_in_beam":0,
     "cold_damage_and_freeze":0,
-    "monster_aura_chill":0
+    "monster_aura_chill":2
   },
   "Burning": {
     "ground_fire_burn":0,
     "ignited":0,
     "searing_bond_in_beam":0,
     "fire_damage_and_ignite":0,
-    "monster_aura_burning":0
+    "monster_aura_burning":2
   },
   "Shocked": {
     "shocked":0,
     "ground_lightning_shock":0,
     "seawitch_lightning_beam":0,
     "lightning_damage_and_shock":0,
-    "monster_aura_shock":0
+    "monster_aura_shock":2
   },
   "WeakenedSlowed": {
     "monster_aura_slow":2,
