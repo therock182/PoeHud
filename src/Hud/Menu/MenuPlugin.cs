@@ -94,6 +94,8 @@ namespace PoeHUD.Hud.Menu
             MenuItem minionsMenu = AddChild(healthMenu, "Minions", healthBarPlugin.Minions.Enable);
             AddChild(healthMenu, "Show ES", healthBarPlugin.ShowES);
             AddChild(healthMenu, "Show in town", healthBarPlugin.ShowInTown);
+            MenuItem debuffPanelMenu = AddChild(healthMenu, "Show debuff panel", healthBarPlugin.ShowDebuffPanel);
+            AddChild(debuffPanelMenu, "Icon size", healthBarPlugin.DebuffPanelIconSize);
             AddChild(playersMenu, "Print percents", healthBarPlugin.Players.ShowPercents);
             AddChild(playersMenu, "Print health text", healthBarPlugin.Players.ShowHealthText);
             AddChild(playersMenu, "Width", healthBarPlugin.Players.Width);
