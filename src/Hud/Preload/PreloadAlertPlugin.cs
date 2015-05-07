@@ -106,7 +106,8 @@ namespace PoeHUD.Hud.Preload
                     {
                         text = text.Split(new[] { '@' })[0];
                     }
-                    if (text.StartsWith("Metadata/Particles/human_heart"))
+                    //Attempt to fix preload not catching corrupted areas by making it also catch preloaded effects and the sound associated with the corrupted area (NoRain would imply there's a rain version but I couldn't find it so perhaps they overlay them one over the other).
+                    if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
                         alerts.Add("Area contains Corrupted Area");
                     }
