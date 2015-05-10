@@ -64,13 +64,14 @@ namespace PoeHUD.Hud.Loot
                 if (Settings.BorderSettings.Enable)
                 {
                     Dictionary<EntityWrapper, AlertDrawStyle> tempCopy = new Dictionary<EntityWrapper, AlertDrawStyle>(currentAlerts);
-                    Parallel.ForEach(tempCopy.Where(x => x.Key.IsValid), kv =>
+                    var keyValuePairs = tempCopy.AsParallel().Where(x => x.Key.IsValid).ToList();
+                    foreach (var kv in keyValuePairs)
                     {
                         if (DrawBorder(kv.Key.Address) && !shouldUpdate)
                         {
                             shouldUpdate = true;
                         }
-                    });
+                    };
                 }
 
                 foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts.Where(x => x.Key.IsValid))
@@ -82,23 +83,15 @@ namespace PoeHUD.Hud.Loot
                     }
 
                     ItemsOnGroundLabelElement entityLabel;
-                    if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
-                    {
-                        // Don't make labels on the right for items we can't pick up UNTIL we can pick it up or invisible
-                        if (Settings.HideOthers && !entityLabel.CanPickUp)
-                        {
-                            return;
-                        }
-                    }
-                    else
+                    if (!currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
                     {
                         shouldUpdate = true;
                     }
-
-                    if (Settings.ShowText)
-                    {
-                        position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
-                    }
+                    else
+                        if (Settings.ShowText & (!Settings.HideOthers | entityLabel.CanPickUp))
+                        {
+                            position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
+                        }
                 }
                 Size = new Size2F(0, position.Y); //bug absent width
 
