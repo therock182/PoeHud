@@ -73,7 +73,7 @@ namespace PoeHUD.Poe.Elements
         {
             if (Label.Address != 0)
             {
-                return M.ReadInt(Label.Address + 0xC78);
+                return M.ReadInt(Label.Address + 0x0C80);
             }
             return 0;
         }
