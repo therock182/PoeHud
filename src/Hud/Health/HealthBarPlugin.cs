@@ -124,9 +124,9 @@ namespace PoeHUD.Hud.Health
 
         private bool HasDebuff(Dictionary<string, int> dictionary, Buff buff, bool isHostile)
         {
-            if (dictionary.ContainsKey(buff.Name))
+            int filterId;
+            if (dictionary.TryGetValue(buff.Name, out filterId))
             {
-                int filterId = dictionary[buff.Name];
                 return filterId == 0 || isHostile == (filterId == 1);
             }
             return false;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
@@ -18,7 +19,6 @@ using PoeHUD.Poe.UI.Elements;
 
 using SharpDX;
 using SharpDX.Direct3D9;
-using System.Collections.Concurrent;
 
 namespace PoeHUD.Hud.Loot
 {
@@ -26,20 +26,20 @@ namespace PoeHUD.Hud.Loot
     {
         private readonly HashSet<long> playedSoundsCache;
 
-        private readonly ConcurrentDictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
+        private readonly Dictionary<EntityWrapper, AlertDrawStyle> currentAlerts;
 
         private readonly Dictionary<string, CraftingBase> craftingBases;
 
         private readonly HashSet<string> currencyNames;
 
-        private ConcurrentDictionary<int, ItemsOnGroundLabelElement> currentLabels;
+        private Dictionary<int, ItemsOnGroundLabelElement> currentLabels;
 
         public ItemAlertPlugin(GameController gameController, Graphics graphics, ItemAlertSettings settings)
             : base(gameController, graphics, settings)
         {
             playedSoundsCache = new HashSet<long>();
-            currentAlerts = new ConcurrentDictionary<EntityWrapper, AlertDrawStyle>();
-            currentLabels = new ConcurrentDictionary<int, ItemsOnGroundLabelElement>();
+            currentAlerts = new Dictionary<EntityWrapper, AlertDrawStyle>();
+            currentLabels = new Dictionary<int, ItemsOnGroundLabelElement>();
             currencyNames = LoadCurrency();
             craftingBases = LoadCraftingBases();
 
@@ -61,6 +61,19 @@ namespace PoeHUD.Hud.Loot
                 const int BOTTOM_MARGIN = 2;
                 bool shouldUpdate = false;
 
+                if (Settings.BorderSettings.Enable)
+                {
+                    Dictionary<EntityWrapper, AlertDrawStyle> tempCopy = new Dictionary<EntityWrapper, AlertDrawStyle>(currentAlerts);
+                    var keyValuePairs = tempCopy.AsParallel().Where(x => x.Key.IsValid).ToList();
+                    foreach (var kv in keyValuePairs)
+                    {
+                        if (DrawBorder(kv.Key.Address) && !shouldUpdate)
+                        {
+                            shouldUpdate = true;
+                        }
+                    };
+                }
+
                 foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts.Where(x => x.Key.IsValid))
                 {
                     string text = GetItemName(kv);
@@ -70,34 +83,21 @@ namespace PoeHUD.Hud.Loot
                     }
 
                     ItemsOnGroundLabelElement entityLabel;
-                    if (currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
-                    {
-                        if (Settings.BorderSettings.Enable && DrawBorder(kv.Key.Address) && !shouldUpdate)
-                        {
-                                shouldUpdate = true;
-                        }
-                        // Don't make labels on the right for items we can't pick up UNTIL we can pick it up or invisible
-                        //if (Settings.HideOthers && !entityLabel.CanPickUp)
-                        //{
-                        //    return;
-                        //}
-                    }
-                    else
+                    if (!currentLabels.TryGetValue(kv.Key.Address, out entityLabel))
                     {
                         shouldUpdate = true;
                     }
-
-                    if (Settings.ShowText)
-                    {
-                        position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
-                    }
+                    else
+                        if (Settings.ShowText & (!Settings.HideOthers | entityLabel.CanPickUp))
+                        {
+                            position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
+                        }
                 }
                 Size = new Size2F(0, position.Y); //bug absent width
 
                 if (shouldUpdate)
                 {
-                    // Change this in the future to prevent problems (create separate thread to do the updating, thread safe calls)
-                    currentLabels = new ConcurrentDictionary<int, ItemsOnGroundLabelElement> (GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y));
+                    currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace PoeHUD.Hud.Loot
                 if (props.ShouldAlert(currencyNames, Settings))
                 {
                     AlertDrawStyle drawStyle = props.GetDrawStyle();
-                    currentAlerts.TryAdd(entity, drawStyle);
+                    currentAlerts.Add(entity, drawStyle);
                     CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.AlertColor), () => Settings.ShowItemOnMap, 8);
 
                     if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
@@ -139,10 +139,8 @@ namespace PoeHUD.Hud.Loot
         protected override void OnEntityRemoved(EntityWrapper entity)
         {
             base.OnEntityRemoved(entity);
-            AlertDrawStyle ignoredStyle;
-            currentAlerts.TryRemove(entity, out ignoredStyle);
-            ItemsOnGroundLabelElement ignoredLabel;
-            currentLabels.TryRemove(entity.Address, out ignoredLabel);
+            currentAlerts.Remove(entity);
+            currentLabels.Remove(entity.Address);
         }
 
         private static Dictionary<string, CraftingBase> LoadCraftingBases()

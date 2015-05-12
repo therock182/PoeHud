@@ -156,7 +156,7 @@ namespace PoeHUD.Hud.Menu
             AddChild(qualitySkillGemMenu, "Min. quality", qualityItemsSettings.SkillGem.MinQuality);
             AddChild(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
             MenuItem alertTextMenu = AddChild(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
-            //AddChild(itemAlertMenu, "Hide Others", settingsHub.ItemAlertSettings.HideOthers);
+            AddChild(itemAlertMenu, "Hide Others", settingsHub.ItemAlertSettings.HideOthers);
             AddChild(alertTextMenu, "Font size", settingsHub.ItemAlertSettings.TextSize);
             BorderSettings borderSettings = settingsHub.ItemAlertSettings.BorderSettings;
             MenuItem showBorderMenu = AddChild(itemAlertMenu, "Show border", borderSettings.Enable);

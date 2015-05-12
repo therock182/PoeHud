@@ -98,7 +98,10 @@ namespace PoeHUD.Hud.Dps
                             totalDamage += lastHP - hp;
                         }
                     }
-                    monsters.Add(monster.LongId, hp);
+
+                    //very rare, but sometimes happen collisions
+                    if (!monsters.ContainsKey(monster.LongId))
+                        monsters.Add(monster.LongId, hp);
                 }
             }
             lastMonsters = monsters;
