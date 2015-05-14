@@ -6,12 +6,13 @@ namespace PoeHUD.Framework.Helpers
     {
         public static string ToShorten(double value, string format = "0")
         {
-            if (value >= 1000000)
+            double abs = Math.Abs(value);
+            if (abs >= 1000000)
             {
                 return string.Concat((value / 1000000).ToString("F2"), "M");
             }
 
-			if (value >= 1000)
+            if (abs >= 1000)
 			{
 				return string.Concat((value / 1000).ToString("F1"), "K");
 			}
