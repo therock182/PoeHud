@@ -97,35 +97,41 @@ namespace PoeHUD.Hud.Health
                 int debuffTable = 0;
                 foreach (var buff in buffs)
                 {
-                    if (HasDebuff(debuffPanelConfig.Bleeding, buff, isHostile))
+                    var buffName = buff.Name;
+                    if (HasDebuff(debuffPanelConfig.Bleeding, buffName, isHostile))
                         debuffTable |= 1;
-                    else if (HasDebuff(debuffPanelConfig.Poisoned, buff, isHostile))
+                    else if (HasDebuff(debuffPanelConfig.Poisoned, buffName, isHostile))
                         debuffTable |= 2;
-                    else if (HasDebuff(debuffPanelConfig.ChilledFrozen, buff, isHostile))
+                    else if (HasDebuff(debuffPanelConfig.ChilledFrozen, buffName, isHostile))
                         debuffTable |= 4;
-                    else if (HasDebuff(debuffPanelConfig.Burning, buff, isHostile))
+                    else if (HasDebuff(debuffPanelConfig.Burning, buffName, isHostile))
                         debuffTable |= 8;
-                    else if (HasDebuff(debuffPanelConfig.Shocked, buff, isHostile))
+                    else if (HasDebuff(debuffPanelConfig.Shocked, buffName, isHostile))
                         debuffTable |= 16;
-                    else if (HasDebuff(debuffPanelConfig.WeakenedSlowed, buff, isHostile))
+                    else if (HasDebuff(debuffPanelConfig.WeakenedSlowed, buffName, isHostile))
                         debuffTable |= 32;
                     else
                         debuffTable |= 0;
                 }
 
-                startX += DrawDebuff(() => (debuffTable & 1) == 1, startX, startY, 0, 4);
-                startX += DrawDebuff(() => (debuffTable & 2) == 2, startX, startY, 1, 4);
-                startX += DrawDebuff(() => (debuffTable & 4) == 4, startX, startY, 2);
-                startX += DrawDebuff(() => (debuffTable & 8) == 8, startX, startY, 3, 4.5f);
-                startX += DrawDebuff(() => (debuffTable & 16) == 16, startX, startY, 4, 5);
-                DrawDebuff(() => (debuffTable & 32) == 32, startX, startY, 5);
+                DrawAllDebuff(debuffTable, startX, startY);
             }
         }
 
-        private bool HasDebuff(Dictionary<string, int> dictionary, Buff buff, bool isHostile)
+        private void DrawAllDebuff(int debuffTable, float startX, float startY)
+        {
+            startX += DrawDebuff(() => (debuffTable & 1) == 1, startX, startY, 0, 4);
+            startX += DrawDebuff(() => (debuffTable & 2) == 2, startX, startY, 1, 4);
+            startX += DrawDebuff(() => (debuffTable & 4) == 4, startX, startY, 2);
+            startX += DrawDebuff(() => (debuffTable & 8) == 8, startX, startY, 3, 4.5f);
+            startX += DrawDebuff(() => (debuffTable & 16) == 16, startX, startY, 4, 5);
+            DrawDebuff(() => (debuffTable & 32) == 32, startX, startY, 5);
+        }
+
+        private bool HasDebuff(Dictionary<string, int> dictionary, string buffName, bool isHostile)
         {
             int filterId;
-            if (dictionary.TryGetValue(buff.Name, out filterId))
+            if (dictionary.TryGetValue(buffName, out filterId))
             {
                 return filterId == 0 || isHostile == (filterId == 1);
             }
