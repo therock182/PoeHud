@@ -124,7 +124,9 @@ Metadata/Monsters/Totems/TotemBossInvasion, Area contains Jikeji
 Metadata/Monsters/Rhoas/RhoaUndeadBossInvasion, Area contains Ghostram
 Metadata/Monsters/Undying/UndyingBossInvasion, Area contains Stranglecrawl
 Metadata/Monsters/WaterElemental/WaterElementalBossInvasion, Area contains Mirageblast
-Metadata/Monsters/Zombies/ZombieBossInvasion, Area contains The Walking Waste
+Metadata/Monsters/ZombieDismember/ZombieBossInvasion, Area contains The Walking Waste
+Metadata/Monsters/Monkeys/MonkeyBossInvasion1, Area contains the monkey pair (needs names, report in thread please)
+Metadata/Monsters/Monkeys/MonkeyBossInvasion2, Area contains the monkey pair (needs names, report in thread please)
 Metadata/Monsters/Skeletons/SkeletonMeleeBossInvasion, Area contains Glassmaul
 Metadata/Monsters/Skeletons/SkeletonLargeBossInvasion, Area contains Grath
 Metadata/Monsters/Skeletons/ConstructBossInvasion, Area contains The Spiritless
