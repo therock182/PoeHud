@@ -34,7 +34,9 @@ Filter:
     "ignited":0,
     "searing_bond_in_beam":0,
     "fire_damage_and_ignite":0,
-    "monster_aura_burning":2
+    "monster_aura_burning":2,
+    "demon_righteous_fire_aura":2,
+    "righteous_fire_aura":2
   },
   "Shocked": {
     "shocked":0,
