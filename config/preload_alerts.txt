@@ -125,8 +125,8 @@ Metadata/Monsters/Rhoas/RhoaUndeadBossInvasion, Area contains Ghostram
 Metadata/Monsters/Undying/UndyingBossInvasion, Area contains Stranglecrawl
 Metadata/Monsters/WaterElemental/WaterElementalBossInvasion, Area contains Mirageblast
 Metadata/Monsters/ZombieDismember/ZombieBossInvasion, Area contains The Walking Waste
-Metadata/Monsters/Monkeys/MonkeyBossInvasion1 Blood Stasis 
-Metadata/Monsters/Monkeys/MonkeyBossInvasion2 Blood Morpher
+Metadata/Monsters/Monkeys/MonkeyBossInvasion1, Area contains Blood Stasis 
+Metadata/Monsters/Monkeys/MonkeyBossInvasion2, Area contains Blood Morpher
 Metadata/Monsters/Skeletons/SkeletonMeleeBossInvasion, Area contains Glassmaul
 Metadata/Monsters/Skeletons/SkeletonLargeBossInvasion, Area contains Grath
 Metadata/Monsters/Skeletons/ConstructBossInvasion, Area contains The Spiritless
