@@ -1,14 +1,8 @@
 ﻿namespace PoeHUD.Hud.InventoryPreview
 {
-    public sealed class CellData
+    public struct CellData
     {
-        public CellData()
-        {
-            Used = false;
-            ExtendsX = false;
-            ExtendsY = false;
-        }
-
+       
         public bool Used { get; set; }
 
         public bool ExtendsX { get; set; }

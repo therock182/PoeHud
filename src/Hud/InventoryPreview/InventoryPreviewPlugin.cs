@@ -20,8 +20,13 @@ namespace PoeHUD.Hud.InventoryPreview
 
         private IngameUIElements ingameUiElements;
 
-        public InventoryPreviewPlugin(GameController gameController, Graphics graphics, InventoryPreviewSettings settings)
-            : base(gameController, graphics, settings) {}
+        public InventoryPreviewPlugin(GameController gameController, Graphics graphics,
+            InventoryPreviewSettings settings)
+            : base(gameController, graphics, settings)
+        {
+
+            cells = new CellData[CELLS_Y_COUNT, CELLS_X_COUNT];
+        }
 
         public override void Render()
         {
@@ -33,19 +38,13 @@ namespace PoeHUD.Hud.InventoryPreview
             ingameUiElements = GameController.Game.IngameState.IngameUi;
             if (ingameUiElements.OpenLeftPanel.IsVisible || ingameUiElements.OpenRightPanel.IsVisible)
             {
+                if (ingameUiElements.InventoryPanel.IsVisible)
+                {
+                    cells = new CellData[CELLS_Y_COUNT, CELLS_X_COUNT];
+                    AddItems();
+                }
                 return;
             }
-
-            cells = new CellData[CELLS_Y_COUNT, CELLS_X_COUNT];
-            for (int y = 0; y < CELLS_Y_COUNT; ++y)
-            {
-                for (int x = 0; x < CELLS_X_COUNT; ++x)
-                {
-                    cells[y, x] = new CellData();
-                }
-            }
-            AddItems();
-
             RectangleF rect = GameController.Window.GetWindowRectangle();
             float xPos = rect.Width * Settings.PositionX * .01f;
             float yPos = rect.Height * Settings.PositionY * .01f;
