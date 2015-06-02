@@ -132,6 +132,7 @@ Metadata/Monsters/Spirit/TormentedThug, Tormented Thug
 Metadata/Monsters/Spirit/TormentedCorrupter, Tormented Vaal Cultist
 Metadata/Monsters/Spirit/TormentedWarlord, Tormented Warlord
 Metadata/Monsters/Spirit/TormentedFisherman, Tormented Illegal Fisherman
+Metadata/Monsters/Rhoas/RhoaAlbino, Albino Rhoa
 
 #Metadata/Monsters/RootSpiders/RootSpider, Devourer
 #Metadata/Monsters/RootSpiders/RootSpiderHidden, Devourer
