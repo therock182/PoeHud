@@ -9,6 +9,7 @@ namespace PoeHUD.Hud.InventoryPreview
         public InventoryPreviewSettings()
         {
             Enable = false;
+            AutoUpdate = true;
             CellUsedColor = new Color(255, 0, 0, 80);
             CellFreeColor = new Color(0, 255, 0, 80);
             CellSize = new RangeNode<int>(20, 1, 100);
@@ -16,6 +17,8 @@ namespace PoeHUD.Hud.InventoryPreview
             PositionX = new RangeNode<float>(13.0f, 0.0f, 100.0f);
             PositionY = new RangeNode<float>(76.0f, 0.0f, 100.0f);
         }
+
+        public ToggleNode AutoUpdate { get; set; }
 
         public ColorNode CellUsedColor { get; set; }
 
