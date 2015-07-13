@@ -12,7 +12,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadFloat(Address + 48);
+                    return M.ReadFloat(Address + 70);
                 }
                 return 0f;
             }
@@ -24,7 +24,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadFloat(Address + 52);
+                    return M.ReadFloat(Address + 74);
                 }
                 return 0f;
             }
@@ -36,7 +36,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadFloat(Address + 136);
+                    return M.ReadFloat(Address + 0x8C);
                 }
                 return 0f;
             }

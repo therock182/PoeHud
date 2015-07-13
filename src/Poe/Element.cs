@@ -9,7 +9,7 @@ namespace PoeHUD.Poe.UI
 {
     public  class Element : RemoteMemoryObject
     {
-        public const int OffsetBuffers = 0x808;
+        public const int OffsetBuffers = 0x788;
         // dd id
         // dd (something zero)
         // 16 dup <128-bytes structure>
@@ -42,22 +42,22 @@ namespace PoeHUD.Poe.UI
 
         public float Width
         {
-            get { return M.ReadFloat(Address + 0xF4 + OffsetBuffers); }
+            get { return M.ReadFloat(Address + 0xFC + OffsetBuffers); } 
         }
 
         public float Height
         {
-            get { return M.ReadFloat(Address + 0xF8 + OffsetBuffers); }
+            get { return M.ReadFloat(Address + 0x100 + OffsetBuffers); }
         }
 
         public int ChildCount
         {
-            get { return (M.ReadInt(Address + 20 + OffsetBuffers) - M.ReadInt(Address + 16 + OffsetBuffers))/4; }
+            get { return (M.ReadInt(Address + 20 + OffsetBuffers) - M.ReadInt(Address + 16 + OffsetBuffers))/4; } 
         }
 
         public bool IsVisibleLocal
         {
-            get { return (M.ReadInt(Address + 2144) & 1) == 1; }
+            get { return (M.ReadInt(Address + 0x7e0) & 1) == 1; }
         }
 
         public bool IsVisible

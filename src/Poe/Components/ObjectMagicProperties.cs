@@ -11,7 +11,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return (MonsterRarity) M.ReadInt(Address +0x40);
+                    return (MonsterRarity) M.ReadInt(Address +0x5C);
                 }
                 return MonsterRarity.White;
             }
@@ -25,8 +25,8 @@ namespace PoeHUD.Poe.Components
                 {
                     return new List<string>();
                 }
-                int begin = M.ReadInt(Address + 0x54);
-                int end = M.ReadInt(Address + 0x58);
+                int begin = M.ReadInt(Address + 0x64);
+                int end = M.ReadInt(Address + 0x68);
                 var list = new List<string>();
                 if (begin == 0 || end == 0)
                 {

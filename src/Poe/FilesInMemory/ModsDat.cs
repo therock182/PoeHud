@@ -75,49 +75,49 @@ namespace PoeHUD.Poe.FilesInMemory
 
             public ModRecord(Memory m, StatsDat sDat, TagsDat tagsDat, int addr)
             {
-                Key = m.ReadStringU(m.ReadInt(addr + 0), 255);
+                Key = m.ReadStringU(m.ReadInt(addr + 0));
                 Unknown4 = m.ReadInt(addr + 4);
-                MinLevel = m.ReadInt(addr + 8);
-
+                MinLevel = m.ReadInt(addr + 0x10);
+              
                 StatNames = new[]
                 {
-                    m.ReadInt(addr + 0x10) == 0
-                        ? null
-                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x10)), 255)],
                     m.ReadInt(addr + 0x18) == 0
                         ? null
-                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x18)), 255)],
+                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x18)))],
                     m.ReadInt(addr + 0x20) == 0
                         ? null
-                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x20)), 255)],
+                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x20)))],
                     m.ReadInt(addr + 0x28) == 0
                         ? null
-                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x28)), 255)]
+                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x28)))],
+                    m.ReadInt(addr + 0x30) == 0
+                        ? null
+                        : sDat.records[m.ReadStringU(m.ReadInt(m.ReadInt(addr + 0x30)))]
                 };
-
-                Domain = m.ReadInt(addr + 0x2C);
-                UserFriendlyName = m.ReadStringU(m.ReadInt(addr + 0x30), 255);
-                AffixType = (ModType) m.ReadInt(addr + 0x34);
-                Group = m.ReadStringU(m.ReadInt(addr + 0x38), 255);
+                
+                Domain = m.ReadInt(addr + 0x34);
+                UserFriendlyName = m.ReadStringU(m.ReadInt(addr + 0x38));
+                AffixType = (ModType) m.ReadInt(addr + 0x3C);
+                Group = m.ReadStringU(m.ReadInt(addr + 0x40));
 
                 StatRange = new[]
                 {
-                    new IntRange(m.ReadInt(addr + 0x3C), m.ReadInt(addr + 0x40)),
                     new IntRange(m.ReadInt(addr + 0x44), m.ReadInt(addr + 0x48)),
                     new IntRange(m.ReadInt(addr + 0x4C), m.ReadInt(addr + 0x50)),
-                    new IntRange(m.ReadInt(addr + 0x54), m.ReadInt(addr + 0x58))
+                    new IntRange(m.ReadInt(addr + 0x54), m.ReadInt(addr + 0x58)),
+                    new IntRange(m.ReadInt(addr + 0x5C), m.ReadInt(addr + 0x60))
                 };
 
-                Tags = new TagsDat.TagRecord[m.ReadInt(addr + 0x5C)];
-                int ta = m.ReadInt(addr + 0x60);
+                Tags = new TagsDat.TagRecord[m.ReadInt(addr + 0x64)];
+                int ta = m.ReadInt(addr + 0x68);
                 for (int i = 0; i < Tags.Length; i++)
                 {
                     int ii = ta + 4 + 8*i;
                     Tags[i] = tagsDat.records[m.ReadStringU(m.ReadInt(ii, 0), 255)];
                 }
 
-                TagChances = new int[m.ReadInt(addr + 0x64)];
-                int tc = m.ReadInt(addr + 0x68);
+                TagChances = new int[m.ReadInt(addr + 0x6C)];
+                int tc = m.ReadInt(addr + 0x70);
                 for (int i = 0; i < Tags.Length; i++)
                     TagChances[i] = m.ReadInt(tc + 4*i);
             }

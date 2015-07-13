@@ -16,7 +16,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return (ItemRarity) M.ReadInt(Address + 0x4c);
+                    return (ItemRarity) M.ReadInt(Address + 0x68);
                 }
                 return ItemRarity.White;
             }
@@ -28,7 +28,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 0xF0);
+                    return M.ReadInt(Address + 0x10C);
                 }
                 return 1;
             }
@@ -55,8 +55,8 @@ namespace PoeHUD.Poe.Components
         {
             get
             {
-                var implicitMods = GetMods(0x50, 0x54);
-                var explicitMods = GetMods(0x60, 0x64);
+                var implicitMods = GetMods(0x6C, 0x70);
+                var explicitMods = GetMods(0x7C, 0x80);
                 return implicitMods.Concat(explicitMods).ToList();
             }
         }
