@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoeHUD.Poe.Components;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe.Elements
@@ -12,13 +11,6 @@ namespace PoeHUD.Poe.Elements
         public ItemsOnGroundLabelElement()
         {
             labelInfo = new Lazy<int>(GetLabelInfo);
-        }
-        static readonly TimeSpan zero=new TimeSpan();
-
-        public bool CanPickUp
-        
-        {
-            get { return TimeLeft <= zero; }
         }
 
         public Entity ItemOnGround
@@ -32,11 +24,17 @@ namespace PoeHUD.Poe.Elements
         }
 
 
+        public bool CanPickUp
+        {
+            get { return labelInfo.Value == 0; }
+        }
+
+
         public TimeSpan TimeLeft
         {
             get
             {
-                if (labelInfo.Value != 0)
+                if (!CanPickUp)
                 {
                     int futureTime = M.ReadInt(labelInfo.Value + 0x20);
                     return TimeSpan.FromMilliseconds(futureTime - Environment.TickCount);
@@ -47,7 +45,10 @@ namespace PoeHUD.Poe.Elements
 
         public TimeSpan MaxTimeForPickUp
         {
-            get { return TimeSpan.FromMilliseconds(M.ReadInt(labelInfo.Value + 0x1C)); }
+            get
+            {
+                return !CanPickUp ? TimeSpan.FromMilliseconds(M.ReadInt(labelInfo.Value + 0x1C)) : new TimeSpan();
+            }
         }
 
 
@@ -73,7 +74,7 @@ namespace PoeHUD.Poe.Elements
         {
             if (Label.Address != 0)
             {
-                return ItemOnGround.GetComponent<Render>().UknownValue;
+                return M.ReadInt(Label.Address + 0x0C04);
             }
             return 0;
         }
