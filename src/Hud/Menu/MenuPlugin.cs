@@ -144,6 +144,7 @@ namespace PoeHUD.Hud.Menu
             AddChild(itemAlertMenu, "Maps", settingsHub.ItemAlertSettings.Maps);
             AddChild(itemAlertMenu, "RGB", settingsHub.ItemAlertSettings.Rgb);
             AddChild(itemAlertMenu, "Crafting bases", settingsHub.ItemAlertSettings.Crafting);
+            AddChild(itemAlertMenu, "Divination cards", settingsHub.ItemAlertSettings.DivinationCards);
             QualityItemsSettings qualityItemsSettings = settingsHub.ItemAlertSettings.QualityItems;
             MenuItem qualityMenu = AddChild(itemAlertMenu, "Show quality items", qualityItemsSettings.Enable);
             MenuItem qualityWeaponMenu = AddChild(qualityMenu, "Weapons", qualityItemsSettings.Weapon.Enable);

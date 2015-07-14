@@ -66,6 +66,13 @@ namespace PoeHUD.Hud.Loot
                 return (currencyNames != null ? currencyNames.Contains(_name):  (!_name.Contains("Wisdom") && !_name.Contains("Portal")));
             }
 
+            // Check if DivinationCard
+            if (settings.DivinationCards && _item.Path.Contains("DivinationCards"))
+            {
+                color = HudSkin.DivinationCardColor;
+                return true;
+            }
+
             Sockets sockets = _item.GetComponent<Sockets>();
             // Check link REQ.
             if (sockets.LargestLinkSize >= settings.MinLinks)
