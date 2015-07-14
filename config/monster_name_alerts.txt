@@ -134,6 +134,127 @@ Metadata/Monsters/Spirit/TormentedWarlord, Tormented Warlord
 Metadata/Monsters/Spirit/TormentedFisherman, Tormented Illegal Fisherman
 Metadata/Monsters/Rhoas/RhoaAlbino, Albino Rhoa
 
+Metadata/Monsters/Wb/WbLightningGrunt1, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt2, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt3, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt4, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt5, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt6, Brinerot Raider
+Metadata/Monsters/Wb/WbLightningSupport1, Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport2, Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport3, Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport4, Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport4Clone, Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningElite1, Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningElite2, Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningElite3, Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningLeader1, Musky "Two-Eyes" Grenn
+Metadata/Monsters/Wb/WbLightningLeader2, Susara, Siren of Pondium
+Metadata/Monsters/Wb/WbLightningLeader3, Lussi "Rotmother" Roth
+Metadata/Monsters/Wb/WbColdGrunt1, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt2, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt3, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt4, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt5, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt6, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt7, Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdLynx1, Mutewind Lynx
+Metadata/Monsters/Wb/WbColdSupport1, Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport2, Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport3, Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport4, Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdElite1, Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite2, Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite3, Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite4, Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite4Clone, Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdLeader1, Yorishi, Aurora-sage
+Metadata/Monsters/Wb/WbColdLeader2, Jeinei Yuushu
+Metadata/Monsters/Wb/WbColdLeader2Clone, Jeinei Yuushu
+Metadata/Monsters/Wb/WbColdLeader3, Otesha, the Giantslayer
+Metadata/Monsters/Wb/WbFireGrunt1, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt2_, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt3, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt4, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt5, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt6_, Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireSupport1, Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport2, Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport3, Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport4, Redblade Flamelord
+Metadata/Monsters/Wb/WbFireElite1, Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite2_, Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite3, Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite4, Redblade Warmonger
+Metadata/Monsters/Wb/WbFireLeader1, Uruk Baleh
+Metadata/Monsters/Wb/WbFireLeader2, El'Abin, Bloodeater
+Metadata/Monsters/Wb/WbFireLeader3, Leli Goya, Daughter of Ash
+Metadata/Monsters/Wb/WbFireLeader4, Bin'aia, Crimson Rain
+Metadata/Monsters/Wb/WbChaosLeader1, Rama, The Kinslayer
+Metadata/Monsters/Wb/WbChaosLeader2, Kalria, The Fallen
+Metadata/Monsters/Wb/WbChaosLeader2Skeleton, Kalria, The Risen
+Metadata/Monsters/Skeletons/WbSkeletonMinionMelee, Risen Legionnaire
+Metadata/Monsters/Skeletons/WbSkeletonMinionRanged, Risen Archer
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterFire, Risen Battlemage
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterCold, Risen Battlemage
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterLightning, Risen Battlemage
+Metadata/Monsters/Wb/WbChaosLeader3, Invari, The Bloodshaper
+Metadata/Monsters/Wb/WbChaosLeader4, Lokan, The Deceiver
+Metadata/Monsters/Wb/WbChaosLeader4Minion, Lokan, The Deceiver
+Metadata/Monsters/Wb/WbChaosLeader5, Marchak, The Betrayer
+Metadata/Monsters/Wb/WbChaosLeader6, Berrots, The Breaker
+Metadata/Monsters/Wb/WbChaosLeader7, Vessider, The Unrivaled
+Metadata/Monsters/Wb/WbChaosLeader8, Morgrants, The Defeaning
+Metadata/Monsters/Totems/ChargedBeamTotem, Totem
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire1, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire2, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire3, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire4, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire5, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire6, Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire7, Gemling Legionnaire
+Metadata/Monsters/Maligaro/MaligaroDesecrate, Daemon
+Metadata/Monsters/Maligaro/ArenaZombieDesecrate, Daemon
+Metadata/Monsters/Malachai/BeastHeart1, Heart of the Beast
+Metadata/Monsters/Malachai/BeastHeart2, Heart of the Beast
+Metadata/Monsters/Malachai/BeastHeart3, Heart of the Beast
+Metadata/Monsters/Revenant/Revenant, Stygian Revenant
+Metadata/Monsters/Revenant/RevenantBoss, The Bone Queen
+Metadata/Monsters/Revenant/RevenantMapBoss, Thraxia
+Metadata/Monsters/DaressoExiles/ExileArenaMarauder, Dimachaeri Cassius
+Metadata/Monsters/DaressoExiles/ExileArenaWitch, Mevia
+Metadata/Monsters/DaressoExiles/ExileArenaRanger, Rudiarius Felix
+Metadata/Monsters/GladiatorBosses/GladiatorBossSupport, Rudiarius Felix
+Metadata/Monsters/GladiatorBosses/GladiatorBossLeader, Mevion
+Metadata/Monsters/GladiatorBosses/GladiatorBossElite, Dimachaeri Cassius
+Metadata/Monsters/GladiatorBosses/GladiatorBossSupportMap, Avatar of the Huntress
+Metadata/Monsters/GladiatorBosses/GladiatorBossLeaderMap, Avatar of the Skies
+Metadata/Monsters/GladiatorBosses/GladiatorBossEliteMap, Avatar of the Forge
+Metadata/Monsters/Daemon/TempestDaemonSmokeTrail_, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonDevourCorpses, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonCharges, Tempest Daemon
+Metadata/Monsters/Skeletons/WbLightningEliteSummon1, Thunder Guardian
+Metadata/Monsters/Skeletons/WbLightningEliteSummon2, Flayed Archer
+Metadata/Monsters/Skeletons/WbLightningEliteSummon3, Thunder Champion
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalFire, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberFire, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCold, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberCold, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalLightning, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberLightning, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalNecromancy, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberNecromancy, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalPhysical, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberPhysical, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCurses, Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalSmoke, Tempest Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonEnfeeble, Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonTemporalChains, Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonVulnerability, Daemon
+Metadata/Monsters/Daemon/MalachaiTriBombDaemon, Daemon
+
+
+
 #Metadata/Monsters/RootSpiders/RootSpider, Devourer
 #Metadata/Monsters/RootSpiders/RootSpiderHidden, Devourer
 #Metadata/Monsters/RootSpiders/RootSpiderHiddenUntainted, Ancient Devourer

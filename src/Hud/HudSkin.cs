@@ -10,6 +10,8 @@ namespace PoeHUD.Hud
 
         public static readonly Color CurrencyColor = new ColorBGRA(170, 158, 130, 0xFF);
 
+        public static readonly Color DivinationCardColor = new ColorBGRA(170, 230, 230, 0xFF);
+
         public static readonly Color UniqueColor = new ColorBGRA(175, 96, 37, 0xFF);
 
         public static readonly Color SkillGemColor = new ColorBGRA(26, 162, 155, 0xFF);

@@ -15,7 +15,7 @@ namespace PoeHUD.Poe.Components
             {
                 if (Address != 0)
                 {
-                    return M.ReadInt(Address + 0x9C);
+                    return M.ReadInt(Address + 0x7C);
                 }
                 return 1;
             }
@@ -35,8 +35,8 @@ namespace PoeHUD.Poe.Components
                 {
                     return list;
                 }
-                int num = M.ReadInt(Address + 656);
-                int num2 = M.ReadInt(Address + 660);
+                int num = M.ReadInt(Address + 0x278);
+                int num2 = M.ReadInt(Address + 0x27C);
                 for (int i = num; i < num2; i += 8)
                 {
                     int item = M.ReadInt(i);
@@ -52,8 +52,8 @@ namespace PoeHUD.Poe.Components
             {
                 return false;
             }
-            int num = M.ReadInt(Address + 656);
-            int num2 = M.ReadInt(Address + 660);
+            int num = M.ReadInt(Address + 0x278);
+            int num2 = M.ReadInt(Address + 0x27C);
             for (int i = num; i < num2; i += 8)
             {
                 int num3 = M.ReadInt(i);

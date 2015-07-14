@@ -162,3 +162,123 @@ Metadata/Monsters/Spirit/TormentedThug, Area contains Tormented Thug
 Metadata/Monsters/Spirit/TormentedCorrupter, Area contains Tormented Vaal Cultist
 Metadata/Monsters/Spirit/TormentedWarlord, Area contains Tormented Warlord
 Metadata/Monsters/Spirit/TormentedFisherman, Area contains Tormented Illegal Fisherman
+
+Metadata/Monsters/Wb/WbLightningGrunt1, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt2, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt3, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt4, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt5, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningGrunt6, Area contains Brinerot Raider
+Metadata/Monsters/Wb/WbLightningSupport1, Area contains Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport2, Area contains Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport3, Area contains Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport4, Area contains Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningSupport4Clone, Area contains Brinerot Soothesayer
+Metadata/Monsters/Wb/WbLightningElite1, Area contains Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningElite2, Area contains Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningElite3, Area contains Brinerot Stormhand
+Metadata/Monsters/Wb/WbLightningLeader1, Area contains Musky "Two-Eyes" Grenn
+Metadata/Monsters/Wb/WbLightningLeader2, Area contains Susara, Siren of Pondium
+Metadata/Monsters/Wb/WbLightningLeader3, Area contains Lussi "Rotmother" Roth
+Metadata/Monsters/Wb/WbColdGrunt1, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt2, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt3, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt4, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt5, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt6, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdGrunt7, Area contains Mutewind Wildrunner
+Metadata/Monsters/Wb/WbColdLynx1, Area contains Mutewind Lynx
+Metadata/Monsters/Wb/WbColdSupport1, Area contains Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport2, Area contains Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport3, Area contains Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdSupport4, Area contains Mutewind Hexbinder
+Metadata/Monsters/Wb/WbColdElite1, Area contains Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite2, Area contains Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite3, Area contains Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite4, Area contains Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdElite4Clone, Area contains Mutewind Snow-singer
+Metadata/Monsters/Wb/WbColdLeader1, Area contains Yorishi, Aurora-sage
+Metadata/Monsters/Wb/WbColdLeader2, Area contains Jeinei Yuushu
+Metadata/Monsters/Wb/WbColdLeader2Clone, Area contains Jeinei Yuushu
+Metadata/Monsters/Wb/WbColdLeader3, Area contains Otesha, the Giantslayer
+Metadata/Monsters/Wb/WbFireGrunt1, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt2_, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt3, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt4, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt5, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireGrunt6_, Area contains Redblade Skullbreaker
+Metadata/Monsters/Wb/WbFireSupport1, Area contains Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport2, Area contains Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport3, Area contains Redblade Flamelord
+Metadata/Monsters/Wb/WbFireSupport4, Area contains Redblade Flamelord
+Metadata/Monsters/Wb/WbFireElite1, Area contains Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite2_, Area contains Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite3, Area contains Redblade Warmonger
+Metadata/Monsters/Wb/WbFireElite4, Area contains Redblade Warmonger
+Metadata/Monsters/Wb/WbFireLeader1, Area contains Uruk Baleh
+Metadata/Monsters/Wb/WbFireLeader2, Area contains El'Abin, Bloodeater
+Metadata/Monsters/Wb/WbFireLeader3, Area contains Leli Goya, Daughter of Ash
+Metadata/Monsters/Wb/WbFireLeader4, Area contains Bin'aia, Crimson Rain
+Metadata/Monsters/Wb/WbChaosLeader1, Area contains Rama, The Kinslayer
+Metadata/Monsters/Wb/WbChaosLeader2, Area contains Kalria, The Fallen
+Metadata/Monsters/Wb/WbChaosLeader2Skeleton, Area contains Kalria, The Risen
+Metadata/Monsters/Skeletons/WbSkeletonMinionMelee, Area contains Risen Legionnaire
+Metadata/Monsters/Skeletons/WbSkeletonMinionRanged, Area contains Risen Archer
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterFire, Area contains Risen Battlemage
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterCold, Area contains Risen Battlemage
+Metadata/Monsters/Skeletons/WbSkeletonMinionCasterLightning, Area contains Risen Battlemage
+Metadata/Monsters/Wb/WbChaosLeader3, Area contains Invari, The Bloodshaper
+Metadata/Monsters/Wb/WbChaosLeader4, Area contains Lokan, The Deceiver
+Metadata/Monsters/Wb/WbChaosLeader4Minion, Area contains Lokan, The Deceiver
+Metadata/Monsters/Wb/WbChaosLeader5, Area contains Marchak, The Betrayer
+Metadata/Monsters/Wb/WbChaosLeader6, Area contains Berrots, The Breaker
+Metadata/Monsters/Wb/WbChaosLeader7, Area contains Vessider, The Unrivaled
+Metadata/Monsters/Wb/WbChaosLeader8, Area contains Morgrants, The Defeaning
+Metadata/Monsters/Totems/ChargedBeamTotem, Area contains Totem
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire1, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire2, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire3, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire4, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire5, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire6, Area contains Gemling Legionnaire
+Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire7, Area contains Gemling Legionnaire
+Metadata/Monsters/Maligaro/MaligaroDesecrate, Area contains Daemon
+Metadata/Monsters/Maligaro/ArenaZombieDesecrate, Area contains Daemon
+Metadata/Monsters/Malachai/BeastHeart1, Area contains Heart of the Beast
+Metadata/Monsters/Malachai/BeastHeart2, Area contains Heart of the Beast
+Metadata/Monsters/Malachai/BeastHeart3, Area contains Heart of the Beast
+Metadata/Monsters/Revenant/Revenant, Area contains Stygian Revenant
+Metadata/Monsters/Revenant/RevenantBoss, Area contains The Bone Queen
+Metadata/Monsters/Revenant/RevenantMapBoss, Area contains Thraxia
+Metadata/Monsters/DaressoExiles/ExileArenaMarauder, Area contains Dimachaeri Cassius
+Metadata/Monsters/DaressoExiles/ExileArenaWitch, Area contains Mevia
+Metadata/Monsters/DaressoExiles/ExileArenaRanger, Area contains Rudiarius Felix
+Metadata/Monsters/GladiatorBosses/GladiatorBossSupport, Area contains Rudiarius Felix
+Metadata/Monsters/GladiatorBosses/GladiatorBossLeader, Area contains Mevion
+Metadata/Monsters/GladiatorBosses/GladiatorBossElite, Area contains Dimachaeri Cassius
+Metadata/Monsters/GladiatorBosses/GladiatorBossSupportMap, Area contains Avatar of the Huntress
+Metadata/Monsters/GladiatorBosses/GladiatorBossLeaderMap, Area contains Avatar of the Skies
+Metadata/Monsters/GladiatorBosses/GladiatorBossEliteMap, Area contains Avatar of the Forge
+Metadata/Monsters/Daemon/TempestDaemonSmokeTrail_, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonDevourCorpses, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonCharges, Area contains Tempest Daemon
+Metadata/Monsters/Skeletons/WbLightningEliteSummon1, Area contains Thunder Guardian
+Metadata/Monsters/Skeletons/WbLightningEliteSummon2, Area contains Flayed Archer
+Metadata/Monsters/Skeletons/WbLightningEliteSummon3, Area contains Thunder Champion
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalFire, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberFire, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCold, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberCold, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalLightning, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberLightning, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalNecromancy, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberNecromancy, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalPhysical, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberPhysical, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCurses, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/TempestDaemonEnvironmentalSmoke, Area contains Tempest Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonEnfeeble, Area contains Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonTemporalChains, Area contains Daemon
+Metadata/Monsters/Daemon/CurseZoneDaemonVulnerability, Area contains Daemon
+Metadata/Monsters/Daemon/MalachaiTriBombDaemon, Area contains Daemon
+
