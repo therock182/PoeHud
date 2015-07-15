@@ -234,7 +234,6 @@ Metadata/Monsters/Wb/WbChaosLeader5, Area contains Marchak, The Betrayer
 Metadata/Monsters/Wb/WbChaosLeader6, Area contains Berrots, The Breaker
 Metadata/Monsters/Wb/WbChaosLeader7, Area contains Vessider, The Unrivaled
 Metadata/Monsters/Wb/WbChaosLeader8, Area contains Morgrants, The Defeaning
-Metadata/Monsters/Totems/ChargedBeamTotem, Area contains Totem
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire1, Area contains Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire2, Area contains Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire3, Area contains Gemling Legionnaire
@@ -242,12 +241,6 @@ Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire4, Area contains Gemling 
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire5, Area contains Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire6, Area contains Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire7, Area contains Gemling Legionnaire
-Metadata/Monsters/Maligaro/MaligaroDesecrate, Area contains Daemon
-Metadata/Monsters/Maligaro/ArenaZombieDesecrate, Area contains Daemon
-Metadata/Monsters/Malachai/BeastHeart1, Area contains Heart of the Beast
-Metadata/Monsters/Malachai/BeastHeart2, Area contains Heart of the Beast
-Metadata/Monsters/Malachai/BeastHeart3, Area contains Heart of the Beast
-Metadata/Monsters/Revenant/Revenant, Area contains Stygian Revenant
 Metadata/Monsters/Revenant/RevenantBoss, Area contains The Bone Queen
 Metadata/Monsters/Revenant/RevenantMapBoss, Area contains Thraxia
 Metadata/Monsters/DaressoExiles/ExileArenaMarauder, Area contains Dimachaeri Cassius
@@ -277,8 +270,5 @@ Metadata/Monsters/Daemon/TempestDaemonEnvironmentalPhysical, Area contains Tempe
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberPhysical, Area contains Tempest Daemon
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCurses, Area contains Tempest Daemon
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalSmoke, Area contains Tempest Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonEnfeeble, Area contains Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonTemporalChains, Area contains Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonVulnerability, Area contains Daemon
-Metadata/Monsters/Daemon/MalachaiTriBombDaemon, Area contains Daemon
+
 

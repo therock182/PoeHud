@@ -205,7 +205,6 @@ Metadata/Monsters/Wb/WbChaosLeader5, Marchak, The Betrayer
 Metadata/Monsters/Wb/WbChaosLeader6, Berrots, The Breaker
 Metadata/Monsters/Wb/WbChaosLeader7, Vessider, The Unrivaled
 Metadata/Monsters/Wb/WbChaosLeader8, Morgrants, The Defeaning
-Metadata/Monsters/Totems/ChargedBeamTotem, Totem
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire1, Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire2, Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire3, Gemling Legionnaire
@@ -213,12 +212,6 @@ Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire4, Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire5, Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire6, Gemling Legionnaire
 Metadata/Monsters/GemlingLegionnaire/GemlingLegionnaire7, Gemling Legionnaire
-Metadata/Monsters/Maligaro/MaligaroDesecrate, Daemon
-Metadata/Monsters/Maligaro/ArenaZombieDesecrate, Daemon
-Metadata/Monsters/Malachai/BeastHeart1, Heart of the Beast
-Metadata/Monsters/Malachai/BeastHeart2, Heart of the Beast
-Metadata/Monsters/Malachai/BeastHeart3, Heart of the Beast
-Metadata/Monsters/Revenant/Revenant, Stygian Revenant
 Metadata/Monsters/Revenant/RevenantBoss, The Bone Queen
 Metadata/Monsters/Revenant/RevenantMapBoss, Thraxia
 Metadata/Monsters/DaressoExiles/ExileArenaMarauder, Dimachaeri Cassius
@@ -248,10 +241,6 @@ Metadata/Monsters/Daemon/TempestDaemonEnvironmentalPhysical, Tempest Daemon
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalUberPhysical, Tempest Daemon
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalCurses, Tempest Daemon
 Metadata/Monsters/Daemon/TempestDaemonEnvironmentalSmoke, Tempest Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonEnfeeble, Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonTemporalChains, Daemon
-Metadata/Monsters/Daemon/CurseZoneDaemonVulnerability, Daemon
-Metadata/Monsters/Daemon/MalachaiTriBombDaemon, Daemon
 
 
 
