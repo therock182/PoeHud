@@ -25,8 +25,8 @@ namespace PoeHUD.Poe.Components
                 {
                     return new List<string>();
                 }
-                int begin = M.ReadInt(Address + 0x64);
-                int end = M.ReadInt(Address + 0x68);
+                int begin = M.ReadInt(Address + 0x70);
+                int end = M.ReadInt(Address + 0x74);
                 var list = new List<string>();
                 if (begin == 0 || end == 0)
                 {
