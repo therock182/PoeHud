@@ -105,6 +105,12 @@ namespace PoeHUD.Hud.Loot
                 return true;
             }
 
+            // Check if Jewel
+            if (settings.Jewels && _item.Path.Contains("Jewels"))
+            {
+                return true;
+            }
+
             // meets rarity conidtions
             switch (rarity)
             {

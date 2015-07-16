@@ -9,6 +9,12 @@ MonsterItems1, Wealth monsters nearby
 MonsterExplodesOnDeathFire1, Volatile Flameblood nearby
 MonsterExplodesOnDeathLightning1, Volatile Stormblood nearby
 MonsterExplodesOnDeathCold1, Volatile Iceblood nearby
+MonsterBloodlinesThorns, Thornflesh nearby
+MonsterBloodlinesThornsLargeModel, Thornflesh nearby
+MonsterThornsPhysical1, Physical Reflect nearby
+MonsterThornsElemental1, Elemental Reflect nearby
+MonsterThornsPhysical1Large, Physical Reflect nearby
+MonsterThornsElemental1Large, Elemental Reflect nearby
 
 MonsterBloodlinesDamageCharges, Legacy of Zeal DMG
 MonsterBloodlinesSpeedCharges, Legacy of Vigour SPEED
