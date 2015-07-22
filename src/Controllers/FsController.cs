@@ -15,6 +15,7 @@ namespace PoeHUD.Controllers
         public readonly TagsDat Tags;
         private readonly Dictionary<string, int> files;
         private readonly Memory mem;
+        private bool isLoaded = false;
 
         public FsController(Memory mem)
         {
@@ -30,7 +31,7 @@ namespace PoeHUD.Controllers
         {
             try
             {
-                if (!files.ContainsKey(name))
+                if (!(files.ContainsKey(name) || isLoaded))
                 {
                     int num = mem.ReadInt(mem.AddressOfProcess + mem.offsets.FileRoot, 8);
                     for (int num2 = mem.ReadInt(num); num2 != num; num2 = mem.ReadInt(num2))
@@ -41,6 +42,7 @@ namespace PoeHUD.Controllers
                             files.Add(text, mem.ReadInt(num2 + 12));
                         }
                     }
+                    isLoaded = true;
                 }
                 return files[name];
             }

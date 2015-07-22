@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -21,11 +22,18 @@ namespace PoeHUD.Framework
 
         public Memory(Offsets offs, int pId)
         {
-            offsets = offs;
-            Process = Process.GetProcessById(pId);
-            AddressOfProcess = Process.MainModule.BaseAddress.ToInt32();
-            Open();
-            modules = new Dictionary<string, int>();
+            try
+            {
+                offsets = offs;
+                Process = Process.GetProcessById(pId);
+                AddressOfProcess = Process.MainModule.BaseAddress.ToInt32();
+                Open();
+                modules = new Dictionary<string, int>();
+            }
+            catch (Win32Exception ex)
+            {
+                throw new Exception("You should run program as an administrator", ex);
+            }
         }
 
         public Process Process { get; private set; }
