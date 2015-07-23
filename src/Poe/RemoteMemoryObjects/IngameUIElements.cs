@@ -40,7 +40,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element ShopButton
         {
-            get { return ReadObjectAt<Element>(8 + 0x7C); }
+            get { return ReadObjectAt<Element>(0x84); }
         }
 
         public Element HideoutEditButton
@@ -65,74 +65,74 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element Chat
         {
-            get { return ReadObjectAt<Element>(16 + 0xD8); }
+            get { return ReadObjectAt<Element>(0xe8); }
         }
 
         public Element QuestTracker
         {
-            get { return ReadObjectAt<Element>(8 + 0xE8); }
+            get { return ReadObjectAt<Element>(0xf0); }
         }
 
         public Element MtxInventory
         {
-            get { return ReadObjectAt<Element>(8 + 0xEC); }
+            get { return ReadObjectAt<Element>(0xf4); }
         }
 
         public Element MtxShop
         {
-            get { return ReadObjectAt<Element>(8 + 0xF0); }
+            get { return ReadObjectAt<Element>(0xf8); }
         }
 
         public Element InventoryPanel
         {
-            get { return ReadObjectAt<Element>(20 + 0xF4); }
+            get { return ReadObjectAt<Element>(0x108); }
         }
 
         public Element StashPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0xF8); }
+            get { return ReadObjectAt<Element>(0x108); }
         }
 
         public Element SocialPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x104); }
+            get { return ReadObjectAt<Element>(0x114); }
         }
 
         public Element TreePanel
         {
-            get { return ReadObjectAt<Element>(20 + 0x108); }
+            get { return ReadObjectAt<Element>(0x11c); }
         }
 
         public Element CharacterPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x10C); }
+            get { return ReadObjectAt<Element>(0x11c); }
         }
 
         public Element OptionsPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x110); }
+            get { return ReadObjectAt<Element>(0x120); }
         }
 
         public Element AchievementsPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x114); }
+            get { return ReadObjectAt<Element>(0x124); }
         }
 
         public Element WorldPanel
         {
-            get { return ReadObjectAt<Element>(16 + 0x11C); }
+            get { return ReadObjectAt<Element>(0x12c); }
         }
 
         public Map Map
         {
-            get { return ReadObjectAt<Map>(24 + 0x11C); }
+            get { return ReadObjectAt<Map>(0x134); }
         }
 
         public IEnumerable<ItemsOnGroundLabelElement> ItemsOnGroundLabels
         {
             get
             {
-                var itemsOnGroundLabelRoot = ReadObjectAt<ItemsOnGroundLabelElement>(24 + 0x120);
+                var itemsOnGroundLabelRoot = ReadObjectAt<ItemsOnGroundLabelElement>(0x138);
                 return itemsOnGroundLabelRoot.Children;
             }
         }
@@ -141,49 +141,49 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         {
             get
             {
-                var monsterHpLabelsRoot = ReadObjectAt<HPbarElement>(8 + 0x124);
+                var monsterHpLabelsRoot = ReadObjectAt<HPbarElement>(0x12c);
                 return monsterHpLabelsRoot.Children;
             }
         }
 
         public Element Buffs
         {
-            get { return ReadObjectAt<Element>(8 + 0x130); }
+            get { return ReadObjectAt<Element>(0x138); }
         }
 
         public Element Buffs2
         {
-            get { return ReadObjectAt<Element>(8 + 0x18c); }
+            get { return ReadObjectAt<Element>(0x194); }
         }
 
         public Element OpenLeftPanel
         {
-            get { return ReadObjectAt<Element>(24 + 0x154); }
+            get { return ReadObjectAt<Element>(0x16c); }
         }
 
         public Element OpenRightPanel
         {
-            get { return ReadObjectAt<Element>(24 + 0x158); }
+            get { return ReadObjectAt<Element>(0x170); }
         }
 
         public Element OpenNpcDialogPanel
         {
-            get { return ReadObjectAt<Element>(8 + 0x160); }
+            get { return ReadObjectAt<Element>(0x168); }
         }
 
         public Element CreatureInfoPanel
         {
-            get { return ReadObjectAt<Element>(8 + 0x184); }
+            get { return ReadObjectAt<Element>(0x18c); }
         } // above, it shows name and hp
 
         public Element InstanceManagerPanel
         {
-            get { return ReadObjectAt<Element>(8 + 0x198); }
+            get { return ReadObjectAt<Element>(0x1a0); }
         }
 
         public Element InstanceManagerPanel2
         {
-            get { return ReadObjectAt<Element>(8 + 0x19C); }
+            get { return ReadObjectAt<Element>(0x1a4); }
         }
 
         // dunno what it is
@@ -194,12 +194,12 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
 
         public Element GemLvlUpPanel
         {
-            get { return ReadObjectAt<Element>(36 + 0x1F8); }
+            get { return ReadObjectAt<Element>(0x21c); }
         }
 
         public ItemOnGroundTooltip ItemOnGroundTooltip
         {
-            get { return ReadObjectAt<ItemOnGroundTooltip>(36 + 0x208); }
+            get { return ReadObjectAt<ItemOnGroundTooltip>(0x22c); }
         }
     }
 }

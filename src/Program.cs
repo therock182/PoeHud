@@ -46,7 +46,9 @@ namespace PoeHUD
 		{
             AppDomain.CurrentDomain.UnhandledException += (sender, exceptionArgs) =>
             {
-                MessageBox.Show("Program exited with message:\n " + exceptionArgs.ExceptionObject);
+                var errorText = "Program exited with message:\n " + exceptionArgs.ExceptionObject;
+                File.AppendAllText("Error.log", string.Format("{0} {1}\r\n{2}\r\n",DateTime.Now.ToString("g") , errorText, new string('-', 30)));
+                MessageBox.Show(errorText);
                 Environment.Exit(1);
             };
 

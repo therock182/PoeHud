@@ -40,7 +40,7 @@ Metadata/Monsters/Exiles/ExileMarauder5, Area contains Vickas Giantbone
 Metadata/Monsters/Exiles/ExileTemplar1, Area contains Eoin Greyfur
 Metadata/Monsters/Exiles/ExileTemplar2, Area contains Tinevin Highdove
 Metadata/Monsters/Exiles/ExileTemplar4, Area contains Magnus Stonethorn
-Metadata/Monsters/Exiles/ExileShadow1, Area contains Ion Darkshroud
+Metadata/Monsters/Exiles/ExileShadow1_, Area contains Ion Darkshroud
 Metadata/Monsters/Exiles/ExileShadow2, Area contains Ash Lessard
 Metadata/Monsters/Exiles/ExileShadow4, Area contains Wilorin Demontamer
 Metadata/Monsters/Exiles/ExileScion2, Area contains Augustina Solaria

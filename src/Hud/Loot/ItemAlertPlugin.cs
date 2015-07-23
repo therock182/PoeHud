@@ -97,7 +97,7 @@ namespace PoeHUD.Hud.Loot
 
                 if (shouldUpdate)
                 {
-                    currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.ToDictionary(y => y.ItemOnGround.Address, y => y);
+                    currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.GroupBy(y=>y.ItemOnGround.Address).ToDictionary(y =>y.Key, y => y.First());
                 }
             }
         }

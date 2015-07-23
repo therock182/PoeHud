@@ -13,7 +13,7 @@ Metadata/Monsters/Exiles/ExileMarauder5, Vickas Giantbone
 Metadata/Monsters/Exiles/ExileTemplar1, Eoin Greyfur
 Metadata/Monsters/Exiles/ExileTemplar2, Tinevin Highdove
 Metadata/Monsters/Exiles/ExileTemplar4, Magnus Stonethorn
-Metadata/Monsters/Exiles/ExileShadow1, Ion Darkshroud
+Metadata/Monsters/Exiles/ExileShadow1_, Ion Darkshroud
 Metadata/Monsters/Exiles/ExileShadow2, Ash Lessard
 Metadata/Monsters/Exiles/ExileShadow4, Wilorin Demontamer
 Metadata/Monsters/Exiles/ExileScion2, Augustina Solaria
