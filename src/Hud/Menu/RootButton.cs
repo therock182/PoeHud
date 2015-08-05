@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 
 using SharpDX;
@@ -15,12 +15,12 @@ namespace PoeHUD.Hud.Menu
 
         public RootButton(Vector2 position)
         {
-            Bounds = new RectangleF(position.X, position.Y, 50, 24);
+            Bounds = new RectangleF(position.X, position.Y, DesiredWidth, DesiredHeight);
         }
 
         public override int DesiredWidth
         {
-            get { return 50; }
+            get { return 80; }
         }
 
         public override int DesiredHeight
@@ -76,9 +76,8 @@ namespace PoeHUD.Hud.Menu
             Color boxColor = Color.Gray;
             boxColor.A = 100;
             graphics.DrawBox(new RectangleF(Bounds.X, Bounds.Y, DesiredWidth, DesiredHeight), boxColor);
-            var position = new Vector2(Bounds.X + 25, Bounds.Y + 12);
             var textColor = new ColorBGRA(255, 255, 255, 200);
-            graphics.DrawText("Menu", 17, position, textColor, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
+            graphics.DrawText("Menu [F12]", 15, Bounds.TopLeft.Translate(40, 12), textColor, FontDrawFlags.VerticalCenter | FontDrawFlags.Center);
             Children.ForEach(x => x.Render(graphics));
         }
 
