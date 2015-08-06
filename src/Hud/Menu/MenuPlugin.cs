@@ -63,9 +63,9 @@ namespace PoeHUD.Hud.Menu
             }
         }
 
-        private static MenuItem AddChild(MenuItem parent, string text, ToggleNode node)
+        private static MenuItem AddChild(MenuItem parent, string text, ToggleNode node,string key=null)
         {
-            var item = new ToggleButton(text, node);
+            var item = new ToggleButton(text, node,key);
             parent.AddChild(item);
             return item;
         }
@@ -174,7 +174,7 @@ namespace PoeHUD.Hud.Menu
             MenuItem tooltipMenu = AddChild(root, "Adv. tooltip", tooltipSettings.Enable);
             MenuItem itemLevelMenu = AddChild(tooltipMenu, "Item level", tooltipSettings.ItemLevel.Enable);
             AddChild(itemLevelMenu, "Font size", tooltipSettings.ItemLevel.TextSize);
-            MenuItem itemModsMenu = AddChild(tooltipMenu, "Item mods", tooltipSettings.ItemMods.Enable);
+            MenuItem itemModsMenu = AddChild(tooltipMenu, "Item mods", tooltipSettings.ItemMods.Enable,"F9");
             AddChild(itemModsMenu, "Mods size", tooltipSettings.ItemMods.ModTextSize);
             MenuItem weaponDpsMenu = AddChild(tooltipMenu, "Weapon DPS", tooltipSettings.WeaponDps.Enable);
             AddChild(weaponDpsMenu, "DPS size", tooltipSettings.WeaponDps.DpsTextSize);
