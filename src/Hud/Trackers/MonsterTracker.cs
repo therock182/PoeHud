@@ -23,7 +23,7 @@ namespace PoeHUD.Hud.Trackers
 
         private readonly Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>> iconCreators;
 
-        private readonly Dictionary<string, string> modAlerts, typeAlerts;
+        private readonly Dictionary<string, MonsterConfigLine> modAlerts, typeAlerts;
 
         public MonsterTracker(GameController gameController, Graphics graphics, MonsterTrackerSettings settings)
             : base(gameController, graphics, settings)
@@ -45,6 +45,17 @@ namespace PoeHUD.Hud.Trackers
                 alreadyAlertedOf.Clear();
                 alertTexts.Clear();
             };
+        }
+
+        new public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
+        {
+            return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
+             {
+                 var monsterConfigLine = new MonsterConfigLine { WarningText = line[1], SoundFile = line.Length > 2 ? line[2] : null };
+                 if (!String.IsNullOrEmpty(monsterConfigLine.SoundFile))
+                     Sounds.AddSound(monsterConfigLine.SoundFile);
+                 return monsterConfigLine;
+             });
         }
 
         public override void Render()
@@ -126,15 +137,17 @@ namespace PoeHUD.Hud.Trackers
                 }
                 if (typeAlerts.ContainsKey(text))
                 {
-                    alertTexts.Add(entity, typeAlerts[text]);
-                    PlaySound(entity);
+                    var monsterConfigLine = typeAlerts[text];
+                    alertTexts.Add(entity, monsterConfigLine.WarningText);
+                    PlaySound(entity, monsterConfigLine.SoundFile);
                     return;
                 }
                 string modAlert = entity.GetComponent<ObjectMagicProperties>().Mods.FirstOrDefault(x => modAlerts.ContainsKey(x));
                 if (modAlert != null)
                 {
-                    alertTexts.Add(entity, modAlerts[modAlert]);
-                    PlaySound(entity);
+                    var monsterConfigLine = modAlerts[modAlert];
+                    alertTexts.Add(entity, monsterConfigLine.WarningText);
+                    PlaySound(entity, monsterConfigLine.SoundFile);
                 }
             }
         }
@@ -157,11 +170,14 @@ namespace PoeHUD.Hud.Trackers
             return iconCreators.TryGetValue(monsterRarity, out iconCreator) ? iconCreator(entity) : null;
         }
 
-        private void PlaySound(IEntity entity)
+        private void PlaySound(IEntity entity,string soundFile)
         {
             if (Settings.PlaySound && !alreadyAlertedOf.Contains(entity.Id))
             {
-                Sounds.DangerSound.Play();
+                if (!string.IsNullOrEmpty(soundFile))
+                    Sounds.GetSound(soundFile).Play();
+                else
+                    Sounds.DangerSoundDefault.Play();
                 alreadyAlertedOf.Add(entity.Id);
             }
         }

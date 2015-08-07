@@ -1,36 +1,43 @@
 using System;
+using System.Collections.Generic;
 using System.Media;
-using System.Windows.Forms;
 
 namespace PoeHUD.Hud
 {
-    public  static class Sounds
+    public static class Sounds
     {
         public static SoundPlayer AlertSound;
-        public static SoundPlayer DangerSound;
+        public static SoundPlayer DangerSoundDefault;
+        private static readonly Dictionary<string, SoundPlayer> soundLib = new Dictionary<string, SoundPlayer>();
+        
+        public static void AddSound(string name)
+        {
+            if (!soundLib.ContainsKey(name))
+            {
+                try
+                {
+                    var soundPlayer = new SoundPlayer($"sounds/{name}");
+                    soundPlayer.Load();
+                    soundLib[name] = soundPlayer;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error when loading {name}| {ex.Message}:", ex);
+                }
+            }
+        }
+
+        public static SoundPlayer GetSound(string name)
+        {
+            return soundLib[name];
+        }
 
         public static void LoadSounds()
         {
-            try
-            {
-                AlertSound = new SoundPlayer("sounds/alert.wav");
-                AlertSound.Load();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error when loading alert.wav: " + ex.Message);
-                Environment.Exit(0);
-            }
-            try
-            {
-                DangerSound = new SoundPlayer("sounds/danger.wav");
-                DangerSound.Load();
-            }
-            catch (Exception ex2)
-            {
-                MessageBox.Show("Error when loading danger.wav: " + ex2.Message);
-                Environment.Exit(0);
-            }
+            AddSound("alert.wav");
+            AddSound("danger.wav");
+            AlertSound = GetSound("alert.wav");
+            DangerSoundDefault = GetSound("danger.wav");
         }
     }
 }

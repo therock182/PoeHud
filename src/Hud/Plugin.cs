@@ -53,12 +53,16 @@ namespace PoeHUD.Hud
             return new RectangleF(x, y, (xSprite + 1) / 8 - x, (ySprite + 1) / 3 - y);
         }
 
-        protected static Dictionary<string, string> LoadConfig(string path)
+        protected static IEnumerable<string[]> LoadConfigBase(string path, int columnsCount = 2)
         {
             return File.ReadAllLines(path)
-                .Where(line => !string.IsNullOrWhiteSpace(line) && line.IndexOf(',') >= 0 && !line.StartsWith("#"))
-                .Select(line => line.Split(new[] { ',' }, 2))
-                .ToDictionary(parts => parts[0].Trim(), parts => parts[1].Trim());
+                .Where(line => !string.IsNullOrWhiteSpace(line) && line.IndexOf(';') >= 0 && !line.StartsWith("#"))
+                .Select(line => line.Split(new[] {';'}, columnsCount).Select(parts => parts.Trim()).ToArray());
+        }
+
+        protected static Dictionary<string, string> LoadConfig(string path)
+        {
+            return LoadConfigBase(path).ToDictionary(parts => parts.First(), parts =>parts[1]);
         }
 
 
