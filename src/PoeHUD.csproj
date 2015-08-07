@@ -58,6 +58,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +143,7 @@
     <Compile Include="Hud\Settings\ColorNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
+    <Compile Include="Models\MonsterConfigLine.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
     <Compile Include="Hud\Plugin.cs" />
