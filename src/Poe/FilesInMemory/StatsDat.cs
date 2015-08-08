@@ -51,7 +51,7 @@ namespace PoeHUD.Poe.FilesInMemory
                 Unknown4 = m.ReadByte(addr + 4) != 0;
                 Unknown5 = m.ReadByte(addr + 5) != 0;
                 Unknown6 = m.ReadByte(addr + 6) != 0;
-                Type = (StatType) m.ReadInt(addr + 7);
+                Type = Key.Contains("%") ? StatType.Percents : (StatType)m.ReadInt(addr + 7);
                 UnknownB = m.ReadByte(addr + 0xB) != 0;
                 UserFriendlyName = m.ReadStringU(m.ReadInt(addr + 0xC), 255);
             }
