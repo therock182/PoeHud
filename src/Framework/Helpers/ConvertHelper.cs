@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using SharpDX;
 
 namespace PoeHUD.Framework.Helpers
 {
@@ -18,6 +20,14 @@ namespace PoeHUD.Framework.Helpers
 			}
 
             return value.ToString(format);
+        }
+
+        public static Color ToBGRAColor(this string value)
+        {
+            uint bgra;
+            return uint.TryParse(value, NumberStyles.HexNumber, null, out bgra)
+                ? Color.FromBgra(bgra)
+                : Color.Black;
         }
     }
 }

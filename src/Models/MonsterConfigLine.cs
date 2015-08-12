@@ -1,7 +1,4 @@
-﻿using System.Media;
-using System.Net.Mime;
-
-namespace PoeHUD.Models
+﻿namespace PoeHUD.Models
 {
     public class MonsterConfigLine
     {

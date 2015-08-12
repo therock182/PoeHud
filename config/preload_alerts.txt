@@ -1,3 +1,6 @@
+#Metadata;Text;colour (ARGB)
+#Example Metadata/Chests/StrongBoxes/Strongbox; Area contains Strongbox; FF00FF00
+
 Metadata/Chests/StrongBoxes/Strongbox; Area contains Strongbox
 Metadata/Chests/StrongBoxes/Strongbox.ao; Area contains Strongbox
 Metadata/Chests/StrongBoxes/Ornate; Area contains Ornate Strongbox
@@ -137,6 +140,21 @@ Metadata/NPC/Missions/Wild/DexInt; Area contains Vorici, Master Assassin
 Metadata/NPC/Missions/Wild/Int; Area contains Catarina, Master of the Dead
 Metadata/NPC/Missions/Wild/Str; Area contains Haku, Armourmaster
 Metadata/NPC/Missions/Wild/StrDex; Area contains Vagan, Weaponmaster
+Metadata/Monsters/Missions/MasterStrDex1; Area contains Vagan, Weaponmaster (2HSword)
+Metadata/Monsters/Missions/MasterStrDex2; Area contains Vagan, Weaponmaster (Staff)
+Metadata/Monsters/Missions/MasterStrDex3; Area contains Vagan, Weaponmaster (Bow)
+Metadata/Monsters/Missions/MasterStrDex4; Area contains Vagan, Weaponmaster (DaggerRapier)
+Metadata/Monsters/Missions/MasterStrDex5; Area contains Vagan, Weaponmaster (Blunt)
+Metadata/Monsters/Missions/MasterStrDex6; Area contains Vagan, Weaponmaster (Blades)
+Metadata/Monsters/Missions/MasterStrDex7; Area contains Vagan, Weaponmaster (SwordAxe)
+Metadata/Monsters/Missions/MasterStrDex8; Area contains Vagan, Weaponmaster (Punching)
+Metadata/Monsters/Missions/MasterStrDex9; Area contains Vagan, Weaponmaster (Flickerstrike)
+Metadata/Monsters/Missions/MasterStrDex10; Area contains Vagan, Weaponmaster (Elementalist)
+Metadata/Monsters/Missions/MasterStrDex11; Area contains Vagan, Weaponmaster (Cyclone)
+Metadata/Monsters/Missions/MasterStrDex12; Area contains Vagan, Weaponmaster (PhysSpells)
+Metadata/Monsters/Missions/MasterStrDex13; Area contains Vagan, Weaponmaster (Traps)
+Metadata/Monsters/Missions/MasterStrDex14; Area contains Vagan, Weaponmaster (RighteousFire)
+Metadata/Monsters/Missions/MasterStrDex15; Area contains Vagan, Weaponmaster (CastOnHit)
 Metadata/NPC/Missions/Wild/StrDexInt; Area contains Zana, Master Cartographer
 Metadata/NPC/Missions/Wild/StrInt; Area contains Elreon, Loremaster
 Metadata/NPC/Missions/Wild/Fish; Area contains Krillson, Master Fisherman

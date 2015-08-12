@@ -4,8 +4,9 @@ using System.Linq;
 
 using PoeHUD.Controllers;
 using PoeHUD.Framework;
+using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
-
+using PoeHUD.Models;
 using SharpDX;
 using SharpDX.Direct3D9;
 
@@ -13,9 +14,9 @@ namespace PoeHUD.Hud.Preload
 {
     public class PreloadAlertPlugin : SizedPlugin<PreloadAlertSettings>
     {
-        private readonly HashSet<string> alerts;
+        private readonly HashSet<PreloadAlerConfigLine> alerts;
 
-        private readonly Dictionary<string, string> alertStrings;
+        private readonly Dictionary<string, PreloadAlerConfigLine>  alertStrings;
 
         private bool areaChanged = true;
 
@@ -26,9 +27,19 @@ namespace PoeHUD.Hud.Preload
         public PreloadAlertPlugin(GameController gameController, Graphics graphics, PreloadAlertSettings settings)
             : base(gameController, graphics, settings)
         {
-            alerts = new HashSet<string>();
+            alerts = new HashSet<PreloadAlerConfigLine>();
             alertStrings = LoadConfig("config/preload_alerts.txt");
             GameController.Area.OnAreaChange += OnAreaChange;
+        }
+
+
+        new public Dictionary<string, PreloadAlerConfigLine> LoadConfig(string path)
+        {
+            return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
+            {
+                var preloadAlerConfigLine = new PreloadAlerConfigLine { Text = line[1], Color = line.Length > 2 ? (Color?) line[2].ToBGRAColor() : null };
+                return preloadAlerConfigLine;
+            });
         }
 
         public override void Render()
@@ -58,9 +69,9 @@ namespace PoeHUD.Hud.Preload
                 Vector2 startPosition = StartDrawPointFunc();
                 Vector2 position = startPosition;
                 int maxWidth = 0;
-                foreach (string alert in alerts)
+                foreach (var preloadAlerConfigLine in alerts)
                 {
-                    Size2 size = Graphics.DrawText(alert, Settings.TextSize, position, FontDrawFlags.Right);
+                    Size2 size = Graphics.DrawText(preloadAlerConfigLine.Text, Settings.TextSize, position, preloadAlerConfigLine.Color ?? Settings.DefaultTextColor, FontDrawFlags.Right);
                     maxWidth = Math.Max(size.Width, maxWidth);
                     position.Y += size.Height;
                 }
@@ -104,16 +115,12 @@ namespace PoeHUD.Hud.Preload
                     string text = memory.ReadStringU(memory.ReadInt(listIterator + 8));
                     if (text.Contains('@'))
                     {
-                        text = text.Split(new[] { '@' })[0];
+                        text = text.Split('@')[0];
                     }
                     //Attempt to fix preload not catching corrupted areas by making it also catch preloaded effects and the sound associated with the corrupted area (NoRain would imply there's a rain version but I couldn't find it so perhaps they overlay them one over the other).
                     if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
-                        alerts.Add("Area contains Corrupted Area");
-                    }
-                    else if (text.StartsWith("Metadata/Monsters/Missions/MasterStrDex"))
-                    {
-                        alerts.Add("Area contains Vagan, Weaponmaster");
+                        alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", Color = Settings.CorruptedAreaColor });
                     }
                     else if (alertStrings.ContainsKey(text))
                     {
@@ -122,7 +129,7 @@ namespace PoeHUD.Hud.Preload
                     }
                     else if (text.EndsWith("BossInvasion"))
                     {
-                        alerts.Add("Area contains Invasion Boss");
+                        alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Invasion Boss" });
                     }
                 }
             }

@@ -57,7 +57,7 @@ namespace PoeHUD.Hud
         {
             return File.ReadAllLines(path)
                 .Where(line => !string.IsNullOrWhiteSpace(line) && line.IndexOf(';') >= 0 && !line.StartsWith("#"))
-                .Select(line => line.Split(new[] {';'}, columnsCount).Select(parts => parts.Trim()).ToArray());
+                .Select(line => line.Split(new[] {';'}, columnsCount,StringSplitOptions.RemoveEmptyEntries).Select(parts => parts.Trim()).ToArray());
         }
 
         protected static Dictionary<string, string> LoadConfig(string path)
