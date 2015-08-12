@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using PoeHUD.Models.Enums;
 using PoeHUD.Poe.UI;
 
 namespace PoeHUD.Poe.RemoteMemoryObjects
@@ -46,6 +47,30 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
         public int EntityLabelMap
         {
             get { return M.ReadInt(Address + 68, 2528); } //todo deprecated maybe need to remove
+        }
+
+
+        public DiagnosticInfoType DiagnosticInfoType
+        {
+            get { return (DiagnosticInfoType)M.ReadInt(Address + 0xC90); }
+        }
+
+        public DiagnosticElement LatencyRectangle
+        {
+            get { return GetObjectAt<DiagnosticElement>(0xEB0); }
+        }
+
+        public DiagnosticElement FrameTimeRectangle
+        {
+            get { return GetObjectAt<DiagnosticElement>(0x1310); }
+        }
+
+        public DiagnosticElement FPSRectangle
+        {
+            get
+            {
+                return GetObjectAt<DiagnosticElement>(0x1540);
+            }
         }
 
         /// <summary>

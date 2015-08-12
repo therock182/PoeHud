@@ -27,6 +27,11 @@ namespace PoeHUD.Poe
             return t;
         }
 
+        public T GetObjectAt<T>(int offset) where T : RemoteMemoryObject, new()
+        {
+            return GetObject<T>(Address + offset);
+        }
+
         public T GetObject<T>(int address) where T : RemoteMemoryObject, new()
         {
             var t = new T {M = M, Address = address, Game = Game};

@@ -143,6 +143,7 @@
     <Compile Include="Hud\Settings\ColorNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
+    <Compile Include="Models\Enums\DiagnosticInfoType.cs" />
     <Compile Include="Models\MonsterConfigLine.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Poe\RemoteMemoryObjects\Buff.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\Camera.cs" />
     <Compile Include="Poe\Entity.cs" />
+    <Compile Include="Poe\RemoteMemoryObjects\DiagnosticElement.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\EntityList.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\TheGame.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\IngameData.cs" />
