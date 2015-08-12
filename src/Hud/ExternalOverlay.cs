@@ -22,7 +22,8 @@ using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
 using PoeHUD.Poe.UI;
 using PoeHUD.Hud.ICounter;
-
+using PoeHUD.Models.Enums;
+using PoeHUD.Poe.RemoteMemoryObjects;
 using SharpDX;
 using SharpDX.Windows;
 
@@ -94,7 +95,20 @@ namespace PoeHUD.Hud
 
         private Vector2 GetLeftCornerMap()
         {
-            RectangleF clientRect = gameController.Game.IngameState.IngameUi.Map.SmallMinimap.GetClientRect();
+            var ingameState = gameController.Game.IngameState;
+            RectangleF clientRect = ingameState.IngameUi.Map.SmallMinimap.GetClientRect();
+            var diagnosticElement = ingameState.LatencyRectangle;
+            switch (ingameState.DiagnosticInfoType)
+            {
+                case DiagnosticInfoType.Short:
+                    clientRect.X = diagnosticElement.X + 30;
+                    break;
+                case DiagnosticInfoType.Full:
+                    clientRect.Y = diagnosticElement.Y + diagnosticElement.Height + 5;
+                    var fpsRectangle = ingameState.FPSRectangle;
+                    clientRect.X = fpsRectangle.X + fpsRectangle.Width + 6;
+                    break;
+            }
             return new Vector2(clientRect.X - 10, clientRect.Y + 5);
         }
 
