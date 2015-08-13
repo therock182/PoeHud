@@ -17,6 +17,7 @@ namespace PoeHUD.Hud.Trackers
             BackgroundColor = new ColorBGRA(0, 0, 0, 128);
             TextPositionX = new RangeNode<int>(50, 0, 100);
             TextPositionY = new RangeNode<int>(15, 0, 100);
+            DefaultTextColor = Color.Red;
         }
 
         public ToggleNode Monsters { get; set; }
@@ -28,6 +29,8 @@ namespace PoeHUD.Hud.Trackers
         public ToggleNode ShowText { get; set; }
 
         public RangeNode<int> TextSize { get; set; }
+
+        public ColorNode DefaultTextColor { get; set; }
 
         public ColorNode BackgroundColor { get; set; }
 

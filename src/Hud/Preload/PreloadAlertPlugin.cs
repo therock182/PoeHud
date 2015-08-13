@@ -37,7 +37,7 @@ namespace PoeHUD.Hud.Preload
         {
             return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
             {
-                var preloadAlerConfigLine = new PreloadAlerConfigLine { Text = line[1], Color = line.Length > 2 ? (Color?) line[2].ToBGRAColor() : null };
+                var preloadAlerConfigLine = new PreloadAlerConfigLine { Text = line[1], Color = line.ConfigColorValueExtractor(2)};
                 return preloadAlerConfigLine;
             });
         }

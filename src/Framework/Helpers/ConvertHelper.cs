@@ -29,5 +29,16 @@ namespace PoeHUD.Framework.Helpers
                 ? Color.FromBgra(bgra)
                 : Color.Black;
         }
+
+
+        public static Color? ConfigColorValueExtractor(this string[] line, int index)
+        {
+            return line.Length > index && !string.IsNullOrEmpty(line[index]) ? (Color?) line[index].ToBGRAColor() : null;
+        }
+
+        public static string ConfigValueExtractor(this string[] line, int index)
+        {
+            return line.Length > index ? line[index] : null;
+        }
     }
 }

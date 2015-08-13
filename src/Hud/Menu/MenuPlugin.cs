@@ -185,6 +185,7 @@ namespace PoeHUD.Hud.Menu
             AddChild(bossWarningsMenu, "Sound warning", settingsHub.MonsterTrackerSettings.PlaySound);
             MenuItem warningTextMenu = AddChild(bossWarningsMenu, "Text warning", settingsHub.MonsterTrackerSettings.ShowText);
             AddChild(warningTextMenu, "Font size", settingsHub.MonsterTrackerSettings.TextSize);
+            AddChild(warningTextMenu, "Default text color:", settingsHub.MonsterTrackerSettings.DefaultTextColor);
             AddChild(warningTextMenu, "Background color:", settingsHub.MonsterTrackerSettings.BackgroundColor);
             AddChild(warningTextMenu, "Position X", settingsHub.MonsterTrackerSettings.TextPositionX);
             AddChild(warningTextMenu, "Position Y", settingsHub.MonsterTrackerSettings.TextPositionY);
