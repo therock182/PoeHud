@@ -1,10 +1,14 @@
 using System;
+using System.Numerics;
 using System.Threading;
 using PoeHUD.Framework;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
 
 using SharpDX;
+using Vector2 = SharpDX.Vector2;
+using Vector3 = SharpDX.Vector3;
+using Vector4 = System.Numerics.Vector4;
 
 namespace PoeHUD.Poe.RemoteMemoryObjects
 {
@@ -41,7 +45,7 @@ namespace PoeHUD.Poe.RemoteMemoryObjects
             int addr = base.Address + 0xbc;
             fixed (byte* numRef = base.M.ReadBytes(addr, 0x40))
             {
-                Matrix matrix = *(Matrix*)numRef;
+                Matrix4x4 matrix = *(Matrix4x4*)numRef;
                 Vector4 cord = *(Vector4*)&vec3;
                 cord.W = 1;
                 cord = Vector4.Transform(cord, matrix);

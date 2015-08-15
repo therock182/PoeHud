@@ -5,7 +5,7 @@ Reads data from Path of Exile client application and displays it on transparent 
 Without writing to it so no map hack, disabling particles, zoom hack, fullbright.
 
 ### Requirements
-* .NET framerwork v.4.5 or newer (you already have it on Windows 8+)
+* .NET framerwork v.4.6 or newer (you already have it on Windows 8+)
 * Windows Vista or newer (XP won't work)
 * Path of Exile should be running in Windowed or Windowed Fullscreen mode (the pure Fullscreen mode does not let PoeHUD draw anything over the game window)
 * Windows Aero transparency effects must be enabled. (If you get a black screen this is the issue)
