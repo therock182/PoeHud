@@ -19,7 +19,7 @@ namespace PoeHUD.Hud.Trackers
     {
         private readonly HashSet<int> alreadyAlertedOf;
 
-        private readonly Dictionary<EntityWrapper, string> alertTexts;
+        private readonly Dictionary<EntityWrapper, MonsterConfigLine> alertTexts;
 
         private readonly Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>> iconCreators;
 
@@ -29,7 +29,7 @@ namespace PoeHUD.Hud.Trackers
             : base(gameController, graphics, settings)
         {
             alreadyAlertedOf = new HashSet<int>();
-            alertTexts = new Dictionary<EntityWrapper, string>();
+            alertTexts = new Dictionary<EntityWrapper, MonsterConfigLine>();
             modAlerts = LoadConfig("config/monster_mod_alerts.txt");
             typeAlerts = LoadConfig("config/monster_name_alerts.txt");
             Func<bool> monsterSettings = () => Settings.Monsters;
@@ -49,9 +49,9 @@ namespace PoeHUD.Hud.Trackers
 
         new public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
         {
-            return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
+            return LoadConfigBase(path, 4).ToDictionary(line => line[0], line =>
              {
-                 var monsterConfigLine = new MonsterConfigLine { WarningText = line[1], SoundFile = line.Length > 2 ? line[2] : null };
+                 var monsterConfigLine = new MonsterConfigLine { Text = line[1], SoundFile = line.ConfigValueExtractor(2), Color =line.ConfigColorValueExtractor(3)};
                  if (!String.IsNullOrEmpty(monsterConfigLine.SoundFile))
                      Sounds.AddSound(monsterConfigLine.SoundFile);
                  return monsterConfigLine;
@@ -82,13 +82,14 @@ namespace PoeHUD.Hud.Trackers
             })
                 .OrderBy(y => y.Distance)
                 .GroupBy(y => y.Dic.Value)
-                .Select(y => new { Text = y.Key, Monster = y.First(), Count = y.Count() }).ToList();
+                .Select(y => new {y.Key.Text, y.Key.Color, Monster = y.First(), Count = y.Count() }).ToList();
 
             foreach (var group in groupedAlerts)
             {
                 RectangleF uv = GetDirectionsUV(group.Monster.Phi, group.Monster.Distance);
                 string text = String.Format("{0} {1}", group.Text, group.Count > 1 ? "(" + group.Count + ")" : string.Empty);
-                Size2 textSize = Graphics.DrawText(text, Settings.TextSize, new Vector2(xPos, yPos), Color.Red,
+                var color = group.Color ?? Settings.DefaultTextColor;
+                Size2 textSize = Graphics.DrawText(text, Settings.TextSize, new Vector2(xPos, yPos), color,
                     FontDrawFlags.Center);
 
                 rectBackground = new RectangleF(xPos - textSize.Width / 2f - 6, yPos, textSize.Width + 12,
@@ -106,7 +107,7 @@ namespace PoeHUD.Hud.Trackers
                     first = false;
                 }
                 Graphics.DrawBox(rectBackground, Settings.BackgroundColor);
-                Graphics.DrawImage("directions.png", rectDirection, uv, Color.Red);
+                Graphics.DrawImage("directions.png", rectDirection, uv, color);
                 yPos += textSize.Height;
             }
             if (!first) // vertical padding below
@@ -138,7 +139,7 @@ namespace PoeHUD.Hud.Trackers
                 if (typeAlerts.ContainsKey(text))
                 {
                     var monsterConfigLine = typeAlerts[text];
-                    alertTexts.Add(entity, monsterConfigLine.WarningText);
+                    alertTexts.Add(entity, monsterConfigLine);
                     PlaySound(entity, monsterConfigLine.SoundFile);
                     return;
                 }
@@ -146,7 +147,7 @@ namespace PoeHUD.Hud.Trackers
                 if (modAlert != null)
                 {
                     var monsterConfigLine = modAlerts[modAlert];
-                    alertTexts.Add(entity, monsterConfigLine.WarningText);
+                    alertTexts.Add(entity, monsterConfigLine);
                     PlaySound(entity, monsterConfigLine.SoundFile);
                 }
             }

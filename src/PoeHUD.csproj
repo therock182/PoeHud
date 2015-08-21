@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <OutputType>WinExe</OutputType>
     <AssemblyName>PoeHUD</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <WarningLevel>4</WarningLevel>
@@ -85,6 +85,7 @@
     <Reference Include="SharpDX.Direct3D9">
       <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -143,6 +144,8 @@
     <Compile Include="Hud\Settings\ColorNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
+    <Compile Include="Models\ConfigLineBase.cs" />
+    <Compile Include="Models\Enums\DiagnosticInfoType.cs" />
     <Compile Include="Models\MonsterConfigLine.cs" />
     <Compile Include="Hud\Trackers\MonsterTrackerSettings.cs" />
     <Compile Include="Hud\Trackers\PoiTrackerSettings.cs" />
@@ -163,6 +166,7 @@
     <Compile Include="Hud\XpRate\XpRateSettings.cs" />
     <Compile Include="Models\Enums\DamageType.cs" />
     <Compile Include="Hud\XpRate\XpRatePlugin.cs" />
+    <Compile Include="Models\PreloadAlerConfigLine.cs" />
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
@@ -225,6 +229,7 @@
     <Compile Include="Poe\RemoteMemoryObjects\Buff.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\Camera.cs" />
     <Compile Include="Poe\Entity.cs" />
+    <Compile Include="Poe\RemoteMemoryObjects\DiagnosticElement.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\EntityList.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\TheGame.cs" />
     <Compile Include="Poe\RemoteMemoryObjects\IngameData.cs" />

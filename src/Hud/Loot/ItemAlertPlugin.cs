@@ -210,7 +210,7 @@ namespace PoeHUD.Hud.Loot
             }
             var hashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             string[] lines = File.ReadAllLines("config/currency.txt");
-            lines.Where(x => !string.IsNullOrWhiteSpace(x)).ForEach(x => hashSet.Add(x.Trim().ToLowerInvariant()));
+            lines.Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")).ForEach(x => hashSet.Add(x.Trim().ToLowerInvariant()));
             return hashSet;
         }
 

@@ -1,3 +1,8 @@
+#Metadata;Text;Sound;Colour (ARGB)
+#Example Metadata/Monsters/Exiles/ExileRanger1; Orra Greengate;danger.wav
+#Example Metadata/Monsters/Exiles/ExileRanger1; Orra Greengate;danger.wav;FFFF0000
+#Example Metadata/Monsters/Exiles/ExileRanger1; Orra Greengate;;FFFF0000
+
 Metadata/Monsters/Exiles/ExileRanger1; Orra Greengate;danger.wav
 Metadata/Monsters/Exiles/ExileRanger2; Thena Moga
 Metadata/Monsters/Exiles/ExileRanger3; Antalie Napora

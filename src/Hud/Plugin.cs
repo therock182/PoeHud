@@ -60,10 +60,6 @@ namespace PoeHUD.Hud
                 .Select(line => line.Split(new[] {';'}, columnsCount).Select(parts => parts.Trim()).ToArray());
         }
 
-        protected static Dictionary<string, string> LoadConfig(string path)
-        {
-            return LoadConfigBase(path).ToDictionary(parts => parts.First(), parts =>parts[1]);
-        }
 
 
         /// <summary>

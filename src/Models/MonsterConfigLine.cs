@@ -1,11 +1,7 @@
-﻿using System.Media;
-using System.Net.Mime;
-
-namespace PoeHUD.Models
+﻿namespace PoeHUD.Models
 {
-    public class MonsterConfigLine
+    public class MonsterConfigLine : ConfigLineBase
     {
-        public string WarningText { get; set; }
         public string SoundFile { get; set; }
     }
 }
