@@ -71,7 +71,7 @@ namespace PoeHUD.Hud.Preload
                 int maxWidth = 0;
                 foreach (var preloadAlerConfigLine in alerts)
                 {
-                    Size2 size = Graphics.DrawText(preloadAlerConfigLine.Text, Settings.TextSize, position, preloadAlerConfigLine.Color ?? Settings.DefaultTextColor, FontDrawFlags.Right);
+                    Size2 size = Graphics.DrawText(preloadAlerConfigLine.Text, Settings.TextSize, position, preloadAlerConfigLine.FastColor?.Invoke()??preloadAlerConfigLine.Color ?? Settings.DefaultTextColor, FontDrawFlags.Right);
                     maxWidth = Math.Max(size.Width, maxWidth);
                     position.Y += size.Height;
                 }
@@ -120,7 +120,7 @@ namespace PoeHUD.Hud.Preload
                     //Attempt to fix preload not catching corrupted areas by making it also catch preloaded effects and the sound associated with the corrupted area (NoRain would imply there's a rain version but I couldn't find it so perhaps they overlay them one over the other).
                     if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
-                        alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", Color = Settings.CorruptedAreaColor });
+                        alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", FastColor = () => Settings.CorruptedAreaColor });
                     }
                     else if (alertStrings.ContainsKey(text))
                     {
