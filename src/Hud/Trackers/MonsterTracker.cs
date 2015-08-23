@@ -47,7 +47,7 @@ namespace PoeHUD.Hud.Trackers
             };
         }
 
-        new public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
+        public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
         {
             return LoadConfigBase(path, 5).ToDictionary(line => line[0], line =>
              {

@@ -70,6 +70,15 @@ namespace PoeHUD.Hud.Menu
             return item;
         }
 
+        private static MenuItem AddChild(MenuItem parent, FileNode path)
+        {
+            var item = new FileButton(path);
+            parent.AddChild(item);
+            return item;
+        }
+
+
+
         private static void AddChild(MenuItem parent, string text, ColorNode node)
         {
             var item = new ColorButton(text, node);
@@ -138,6 +147,11 @@ namespace PoeHUD.Hud.Menu
 
             // Item Alert
             MenuItem itemAlertMenu = AddChild(root, "Item alert", settingsHub.ItemAlertSettings.Enable);
+            MenuItem alternative = AddChild(itemAlertMenu, "Alternative", settingsHub.ItemAlertSettings.Alternative);
+            AddChild(alternative,  settingsHub.ItemAlertSettings.FilePath);
+            
+            AddChild(alternative, "With border", settingsHub.ItemAlertSettings.WithBorder);
+            AddChild(alternative, "With sound", settingsHub.ItemAlertSettings.WithSound);
             AddChild(itemAlertMenu, "Rares", settingsHub.ItemAlertSettings.Rares);
             AddChild(itemAlertMenu, "Uniques", settingsHub.ItemAlertSettings.Uniques);
             AddChild(itemAlertMenu, "Currency", settingsHub.ItemAlertSettings.Currency);

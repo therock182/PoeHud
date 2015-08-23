@@ -59,6 +59,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <LangVersion>default</LangVersion>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -137,17 +139,22 @@
     <Compile Include="Hud\KC\KillsCounterPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemLevelSettings.cs" />
+    <Compile Include="Hud\Loot\PoeFilterVisitor.cs" />
     <Compile Include="Hud\Loot\QualityItemSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemsSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemModsSettings.cs" />
+    <Compile Include="Hud\Menu\FileButton.cs" />
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\Menu\RootButton.cs" />
     <Compile Include="Hud\PluginPanel.cs" />
     <Compile Include="Hud\PluginWithMapIcons.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />
+    <Compile Include="Hud\Settings\Converters\FileNodeConverter.cs" />
+    <Compile Include="Hud\Settings\FileNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
+    <Compile Include="Models\BaseItemType.cs" />
     <Compile Include="Models\ConfigLineBase.cs" />
     <Compile Include="Models\Enums\DiagnosticInfoType.cs" />
     <Compile Include="Models\MonsterConfigLine.cs" />
@@ -186,6 +193,7 @@
     <Compile Include="Poe\Elements\ItemOnGroundTooltip.cs" />
     <Compile Include="Poe\Elements\ItemsOnGroundLabelElement.cs" />
     <Compile Include="Poe\FileInMemory.cs" />
+    <Compile Include="Poe\FilesInMemory\ItemClassesDisplay.cs" />
     <Compile Include="Poe\FilesInMemory\StatsDat.cs" />
     <Compile Include="Poe\FilesInMemory\ModsDat.cs" />
     <Compile Include="Framework\ColorUtils.cs" />

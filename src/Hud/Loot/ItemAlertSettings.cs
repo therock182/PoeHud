@@ -26,6 +26,10 @@ namespace PoeHUD.Hud.Loot
             MinSockets = new RangeNode<int>(6, 0, 6);
             QualityItems = new QualityItemsSettings();
             BorderSettings = new BorderSettings();
+            WithBorder = false;
+            WithSound = false;
+            Alternative = false;
+            FilePath = string.Empty;
         }
 
         public ToggleNode ShowItemOnMap { get; set; }
@@ -63,5 +67,13 @@ namespace PoeHUD.Hud.Loot
         public QualityItemsSettings QualityItems { get; set; }
 
         public BorderSettings BorderSettings { get; set; }
+
+        public ToggleNode WithBorder { get; set; }
+
+        public ToggleNode WithSound { get; set; }
+
+        public ToggleNode Alternative { get; set; }
+
+        public FileNode FilePath { get; set; }
     }
 }

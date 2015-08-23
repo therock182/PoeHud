@@ -101,7 +101,7 @@ namespace PoeHUD.Hud.ICounter
         private Size2 DrawDetail(Vector2 position)
         {
             const int INNER_MARGIN = 7;
-            Size2 size = DrawSingleCounter(position, "white", counters[ItemRarity.White].ToString(), Color.White);
+            Size2 size = DrawSingleCounter(position, "white", counters[ItemRarity.Normal].ToString(), Color.White);
 
             size = new Size2(
                     DrawSingleCounter(position.Translate(-size.Width - INNER_MARGIN, 0), "magic",
