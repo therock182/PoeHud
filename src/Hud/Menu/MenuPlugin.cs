@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 using PoeHUD.Controllers;
@@ -63,12 +64,21 @@ namespace PoeHUD.Hud.Menu
             }
         }
 
-        private static MenuItem AddChild(MenuItem parent, string text, ToggleNode node,string key=null)
+        private static MenuItem AddChild(MenuItem parent, string text, ToggleNode node, string key = null, Func<MenuItem, bool> hide = null)
         {
-            var item = new ToggleButton(text, node,key);
+            var item = new ToggleButton(parent,text, node,key, hide);
             parent.AddChild(item);
             return item;
         }
+
+        private static MenuItem AddChild(MenuItem parent, FileNode path)
+        {
+            var item = new FileButton(path);
+            parent.AddChild(item);
+            return item;
+        }
+
+
 
         private static void AddChild(MenuItem parent, string text, ColorNode node)
         {
@@ -138,6 +148,23 @@ namespace PoeHUD.Hud.Menu
 
             // Item Alert
             MenuItem itemAlertMenu = AddChild(root, "Item alert", settingsHub.ItemAlertSettings.Enable);
+            var itemAlertStaticMenuList = new[] {"Alternative", "Play sound", "Show text", "Hide Others", "Show border" };
+            MenuItem alternative = AddChild(itemAlertMenu, itemAlertStaticMenuList[0], settingsHub.ItemAlertSettings.Alternative,null, y=> itemAlertStaticMenuList.All(x => x != (y as ToggleButton)?.Name))  ;
+            AddChild(alternative,  settingsHub.ItemAlertSettings.FilePath);
+            AddChild(alternative, "With border", settingsHub.ItemAlertSettings.WithBorder);
+            AddChild(alternative, "With sound", settingsHub.ItemAlertSettings.WithSound);
+            AddChild(itemAlertMenu, itemAlertStaticMenuList[1], settingsHub.ItemAlertSettings.PlaySound);
+            MenuItem alertTextMenu = AddChild(itemAlertMenu, itemAlertStaticMenuList[2], settingsHub.ItemAlertSettings.ShowText);
+            AddChild(alertTextMenu, "Font size", settingsHub.ItemAlertSettings.TextSize);
+            AddChild(itemAlertMenu, itemAlertStaticMenuList[3], settingsHub.ItemAlertSettings.HideOthers);
+            BorderSettings borderSettings = settingsHub.ItemAlertSettings.BorderSettings;
+            MenuItem showBorderMenu = AddChild(itemAlertMenu, itemAlertStaticMenuList[4], borderSettings.Enable);
+            AddChild(showBorderMenu, "Border width", borderSettings.BorderWidth);
+            AddChild(showBorderMenu, "Border color:", borderSettings.BorderColor);
+            AddChild(showBorderMenu, "Cn't pck up brd color:", borderSettings.CantPickUpBorderColor);
+            AddChild(showBorderMenu, "Not my item brd color:", borderSettings.NotMyItemBorderColor);
+            AddChild(showBorderMenu, "Show timer", borderSettings.ShowTimer);
+            AddChild(showBorderMenu, "Timer text size", borderSettings.TimerTextSize);
             AddChild(itemAlertMenu, "Rares", settingsHub.ItemAlertSettings.Rares);
             AddChild(itemAlertMenu, "Uniques", settingsHub.ItemAlertSettings.Uniques);
             AddChild(itemAlertMenu, "Currency", settingsHub.ItemAlertSettings.Currency);
@@ -156,18 +183,7 @@ namespace PoeHUD.Hud.Menu
             AddChild(qualityFlaskMenu, "Min. quality", qualityItemsSettings.Flask.MinQuality);
             MenuItem qualitySkillGemMenu = AddChild(qualityMenu, "Skill gems", qualityItemsSettings.SkillGem.Enable);
             AddChild(qualitySkillGemMenu, "Min. quality", qualityItemsSettings.SkillGem.MinQuality);
-            AddChild(itemAlertMenu, "Play sound", settingsHub.ItemAlertSettings.PlaySound);
-            MenuItem alertTextMenu = AddChild(itemAlertMenu, "Show text", settingsHub.ItemAlertSettings.ShowText);
-            AddChild(itemAlertMenu, "Hide Others", settingsHub.ItemAlertSettings.HideOthers);
-            AddChild(alertTextMenu, "Font size", settingsHub.ItemAlertSettings.TextSize);
-            BorderSettings borderSettings = settingsHub.ItemAlertSettings.BorderSettings;
-            MenuItem showBorderMenu = AddChild(itemAlertMenu, "Show border", borderSettings.Enable);
-            AddChild(showBorderMenu, "Border width", borderSettings.BorderWidth);
-            AddChild(showBorderMenu, "Border color:", borderSettings.BorderColor);
-            AddChild(showBorderMenu, "Cn't pck up brd color:", borderSettings.CantPickUpBorderColor);
-            AddChild(showBorderMenu, "Not my item brd color:", borderSettings.NotMyItemBorderColor);
-            AddChild(showBorderMenu, "Show timer", borderSettings.ShowTimer);
-            AddChild(showBorderMenu, "Timer text size", borderSettings.TimerTextSize);
+           
 
             // Advanced tooltip
             AdvancedTooltipSettings tooltipSettings = settingsHub.AdvancedTooltipSettings;

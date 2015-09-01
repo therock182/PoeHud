@@ -20,7 +20,7 @@ namespace PoeHUD.Hud.Loot
 
         private ItemRarity rarity;
 
-        private int quality = 0, alertWidth = 0, alertIcon = -1;
+        private int quality = 0, borderWidth = 0, alertIcon = -1;
 
         private string alertText;
 
@@ -35,7 +35,7 @@ namespace PoeHUD.Hud.Loot
 
         public AlertDrawStyle GetDrawStyle()
         {
-            return new AlertDrawStyle((new Color().Equals(color) ? (object)rarity : color), alertWidth, alertText, alertIcon);
+            return new AlertDrawStyle((new Color().Equals(color) ? (object)rarity : color), borderWidth, alertText, alertIcon);
         }
 
         public bool ShouldAlert(HashSet<string> currencyNames, ItemAlertSettings settings)
@@ -55,7 +55,7 @@ namespace PoeHUD.Hud.Loot
             // Check if Map/Vaal Frag
             if (settings.Maps && (_item.HasComponent<Map>() || _item.Path.Contains("VaalFragment")))
             {
-                alertWidth = 1;
+                borderWidth = 1;
                 return true;
             }
 

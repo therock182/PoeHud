@@ -33,7 +33,7 @@ namespace PoeHUD.Hud.Preload
         }
 
 
-        new public Dictionary<string, PreloadAlerConfigLine> LoadConfig(string path)
+        public Dictionary<string, PreloadAlerConfigLine> LoadConfig(string path)
         {
             return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
             {
