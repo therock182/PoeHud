@@ -79,6 +79,7 @@ namespace PoeHUD.Hud.Loot
             foreach (var block in blocks)
             {
                 var isShow = block.visibility().SHOW() != null;
+
                 var itemLevelCondition = true;
                 var dropLevelCondition = true;
                 var poeClassCondition = true;
@@ -228,31 +229,32 @@ namespace PoeHUD.Hud.Loot
                             }
                         }
                     }
+                }
 
-                    if (itemLevelCondition && dropLevelCondition && poeClassCondition && poeBaseTypeCondition &&
-                        poeRarityCondition && poeQualityCondition && poeWidthCondition && poeHeightCondition &&
-                        poeSocketsCondition && poeLinkedSocketsCondition && poeSocketGroupCondition)
+
+                if (itemLevelCondition && dropLevelCondition && poeClassCondition && poeBaseTypeCondition &&
+                    poeRarityCondition && poeQualityCondition && poeWidthCondition && poeHeightCondition &&
+                    poeSocketsCondition && poeLinkedSocketsCondition && poeSocketGroupCondition)
+                {
+                    if (!isShow || (filterEnabled && !(settings.WithBorder && borderWidth > 0 || settings.WithSound && sound >= 0))) return null;
+
+                    int iconIndex;
+                    if (largestLinkSize == 6)
                     {
-                        if (!isShow || (filterEnabled && !(settings.WithBorder && borderWidth > 0 || settings.WithSound && sound >= 0))) return null;
-
-                        int iconIndex;
-                        if (largestLinkSize == 6)
-                        {
-                            iconIndex = 3;
-                        }
-                        else if (numberOfSockets == 6)
-                        {
-                            iconIndex = 0;
-                        }
-                        else if (IsContainSocketGroup(socketGroup, "RGB"))
-                        {
-                            iconIndex = 1;
-                        }
-                        else
-                            iconIndex = -1;
-
-                        return new AlertDrawStyle(text, textColor, borderWidth, borderColor, backgroundColor, iconIndex);
+                        iconIndex = 3;
                     }
+                    else if (numberOfSockets == 6)
+                    {
+                        iconIndex = 0;
+                    }
+                    else if (IsContainSocketGroup(socketGroup, "RGB"))
+                    {
+                        iconIndex = 1;
+                    }
+                    else
+                        iconIndex = -1;
+
+                    return new AlertDrawStyle(text, textColor, borderWidth, borderColor, backgroundColor, iconIndex);
                 }
             }
 

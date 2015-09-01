@@ -75,20 +75,22 @@ namespace PoeHUD.Hud.Loot
                 }
                 else
                 {
-                    Settings.Alternative = false;
+                    Settings.Alternative.Value = false;
                 }
             }
             catch (SyntaxErrorException ex)
             {
-                MessageBox.Show($"Line: {ex.Line}:{ex.CharPositionInLine}, {ex.Message}");
-                visitor = null;
+                Settings.FilePath.Value = string.Empty;
                 Settings.Alternative.Value = false;
+                MessageBox.Show($"Line: {ex.Line}:{ex.CharPositionInLine}, {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                visitor = null;
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Settings.FilePath.Value = string.Empty;
                 Settings.Alternative.Value = false;
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

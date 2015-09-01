@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PoeHUD.Hud.Settings;
@@ -53,17 +55,18 @@ namespace PoeHUD.Hud.Menu
         {
             if (id == MouseEventID.LeftButtonDown)
             {
-                var filedialog = new OpenFileDialog();
-                filedialog.Filter = "filter files (*.filter)|*.filter|All files (*.*)|*.*";
-
-                if (filedialog.ShowDialog() == DialogResult.OK)
+                Thread thread = new Thread(() =>
                 {
-                    path.Value = filedialog.FileName;
-                }
-
+                    var filedialog = new OpenFileDialog();
+                    filedialog.Filter = "filter files (*.filter)|*.filter|All files (*.*)|*.*";
+                    if (filedialog.ShowDialog() == DialogResult.OK)
+                    {
+                        path.Value = filedialog.FileName;
+                    }
+                });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
             }
         }
-
-
     }
 }
