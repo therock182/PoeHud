@@ -38,3 +38,8 @@ Portal Scroll
 Iron Ring
 ```
 Also the mods used for mobs and items are listed in Content.ggpk\Data\Mods.dat.
+
+### Before build
+```
+git submodule update --init --recursive
+```
