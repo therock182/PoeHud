@@ -21,7 +21,7 @@ namespace PoeHUD.Hud.Trackers
 
         private readonly Dictionary<EntityWrapper, MonsterConfigLine> alertTexts;
 
-        private readonly Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>> iconCreators;
+        private readonly Dictionary<MonsterRarity, Func<EntityWrapper, Func<string, string>, CreatureMapIcon>> iconCreators;
 
         private readonly Dictionary<string, MonsterConfigLine> modAlerts, typeAlerts;
 
@@ -33,12 +33,12 @@ namespace PoeHUD.Hud.Trackers
             modAlerts = LoadConfig("config/monster_mod_alerts.txt");
             typeAlerts = LoadConfig("config/monster_name_alerts.txt");
             Func<bool> monsterSettings = () => Settings.Monsters;
-            iconCreators = new Dictionary<MonsterRarity, Func<EntityWrapper, CreatureMapIcon>>
+            iconCreators = new Dictionary<MonsterRarity, Func<EntityWrapper, Func<string, string>, CreatureMapIcon>>
             {
-                { MonsterRarity.White, e => new CreatureMapIcon(e, "monster_enemy.png", monsterSettings, 6) },
-                { MonsterRarity.Magic, e => new CreatureMapIcon(e, "monster_enemy_blue.png", monsterSettings, 8) },
-                { MonsterRarity.Rare, e => new CreatureMapIcon(e, "monster_enemy_yellow.png", monsterSettings, 10) },
-                { MonsterRarity.Unique, e => new CreatureMapIcon(e, "monster_enemy_orange.png", monsterSettings, 10) },
+                { MonsterRarity.White, (e,f) => new CreatureMapIcon(e, f("monster_enemy.png"), monsterSettings, 6) },
+                { MonsterRarity.Magic, (e,f) => new CreatureMapIcon(e, f("monster_enemy_blue.png"), monsterSettings, 8) },
+                { MonsterRarity.Rare, (e,f) => new CreatureMapIcon(e, f("monster_enemy_yellow.png"), monsterSettings, 10) },
+                { MonsterRarity.Unique, (e,f) => new CreatureMapIcon(e, f("monster_enemy_orange.png"), monsterSettings, 10) },
             };
             GameController.Area.OnAreaChange += area =>
             {
@@ -47,12 +47,12 @@ namespace PoeHUD.Hud.Trackers
             };
         }
 
-        new public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
+        public Dictionary<string, MonsterConfigLine> LoadConfig(string path)
         {
-            return LoadConfigBase(path, 4).ToDictionary(line => line[0], line =>
+            return LoadConfigBase(path, 5).ToDictionary(line => line[0], line =>
              {
-                 var monsterConfigLine = new MonsterConfigLine { Text = line[1], SoundFile = line.ConfigValueExtractor(2), Color =line.ConfigColorValueExtractor(3)};
-                 if (!String.IsNullOrEmpty(monsterConfigLine.SoundFile))
+                 var monsterConfigLine = new MonsterConfigLine { Text = line[1], SoundFile = line.ConfigValueExtractor(2), Color =line.ConfigColorValueExtractor(3), MinimapIcon = line.ConfigValueExtractor(4)};
+                 if (monsterConfigLine.SoundFile != null)
                      Sounds.AddSound(monsterConfigLine.SoundFile);
                  return monsterConfigLine;
              });
@@ -126,31 +126,38 @@ namespace PoeHUD.Hud.Trackers
             }
             if (entity.IsAlive && entity.HasComponent<Monster>())
             {
-                MapIcon mapIcon = GetMapIconForMonster(entity);
-                if (mapIcon != null)
-                {
-                    CurrentIcons[entity] = mapIcon;
-                }
                 string text = entity.Path;
                 if (text.Contains('@'))
                 {
                     text = text.Split('@')[0];
                 }
+                MonsterConfigLine monsterConfigLine = null;
                 if (typeAlerts.ContainsKey(text))
                 {
-                    var monsterConfigLine = typeAlerts[text];
-                    alertTexts.Add(entity, monsterConfigLine);
-                    PlaySound(entity, monsterConfigLine.SoundFile);
-                    return;
+                    monsterConfigLine = typeAlerts[text];
+                    AlertHandler(monsterConfigLine, entity);
                 }
-                string modAlert = entity.GetComponent<ObjectMagicProperties>().Mods.FirstOrDefault(x => modAlerts.ContainsKey(x));
-                if (modAlert != null)
+                else
                 {
-                    var monsterConfigLine = modAlerts[modAlert];
-                    alertTexts.Add(entity, monsterConfigLine);
-                    PlaySound(entity, monsterConfigLine.SoundFile);
+                    string modAlert = entity.GetComponent<ObjectMagicProperties>().Mods.FirstOrDefault(x => modAlerts.ContainsKey(x));
+                    if (modAlert != null)
+                    {
+                        monsterConfigLine = modAlerts[modAlert];
+                        AlertHandler(monsterConfigLine, entity);
+                    }
+                }
+                MapIcon mapIcon = GetMapIconForMonster(entity, monsterConfigLine);
+                if (mapIcon != null)
+                {
+                    CurrentIcons[entity] = mapIcon;
                 }
             }
+        }
+
+        private void AlertHandler(MonsterConfigLine monsterConfigLine, EntityWrapper entity)
+        {
+            alertTexts.Add(entity, monsterConfigLine);
+            PlaySound(entity, monsterConfigLine.SoundFile);
         }
 
         protected override void OnEntityRemoved(EntityWrapper entity)
@@ -159,7 +166,7 @@ namespace PoeHUD.Hud.Trackers
             alertTexts.Remove(entity);
         }
 
-        private MapIcon GetMapIconForMonster(EntityWrapper entity)
+        private MapIcon GetMapIconForMonster(EntityWrapper entity, MonsterConfigLine monsterConfigLine)
         {
             if (!entity.IsHostile)
             {
@@ -167,8 +174,9 @@ namespace PoeHUD.Hud.Trackers
             }
 
             MonsterRarity monsterRarity = entity.GetComponent<ObjectMagicProperties>().Rarity;
-            Func<EntityWrapper, CreatureMapIcon> iconCreator;
-            return iconCreators.TryGetValue(monsterRarity, out iconCreator) ? iconCreator(entity) : null;
+            Func<EntityWrapper, Func<string, string>, CreatureMapIcon> iconCreator;
+
+            return iconCreators.TryGetValue(monsterRarity, out iconCreator) ? iconCreator(entity, text => monsterConfigLine?.MinimapIcon ?? text) : null;
         }
 
         private void PlaySound(IEntity entity,string soundFile)

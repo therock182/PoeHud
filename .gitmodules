@@ -1,0 +1,3 @@
+[submodule "src/PoeFilterParser"]
+	path = src/PoeFilterParser
+	url = https://github.com/smad2005/PoeFilterParser.git

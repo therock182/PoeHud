@@ -1,7 +1,9 @@
-#Metadata;Text;Sound;Colour (ARGB)
+#Metadata;Text;Sound;Color (ARGB);Minimap icon
 #Example MonsterNemesisUniqueDrop; Inner Treasure nearby;danger.wav
 #Example MonsterNemesisUniqueDrop; Inner Treasure nearby;danger.wav;FF00FF00
 #Example MonsterNemesisUniqueDrop; Inner Treasure nearby;;FF00FF00
+#Example MonsterNemesisUniqueDrop; Inner Treasure nearby;danger.wav;FF00FF00;dot_green.png
+#Example MonsterNemesisUniqueDrop; Inner Treasure nearby;;;dot_green.png
 
 MonsterNemesisUniqueDrop; Inner Treasure nearby;danger.wav
 MonsterImplicitNemesisUniqueDrop; Inner Treasure nearby

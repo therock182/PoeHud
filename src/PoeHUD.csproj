@@ -10,7 +10,8 @@
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <WarningLevel>4</WarningLevel>
-    <NuGetPackageImportStamp>1fe28053</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -59,6 +60,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
     <LangVersion>default</LangVersion>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -74,16 +77,30 @@
     </DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime, Version=4.5.0.0, Culture=neutral, PublicKeyToken=e9931a4108ef2354, processorArchitecture=MSIL">
+      <HintPath>packages\Antlr4.Runtime.4.5-alpha002\lib\net45\Antlr4.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX">
-      <HintPath>$(SharpDXPackageBinDir)\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.3.0.0-beta01\lib\net45\SharpDX.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>$(SharpDXPackageBinDir)\SharpDX.Direct3D9.dll</HintPath>
+    <Reference Include="SharpDX.Desktop, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.Desktop.3.0.0-beta01\lib\net45\SharpDX.Desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.Direct3D9.3.0.0-beta01\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.Mathematics.3.0.0-beta01\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Windows.Forms" />
@@ -133,17 +150,22 @@
     <Compile Include="Hud\KC\KillsCounterPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemLevelSettings.cs" />
+    <Compile Include="Hud\Loot\PoeFilterVisitor.cs" />
     <Compile Include="Hud\Loot\QualityItemSettings.cs" />
     <Compile Include="Hud\Loot\QualityItemsSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemModsSettings.cs" />
+    <Compile Include="Hud\Menu\FileButton.cs" />
     <Compile Include="Hud\Menu\ColorButton.cs" />
     <Compile Include="Hud\Menu\MenuSettings.cs" />
     <Compile Include="Hud\Menu\RootButton.cs" />
     <Compile Include="Hud\PluginPanel.cs" />
     <Compile Include="Hud\PluginWithMapIcons.cs" />
     <Compile Include="Hud\Settings\ColorNode.cs" />
+    <Compile Include="Hud\Settings\Converters\FileNodeConverter.cs" />
+    <Compile Include="Hud\Settings\FileNode.cs" />
     <Compile Include="Hud\SizedPlugin.cs" />
     <Compile Include="Hud\SizedPluginWithMapIcons.cs" />
+    <Compile Include="Models\BaseItemType.cs" />
     <Compile Include="Models\ConfigLineBase.cs" />
     <Compile Include="Models\Enums\DiagnosticInfoType.cs" />
     <Compile Include="Models\MonsterConfigLine.cs" />
@@ -182,6 +204,7 @@
     <Compile Include="Poe\Elements\ItemOnGroundTooltip.cs" />
     <Compile Include="Poe\Elements\ItemsOnGroundLabelElement.cs" />
     <Compile Include="Poe\FileInMemory.cs" />
+    <Compile Include="Poe\FilesInMemory\ItemClassesDisplay.cs" />
     <Compile Include="Poe\FilesInMemory\StatsDat.cs" />
     <Compile Include="Poe\FilesInMemory\ModsDat.cs" />
     <Compile Include="Framework\ColorUtils.cs" />
@@ -297,6 +320,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="PoeFilterParser\PoeFilterParser.csproj">
+      <Project>{8f5d7d56-7a81-433a-b358-ab297a136183}</Project>
+      <Name>PoeFilterParser</Name>
+    </ProjectReference>
     <ProjectReference Include="Tools\Tools.fsproj">
       <Project>{5f2ae016-51d1-42c4-95cd-4e12118e3a6e}</Project>
       <Name>Tools</Name>
@@ -310,11 +337,4 @@ if "$(ConfigurationName)"=="Release" (
 copy $(TargetPath) $(ProjectDir)\..
 )</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="packages\SharpDX.2.6.3\build\SharpDX.targets" Condition="Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('packages\SharpDX.2.6.3\build\SharpDX.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpDX.2.6.3\build\SharpDX.targets'))" />
-  </Target>
 </Project>

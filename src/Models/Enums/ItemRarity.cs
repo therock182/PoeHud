@@ -2,12 +2,9 @@ namespace PoeHUD.Models.Enums
 {
     public enum ItemRarity
     {
-        White,
-
+        Normal,
         Magic,
-
         Rare,
-
         Unique
     }
 }
