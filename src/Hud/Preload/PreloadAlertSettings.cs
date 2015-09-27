@@ -11,11 +11,13 @@ namespace PoeHUD.Hud.Preload
             TextSize = new RangeNode<int>(20, 10, 50);
             BackgroundColor = new ColorBGRA(0, 0, 0, 180);
             DefaultTextColor = CorruptedAreaColor = Color.White;
+            PlaySound = true;
         }
 
         public RangeNode<int> TextSize { get; set; }
         public ColorNode BackgroundColor { get; set; }
         public ColorNode DefaultTextColor { get; set; }
         public ColorNode CorruptedAreaColor { get; set; }
+        public ToggleNode PlaySound { get; set; }
     }
 }

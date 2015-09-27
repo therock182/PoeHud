@@ -1,5 +1,5 @@
 #Metadata;Text;colour (ARGB)
-#Example Metadata/Chests/StrongBoxes/Strongbox; Area contains Strongbox; FF00FF00
+#Example Metadata/Chests/StrongBoxes/Strongbox; Area contains Strongbox;danger.wav; FF00FF00
 
 Metadata/Chests/StrongBoxes/Strongbox; Area contains Strongbox
 Metadata/Chests/StrongBoxes/Strongbox.ao; Area contains Strongbox

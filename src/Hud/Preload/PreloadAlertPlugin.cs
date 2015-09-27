@@ -37,7 +37,9 @@ namespace PoeHUD.Hud.Preload
         {
             return LoadConfigBase(path, 3).ToDictionary(line => line[0], line =>
             {
-                var preloadAlerConfigLine = new PreloadAlerConfigLine { Text = line[1], Color = line.ConfigColorValueExtractor(2)};
+                var preloadAlerConfigLine = new PreloadAlerConfigLine { Text = line[1], SoundFile = line.ConfigValueExtractor(2), Color = line.ConfigColorValueExtractor(3)};
+                if (preloadAlerConfigLine.SoundFile != null)
+                    Sounds.AddSound(preloadAlerConfigLine.SoundFile);
                 return preloadAlerConfigLine;
             });
         }
@@ -112,6 +114,7 @@ namespace PoeHUD.Hud.Preload
                 listIterator = memory.ReadInt(listIterator);
                 if (memory.ReadInt(listIterator + 8) != 0 && memory.ReadInt(listIterator + 12, 36) == areaChangeCount)
                 {
+                    PreloadAlerConfigLine PreloadAlerConfigLine = null;
                     string text = memory.ReadStringU(memory.ReadInt(listIterator + 8));
                     if (text.Contains('@'))
                     {
@@ -121,17 +124,29 @@ namespace PoeHUD.Hud.Preload
                     if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
                         alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", FastColor = () => Settings.CorruptedAreaColor });
+                        PlaySound(PreloadAlerConfigLine.SoundFile);
                     }
                     else if (alertStrings.ContainsKey(text))
                     {
                         Console.WriteLine("Alert because of " + text);
                         alerts.Add(alertStrings[text]);
+                        PlaySound(PreloadAlerConfigLine.SoundFile);
                     }
                     else if (text.EndsWith("BossInvasion"))
                     {
                         alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Invasion Boss" });
                     }
                 }
+            }
+        }
+        private void PlaySound(string soundFile)
+        {
+            if (Settings.PlaySound)
+            {
+                if (!string.IsNullOrEmpty(soundFile))
+                    Sounds.GetSound(soundFile).Play();
+                else
+                    Sounds.AlertSound.Play();
             }
         }
     }

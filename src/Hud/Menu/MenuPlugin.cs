@@ -214,6 +214,7 @@ namespace PoeHUD.Hud.Menu
             // Preload Alert
             MenuItem preloadMenu = AddChild(root, "Preload Alert", settingsHub.PreloadAlertSettings.Enable);
             AddChild(preloadMenu, "Font size", settingsHub.PreloadAlertSettings.TextSize);
+            AddChild(preloadMenu, "Sound warning", settingsHub.PreloadAlertSettings.PlaySound);
             AddChild(preloadMenu, "Default text color:", settingsHub.PreloadAlertSettings.DefaultTextColor);
             AddChild(preloadMenu, "Corrupted area color:", settingsHub.PreloadAlertSettings.CorruptedAreaColor);
             AddChild(preloadMenu, "Background color:", settingsHub.PreloadAlertSettings.BackgroundColor);
