@@ -124,7 +124,10 @@ namespace PoeHUD.Hud.Preload
                     if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
                         alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", FastColor = () => Settings.CorruptedAreaColor });
-                        PlaySound(PreloadAlerConfigLine.SoundFile);
+                        if (Settings.PlaySound)
+                        {
+                            Sounds.AlertSound.Play();
+                        }
                     }
                     else if (alertStrings.ContainsKey(text))
                     {
@@ -145,8 +148,6 @@ namespace PoeHUD.Hud.Preload
             {
                 if (!string.IsNullOrEmpty(soundFile))
                     Sounds.GetSound(soundFile).Play();
-                else
-                    Sounds.AlertSound.Play();
             }
         }
     }
