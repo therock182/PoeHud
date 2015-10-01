@@ -114,7 +114,7 @@ namespace PoeHUD.Hud.Preload
                 listIterator = memory.ReadInt(listIterator);
                 if (memory.ReadInt(listIterator + 8) != 0 && memory.ReadInt(listIterator + 12, 36) == areaChangeCount)
                 {
-                    PreloadAlerConfigLine PreloadAlerConfigLine = null;
+                    //PreloadAlerConfigLine PreloadAlerConfigLine = null;
                     string text = memory.ReadStringU(memory.ReadInt(listIterator + 8));
                     if (text.Contains('@'))
                     {
@@ -124,16 +124,13 @@ namespace PoeHUD.Hud.Preload
                     if (text.Contains("human_heart") || text.Contains("Demonic_NoRain.ogg"))
                     {
                         alerts.Add(new PreloadAlerConfigLine { Text = "Area contains Corrupted Area", FastColor = () => Settings.CorruptedAreaColor });
-                        if (Settings.PlaySound)
-                        {
-                            Sounds.AlertSound.Play();
-                        }
+                        PlaySound();
                     }
                     else if (alertStrings.ContainsKey(text))
                     {
                         Console.WriteLine("Alert because of " + text);
                         alerts.Add(alertStrings[text]);
-                        PlaySound(PreloadAlerConfigLine.SoundFile);
+                        PlaySound();
                     }
                     else if (text.EndsWith("BossInvasion"))
                     {
@@ -142,12 +139,11 @@ namespace PoeHUD.Hud.Preload
                 }
             }
         }
-        private void PlaySound(string soundFile)
+        private void PlaySound()
         {
             if (Settings.PlaySound)
             {
-                if (!string.IsNullOrEmpty(soundFile))
-                    Sounds.GetSound(soundFile).Play();
+                Sounds.AlertSound.Play();
             }
         }
     }
