@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using PoeHUD.Controllers;
+﻿using PoeHUD.Controllers;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
-
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PoeHUD.Hud.Dps
 {
     public class DpsMeterPlugin : SizedPlugin<DpsMeterSettings>
     {
         private const double DPS_PERIOD = 0.2;
-
         private DateTime lastTime;
-
         private Dictionary<long, int> lastMonsters = new Dictionary<long, int>();
-
         private double[] damageMemory = new double[10];
-
         private int damageMemoryIndex;
-
         private int maxDps;
 
         public DpsMeterPlugin(GameController gameController, Graphics graphics, DpsMeterSettings settings)
@@ -43,11 +36,11 @@ namespace PoeHUD.Hud.Dps
         public override void Render()
         {
             base.Render();
-            if (!Settings.Enable)
+
+            if (!Settings.Enable || GameController.Area.CurrentArea.Name.Contains("Hideout") || GameController.Area.CurrentArea.IsTown)
             {
                 return;
             }
-
             DateTime nowTime = DateTime.Now;
             TimeSpan elapsedTime = nowTime - lastTime;
             if (elapsedTime.TotalSeconds > DPS_PERIOD)
@@ -65,17 +58,17 @@ namespace PoeHUD.Hud.Dps
             var dps = (int)damageMemory.Average();
             maxDps = Math.Max(dps, maxDps);
 
-            string dpsText = dps + " DPS";
-            string peakText = maxDps + " peak DPS";
-            Size2 dpsSize = Graphics.DrawText(dpsText, Settings.DpsTextSize, position, FontDrawFlags.Right);
+            string dpsText = dps + " dps";
+            string peakText = maxDps + " top dps";
+            Size2 dpsSize = Graphics.DrawText(dpsText, Settings.DpsTextSize, position, Settings.DpsFontColor, FontDrawFlags.Right);
             Size2 peakSize = Graphics.DrawText(peakText, Settings.PeakDpsTextSize, position.Translate(0, dpsSize.Height),
-                FontDrawFlags.Right);
+                Settings.PeakFontColor, FontDrawFlags.Right);
 
             int width = Math.Max(peakSize.Width, dpsSize.Width);
             int height = dpsSize.Height + peakSize.Height;
-            var bounds = new RectangleF(position.X - 5 - width, position.Y - 5, width + 10, height + 10);
-            Graphics.DrawBox(bounds, Settings.BackgroundColor);
-
+            var bounds = new RectangleF(position.X - 15 - width, position.Y - 5, width + 20, height + 10);
+            Graphics.DrawImage("preload-end.png", bounds, Settings.BackgroundColor);
+            Graphics.DrawImage("preload-start.png", bounds, Settings.BackgroundColor);
             Size = bounds.Size;
             Margin = new Vector2(5, 0);
         }
@@ -93,7 +86,7 @@ namespace PoeHUD.Hud.Dps
                     if (lastMonsters.TryGetValue(monster.LongId, out lastHP))
                     {
                         // make this a separte if statement to prevent dictionary already containing item
-                        if (lastHP > hp) 
+                        if (lastHP > hp)
                         {
                             totalDamage += lastHP - hp;
                         }

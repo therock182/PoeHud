@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using PoeHUD.Framework.Helpers;
-
+﻿using PoeHUD.Framework.Helpers;
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
 
 namespace PoeHUD.Hud.UI.Renderers
 {
@@ -30,13 +28,11 @@ namespace PoeHUD.Hud.UI.Renderers
 
         public Size2 DrawText(string text, string fontName, int height, Vector2 position, Color color, FontDrawFlags align)
         {
-            Font font;
-            Rectangle fontDimension;
             try
             {
-                font = GetFont(fontName, height);
+                var font = GetFont(fontName, height);
                 var rectangle = new Rectangle((int)position.X, (int)position.Y, 0, 0);
-                fontDimension = font.MeasureText(null, text, rectangle, align);
+                Rectangle fontDimension = font.MeasureText(null, text, rectangle, align);
                 if (!sprite.IsDisposed)
                     font.DrawText(sprite, text, fontDimension, align, color);
                 return new Size2(fontDimension.Width, fontDimension.Height);
@@ -56,8 +52,14 @@ namespace PoeHUD.Hud.UI.Renderers
 
         public void Flush()
         {
-            fonts.ForEach((key, font) => font.Dispose());
-            fonts.Clear();
+            lock (fonts)
+            {
+                fonts.ForEach((key, font) => font.Dispose());
+            }
+            lock (fonts)
+            {
+                fonts.Clear();
+            }
         }
 
         public Size2 MeasureText(string text, string fontName, int height, FontDrawFlags align)

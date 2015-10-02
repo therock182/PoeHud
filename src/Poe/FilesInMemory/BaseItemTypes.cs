@@ -34,7 +34,7 @@ namespace PoeHUD.Poe.FilesInMemory
             {
                 string key = M.ReadStringU(M.ReadInt(i));
                 var baseItemType = new BaseItemType
-                {   
+                {
                     BaseName = M.ReadStringU(M.ReadInt(i + 0x10)),
                     ClassName = itemClassesDisplay[M.ReadInt(i + 0x4) - 1],
                     Width = M.ReadInt(i + 0x8),

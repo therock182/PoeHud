@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-
-using PoeHUD.Controllers;
+﻿using PoeHUD.Controllers;
 using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
+using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models.Enums;
 using PoeHUD.Poe;
@@ -14,17 +10,20 @@ using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.FilesInMemory;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI;
-using PoeHUD.Hud.Settings;
-
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PoeHUD.Hud.AdvancedTooltip
-{   
+{
     public class AdvancedTooltipPlugin : Plugin<AdvancedTooltipSettings>
     {
         private bool holdKey;
         private readonly SettingsHub settingsHub;
+
         private static readonly Color[] elementalDmgColors =
         {
             Color.White, HudSkin.DmgFireColor, HudSkin.DmgColdColor, HudSkin.DmgLightingColor, HudSkin.DmgChaosColor
@@ -42,10 +41,6 @@ namespace PoeHUD.Hud.AdvancedTooltip
 
         public override void Render()
         {
-            if (!Settings.Enable)
-            {
-                return;
-            }
             if (!holdKey && WinApi.IsKeyDown(Keys.F9))
             {
                 holdKey = true;
@@ -58,6 +53,11 @@ namespace PoeHUD.Hud.AdvancedTooltip
             else if (holdKey && !WinApi.IsKeyDown(Keys.F9))
             {
                 holdKey = false;
+            }
+
+            if (!Settings.Enable)
+            {
+                return;
             }
 
             Element uiHover = GameController.Game.IngameState.UIHover;
@@ -81,7 +81,7 @@ namespace PoeHUD.Hud.AdvancedTooltip
             if (Settings.ItemLevel.Enable)
             {
                 string itemLevel = Convert.ToString(modsComponent.ItemLevel);
-                Graphics.DrawText(itemLevel, Settings.ItemLevel.TextSize, tooltipRect.TopLeft.Translate(2, 2));
+                Graphics.DrawText(itemLevel, Settings.ItemLevel.TextSize, tooltipRect.TopLeft.Translate(1, -3), Color.Yellow);
             }
 
             if (Settings.ItemMods.Enable)
@@ -105,13 +105,9 @@ namespace PoeHUD.Hud.AdvancedTooltip
         private static Element GetTooltip(InventoryItemIcon inventoryItemIcon)
         {
             Element tooltip = inventoryItemIcon.Tooltip;
-            if (tooltip == null)
-            {
-                return null;
-            }
 
-            Element child = tooltip.GetChildAtIndex(0);
-            return child == null ? null : child.GetChildAtIndex(1);
+            Element child = tooltip?.GetChildAtIndex(0);
+            return child?.GetChildAtIndex(1);
         }
 
         private Vector2 DrawMod(ModValue item, Vector2 position)
@@ -129,7 +125,7 @@ namespace PoeHUD.Hud.AdvancedTooltip
             {
                 if (item.CouldHaveTiers())
                 {
-                    prefix += string.Format(" T{0} ", item.Tier);
+                    prefix += $" T{item.Tier} ";
                 }
 
                 Graphics.DrawText(prefix, settings.ModTextSize, position.Translate(5 - MARGIN_LEFT, 0));
@@ -200,29 +196,35 @@ namespace PoeHUD.Hud.AdvancedTooltip
                         case "local_physical_damage_+%":
                             physDmgMultiplier += value / 100f;
                             break;
+
                         case "local_attack_speed_+%":
                             aSpd *= (100f + value) / 100;
                             break;
+
                         case "local_minimum_added_physical_damage":
                         case "local_maximum_added_physical_damage":
                             doubleDpsPerStat[(int)DamageType.Physical] += value;
                             break;
+
                         case "local_minimum_added_fire_damage":
                         case "local_maximum_added_fire_damage":
                         case "unique_local_minimum_added_fire_damage_when_in_main_hand":
                         case "unique_local_maximum_added_fire_damage_when_in_main_hand":
                             doubleDpsPerStat[(int)DamageType.Fire] += value;
                             break;
+
                         case "local_minimum_added_cold_damage":
                         case "local_maximum_added_cold_damage":
                         case "unique_local_minimum_added_cold_damage_when_in_off_hand":
                         case "unique_local_maximum_added_cold_damage_when_in_off_hand":
                             doubleDpsPerStat[(int)DamageType.Cold] += value;
                             break;
+
                         case "local_minimum_added_lightning_damage":
                         case "local_maximum_added_lightning_damage":
                             doubleDpsPerStat[(int)DamageType.Lightning] += value;
                             break;
+
                         case "unique_local_minimum_added_chaos_damage_when_in_off_hand":
                         case "unique_local_maximum_added_chaos_damage_when_in_off_hand":
                         case "local_minimum_added_chaos_damage":
@@ -265,14 +267,14 @@ namespace PoeHUD.Hud.AdvancedTooltip
             WeaponDpsSettings settings = Settings.WeaponDps;
             var textPosition = new Vector2(clientRect.Right - 2, clientRect.Y + 1);
             Size2 pDpsSize = pDps > 0
-                ? Graphics.DrawText(pDps.ToString("#.#"), settings.DpsTextSize, textPosition, FontDrawFlags.Right)
+                ? Graphics.DrawText(pDps.ToString("#.#"), settings.DamageFontSize, textPosition, FontDrawFlags.Right)
                 : new Size2();
             Size2 eDpsSize = eDps > 0
-                ? Graphics.DrawText(eDps.ToString("#.#"), settings.DpsTextSize,
+                ? Graphics.DrawText(eDps.ToString("#.#"), settings.DamageFontSize,
                     textPosition.Translate(0, pDpsSize.Height), eDpsColor, FontDrawFlags.Right)
                 : new Size2();
             Vector2 dpsTextPosition = textPosition.Translate(0, pDpsSize.Height + eDpsSize.Height);
-            Graphics.DrawText("DPS", settings.DpsNameTextSize, dpsTextPosition, Color.White, FontDrawFlags.Right);
+            Graphics.DrawText("dps", settings.FontSize, dpsTextPosition, settings.FontColor, FontDrawFlags.Right);
         }
     }
 }

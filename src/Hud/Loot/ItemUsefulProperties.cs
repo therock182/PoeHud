@@ -20,7 +20,7 @@ namespace PoeHUD.Hud.Loot
 
         private ItemRarity rarity;
 
-        private int quality = 0, borderWidth = 0, alertIcon = -1;
+        private int quality, borderWidth, alertIcon = -1;
 
         private string alertText;
 
@@ -50,8 +50,8 @@ namespace PoeHUD.Hud.Loot
                 quality = _item.GetComponent<Quality>().ItemQuality; // update quality variable
             }
 
-			alertText = string.Concat(quality > 0 ? "Superior " : String.Empty, _name);
-			
+            alertText = string.Concat(quality > 0 ? "Superior " : String.Empty, _name);
+
             // Check if Map/Vaal Frag
             if (settings.Maps && (_item.HasComponent<Map>() || _item.Path.Contains("VaalFragment")))
             {
@@ -63,7 +63,7 @@ namespace PoeHUD.Hud.Loot
             if (settings.Currency && _item.Path.Contains("Currency"))
             {
                 color = HudSkin.CurrencyColor;
-                return (currencyNames != null ? currencyNames.Contains(_name):  (!_name.Contains("Wisdom") && !_name.Contains("Portal")));
+                return currencyNames?.Contains(_name) ?? (!_name.Contains("Wisdom") && !_name.Contains("Portal"));
             }
 
             // Check if DivinationCard
@@ -118,8 +118,6 @@ namespace PoeHUD.Hud.Loot
                     return settings.Rares;
                 case ItemRarity.Unique:
                     return settings.Uniques;
-                default:
-                    break;
             }
 
             // Other (no icon change)

@@ -1,21 +1,18 @@
-﻿using System;
-using System.IO;
-
-using Newtonsoft.Json;
-
+﻿using Newtonsoft.Json;
 using PoeHUD.Hud.AdvancedTooltip;
 using PoeHUD.Hud.Dps;
 using PoeHUD.Hud.Health;
 using PoeHUD.Hud.Icons;
 using PoeHUD.Hud.InventoryPreview;
-using PoeHUD.Hud.KC;
 using PoeHUD.Hud.Loot;
 using PoeHUD.Hud.Menu;
 using PoeHUD.Hud.Preload;
 using PoeHUD.Hud.Settings.Converters;
 using PoeHUD.Hud.Trackers;
 using PoeHUD.Hud.XpRate;
-using PoeHUD.Hud.ICounter;
+using System;
+using System.IO;
+using PoeHUD.Hud.KillCounter;
 
 namespace PoeHUD.Hud.Settings
 {
@@ -27,13 +24,16 @@ namespace PoeHUD.Hud.Settings
 
         static SettingsHub()
         {
-            jsonSettings = new JsonSerializerSettings();
-            jsonSettings.ContractResolver = new SortContractResolver();
-            jsonSettings.Converters = new JsonConverter[]
+            jsonSettings = new JsonSerializerSettings
             {
-                new ColorNodeConverter(),
-                new ToggleNodeConverter(),
-                new FileNodeConverter()
+                ContractResolver = new SortContractResolver(),
+                Converters = new JsonConverter[]
+                {
+                    new ColorNodeConverter(),
+                    new ToggleNodeConverter(),
+                    new ToggleNodeConverter(),
+                    new FileNodeConverter()
+                }
             };
         }
 
@@ -50,10 +50,13 @@ namespace PoeHUD.Hud.Settings
             XpRateSettings = new XpRateSettings();
             HealthBarSettings = new HealthBarSettings();
             InventoryPreviewSettings = new InventoryPreviewSettings();
-            KillsCounterSettings = new KillCounterSettings();
-            ItemCounterSettings = new ItemCounterSettings();
+            KillCounterSettings = new KillCounterSettings();
         }
+
         [JsonProperty("Menu")]
+        public MenuSettings TitleSettings { get; private set; }
+
+        [JsonProperty("Menu Settings")]
         public MenuSettings MenuSettings { get; private set; }
 
         [JsonProperty("DPS meter")]
@@ -87,12 +90,10 @@ namespace PoeHUD.Hud.Settings
         public InventoryPreviewSettings InventoryPreviewSettings { get; private set; }
 
         [JsonProperty("Kills Counter")]
-        public KillCounterSettings KillsCounterSettings { get; private set; }
+        public KillCounterSettings KillCounterSettings { get; private set; }
 
-        [JsonProperty("ItemCounter")]
-        public ItemCounterSettings ItemCounterSettings { get; private set; }
-
-
+        //[JsonProperty("ItemCounter")]
+        //public ItemCounterSettings ItemCounterSettings { get; private set; }
 
         public static SettingsHub Load()
         {

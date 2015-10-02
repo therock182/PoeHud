@@ -1,10 +1,8 @@
 ﻿using System;
-
 using PoeHUD.Controllers;
 using PoeHUD.Hud.Interfaces;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
-
 using SharpDX;
 
 namespace PoeHUD.Hud
@@ -12,7 +10,8 @@ namespace PoeHUD.Hud
     public abstract class SizedPlugin<TSettings> : Plugin<TSettings>, IPanelChild where TSettings : SettingsBase
     {
         protected SizedPlugin(GameController gameController, Graphics graphics, TSettings settings)
-            : base(gameController, graphics, settings) {}
+            : base(gameController, graphics, settings)
+        {}
 
         public Size2F Size { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Antlr4.4.5-alpha002\build\Antlr4.props" Condition="Exists('packages\Antlr4.4.5-alpha002\build\Antlr4.props')" />
   <PropertyGroup>
     <ProjectGuid>{E86368B2-AE1E-4489-A749-E29A0AB48F83}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -145,9 +146,9 @@
     <Compile Include="Hud\InventoryPreview\InventoryPreviewPlugin.cs" />
     <Compile Include="Hud\ItemCounterPlugin.cs" />
     <Compile Include="Hud\ItemCounterSettings.cs" />
+    <Compile Include="Hud\KillCounter\KillCounterPlugin.cs" />
+    <Compile Include="Hud\KillCounter\KillCounterSettings.cs" />
     <Compile Include="Hud\Loot\BorderSettings.cs" />
-    <Compile Include="Hud\KC\KillCounterSettings.cs" />
-    <Compile Include="Hud\KC\KillsCounterPlugin.cs" />
     <Compile Include="Hud\Loot\ItemAlertSettings.cs" />
     <Compile Include="Hud\AdvancedTooltip\ItemLevelSettings.cs" />
     <Compile Include="Hud\Loot\PoeFilterVisitor.cs" />
@@ -188,7 +189,7 @@
     <Compile Include="Hud\XpRate\XpRateSettings.cs" />
     <Compile Include="Models\Enums\DamageType.cs" />
     <Compile Include="Hud\XpRate\XpRatePlugin.cs" />
-    <Compile Include="Models\PreloadAlerConfigLine.cs" />
+    <Compile Include="Models\PreloadConfigLine.cs" />
     <Compile Include="Models\StatTranslator.cs" />
     <Compile Include="Framework\Enums\ProcessAccessFlags.cs" />
     <Compile Include="Models\Enums\InventoryIndex.cs" />
@@ -331,10 +332,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set LIBZ=$(SolutionDir)packages\LibZ.Bootstrap.1.1.0.2\tools\libz.exe
+    <PostBuildEvent>set LIBZ="$(SolutionDir)"packages\LibZ.Bootstrap.1.1.0.2\tools\libz.exe
 if "$(ConfigurationName)"=="Release" (
-%25LIBZ%25 inject-dll --assembly $(TargetFileName)    --include *.dll --move
-copy $(TargetPath) $(ProjectDir)\..
+%25LIBZ%25 inject-dll --assembly "$(TargetFileName)"    --include *.dll --move
+copy "$(TargetPath)" "$(ProjectDir)"\..
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>

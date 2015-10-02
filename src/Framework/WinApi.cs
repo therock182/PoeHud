@@ -142,11 +142,13 @@ namespace PoeHUD.Framework
 
             public static Margins FromRectangle(Rectangle rectangle)
             {
-                var margins = new Margins();
-                margins.left = rectangle.Left;
-                margins.right = rectangle.Right;
-                margins.top = rectangle.Top;
-                margins.bottom = rectangle.Bottom;
+                var margins = new Margins
+                {
+                    left = rectangle.Left,
+                    right = rectangle.Right,
+                    top = rectangle.Top,
+                    bottom = rectangle.Bottom
+                };
                 return margins;
             }
         }

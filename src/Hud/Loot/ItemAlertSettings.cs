@@ -14,7 +14,7 @@ namespace PoeHUD.Hud.Loot
             ShowText = true;
             HideOthers = false;
             PlaySound = true;
-            TextSize = new RangeNode<int>(25, 10, 50);
+            TextSize = new RangeNode<int>(16, 10, 50);
             Rares = true;
             Uniques = true;
             Maps = true;
@@ -28,7 +28,7 @@ namespace PoeHUD.Hud.Loot
             BorderSettings = new BorderSettings();
             WithBorder = false;
             WithSound = false;
-            Alternative = false;
+            Alternative = true;
             FilePath = string.Empty;
         }
 
@@ -55,7 +55,7 @@ namespace PoeHUD.Hud.Loot
         public ToggleNode DivinationCards { get; set; }
 
         public ToggleNode Jewels { get; set; }
-        
+
         [JsonProperty("RGB")]
         public ToggleNode Rgb { get; set; }
 

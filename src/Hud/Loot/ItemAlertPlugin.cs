@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
 using PoeFilterParser;
 using PoeFilterParser.Model;
 using PoeHUD.Controllers;
+using PoeHUD.Framework;
 using PoeHUD.Framework.Helpers;
 using PoeHUD.Hud.Settings;
 using PoeHUD.Hud.UI;
@@ -20,9 +14,13 @@ using PoeHUD.Poe.Components;
 using PoeHUD.Poe.Elements;
 using PoeHUD.Poe.RemoteMemoryObjects;
 using PoeHUD.Poe.UI.Elements;
-
 using SharpDX;
 using SharpDX.Direct3D9;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PoeHUD.Hud.Loot
 {
@@ -40,6 +38,8 @@ namespace PoeHUD.Hud.Loot
 
         private PoeFilterVisitor visitor;
 
+        private bool holdKey;
+
         public ItemAlertPlugin(GameController gameController, Graphics graphics, ItemAlertSettings settings)
             : base(gameController, graphics, settings)
         {
@@ -51,8 +51,6 @@ namespace PoeHUD.Hud.Loot
             GameController.Area.OnAreaChange += OnAreaChange;
             PoeFilterInit(settings.FilePath);
             settings.FilePath.OnFileChanged += () => PoeFilterInit(settings.FilePath);
-
-
         }
 
         private void PoeFilterInit(string path)
@@ -84,7 +82,6 @@ namespace PoeHUD.Hud.Loot
                 Settings.Alternative.Value = false;
                 MessageBox.Show($"Line: {ex.Line}:{ex.CharPositionInLine}, {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 visitor = null;
-
             }
             catch (Exception ex)
             {
@@ -102,6 +99,16 @@ namespace PoeHUD.Hud.Loot
         public override void Render()
         {
             base.Render();
+            if (!holdKey && WinApi.IsKeyDown(Keys.F10))
+            {
+                holdKey = true;
+                Settings.Enable.Value = !Settings.Enable.Value;
+            }
+            else if (holdKey && !WinApi.IsKeyDown(Keys.F10))
+            {
+                holdKey = false;
+            }
+
             if (Settings.Enable)
             {
                 Vector2 playerPos = GameController.Player.GetComponent<Positioned>().GridPos;
@@ -119,7 +126,7 @@ namespace PoeHUD.Hud.Loot
                         {
                             shouldUpdate = true;
                         }
-                    };
+                    }
                 }
 
                 foreach (KeyValuePair<EntityWrapper, AlertDrawStyle> kv in currentAlerts.Where(x => x.Key.IsValid))
@@ -137,15 +144,15 @@ namespace PoeHUD.Hud.Loot
                     }
                     else
                         if (Settings.ShowText & (!Settings.HideOthers | entityLabel.CanPickUp))
-                        {
-                            position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
-                        }
+                    {
+                        position = DrawText(playerPos, position, BOTTOM_MARGIN, kv, text);
+                    }
                 }
                 Size = new Size2F(0, position.Y); //bug absent width
 
                 if (shouldUpdate)
                 {
-                    currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.GroupBy(y=>y.ItemOnGround.Address).ToDictionary(y =>y.Key, y => y.First());
+                    currentLabels = GameController.Game.IngameState.IngameUi.ItemsOnGroundLabels.GroupBy(y => y.ItemOnGround.Address).ToDictionary(y => y.Key, y => y.First());
                 }
             }
         }
@@ -175,7 +182,6 @@ namespace PoeHUD.Hud.Loot
                         AlertDrawStyle drawStyle = result;
                         PrepareForDrawingAndPlaySound(entity, drawStyle);
                     }
-
                 }
                 else
                 {
@@ -193,7 +199,7 @@ namespace PoeHUD.Hud.Loot
         private void PrepareForDrawingAndPlaySound(EntityWrapper entity, AlertDrawStyle drawStyle)
         {
             currentAlerts.Add(entity, drawStyle);
-            CurrentIcons[entity] = new MapIcon(entity, new HudTexture("minimap_default_icon.png", drawStyle.TextColor), () => Settings.ShowItemOnMap, 8);
+            CurrentIcons[entity] = new MapIcon(entity, new HudTexture("currency.png", drawStyle.TextColor), () => Settings.ShowItemOnMap, 7);
 
             if (Settings.PlaySound && !playedSoundsCache.Contains(entity.LongId))
             {
@@ -220,7 +226,7 @@ namespace PoeHUD.Hud.Loot
             string[] array = File.ReadAllLines("config/crafting_bases.txt");
             foreach (string text in array.Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x) && !x.StartsWith("#")))
             {
-                string[] parts = text.Split(new[] { ',' });
+                string[] parts = text.Split(',');
                 string itemName = parts[0].Trim();
 
                 var item = new CraftingBase { Name = itemName };
@@ -242,7 +248,7 @@ namespace PoeHUD.Hud.Loot
                     item.Rarities = new ItemRarity[parts.Length - 3];
                     for (int i = RARITY_POSITION; i < parts.Length; i++)
                     {
-                        if (!Enum.TryParse(parts[i], true, out item.Rarities[i - RARITY_POSITION]))
+                        if (item.Rarities != null && !Enum.TryParse(parts[i], true, out item.Rarities[i - RARITY_POSITION]))
                         {
                             parseErrors.Add("Incorrect rarity definition at line: " + text);
                             item.Rarities = null;
@@ -292,7 +298,7 @@ namespace PoeHUD.Hud.Loot
                     RectangleF rect = entityLabel.Label.GetClientRect();
                     if ((ui.OpenLeftPanel.IsVisible && ui.OpenLeftPanel.GetClientRect().Intersects(rect)) || (ui.OpenRightPanel.IsVisible && ui.OpenRightPanel.GetClientRect().Intersects(rect)))
                     {
-                        return shouldUpdate;
+                        return false;
                     }
 
                     ColorNode borderColor = Settings.BorderSettings.BorderColor;

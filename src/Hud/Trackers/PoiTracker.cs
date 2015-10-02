@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-
 using PoeHUD.Controllers;
 using PoeHUD.Hud.UI;
 using PoeHUD.Models;
 using PoeHUD.Poe.Components;
+using System.Collections.Generic;
 
 namespace PoeHUD.Hud.Trackers
 {
@@ -21,11 +20,12 @@ namespace PoeHUD.Hud.Trackers
         };
 
         public PoiTracker(GameController gameController, Graphics graphics, PoiTrackerSettings settings)
-            : base(gameController, graphics, settings) {}
+            : base(gameController, graphics, settings)
+        { }
 
         public override void Render()
         {
-            if (!Settings.Enable) {}
+            if (!Settings.Enable) { }
         }
 
         protected override void OnEntityAdded(EntityWrapper entity)
@@ -45,14 +45,14 @@ namespace PoeHUD.Hud.Trackers
         {
             if (e.HasComponent<NPC>() && masters.Contains(e.Path))
             {
-                return new CreatureMapIcon(e, "monster_ally.png", () => Settings.Masters, 10);
+                return new CreatureMapIcon(e, "ms-cyan.png", () => Settings.Masters, 8);
             }
             if (e.HasComponent<Chest>() && !e.GetComponent<Chest>().IsOpened)
             {
                 return e.GetComponent<Chest>().IsStrongbox
                     ? new ChestMapIcon(e, new HudTexture("strongbox.png", e.GetComponent<ObjectMagicProperties>().Rarity),
                         () => Settings.Strongboxes, 16)
-                    : new ChestMapIcon(e, new HudTexture("minimap_default_icon.png"), () => Settings.Chests, 6);
+                    : new ChestMapIcon(e, new HudTexture("chest.png"), () => Settings.Chests, 3);
             }
             return null;
         }
