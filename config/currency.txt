@@ -1,21 +1,24 @@
-Cartographer's Chisel
-Glassblower's Bauble
-Gemcutter's Prism
-Jeweller's Orb
+Albino Rhoa Feather
 Chromatic Orb
+Jeweller's Orb
 Orb of Fusing
+Blacksmith's Whetstone
+Armourer's Scrap
+Gemcutter's Prism
+Glassblower's Bauble
+Cartographer's Chisel
 Orb of Transmutation
+Orb of Augmentation
+Orb of Alteration
+Regal Orb
 Orb of Chance
 Orb of Alchemy
-Regal Orb
-Orb of Augmentation
 Exalted Orb
-Orb of Alteration
 Chaos Orb
 Blessed Orb
 Divine Orb
 Orb of Scouring
 Mirror of Kalandra
+Eternal Orb
 Orb of Regret
 Vaal Orb
-Albino Rhoa Feather
